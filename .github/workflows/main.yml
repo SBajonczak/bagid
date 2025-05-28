@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          path: d:/sourcen/vcard
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -26,7 +28,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: d:/sourcen/vcard
           push: true
           tags: ${{ secrets.ACR_LOGIN_SERVER }}/vcard:latest
 
