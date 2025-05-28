@@ -28,20 +28,7 @@ jobs:
         with:
           context: ./nfc-travel-vcard
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/nfc-travel-vcard:latest
-
-      # Deploy Docker image to target system
-      - name: Deploy to target system
-        if: github.event_name == 'push'
-        run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-          docker pull ${{ secrets.DOCKER_USERNAME }}/nfc-travel-vcard:latest
-          docker stop nfc-travel-vcard || true
-          docker rm nfc-travel-vcard || true
-          docker run -d --name nfc-travel-vcard -p 80:80 ${{ secrets.DOCKER_USERNAME }}/nfc-travel-vcard:latest
-          EOF
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          tags: ${{ secrets.DOCKER_USERNAME }}/badig:latest
 
 
 
