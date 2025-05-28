@@ -52,11 +52,6 @@ const App: React.FC = () => {
         setDisplayMode(tagId === undefined ? 'advertize' : 'view');
     }, [tagId]);
 
-
-
-
-
-
     return (
         <HelmetProvider>
             <LanguageProvider>
