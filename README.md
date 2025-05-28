@@ -1,0 +1,3 @@
+# NFC vCard App
+
+Setup-Anleitung folgt...

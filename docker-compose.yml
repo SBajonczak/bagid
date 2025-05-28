@@ -1,0 +1,15 @@
+# docker-compose.yml placeholder
+version: "3.8"
+services:
+  nfc-travel-vcard:
+    build:
+      context: ./nfc-travel-vcard
+    ports:
+      - "3000:3000"
+    working_dir: /app
+    volumes:
+      - ./nfc-travel-vcard:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: npm start
