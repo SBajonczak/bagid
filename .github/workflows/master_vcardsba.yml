@@ -72,7 +72,7 @@ jobs:
         with:
           app-name: 'vcardsba'
           slot-name: 'Production'
-          startup-command: 'node server.js'
+          startup-command: 'serve -s .'
           enable-oryx-build: false
           environment-variables: |
             WEBSITES_INCLUDE_CLOUD_CERTS=true
