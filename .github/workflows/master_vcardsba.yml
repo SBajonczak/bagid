@@ -73,3 +73,7 @@ jobs:
           app-name: 'vcardsba'
           slot-name: 'Production'
           package: .
+          startup-command: 'npm start'
+          enable-oryx-build: false
+          environment-variables: |
+            WEBSITES_INCLUDE_CLOUD_CERTS=true
