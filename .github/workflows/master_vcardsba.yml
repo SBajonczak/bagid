@@ -24,13 +24,13 @@ jobs:
           node-version: '20.x'
 
       - name: npm install, build, and test
-        working-directory: nfc-travel-card
+        working-directory: nfc-travel-vcard
         run: |
           npm install
           npm run build --if-present
 
       - name: Zip artifact for deployment
-        run: zip release.zip ./nfc-travel-card* -r
+        run: zip release.zip ./nfc-travel-vcard* -r
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
