@@ -67,7 +67,24 @@ export const messages = {
             ],
             contact: 'Kontakt aufnehmen',
             cta: 'Bag Tag jetzt sichern'
-        }
+        },
+        faq: {
+            title: 'Häufig gestellte Fragen',
+            questions: [
+                {
+                    question: 'Wie funktioniert der Bag Tag?',
+                    answer: 'Der Bag Tag nutzt NFC und QR-Code-Technologie, um Ihre Kontaktdaten sicher zu speichern und Finder zu ermöglichen, Sie schnell zu kontaktieren.',
+                },
+                {
+                    question: 'Kann ich meine Daten jederzeit ändern?',
+                    answer: 'Ja, Sie können Ihre Daten jederzeit online aktualisieren, um sicherzustellen, dass sie immer aktuell sind.',
+                },
+                {
+                    question: 'Ist der Bag Tag wasserdicht?',
+                    answer: 'Ja, der Bag Tag ist robust und wasserdicht, sodass er für jede Reise geeignet ist.',
+                },
+            ],
+        },
     },
     en: {
         common: {
@@ -136,7 +153,23 @@ export const messages = {
             contact: 'Contact us',
             cta: 'Get your Bag Tag now'
         },
-
+        faq: {
+            title: 'Frequently Asked Questions',
+            questions: [
+                {
+                    question: 'How does the Bag Tag work?',
+                    answer: 'The Bag Tag uses NFC and QR code technology to securely store your contact details and allow finders to contact you quickly.',
+                },
+                {
+                    question: 'Can I update my data anytime?',
+                    answer: 'Yes, you can update your data online anytime to ensure it is always up-to-date.',
+                },
+                {
+                    question: 'Is the Bag Tag waterproof?',
+                    answer: 'Yes, the Bag Tag is durable and waterproof, making it suitable for any journey.',
+                },
+            ],
+        },
     },
 
     nl: {
@@ -202,7 +235,24 @@ export const messages = {
             ],
             contact: 'Contact opnemen',
             cta: 'Bestel nu je Bag Tag'
-        }
+        },
+        faq: {
+            title: 'Veelgestelde Vragen',
+            questions: [
+                {
+                    question: 'Hoe werkt de Bag Tag?',
+                    answer: 'De Bag Tag maakt gebruik van NFC- en QR-code-technologie om uw contactgegevens veilig op te slaan en vinders in staat te stellen u snel te contacteren.',
+                },
+                {
+                    question: 'Kan ik mijn gegevens op elk moment bijwerken?',
+                    answer: 'Ja, u kunt uw gegevens op elk moment online bijwerken om ervoor te zorgen dat ze altijd up-to-date zijn.',
+                },
+                {
+                    question: 'Is de Bag Tag waterdicht?',
+                    answer: 'Ja, de Bag Tag is duurzaam en waterdicht, waardoor hij geschikt is voor elke reis.',
+                },
+            ],
+        },
     },
     be: {
         common: {
@@ -267,7 +317,24 @@ export const messages = {
             ],
             contact: 'Contact opnemen',
             cta: 'Bestel nu je Bag Tag'
-        }
+        },
+        faq: {
+            title: 'Veelgestelde Vragen',
+            questions: [
+                {
+                    question: 'Hoe werkt de Bag Tag?',
+                    answer: 'De Bag Tag maakt gebruik van NFC- en QR-code-technologie om uw contactgegevens veilig op te slaan en vinders in staat te stellen u snel te contacteren.',
+                },
+                {
+                    question: 'Kan ik mijn gegevens op elk moment bijwerken?',
+                    answer: 'Ja, u kunt uw gegevens op elk moment online bijwerken om ervoor te zorgen dat ze altijd up-to-date zijn.',
+                },
+                {
+                    question: 'Is de Bag Tag waterdicht?',
+                    answer: 'Ja, de Bag Tag is duurzaam en waterdicht, waardoor hij geschikt is voor elke reis.',
+                },
+            ],
+        },
     }
 };
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { HelmetProvider } from 'react-helmet-async';
+// import { HelmetProvider } from 'react-helmet-async';
 import Header from './components/Header';
 import MessageContainer from './components/MessageContainer';
 import NoDataSection from './components/NoDataSection';
@@ -53,7 +53,7 @@ const App: React.FC = () => {
     }, [tagId]);
 
     return (
-        <HelmetProvider>
+        // <HelmetProvider>
             <LanguageProvider>
                 <div>
                     <SeoMeta />
@@ -88,7 +88,7 @@ const App: React.FC = () => {
                 {/* Footer-Slider */}
                 <Testimonial testimonials={t} />
             </LanguageProvider>
-        </HelmetProvider>
+        // </HelmetProvider>
     );
 };
 
