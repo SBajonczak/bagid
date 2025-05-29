@@ -2,7 +2,7 @@ import React from 'react';
 import { messages } from '../i18n';
 import { useLanguage } from '../LanguageContext';
 import logo from '../assets/tag.png';
-
+import product from '../assets/bagtag.webp';
 import FaqSection from './FaqSection';
 
 export interface NoDataSectionProps {
@@ -11,13 +11,24 @@ export interface NoDataSectionProps {
 
 const NoDataSection: React.FC<NoDataSectionProps> = ({ hidden }) => {
     const { lang } = useLanguage();
-    const t = messages[lang].noDataSection;
-    const t1 = messages[lang].common;
+    const t = messages[lang as keyof typeof messages].noDataSection;
+    const t1 = messages[lang as keyof typeof messages].common;
 
     return (
         <section hidden={hidden} className="w-full bg-gradient-to-br py-12 px-4 flex flex-col items-center">
+            {/* Navigation */}
             {/* Hauptcontainer */}
             <div className="w-full max-w-7xl bg-white rounded-2xl shadow-xl flex flex-col md:flex-row items-center p-6 md:p-12 gap-8">
+                {/* Productbild-Bereich */}
+                <div className="flex-1 flex justify-center items-stretch md:h-full">
+                    <img
+                        src={product}
+                        alt={`${t1.productname} Produktbild`}
+                        className="w-full max-w-xs h-full object-contain rounded shadow"
+                        style={{ minHeight: '8rem' }}
+                    />
+                </div>
+
                 {/* Textbereich */}
                 <div className="flex-1">
                     <h1 className="text-4xl md:text-5xl font-extrabold text-blue-900 mb-4 text-center md:text-left flex items-center gap-4">
@@ -32,7 +43,7 @@ const NoDataSection: React.FC<NoDataSectionProps> = ({ hidden }) => {
                     <p className="text-lg md:text-xl text-gray-700 mb-6 text-center md:text-left break-words">
                         {t.subline}
                     </p>
-                    <ul className="mb-6 space-y-2 text-base text-gray-800">
+                    <ul id="features" className="mb-6 space-y-2 text-base text-gray-800">
                         {t.features.map((feature, idx) => (
                             <li key={idx} className="flex items-center gap-2">
                                 <span className="inline-block w-6 h-6 text-blue-700">
@@ -57,22 +68,10 @@ const NoDataSection: React.FC<NoDataSectionProps> = ({ hidden }) => {
                         </p>
                     </div>
                 </div>
-
-                {/* Video-Bereich */}
-                <div className="flex-1 flex justify-center md:h-full">
-                    <video autoPlay muted loop playsInline className="w-full rounded shadow">
-                        <source src="/assets/bagtap-loop.h264.mp4" type="video/mp4" />
-                        <source src="/assets/bagtap-loop.webm" type="video/webm" />
-                        Dein Browser unterstützt keine eingebetteten Videos.
-                    </video>
-                    
-                </div>
             </div>
 
-           
-
             {/* FAQ Section */}
-            <div className="w-full max-w-7xl mt-12">
+            <div id="faq" className="w-full max-w-7xl mt-12">
                 <FaqSection />
             </div>
         </section>

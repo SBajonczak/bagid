@@ -1,5 +1,4 @@
 import React from 'react';
-import { messages } from '../i18n';
 import { useLanguage } from '../LanguageContext';
 
 
@@ -22,28 +21,6 @@ const LanguageSelection: React.FC = () => {
         </svg>
     );
 
-    const FlagNL = () => (
-        <svg viewBox="0 0 3 2" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
-            <rect width="3" height="2" fill="#fff" />
-            <rect width="3" height="0.666" fill="#21468b" y="1.333" />
-            <rect width="3" height="0.666" fill="#ae1c28" />
-        </svg>
-    );
-
-    const FlagFR = () => (
-        <svg viewBox="0 0 3 2" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
-            <rect width="1" height="2" fill="#0055a4" />
-            <rect x="1" width="1" height="2" fill="#fff" />
-            <rect x="2" width="1" height="2" fill="#ef4135" />
-        </svg>
-    );
-    const FlagBE = () => (
-        <svg viewBox="0 0 3 2" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
-            <rect width="1" height="2" fill="#000" />
-            <rect x="1" width="1" height="2" fill="#ffd90c" />
-            <rect x="2" width="1" height="2" fill="#ef3340" />
-        </svg>
-    );
     const { lang, setLang } = useLanguage();
 
     return (
@@ -66,23 +43,6 @@ const LanguageSelection: React.FC = () => {
             </button>
 
 
-              <button
-                onClick={() => setLang('nl')}
-                className={`p-1 transition hover:scale-110 ${lang === 'en' ? 'opacity-100' : 'opacity-40'
-                    }`}
-                aria-label="Set language to Netherlands"
-            >
-                <FlagNL />
-            </button>
-
-              <button
-                onClick={() => setLang('be')}
-                className={`p-1 transition hover:scale-110 ${lang === 'en' ? 'opacity-100' : 'opacity-40'
-                    }`}
-                aria-label="Set language to Belgium"
-            >
-                <FlagBE />
-            </button>
         </div>
     );
 };

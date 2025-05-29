@@ -1,9 +1,11 @@
-export type SupportedLang = 'de' | 'en' | 'nl' | 'be';
+export type SupportedLang = 'de' | 'en' ;
 
 export const messages = {
     de: {
         common: {
             productname: 'BagID',
+            features: 'Eigenschaften',
+            faq: 'FAQ',
         },
         edit: 'klicken um zu bearbeiten',
         login: '☁️ Mit Azure B2C anmelden',
@@ -89,6 +91,8 @@ export const messages = {
     en: {
         common: {
             productname: 'BagID',
+            features: 'Features',
+            faq: 'FAQ',
         },
         edit: 'click to edit',
         login: '☁️ Sign in with Azure B2C',
@@ -175,6 +179,8 @@ export const messages = {
     nl: {
         common: {
             productname: 'BagID',
+            features: 'Kenmerken',
+            faq: 'FAQ',
         },
         edit: 'klik om te bewerken',
         login: '☁️ Aanmelden met Azure B2C',
@@ -257,6 +263,8 @@ export const messages = {
     be: {
         common: {
             productname: 'BagID',
+            features: 'Kenmerken',
+            faq: 'FAQ',
         },
         edit: 'klik om te bewerken',
         login: '☁️ Aanmelden met Azure B2C',

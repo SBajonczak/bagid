@@ -11,6 +11,7 @@ import Testimonial from './components/Testimonial';
 import { messages } from './i18n';
 import LanguageSelection from './components/LoginSection';
 import SeoMeta from './components/SeoMeta';
+import NavigationBar from './components/NavigationBar';
 
 const App: React.FC = () => {
     const { tagId } = useParams<{ tagId: string }>(); // <-- tagId aus URL holen
@@ -53,11 +54,25 @@ const App: React.FC = () => {
     }, [tagId]);
 
     return (
-        // <HelmetProvider>
             <LanguageProvider>
                 <div>
                     <SeoMeta />
-                    <LanguageSelection />
+                    <NavigationBar />
+                    {/* Video at the top */}
+                    <div className="w-full flex justify-center bg-gradient-to-br py-6">
+                        <video
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
+                            className="w-full max-w-7xl h-40 object-cover rounded shadow"
+                            style={{ height:'55vh', width:'100%' }}
+                        >
+                            <source src="/assets/bagtap-loop.h264.mp4" type="video/mp4" />
+                            <source src="/assets/bagtap-loop.webm" type="video/webm" />
+                            Dein Browser unterstützt keine eingebetteten Videos.
+                        </video>
+                    </div>
                     <Header />
                     <MessageContainer message={''} type={'none'} />
 
@@ -88,7 +103,6 @@ const App: React.FC = () => {
                 {/* Footer-Slider */}
                 <Testimonial testimonials={t} />
             </LanguageProvider>
-        // </HelmetProvider>
     );
 };
 
