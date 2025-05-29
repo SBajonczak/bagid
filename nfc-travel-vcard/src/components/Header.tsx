@@ -1,5 +1,4 @@
 import React from 'react';
-import LanguageSelection from './LoginSection';
 
 const Header: React.FC = () => {
     return (

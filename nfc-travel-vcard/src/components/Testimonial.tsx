@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.min.css'
 import 'swiper/swiper.min.css'
 
-interface Testimonial {
+interface ITestimonial {
   source: string;
   name: string;
   text: string;
@@ -11,7 +11,7 @@ interface Testimonial {
 }
 
 interface TestimonialProps {
-  testimonials: Testimonial[];
+  testimonials: ITestimonial[];
 }
 
 const Testimonial: React.FC<TestimonialProps> = ({ testimonials }) => {
@@ -23,7 +23,7 @@ const Testimonial: React.FC<TestimonialProps> = ({ testimonials }) => {
         spaceBetween={30}
         slidesPerView={1}
       >
-        {testimonials.map((t:Testimonial, idx:number) => (
+        {testimonials.map((t:ITestimonial, idx:number) => (
           <SwiperSlide key={idx}>
             <div className="flex flex-col md:flex-row items-center justify-between gap-6 max-w-5xl mx-auto">
               <div className="w-full md:w-1/5 text-center md:text-left">

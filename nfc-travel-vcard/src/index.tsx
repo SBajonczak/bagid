@@ -5,6 +5,8 @@ import ReactDOM from 'react-dom';
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
+import TravelCard from './components/Tag/TravelCard';
+
 
 
 
@@ -12,7 +14,8 @@ ReactDOM.render(
     <React.StrictMode>
         <Router>
             <Routes>
-                <Route path="/:tagId?" element={<App />} />
+                <Route path="/" element={<App/>} />
+                <Route path="/:tagId?" element={<TravelCard />} />
             </Routes>
         </Router>
     </React.StrictMode>,

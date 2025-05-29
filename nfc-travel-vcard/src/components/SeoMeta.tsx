@@ -1,15 +1,15 @@
 import React from 'react';
 // import { Helmet } from 'react-helmet-async'; // Updated import
-import { useLanguage } from '../LanguageContext';
+// import { useLanguage } from '../LanguageContext';
 
-interface IMetaData {
-    title: string;
-    description: string;
-    keywords: string;
-}
+// interface IMetaData {
+//     title: string;
+//     description: string;
+//     keywords: string;
+// }
 
 const SeoMeta: React.FC = () => {
-    const { lang } = useLanguage();
+    // const { lang } = useLanguage();
 
     // const meta: IMetaData = {
     //     de: {

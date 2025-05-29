@@ -1,10 +1,10 @@
 import React from 'react';
 import { useLanguage } from '../LanguageContext';
-import { messages, SupportedLang } from '../i18n';
+import { messages } from '../i18n';
 import LanguageSelection from './LoginSection';
 
 const NavigationBar: React.FC = () => {
-    const { lang, setLang } = useLanguage();
+    const { lang } = useLanguage();
     const t1 = messages[lang].common;
 
 
