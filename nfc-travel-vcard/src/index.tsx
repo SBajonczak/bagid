@@ -17,6 +17,7 @@ ReactDOM.render(
                 {/* <Route path="/" element={<App/>} /> */}
                 <Route path="/" element={<TravelCard/>} />
                 <Route path="/:tagId?" element={<TravelCard />} />
+                <Route path="/app" element={<App />} />
             </Routes>
         </Router>
     </React.StrictMode>,

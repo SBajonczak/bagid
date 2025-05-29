@@ -17,7 +17,7 @@ const TravelCard: React.FC = () => {
     // State for travel data
     const [travelData, setTravelData] = useState<any | null>(null);
     const [loading, setLoading] = useState(true);
-    const [error,setError] = useState<string | null>(null);
+    const [error] = useState<string | null>(null);
 
     // Fetch data from the API
     useEffect(() => {
