@@ -72,7 +72,6 @@ jobs:
         with:
           app-name: 'vcardsba'
           slot-name: 'Production'
-          package: ./build
           startup-command: 'node server.js'
           enable-oryx-build: false
           environment-variables: |
