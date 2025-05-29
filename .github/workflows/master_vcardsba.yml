@@ -25,6 +25,8 @@ jobs:
 
       - name: npm install, build, and test
         working-directory: nfc-travel-vcard
+        env:
+          NODE_OPTIONS: --openssl-legacy-provider
         run: |
           npm install
           npm run build --if-present
@@ -71,4 +73,3 @@ jobs:
           app-name: 'vcardsba'
           slot-name: 'Production'
           package: .
-          
