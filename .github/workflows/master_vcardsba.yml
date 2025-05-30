@@ -72,7 +72,8 @@ jobs:
         with:
           app-name: 'vcardsba'
           slot-name: 'Production'
-          startup-command: 'serve -s .'
+          package: ./build
+          startup-command: 'serve -s ./build'
           enable-oryx-build: false
           environment-variables: |
             WEBSITES_INCLUDE_CLOUD_CERTS=true
