@@ -57,8 +57,8 @@ jobs:
           name: node-app
 
       - name: Unzip artifact for deployment
-        run: unzip release.zip
-      
+        run: unzip release.zip -d .
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -72,8 +72,8 @@ jobs:
         with:
           app-name: 'vcardsba'
           slot-name: 'Production'
-          package: ./build
-          startup-command: 'serve -s ./build'
+          package: ./nfc-travel-vcard/build
+          startup-command: 'serve -s ./nfc-travel-vcard/build'
           enable-oryx-build: false
           environment-variables: |
             WEBSITES_INCLUDE_CLOUD_CERTS=true
