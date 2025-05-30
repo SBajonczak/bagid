@@ -1,8 +1,11 @@
-export type SupportedLang = 'de' | 'en' ;
+import { off } from "process";
+
+export type SupportedLang = 'de' | 'en';
 
 export const messages = {
     de: {
         common: {
+            offerText: '🔥 Exklusives Angebot: Spare jetzt 15%! Nur für kurze Zeit – sichere dir deinen NFC-Kofferanhänger!',
             productname: 'BagID',
             features: 'Eigenschaften',
             faq: 'FAQ',
@@ -32,6 +35,7 @@ export const messages = {
             destinationaddress_Address: "Adresse",
         },
         noDataSection: {
+            demoLinkText: "Demo ansehen",
             testimonialsTitle: "Was unsere Kunden sagen",
             testimonials: [
                 {
@@ -85,11 +89,16 @@ export const messages = {
                     question: 'Ist der Bag Tag wasserdicht?',
                     answer: 'Ja, der Bag Tag ist robust und wasserdicht, sodass er für jede Reise geeignet ist.',
                 },
+                {
+                    question: 'Was ist in dem Paket enthalten?',
+                    answer: 'Sie erhalten ihr Persönliches Tag und ein Metallring zum befestigen des Tags.',
+                },
             ],
         },
     },
     en: {
         common: {
+            offerText: '🔥 Exclusive offer: Save 15% now! Limited time only – get your NFC luggage tag today!',
             productname: 'BagID',
             features: 'Features',
             faq: 'FAQ',
@@ -119,6 +128,7 @@ export const messages = {
             destinationaddress_Address: "Address",
         },
         noDataSection: {
+            demoLinkText: "View Demo",
             testimonialsTitle: "What our customers say",
             headline: 'Bag Tag – The smart luggage tag',
             subline: 'With NFC & QR code. Update your contact and travel data online anytime. Finders can contact you instantly or forward your luggage.',
@@ -172,6 +182,10 @@ export const messages = {
                     question: 'Is the Bag Tag waterproof?',
                     answer: 'Yes, the Bag Tag is durable and waterproof, making it suitable for any journey.',
                 },
+                {
+                    question: 'What is included in the package?',
+                    answer: 'You will receive your personalized tag and a metal ring to attach the tag.',
+                }
             ],
         },
     },

@@ -15,8 +15,12 @@ const NavigationBar: React.FC = () => {
                 <LanguageSelection/>
                 {/* Add more flags as needed */}
             </div>
+            <div className="flex-1 flex justify-center">
+                <span className="bg-red-600 text-white font-bold px-4 py-2 rounded-lg shadow animate-pulse text-sm md:text-base text-center">
+                    {t1.offerText}
+                </span>
+            </div>
             <ul className="flex gap-4 ml-auto">
-                
                 <li><a href="#features" className="text-blue-700 font-bold hover:underline">{t1.features}</a></li>
                 <li><a href="#faq" className="text-blue-700 font-bold hover:underline">{t1.faq}</a></li>
             </ul>

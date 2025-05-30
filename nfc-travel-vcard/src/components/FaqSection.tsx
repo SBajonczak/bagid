@@ -7,7 +7,7 @@ const FaqSection: React.FC = () => {
     const faq = messages[lang].faq;
 
     return (
-        <section className="w-full bg-gray-100 py-12 px-4 flex flex-col items-center">
+        <section className="w-full bg-white py-12 px-4 flex flex-col items-center border rounded-xl shadow-lg">
             <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-8 text-center">
                 {faq.title}
             </h2>

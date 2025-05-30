@@ -2,7 +2,7 @@ import React from 'react';
 import { messages } from '../i18n';
 import { useLanguage } from '../LanguageContext';
 import logo from '../assets/tag.png';
-import product from '../assets/productimage.png';
+import product from '../assets/productimage.webp';
 import FaqSection from './FaqSection';
 
 export interface StartPageControlProps {
@@ -24,7 +24,7 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                     <img
                         src={product}
                         alt={`${t1.productname} Produktbild`}
-                        className="w-full max-w-xs h-full object-contain rounded shadow"
+                        className="w-full max-w-xs h-full object-contain rounded"
                         style={{ minHeight: '8rem' }}
                     />
                 </div>
@@ -55,6 +55,27 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                     </ul>
                     {/* CTA */}
                     <div className="flex flex-col gap-4 w-full md:w-auto items-center">
+                        {/* Preis-Anzeige */}
+                        <div className="flex flex-col items-center md:items-start w-full md:w-auto mb-2">
+                            <div className="flex items-baseline gap-3">
+                                <span className="text-gray-400 line-through text-lg">12,99&nbsp;€</span>
+                                {(() => {
+                                    const originalPrice = 12.99;
+                                    const discountedPrice = 10.99;
+                                    const discountPercent = Math.round(((originalPrice - discountedPrice) / originalPrice) * 100);
+                                    return (
+                                        <>
+                                            <span className="text-2xl font-bold text-green-600">
+                                                {discountedPrice.toFixed(2).replace('.', ',')}&nbsp;€
+                                            </span>
+                                            <span className="bg-green-100 text-green-700 text-xs font-semibold px-2 py-0.5 rounded">
+                                                -{discountPercent}%
+                                            </span>
+                                        </>
+                                    );
+                                })()}
+                            </div>
+                        </div>
                         <a
                             href="https://kreativschicht.de/products/nfc-kofferanhaenger-3er-set"
                             target="_blank"
@@ -62,6 +83,12 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                             className="bg-green-500 text-white font-bold px-8 py-3 rounded-lg shadow hover:bg-green-600 transition text-center w-full md:w-auto"
                         >
                             {t.cta}
+                        </a>
+                        <a
+                            href="/demo"
+                            className="bg-blue-500 text-white font-semibold px-6 py-2 rounded-lg shadow hover:bg-blue-600 transition text-center w-full md:w-auto mt-4"
+                        >
+                            {t.demoLinkText || 'View Demo'}
                         </a>
                         <p className="text-sm text-gray-600 mt-4 text-center">
                             * Secure your luggage and travel worry-free with Bag Tag.

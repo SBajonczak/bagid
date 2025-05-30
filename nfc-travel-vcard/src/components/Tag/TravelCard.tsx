@@ -23,31 +23,9 @@ const TravelCard: React.FC = () => {
     useEffect(() => {
         const fetchTravelData = async () => {
             // Simulate API call with dummy data and loading delay
-            setTimeout(() => {
-                const dummyData = {
-                    ownerFirstName: 'John',
-                    ownerLastName: 'Doe',
-                    ownerAddress: '123 Main St, Berlin',
-                    ownerEmail: 'john.doe@example.com',
-                    ownerMobile: '+49 123 456789',
-                    ownerLandline: '+49 30 123456',
-                    ownerOther: 'N/A',
-                    transportation: 'Lufthansa',
-                    transportationNumber: 'LH1234',
-                    transportationDate: '2024-06-01',
-                    guideFirstName: 'Anna',
-                    guideLastName: 'Schmidt',
-                    guideEmail: 'anna.schmidt@example.com',
-                    guideMobile: '+49 176 987654',
-                    guideLandline: '+49 30 654321',
-                    destinationAccommodation: 'Hotel Berlin',
-                    destinationAddress: 'Alexanderplatz 1, 10178 Berlin'
-                };
-                // @ts-ignore
-                setTravelData(dummyData);
-                // @ts-ignore
-                setLoading(false);
-            }, 10);
+            if (isDemoRequest()) {
+               injectDemoData();
+            }
         };
 
         fetchTravelData();
@@ -75,6 +53,39 @@ const TravelCard: React.FC = () => {
 
     if (!travelData) {
         return <div className="text-center">No data available</div>;
+    }
+
+    function isDemoRequest(): Boolean {
+        return tagId === "demo"
+    }
+
+    function injectDemoData() {
+ setTimeout(() => {
+                    const dummyData = {
+                        ownerFirstName: 'John',
+                        ownerLastName: 'Doe',
+                        ownerAddress: '123 Main St, Berlin',
+                        ownerEmail: 'john.doe@example.com',
+                        ownerMobile: '+49 123 456789',
+                        ownerLandline: '+49 30 123456',
+                        ownerOther: 'N/A',
+                        transportation: 'Lufthansa',
+                        transportationNumber: 'LH1234',
+                        transportationDate: '2024-06-01',
+                        guideFirstName: 'Anna',
+                        guideLastName: 'Schmidt',
+                        guideEmail: 'anna.schmidt@example.com',
+                        guideMobile: '+49 176 987654',
+                        guideLandline: '+49 30 654321',
+                        destinationAccommodation: 'Hotel Berlin',
+                        destinationAddress: 'Alexanderplatz 1, 10178 Berlin'
+                    };
+
+                    // @ts-ignore
+                    setTravelData(dummyData);
+                    // @ts-ignore
+                    setLoading(false);
+                }, 1);
     }
 
     return (

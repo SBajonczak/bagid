@@ -73,7 +73,6 @@ jobs:
           app-name: 'vcardsba'
           slot-name: 'Production'
           package: ./nfc-travel-vcard/build
-          startup-command: 'serve -s ./nfc-travel-vcard/build'
           enable-oryx-build: false
           environment-variables: |
             WEBSITES_INCLUDE_CLOUD_CERTS=true
