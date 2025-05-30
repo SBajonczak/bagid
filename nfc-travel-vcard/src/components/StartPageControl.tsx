@@ -2,14 +2,14 @@ import React from 'react';
 import { messages } from '../i18n';
 import { useLanguage } from '../LanguageContext';
 import logo from '../assets/tag.png';
-import product from '../assets/bagtag.webp';
+import product from '../assets/productimage.png';
 import FaqSection from './FaqSection';
 
-export interface NoDataSectionProps {
+export interface StartPageControlProps {
     hidden: boolean;
 }
 
-const NoDataSection: React.FC<NoDataSectionProps> = ({ hidden }) => {
+const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
     const { lang } = useLanguage();
     const t = messages[lang as keyof typeof messages].noDataSection;
     const t1 = messages[lang as keyof typeof messages].common;
@@ -78,4 +78,4 @@ const NoDataSection: React.FC<NoDataSectionProps> = ({ hidden }) => {
     );
 };
 
-export default NoDataSection;
+export default StartPageControl;

@@ -2,7 +2,7 @@ import React from 'react';
 // import { HelmetProvider } from 'react-helmet-async';
 import Header from './components/Header';
 import MessageContainer from './components/MessageContainer';
-import NoDataSection from './components/NoDataSection';
+import StartPageControl from './components/StartPageControl';
 import { LanguageProvider, useLanguage } from './LanguageContext';
 import Testimonial from './components/Testimonial';
 import { messages } from './i18n';
@@ -34,7 +34,7 @@ const App: React.FC = () => {
                     </div>
                     <Header />
                     <MessageContainer message={''} type={'none'} />
-                    <NoDataSection hidden={false} />
+                    <StartPageControl hidden={false} />
                 </div>
                 {/* Footer-Slider */}
                 <Testimonial testimonials={t} />
