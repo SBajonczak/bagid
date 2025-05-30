@@ -88,11 +88,12 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                             href="/demo"
                             className="bg-blue-500 text-white font-semibold px-6 py-2 rounded-lg shadow hover:bg-blue-600 transition text-center w-full md:w-auto mt-4"
                         >
-                            {t.demoLinkText || 'View Demo'}
+                            {t.demoLinkText}
                         </a>
                         <p className="text-sm text-gray-600 mt-4 text-center">
                             * Secure your luggage and travel worry-free with Bag Tag.
                         </p>
+                         
                     </div>
                 </div>
             </div>

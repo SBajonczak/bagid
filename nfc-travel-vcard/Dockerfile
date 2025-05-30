@@ -8,7 +8,17 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
+ENV NODE_OPTIONS="--openssl-legacy-provider"
 
-EXPOSE 3000
+# Build the application
+RUN npm run build
 
-CMD ["npm", "start"]
+# Install serve to host the production build
+RUN npm install -g serve
+
+# Expose the port serve will use
+EXPOSE 8080
+
+# Command to serve the production build
+CMD ["serve", "-s", "build"]
+# CMD ["serve", "-s", "build", "-l", "80"]

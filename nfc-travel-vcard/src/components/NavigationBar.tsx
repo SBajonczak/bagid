@@ -1,7 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../LanguageContext';
 import { messages } from '../i18n';
-import LanguageSelection from './LoginSection';
 
 const NavigationBar: React.FC = () => {
     const { lang } = useLanguage();
@@ -12,7 +11,6 @@ const NavigationBar: React.FC = () => {
         <nav className="fixed top-0 left-0 w-full bg-white shadow-md py-4 px-6 flex justify-between items-center z-50">
             {/* Language selection with flags */}
             <div className="flex gap-2">
-                <LanguageSelection/>
                 {/* Add more flags as needed */}
             </div>
             <div className="flex-1 flex justify-center">

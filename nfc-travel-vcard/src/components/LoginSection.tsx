@@ -26,7 +26,15 @@ const LanguageSelection: React.FC = () => {
     return (
         <div className="flex items-center gap-3">
             <button
-                onClick={() => setLang('de')}
+                onClick={() => {
+                    console.log('Setting language to Deutsch');
+                    if (typeof setLang === 'function') {
+                        setLang('de');
+                        console.log('Language set to Deutsch');
+                    } else {
+                        console.error('setLang is not a function');
+                    }
+                }}
                 className={`p-1 transition hover:scale-110 ${lang === 'de' ? 'opacity-100' : 'opacity-40'
                     }`}
                 aria-label="Sprache auf Deutsch setzen"
@@ -34,15 +42,21 @@ const LanguageSelection: React.FC = () => {
                 <FlagDE />
             </button>
             <button
-                onClick={() => setLang('en')}
+                onClick={() => {
+                    console.log('Setting language to English');
+                    if (typeof setLang === 'function') {
+                        setLang('en');
+                        console.log('Language set to English');
+                    } else {
+                        console.error('setLang is not a function');
+                    }
+                }}
                 className={`p-1 transition hover:scale-110 ${lang === 'en' ? 'opacity-100' : 'opacity-40'
                     }`}
                 aria-label="Set language to English"
             >
                 <FlagEN />
             </button>
-
-
         </div>
     );
 };
