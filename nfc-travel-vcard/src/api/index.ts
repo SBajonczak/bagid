@@ -1,53 +1,136 @@
-import express from 'express';
-import sql from 'mssql';
+// import sql from 'mssql';
+// import { TravelData } from '../types';
 
-const app = express();
-const port = 3000;
 
-// Azure SQL Server configuration
-const sqlConfig = {
-    user: process.env.DB_USER || '',
-    password: process.env.DB_PASSWORD || '',
-    server: process.env.DB_SERVER || '',
-    database: process.env.DB_DATABASE || '',
-    options: {
-        encrypt: true, // Use encryption for Azure SQL
-        trustServerCertificate: false,
-    },
-};
+// // Azure SQL Server configuration
+// const sqlConfig = {
+//     user: process.env.DB_USER || '',
+//     password: process.env.DB_PASSWORD || '',
+//     server: process.env.DB_SERVER || '',
+//     database: process.env.DB_DATABASE || '',
+//     options: {
+//         encrypt: true, // Use encryption for Azure SQL
+//         trustServerCertificate: false,
+//     },
+// };
 
-// Endpoint to fetch TravelData by tagId
-app.get('/api/travel-data/:tagId', async (req:any, res:any) => {
-    const { tagId } = req.params;
+// // TagRepo class for database operations
+// export class TagRepo {
+//     private pool: sql.ConnectionPool | undefined;
 
-    let pool: sql.ConnectionPool | undefined;
-    try {
-        // Connect to the database
-        const connection = await sql.connect(sqlConfig);
-        pool = connection;
+//     async connect() {
+//         this.pool = await sql.connect(sqlConfig);
+//     }
 
-        // Query the database
-        const result = await pool
-            .request()
-            .input('tagId', sql.VarChar, tagId)
-            .query('SELECT * FROM TravelData WHERE tagId = @tagId');
+//     async persistTravelData(tagId: string, travelData: TravelData) {
+//         if (!this.pool) throw new Error('Database connection not established');
+//         const request = this.pool.request();
+//         request.input('tagId', sql.VarChar, tagId);
+//         request.input('hasData', sql.Bit, travelData.hasData);
 
-        const travelData = result.recordset[0];
+//         // Owner/Kontakt
+//         request.input('ownerFirstName', sql.VarChar, travelData.ownerFirstName);
+//         request.input('ownerLastName', sql.VarChar, travelData.ownerLastName);
+//         request.input('ownerAddress', sql.VarChar, travelData.ownerAddress);
+//         request.input('ownerEmail', sql.VarChar, travelData.ownerEmail);
+//         request.input('ownerMobile', sql.VarChar, travelData.ownerMobile);
+//         request.input('ownerLandline', sql.VarChar, travelData.ownerLandline);
+//         request.input('ownerOther', sql.VarChar, travelData.ownerOther ?? null);
 
-        if (!travelData) {
-            return res.status(404).json({ error: 'Data not found for the given tagId' });
-        }
+//         // Guide
+//         request.input('guideFirstName', sql.VarChar, travelData.guideFirstName);
+//         request.input('guideLastName', sql.VarChar, travelData.guideLastName);
+//         request.input('guideEmail', sql.VarChar, travelData.guideEmail);
+//         request.input('guideMobile', sql.VarChar, travelData.guideMobile);
+//         request.input('guideLandline', sql.VarChar, travelData.guideLandline);
 
-        res.json(travelData);
-    } catch (error) {
-        console.error('Error fetching travel data:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    } finally {
-        if (pool) await pool.close();
-    }
-});
+//         // Zieladresse/Unterkunft
+//         request.input('destinationAccommodation', sql.VarChar, travelData.destinationAccommodation);
+//         request.input('destinationAddress', sql.VarChar, travelData.destinationAddress);
+//         request.input('transportation', sql.VarChar, travelData.transportation);
+//         request.input('transportationNumber', sql.VarChar, travelData.transportationNumber);
+//         request.input('transportationDate', sql.DateTime, travelData.transportationDate);
+//         // Füge weitere Felder nach Bedarf hinzu
+//         await request.query(`
+//             MERGE INTO TravelData AS target
+//             USING (SELECT @tagId AS tagId) AS source
+//             ON (target.tagId = source.tagId)
+//             WHEN MATCHED THEN
+//             UPDATE SET
+//                 hasData = @hasData,
+//                 ownerFirstName = @ownerFirstName,
+//                 ownerLastName = @ownerLastName,
+//                 ownerAddress = @ownerAddress,
+//                 ownerEmail = @ownerEmail,
+//                 ownerMobile = @ownerMobile,
+//                 ownerLandline = @ownerLandline,
+//                 ownerOther = @ownerOther,
+//                 guideFirstName = @guideFirstName,
+//                 guideLastName = @guideLastName,
+//                 guideEmail = @guideEmail,
+//                 guideMobile = @guideMobile,
+//                 guideLandline = @guideLandline,
+//                 destinationAccommodation = @destinationAccommodation,
+//                 destinationAddress = @destinationAddress,
+//                 transportation = @transportation,
+//                 transportationNumber = @transportationNumber,
+//                 transportationDate = @transportationDate
+//             WHEN NOT MATCHED THEN
+//             INSERT (
+//                 tagId,
+//                 hasData,
+//                 ownerFirstName,
+//                 ownerLastName,
+//                 ownerAddress,
+//                 ownerEmail,
+//                 ownerMobile,
+//                 ownerLandline,
+//                 ownerOther,
+//                 guideFirstName,
+//                 guideLastName,
+//                 guideEmail,
+//                 guideMobile,
+//                 guideLandline,
+//                 destinationAccommodation,
+//                 destinationAddress,
+//                 transportation,
+//                 transportationNumber,
+//                 transportationDate
+//             )
+//             VALUES (
+//                 @tagId,
+//                 @hasData,
+//                 @ownerFirstName,
+//                 @ownerLastName,
+//                 @ownerAddress,
+//                 @ownerEmail,
+//                 @ownerMobile,
+//                 @ownerLandline,
+//                 @ownerOther,
+//                 @guideFirstName,
+//                 @guideLastName,
+//                 @guideEmail,
+//                 @guideMobile,
+//                 @guideLandline,
+//                 @destinationAccommodation,
+//                 @destinationAddress,
+//                 @transportation,
+//                 @transportationNumber,
+//                 @transportationDate
+//             );
+//         `);
+//     }
 
-// Start the server
-app.listen(port, () => {
-    console.log(`API server running at http://localhost:${port}`);
-});
+//     async getTravelDataByTagId(tagId: string): Promise<TravelData | null> {
+//         if (!this.pool) throw new Error('Database connection not established');
+//         const result = await this.pool
+//             .request()
+//             .input('tagId', sql.VarChar, tagId)
+//             .query('SELECT * FROM TravelData WHERE tagId = @tagId');
+//         return result.recordset[0] || null;
+//     }
+
+//     async close() {
+//         if (this.pool) await this.pool.close();
+//     }
+// }

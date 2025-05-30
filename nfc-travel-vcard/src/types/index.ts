@@ -7,7 +7,7 @@ export interface User {
 }
 
 export interface TravelData {
-  
+    tagId:string; //Contains a guid from the tag itself
     hasData:boolean;
     // Kontakt/Owner
     ownerFirstName: string;

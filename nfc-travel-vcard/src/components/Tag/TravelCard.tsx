@@ -6,6 +6,8 @@ import 'dayjs/locale/de';
 import 'dayjs/locale/en';
 import { useLanguage } from '../../LanguageContext';
 import { messages } from '../../i18n';
+import { TagRepo } from '../../api';
+import { TagData, TravelData } from '../../types';
 dayjs.extend(localizedFormat);
 
 const TravelCard: React.FC = () => {
@@ -25,11 +27,16 @@ const TravelCard: React.FC = () => {
             // Simulate API call with dummy data and loading delay
             if (isDemoRequest()) {
                 injectDemoData();
+            } else {
+                if (tagId) {
+                    // loadData(tagId);
+                }
             }
         };
 
         fetchTravelData();
     });
+
 
     // Set language for dayjs
     dayjs.locale(lang);
@@ -57,6 +64,14 @@ const TravelCard: React.FC = () => {
 
     function isDemoRequest(): Boolean {
         return tagId === "demo"
+    }
+    function loadData(tagid: string) {
+        // let repo: TagRepo = new TagRepo();
+        // repo.getTravelDataByTagId(tagid).then((data: TravelData | null) => {
+        //     if (data) {
+        //         setTravelData(data);
+        //     }
+        // });
     }
 
     function injectDemoData() {
