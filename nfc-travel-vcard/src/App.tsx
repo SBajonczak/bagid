@@ -3,15 +3,11 @@ import React from 'react';
 import Header from './components/Header';
 import MessageContainer from './components/MessageContainer';
 import StartPageControl from './components/StartPageControl';
-import { LanguageProvider, useLanguage } from './LanguageContext';
-import Testimonial from './components/Testimonial';
-import { messages } from './i18n';
+import { LanguageProvider } from './LanguageContext';
 // import SeoMeta from './components/SeoMeta';
 import NavigationBar from './components/NavigationBar';
 
 const App: React.FC = () => {
-    const { lang } = useLanguage();
-    const t = messages[lang].noDataSection.testimonials;
     return (
         <LanguageProvider>
             <div>
@@ -37,7 +33,6 @@ const App: React.FC = () => {
                 <StartPageControl hidden={false} />
             </div>
             {/* Footer-Slider */}
-            <Testimonial testimonials={t} />
         </LanguageProvider>
     );
 };

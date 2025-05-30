@@ -1,7 +1,4 @@
-import { off } from "process";
-
 export type SupportedLang = 'de' | 'en';
-
 export const messages = {
     de: {
         common: {

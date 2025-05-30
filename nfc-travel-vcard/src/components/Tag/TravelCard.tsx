@@ -29,7 +29,7 @@ const TravelCard: React.FC = () => {
         };
 
         fetchTravelData();
-    }, [tagId, navigate]);
+    });
 
     // Set language for dayjs
     dayjs.locale(lang);

@@ -4,6 +4,7 @@ import { useLanguage } from '../LanguageContext';
 import logo from '../assets/tag.png';
 import product from '../assets/productimage.webp';
 import FaqSection from './FaqSection';
+import Testimonial from './Testimonial';
 
 export interface StartPageControlProps {
     hidden: boolean;
@@ -13,7 +14,7 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
     const { lang } = useLanguage();
     const t = messages[lang as keyof typeof messages].noDataSection;
     const t1 = messages[lang as keyof typeof messages].common;
-
+    const testimoial = messages[lang].noDataSection.testimonials;
     return (
         <section hidden={hidden} className="w-full bg-gradient-to-br py-12 px-4 flex flex-col items-center">
             {/* Navigation */}
@@ -93,11 +94,15 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                         <p className="text-sm text-gray-600 mt-4 text-center">
                             * Secure your luggage and travel worry-free with Bag Tag.
                         </p>
-                         
+
                     </div>
                 </div>
             </div>
 
+
+            <div id="faq" className="w-full max-w-7xl mt-12">
+                <Testimonial testimonials={testimoial} />
+            </div>
             {/* FAQ Section */}
             <div id="faq" className="w-full max-w-7xl mt-12">
                 <FaqSection />

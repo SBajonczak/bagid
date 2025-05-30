@@ -1,4 +1,5 @@
 import React from 'react';
+import { A11y, Navigation, Pagination, Scrollbar, Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.min.css'
 import 'swiper/swiper.min.css'
@@ -16,14 +17,18 @@ interface TestimonialProps {
 
 const Testimonial: React.FC<TestimonialProps> = ({ testimonials }) => {
   return (
-    <div className="fixed bottom-0 left-0 w-full bg-white shadow-2xl z-50 py-6 px-4 md:px-12">
+    <div className="bg-white shadow-2xl z-50 py-6 px-4 md:px-12">
       <Swiper
-        autoplay={{ delay: 6000 }}
-        pagination={{ clickable: true }}
+        autoplay={{ delay: 3000, disableOnInteraction: false }}
         spaceBetween={30}
-        slidesPerView={1}
+        slidesPerView={2}
+        // navigation
+        // scrollbar={{ draggable: true }}
+        onSwiper={(swiper) => console.log(swiper)}
+        onSlideChange={() => console.log('slide change')}
+    
       >
-        {testimonials.map((t:ITestimonial, idx:number) => (
+        {testimonials.map((t: ITestimonial, idx: number) => (
           <SwiperSlide key={idx}>
             <div className="flex flex-col md:flex-row items-center justify-between gap-6 max-w-5xl mx-auto">
               <div className="w-full md:w-1/5 text-center md:text-left">
@@ -43,7 +48,7 @@ const Testimonial: React.FC<TestimonialProps> = ({ testimonials }) => {
           </SwiperSlide>
         ))}
       </Swiper>
-    </div>
+    </div >
   );
 };
 
