@@ -1,8 +1,7 @@
 import React from 'react';
 import { messages } from '../i18n';
 import { useLanguage } from '../LanguageContext';
-import logo from '../assets/tag.png';
-import product from '../assets/productimage.webp';
+
 import FaqSection from './FaqSection';
 import Testimonial from './Testimonial';
 
@@ -23,7 +22,7 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                 {/* Productbild-Bereich */}
                 <div className="flex-1 flex justify-center items-stretch md:h-full">
                     <img
-                        src={product}
+                        src="/assets/productimage.webp"
                         alt={`${t1.productname} Produktbild`}
                         className="w-full max-w-xs h-full object-contain rounded"
                         style={{ minHeight: '8rem' }}
@@ -34,7 +33,7 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                 <div className="flex-1">
                     <h1 className="text-4xl md:text-5xl font-extrabold text-blue-900 mb-4 text-center md:text-left flex items-center gap-4">
                         <img
-                            src={logo}
+                            src="/assets/tag.png"
                             alt={`${t1.productname} Logo`}
                             className="w-16"
                             loading="lazy"

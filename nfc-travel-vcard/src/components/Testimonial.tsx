@@ -1,9 +1,8 @@
 import React from 'react';
-import { A11y, Navigation, Pagination, Scrollbar, Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/swiper-bundle.min.css'
-import 'swiper/swiper.min.css'
-
+// import 'swiper/swiper-bundle.min.css'
+// import 'swiper/swiper.min.css'
+import 'swiper/css';
 interface ITestimonial {
   source: string;
   name: string;

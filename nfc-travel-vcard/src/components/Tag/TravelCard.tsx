@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router';
+import { useParams } from 'react-router';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import 'dayjs/locale/de';
 import 'dayjs/locale/en';
 import { useLanguage } from '../../LanguageContext';
 import { messages } from '../../i18n';
-import { TagRepo } from '../../api';
-import { TagData, TravelData } from '../../types';
+
+// import { TagData, TravelData } from '../../types';
 dayjs.extend(localizedFormat);
 
 const TravelCard: React.FC = () => {
     const { tagId } = useParams<{ tagId: string }>();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const { lang } = useLanguage();
     const t = messages[lang].travelCard;
 
@@ -25,17 +25,19 @@ const TravelCard: React.FC = () => {
     useEffect(() => {
         const fetchTravelData = async () => {
             // Simulate API call with dummy data and loading delay
+            injectDemoData();
             if (isDemoRequest()) {
-                injectDemoData();
+                
             } else {
                 if (tagId) {
+                    console.log(`Fetching data for tagId: ${tagId}`);
                     // loadData(tagId);
                 }
             }
         };
 
         fetchTravelData();
-    });
+    }, [tagId]); // Add dependency array to prevent infinite loop
 
 
     // Set language for dayjs
@@ -65,14 +67,14 @@ const TravelCard: React.FC = () => {
     function isDemoRequest(): Boolean {
         return tagId === "demo"
     }
-    function loadData(tagid: string) {
-        // let repo: TagRepo = new TagRepo();
-        // repo.getTravelDataByTagId(tagid).then((data: TravelData | null) => {
-        //     if (data) {
-        //         setTravelData(data);
-        //     }
-        // });
-    }
+    // function loadData(tagid: string) {
+    //     // let repo: TagRepo = new TagRepo();
+    //     // repo.getTravelDataByTagId(tagid).then((data: TravelData | null) => {
+    //     //     if (data) {
+    //     //         setTravelData(data);
+    //     //     }
+    //     // });
+    // }
 
     function injectDemoData() {
         setTimeout(() => {

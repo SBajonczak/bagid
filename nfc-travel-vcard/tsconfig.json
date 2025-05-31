@@ -29,7 +29,7 @@
   },
   "include": [
     "src"
-  ],
+, "server/TagRepo.js"  ],
   "references": [
     {
       "path": "./tsconfig.node.json"
