@@ -70,8 +70,3 @@ EXPOSE 3000
 # Expose the port for the api
 EXPOSE 3001
 CMD ["supervisord", "-c", "/etc/supervisor.d/services.ini"]
-
-
-# Command to serve the production build
-#CMD ["serve", "-s", "dist"]
-# CMD ["serve", "-s", "build", "-l", "80"]
