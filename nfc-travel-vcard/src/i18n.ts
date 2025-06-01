@@ -93,6 +93,34 @@ export const messages = {
                 },
             ],
         },
+        tagRegistration: {
+            title: 'Tag Registrierung',
+            subtitle: 'Verbinde deinen BagID Tag mit deinem Konto',
+            loading: 'Lade Informationen...',
+            unknownDeviceTitle: 'Unbekanntes Gerät',
+            unknownDeviceDescription: 'Dieser Tag ist nicht in unserem System registriert. Erwirbst du gerade einen neuen BagID Tag?',
+            considerPurchase: 'Entdecke unsere BagID Tags und mach jedes Gepäckstück smart:',
+            loginPrompt: 'Bitte melde dich an, um diesen Tag mit deinem Konto zu verknüpfen.',
+            loggedInAs: 'Du bist angemeldet als',
+            registerTagButton: 'Tag registrieren',
+            loginAndRegisterButton: 'Anmelden und Tag registrieren',
+            processingButton: 'Verarbeitung...',
+            processingDescription: 'Wir verknüpfen deinen Tag mit deinem Konto...',
+            howItWorksTitle: 'So funktioniert\'s:',
+            howItWorksSteps: [
+                'Melde dich mit deinem Konto an',
+                'Registriere deinen Tag',
+                'Aktualisiere deine Kontakt- und Reisedaten',
+                'Befestige den Tag an deinem Gepäck'
+            ],
+            whyRegisterTitle: 'Warum registrieren?',
+            whyRegisterPoints: [
+                'Deine Daten sicher in der Cloud speichern',
+                'Kontaktdaten jederzeit aktualisieren',
+                'Mehrere Tags mit einem Konto verwalten',
+                'Bei Verlust schneller gefunden werden'
+            ]
+        }
     },
     en: {
         common: {
@@ -187,6 +215,34 @@ export const messages = {
                 }
             ],
         },
+        tagRegistration: {
+            title: 'Tag Registration',
+            subtitle: 'Connect your BagID tag to your account',
+            loading: 'Loading information...',
+            unknownDeviceTitle: 'Unknown Device',
+            unknownDeviceDescription: 'This tag is not registered in our system. Are you looking to purchase a new BagID tag?',
+            considerPurchase: 'Discover our BagID tags and make any luggage smart:',
+            loginPrompt: 'Please log in to link this tag to your account.',
+            loggedInAs: 'You are logged in as',
+            registerTagButton: 'Register Tag',
+            loginAndRegisterButton: 'Log in and Register Tag',
+            processingButton: 'Processing...',
+            processingDescription: 'We\'re connecting your tag to your account...',
+            howItWorksTitle: 'How it works:',
+            howItWorksSteps: [
+                'Sign in with your account',
+                'Register your tag',
+                'Update your contact and travel information',
+                'Attach the tag to your luggage'
+            ],
+            whyRegisterTitle: 'Why register?',
+            whyRegisterPoints: [
+                'Store your data securely in the cloud',
+                'Update contact information anytime',
+                'Manage multiple tags with one account',
+                'Get found faster if lost'
+            ]
+        }
     }
 
 };

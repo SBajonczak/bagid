@@ -1,3 +1,4 @@
+import { Logger } from 'concurrently';
 import sql from 'mssql';
 
 export class TagRepo {
@@ -241,46 +242,43 @@ export class TagRepo {
         .query(`
           SELECT UserID 
           FROM TagOwners 
-          WHERE TagID = @tagId
+          WHERE TagID = @tagId and userid <>'${userId}'
         `);
       
       if (checkResult.recordset.length > 0) {
+        console.log('Tag ist bereits registriert für einen anderen Benutzer:', checkResult.recordset[0].UserID);
         // Tag ist bereits registriert
-        pool.close();
+        await pool.close();
         return false;
       }
 
-      // In einer Transaktion ausführen
-      const transaction = new sql.Transaction(pool);
-      await transaction.begin();
+      // Tag-Eigentümer registrieren
+      await pool.request()
+        .input('tagId', sql.UniqueIdentifier, tagId)
+        .input('userId', sql.NVarChar, userId)
+        .input('userEmail', sql.NVarChar, userEmail)
+        .input('registeredAt', sql.DateTime, new Date())
+        .query(`
+          MERGE TagOwners AS target
+          USING (SELECT @tagId AS TagID, @userId AS UserID) AS source
+          ON (target.TagID = source.TagID AND target.UserID = source.UserID)
+          WHEN MATCHED THEN
+        UPDATE SET UserEmail = @userEmail, RegisteredAt = @registeredAt
+          WHEN NOT MATCHED THEN
+        INSERT (TagID, UserID, UserEmail, RegisteredAt)
+        VALUES (@tagId, @userId, @userEmail, @registeredAt);
+        `);
 
-      try {
-        // Tag-Eigentümer registrieren
-        await transaction.request()
-          .input('tagId', sql.UniqueIdentifier, tagId)
-          .input('userId', sql.NVarChar, userId)
-          .input('userEmail', sql.NVarChar, userEmail)
-          .input('registeredAt', sql.DateTime, new Date())
-          .query(`
-        INSERT INTO TagOwners (TagID, UserID, UserEmail, RegisteredAt)
-        VALUES (@tagId, @userId, @userEmail, @registeredAt)
-          `);
+      // Setze das Feld isRegistered=1 für die entsprechende TagID in der TravelTag-Tabelle
+      await pool.request()
+        .input('tagId', sql.UniqueIdentifier, tagId)
+        .query(`
+          UPDATE TravelTag
+          SET isRegistered = 1
+          WHERE TagID = @tagId
+        `);
 
-        // Setze das Feld isRegistered=1 für die entsprechende TagID in der TravelTag-Tabelle
-        await transaction.request()
-          .input('tagId', sql.UniqueIdentifier, tagId)
-          .query(`
-        UPDATE TravelTag
-        SET isRegistered = 1
-        WHERE TagID = @tagId
-          `);
-
-        await transaction.commit();
-      } catch (err) {
-        await transaction.rollback();
-        throw err;
-      }
-      pool.close();
+      await pool.close();
       return true;
     } catch (error) {
       console.error('Fehler bei der Registrierung des Tag-Eigentümers:', error);

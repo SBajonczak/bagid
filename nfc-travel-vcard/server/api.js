@@ -43,8 +43,8 @@ const verifyToken = (req, res, next) => {
 
   // Decode token for debugging
   const decodedToken = jwt.decode(token, { complete: true });
-  console.log('Token header:', JSON.stringify(decodedToken?.header));
-  console.log('Token payload:', JSON.stringify(decodedToken?.payload));
+  // console.log('Token header:', JSON.stringify(decodedToken?.header));
+  // console.log('Token payload:', JSON.stringify(decodedToken?.payload));
 
   // Verify the ID token
   jwt.verify(token, getKey, {
@@ -73,8 +73,9 @@ app.post('/api/tag-owners', verifyToken, async (req, res) => {
   try {
     const repo = new TagRepo();
     const success = await repo.registerTagOwner(tagId, userId, userEmail);
-
+    console.log(`Tag registration attempt for tagId: ${tagId}, userId: ${userId}, userEmail: ${userEmail}`);
     if (success) {
+      console.log(`Tag successfully registered for tagId: ${tagId}, userId: ${userId}`);
       res.json({ message: 'Tag successfully registered' });
     } else {
       res.status(400).json({ error: 'Failed to register tag' });
