@@ -1,18 +1,48 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLanguage } from '../../LanguageContext';
 import { messages } from '../../i18n';
 import { FaLock, FaExclamationTriangle, FaSignInAlt, FaUserLock, FaTimesCircle } from 'react-icons/fa';
+import authService from '../../services/AuthService';
 
 interface AuthRequiredProps {
   type: 'unauthenticated' | 'unauthorized';
   onLogin: () => void;
   onCancel: () => void;
+  onAuthChange?: () => void;
   email?: string;
 }
 
-const AuthRequired: React.FC<AuthRequiredProps> = ({ type, onLogin, onCancel, email }) => {
+const AuthRequired: React.FC<AuthRequiredProps> = ({ 
+  type, 
+  onLogin, 
+  onCancel, 
+  onAuthChange, 
+  email 
+}) => {
   const { lang } = useLanguage();
   const t = messages[lang].travelCard;
+
+  // Check for authentication status changes
+  useEffect(() => {
+    // Add an event listener for changes to authentication state
+    const checkAuth = () => {
+      const isAuth = authService.isAuthenticated();
+      if (isAuth && onAuthChange) {
+        onAuthChange();
+      }
+    };
+    
+    // Check immediately and set up interval
+    checkAuth();
+    const interval = setInterval(checkAuth, 1000);
+    
+    // Clean up interval on unmount
+    return () => clearInterval(interval);
+  }, [onAuthChange]);
+
+  const handleLoginClick = async () => {
+    onLogin();
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-10 px-4 sm:px-6">
@@ -64,7 +94,7 @@ const AuthRequired: React.FC<AuthRequiredProps> = ({ type, onLogin, onCancel, em
             <div className="flex flex-col space-y-3">
               {type === 'unauthenticated' && (
                 <button
-                  onClick={onLogin}
+                  onClick={handleLoginClick}
                   className="flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all"
                 >
                   <FaSignInAlt className="mr-2" /> {t.loginButton}

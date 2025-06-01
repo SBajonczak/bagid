@@ -10,6 +10,7 @@ export const messages = {
         edit: 'klicken um zu bearbeiten',
         login: '☁️ Mit Azure B2C anmelden',
         travelCard: {
+            loggedInAs:'Angemeldet als',
             edit: 'Bearbeiten',
             productname: 'Bag Tag',
             suitcase: 'Reisekoffer',
@@ -151,6 +152,7 @@ export const messages = {
         edit: 'click to edit',
         login: '☁️ Sign in with Azure B2C',
         travelCard: {
+            loggedInAs: 'Logged in as',
             edit: 'Edit',
             productname: 'Bag Tag',
             suitcase: 'Suitcase',

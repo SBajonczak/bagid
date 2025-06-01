@@ -33,58 +33,64 @@ const TravelCardEdit: React.FC = () => {
     const [isTagOwner, setIsTagOwner] = useState<boolean>(false);
 
     // Check authentication and tag ownership
-    useEffect(() => {
-        const checkAuthentication = async () => {
-            setCheckingAuth(true);
+    const checkAuthentication = async () => {
+        setCheckingAuth(true);
 
-            const isAuth = authService.isAuthenticated();
-            setIsAuthenticated(isAuth);
+        const isAuth = authService.isAuthenticated();
+        setIsAuthenticated(isAuth);
 
-            if (!isAuth) {
+        if (!isAuth) {
+            setCheckingAuth(false);
+            return;
+        }
+
+        try {
+            const user = authService.getCurrentUser();
+            if (user && user.email) {
+                setUserEmail(user.email);
+            }
+
+            // Skip tag ownership check for demo
+            if (isDemoRequest()) {
+                setIsTagOwner(true);
                 setCheckingAuth(false);
                 return;
             }
 
-            try {
-                const user = authService.getCurrentUser();
-                if (user && user.email) {
-                    setUserEmail(user.email);
+            // Check if the user is the owner of the tag
+            const token = await authService.getIdToken();
+            const response = await fetch(`/api/tag-owners/${tagId}/verify`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
                 }
+            });
 
-                // Skip tag ownership check for demo
-                if (isDemoRequest()) {
-                    setIsTagOwner(true);
-                    setCheckingAuth(false);
-                    return;
-                }
-
-                // Check if the user is the owner of the tag
-                const token = await authService.getIdToken();
-                const response = await fetch(`/api/tag-owners/${tagId}/verify`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-
-                if (!response.ok) {
-                    logger.error('Failed to verify tag ownership');
-                    setIsTagOwner(false);
-                    setCheckingAuth(false);
-                    return;
-                }
-
-                const data = await response.json();
-                setIsTagOwner(data.isOwner);
-                setCheckingAuth(false);
-            } catch (error) {
-                logger.error('Error checking authentication:', error);
+            if (!response.ok) {
+                logger.error('Failed to verify tag ownership');
                 setIsTagOwner(false);
                 setCheckingAuth(false);
+                return;
             }
-        };
 
+            const data = await response.json();
+            setIsTagOwner(data.isOwner);
+            setCheckingAuth(false);
+        } catch (error) {
+            logger.error('Error checking authentication:', error);
+            setIsTagOwner(false);
+            setCheckingAuth(false);
+        }
+    };
+
+    useEffect(() => {
         checkAuthentication();
     }, [tagId]);
+
+    // Handle auth state changes
+    const handleAuthStateChange = () => {
+        // Re-run authentication check when auth state changes
+        checkAuthentication();
+    };
 
     // Fetch data from the API
     useEffect(() => {
@@ -184,7 +190,12 @@ const TravelCardEdit: React.FC = () => {
 
     // Handle login
     const handleLogin = async () => {
-        await authService.login();
+        try {
+            await authService.login();
+            // We'll check auth status via the handleAuthStateChange callback
+        } catch (error) {
+            logger.error('Error during login:', error);
+        }
     };
 
     // Handle cancel
@@ -219,6 +230,7 @@ const TravelCardEdit: React.FC = () => {
                 type="unauthenticated"
                 onLogin={handleLogin}
                 onCancel={handleCancel}
+                onAuthChange={handleAuthStateChange}
             />
         );
     }
@@ -231,6 +243,7 @@ const TravelCardEdit: React.FC = () => {
                 onLogin={handleLogin}
                 onCancel={handleCancel}
                 email={userEmail}
+                onAuthChange={handleAuthStateChange}
             />
         );
     }
