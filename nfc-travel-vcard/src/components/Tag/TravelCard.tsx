@@ -34,12 +34,12 @@ const TravelCard: React.FC = () => {
 
             try {
                 // First check if tag exists
-                const existsResponse = await fetch(`/api/tags/${tagId}/exists`);
-                const { exists } = await existsResponse.json();
-                logger.debug("Tag exists:", !!exists);
-                setTagRegistered(!!exists);
+                const registeredResponse = await fetch(`/api/tags/${tagId}/registered`);
+                const { exists: registered } = await registeredResponse.json();
+                logger.debug("Tag exists:", !!registered);
+                setTagRegistered(!!registered);
                 // If tag doesn't exist, redirect to registration
-                if (!exists) {
+                if (!registered) {
                     navigate(`/register/${tagId}`);
                 }
             } catch (err) {

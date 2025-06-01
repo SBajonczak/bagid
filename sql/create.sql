@@ -1,7 +1,7 @@
 CREATE TABLE TravelTag (
     tagId uniqueidentifier PRIMARY KEY,
     hasData bit NOT NULL,
-
+ isRegistered bit default(0),
     -- Owner/Kontakt
     ownerFirstName VARCHAR(100) NOT NULL,
     ownerLastName VARCHAR(100) NOT NULL,
@@ -25,3 +25,14 @@ CREATE TABLE TravelTag (
     transportationNumber VARCHAR(100) NOT NULL,
     transportationDate DATE
 );
+
+CREATE TABLE [dbo].[TagOwners] (
+    [TagID] UNIQUEIDENTIFIER NOT NULL, 
+    [UserID] NVARCHAR(255) NOT NULL, 
+    [UserEmail] NVARCHAR(255) NOT NULL, 
+    [RegisteredAt] DATETIME NOT NULL, 
+    CONSTRAINT [PK_TagOwners] PRIMARY KEY ([TagID], [UserID]),
+    CONSTRAINT [FK_TagOwners_TravelTags] FOREIGN KEY ([TagID]) REFERENCES [TravelTags]([TagID])
+);
+
+CREATE INDEX [IX_TagOwners_UserID] ON [dbo].[TagOwners] ([UserID]);

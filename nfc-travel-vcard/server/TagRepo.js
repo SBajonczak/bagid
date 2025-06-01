@@ -3,8 +3,6 @@ import sql from 'mssql';
 export class TagRepo {
   constructor() {
    
-    // dotenv laden, um Umgebungsvariablen aus .env-Datei zu lesen
-    // Die .env-Datei befindet sich im gleichen Verzeichnis wie diese Datei
     import('dotenv').then(dotenv => {
       dotenv.config();
     });
@@ -72,7 +70,7 @@ export class TagRepo {
             TransportationNumber as transportationNumber,
             TransportationDate as transportationDate
           FROM TravelTag
-          WHERE TagID = @tagId
+          WHERE TagID = @tagId and isRegistered=1
         `);
       
       // Verbindung schließen
@@ -251,18 +249,37 @@ export class TagRepo {
         pool.close();
         return false;
       }
-      
-      // Tag-Eigentümer registrieren
-      await pool.request()
-        .input('tagId', sql.UniqueIdentifier, tagId)
-        .input('userId', sql.NVarChar, userId)
-        .input('userEmail', sql.NVarChar, userEmail)
-        .input('registeredAt', sql.DateTime, new Date())
-        .query(`
-          INSERT INTO TagOwners (TagID, UserID, UserEmail, RegisteredAt)
-          VALUES (@tagId, @userId, @userEmail, @registeredAt)
-        `);
-      
+
+      // In einer Transaktion ausführen
+      const transaction = new sql.Transaction(pool);
+      await transaction.begin();
+
+      try {
+        // Tag-Eigentümer registrieren
+        await transaction.request()
+          .input('tagId', sql.UniqueIdentifier, tagId)
+          .input('userId', sql.NVarChar, userId)
+          .input('userEmail', sql.NVarChar, userEmail)
+          .input('registeredAt', sql.DateTime, new Date())
+          .query(`
+        INSERT INTO TagOwners (TagID, UserID, UserEmail, RegisteredAt)
+        VALUES (@tagId, @userId, @userEmail, @registeredAt)
+          `);
+
+        // Setze das Feld isRegistered=1 für die entsprechende TagID in der TravelTag-Tabelle
+        await transaction.request()
+          .input('tagId', sql.UniqueIdentifier, tagId)
+          .query(`
+        UPDATE TravelTag
+        SET isRegistered = 1
+        WHERE TagID = @tagId
+          `);
+
+        await transaction.commit();
+      } catch (err) {
+        await transaction.rollback();
+        throw err;
+      }
       pool.close();
       return true;
     } catch (error) {
@@ -310,15 +327,10 @@ export class TagRepo {
       const result = await pool.request()
         .input('tagId', sql.UniqueIdentifier, tagId)
         .query(`
-          SELECT 1 
-          FROM TagOwners 
-          WHERE TagID = @tagId
-          UNION
           SELECT 1
           FROM TravelTag
-          WHERE TagID = @tagId
-        `);
-      
+          WHERE TagID = @tagId and isRegistered=0
+        `);      
       pool.close();
       return result.recordset.length > 0;
     } catch (error) {
@@ -326,4 +338,24 @@ export class TagRepo {
       throw error;
     }
   }
+
+async tagRegistered(tagId) {
+    try {
+      const pool = await this.getConnection();
+      
+      const result = await pool.request()
+        .input('tagId', sql.UniqueIdentifier, tagId)
+        .query(`
+          SELECT 1
+          FROM TravelTag
+          WHERE TagID = @tagId and isRegistered=1
+        `);      
+      pool.close();
+      return result.recordset.length > 0;
+    } catch (error) {
+      console.error('Fehler bei der Überprüfung, ob ein Tag existiert:', error);
+      throw error;
+    }
+  }
+
 }

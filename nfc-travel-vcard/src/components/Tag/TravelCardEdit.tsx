@@ -164,7 +164,6 @@ const TravelCardEdit: React.FC = () => {
                 destinationAddress: 'Alexanderplatz 1, 10178 Berlin'
             };
 
-            setFormData(dummyData);
             setLoading(false);
         }, 1);
     }
