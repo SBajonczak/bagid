@@ -7,7 +7,6 @@ import 'dayjs/locale/en';
 import { useLanguage } from '../../LanguageContext';
 import { messages } from '../../i18n';
 import { TravelData } from '../../types';
-import authService from '../../services/AuthService';
 import { logger } from '@/utils/logger';
 
 dayjs.extend(localizedFormat);
@@ -18,7 +17,6 @@ const TravelCard: React.FC = () => {
     const { lang } = useLanguage();
     const t = messages[lang].travelCard;
     const editText = lang === 'de' ? 'Bearbeiten' : 'Edit';
-    const registerText = lang === 'de' ? 'Tag registrieren' : 'Register Tag';
 
     // State for travel data
     const [travelData, setTravelData] = useState<Partial<TravelData> | null>(null);

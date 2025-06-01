@@ -77,7 +77,7 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                             </div>
                         </div>
                         <a
-                            href="https://kreativschicht.de/products/nfc-kofferanhaenger-3er-set"
+                            href="https://kreativschicht.de/products/bagid-koffer-tag-mit-nfc"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="bg-green-500 text-white font-bold px-8 py-3 rounded-lg shadow hover:bg-green-600 transition text-center w-full md:w-auto"

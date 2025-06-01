@@ -7,7 +7,7 @@ import { logger } from '@/utils/logger';
 import App from '@/App';
 
 // Import icons
-import { FaCheckCircle, FaExclamationTriangle, FaLock, FaQuestion, FaSuitcase, FaUserCheck, FaUserPlus } from 'react-icons/fa';
+import { FaCheckCircle, FaExclamationTriangle, FaLock, FaSuitcase, FaUserCheck } from 'react-icons/fa';
 
 const TagRegistration: React.FC = () => {
     const { tagId } = useParams<{ tagId: string }>();

@@ -21,10 +21,14 @@ const App: React.FC = () => {
                         loop
                         playsInline
                         className="w-full max-w-7xl h-40 object-cover rounded shadow"
-                        style={{ height:'55vh', width:'100%' }}
+                        style={{ height: '55vh', width: '100%' }}
+                        preload="auto"
+                        controls={false}
+                        disablePictureInPicture
+                        controlsList="nodownload noremoteplayback"
                     >
-                        <source src="/assets/bagtap-loop.h264.mp4" type="video/mp4" />
-                        <source src="/assets/bagtap-loop.webm" type="video/webm" />
+                        <source src="/assets/bagid-loop.webm" type="video/webm" />
+                        <source src="/assets/bagid-loop.mp4" type="video/mp4" />
                         Dein Browser unterstützt keine eingebetteten Videos.
                     </video>
                 </div>

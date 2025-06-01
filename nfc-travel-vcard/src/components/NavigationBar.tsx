@@ -5,6 +5,7 @@ import { messages } from '../i18n';
 const NavigationBar: React.FC = () => {
     const { lang } = useLanguage();
     const t1 = messages[lang].common;
+    const t2 = messages[lang].noDataSection;
 
 
     return (
@@ -24,12 +25,12 @@ const NavigationBar: React.FC = () => {
             </ul>
             {/* High-conversion "Buy Now" button */}
             <a
-            href="https://kreativschicht.de/products/nfc-kofferanhaenger-3er-set"
+            href="https://kreativschicht.de/products/bagid-koffer-tag-mit-nfc"
             target="_blank"
             rel="noopener noreferrer"
             className="bg-green-500 text-white font-bold px-6 py-2 rounded-lg shadow hover:bg-green-600 transition ml-4"
             >
-            Buy Now
+            {t2.cta}
             </a>
         </nav>
     );

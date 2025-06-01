@@ -1,6 +1,6 @@
 import { logger } from "@/utils/logger";
+
 import * as msal from "@azure/msal-browser";
-import { request } from "express";
 
 // Get environment variables from window._env_ (for runtime) or process.env (for build time)
 

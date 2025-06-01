@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useLanguage } from '../../LanguageContext';
 import { messages } from '../../i18n';
-import { FaLock, FaExclamationTriangle, FaSignInAlt, FaUserLock, FaTimesCircle } from 'react-icons/fa';
+import { FaExclamationTriangle, FaSignInAlt, FaUserLock, FaTimesCircle } from 'react-icons/fa';
 import authService from '../../services/AuthService';
 
 interface AuthRequiredProps {
