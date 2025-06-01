@@ -7,6 +7,9 @@ import 'dayjs/locale/en';
 import { useLanguage } from '../../LanguageContext';
 import { messages } from '../../i18n';
 import { TravelData } from '../../types';
+import authService from '../../services/AuthService';
+import { logger } from '@/utils/logger';
+import { FaLock, FaExclamationTriangle, FaSignInAlt } from 'react-icons/fa';
 
 dayjs.extend(localizedFormat);
 
@@ -44,34 +47,102 @@ const TravelCardEdit: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [saveMessage, setSaveMessage] = useState<string | null>(null);
 
-    // Fetch data from the API
+    // Authentication state
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+    const [userEmail, setUserEmail] = useState<string>('');
+    const [checkingAuth, setCheckingAuth] = useState<boolean>(true);
+    const [isTagOwner, setIsTagOwner] = useState<boolean>(false);
+
+    // Check authentication and tag ownership
     useEffect(() => {
-        const fetchTravelData = async () => {
-            if (isDemoRequest()) {
-                // Use demo data for preview
-                injectDemoData();
-            } else if (tagId) {
-                try {
-                    setLoading(true);
-                    const response = await fetch(`/api/travel/${tagId}`);
+        const checkAuthentication = async () => {
+            setCheckingAuth(true);
 
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
+            const isAuth = authService.isAuthenticated();
+            setIsAuthenticated(isAuth);
 
-                    const data = await response.json();
-                    setFormData(data);
-                    setLoading(false);
-                } catch (err) {
-                    console.error('Error fetching travel data:', err);
-                    setError('Error loading travel data. Please try again.');
-                    setLoading(false);
+            if (!isAuth) {
+                setCheckingAuth(false);
+                return;
+            }
+
+            try {
+                const user = authService.getCurrentUser();
+                if (user && user.email) {
+                    setUserEmail(user.email);
                 }
+
+                // Skip tag ownership check for demo
+                if (isDemoRequest()) {
+                    setIsTagOwner(true);
+                    setCheckingAuth(false);
+                    return;
+                }
+
+                // Check if the user is the owner of the tag
+                const token = await authService.getIdToken();
+                const response = await fetch(`/api/tag-owners/${tagId}/verify`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    logger.error('Failed to verify tag ownership');
+                    setIsTagOwner(false);
+                    setCheckingAuth(false);
+                    return;
+                }
+
+                const data = await response.json();
+                setIsTagOwner(data.isOwner);
+                setCheckingAuth(false);
+            } catch (error) {
+                logger.error('Error checking authentication:', error);
+                setIsTagOwner(false);
+                setCheckingAuth(false);
             }
         };
 
-        fetchTravelData();
+        checkAuthentication();
     }, [tagId]);
+
+    // Fetch data from the API
+    useEffect(() => {
+        // Only fetch data if user is authenticated and owns the tag, or if it's a demo
+        if ((isAuthenticated && isTagOwner) || isDemoRequest()) {
+            const fetchTravelData = async () => {
+                if (tagId) {
+                    try {
+                        setLoading(true);
+
+                        // Get auth token for the request
+                        const token = await authService.getIdToken();
+
+                        const response = await fetch(`/api/travel/${tagId}`, {
+                            headers: {
+                                'Authorization': `Bearer ${token}`
+                            }
+                        });
+
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+
+                        const data = await response.json();
+                        setFormData(data);
+                        setLoading(false);
+                    } catch (err) {
+                        console.error('Error fetching travel data:', err);
+                        setError('Error loading travel data. Please try again.');
+                        setLoading(false);
+                    }
+                }
+            };
+
+            fetchTravelData();
+        }
+    }, [tagId, isAuthenticated, isTagOwner]);
 
     // Set language for dayjs
     dayjs.locale(lang);
@@ -98,17 +169,20 @@ const TravelCardEdit: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!tagId) return;
+        if (!tagId || !isAuthenticated || !isTagOwner) return;
 
         try {
             setSaving(true);
             setSaveMessage(null);
             setError(null);
 
+            const token = await authService.getIdToken();
+
             const response = await fetch(`/api/travel/${tagId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify(formData),
             });
@@ -132,44 +206,108 @@ const TravelCardEdit: React.FC = () => {
     // Cancel editing
     const handleCancel = () => {
         if (tagId) {
-            navigate(`/travel/${tagId}`);
+            navigate(`/${tagId}`);
         } else {
             navigate('/');
         }
+    };
+
+    // Handle login
+    const handleLogin = async () => {
+        await authService.login();
     };
 
     function isDemoRequest(): boolean {
         return tagId === "demo";
     }
 
-    function injectDemoData() {
-        setTimeout(() => {
-            const dummyData = {
-                ownerFirstName: 'John',
-                ownerLastName: 'Doe',
-                ownerAddress: '123 Main St, Berlin',
-                ownerEmail: 'john.doe@example.com',
-                ownerMobile: '+49 123 456789',
-                ownerLandline: '+49 30 123456',
-                ownerOther: 'N/A',
-                transportation: 'Lufthansa',
-                transportationNumber: 'LH1234',
-                transportationDate: '2024-06-01',
-                guideFirstName: 'Anna',
-                guideLastName: 'Schmidt',
-                guideEmail: 'anna.schmidt@example.com',
-                guideMobile: '+49 176 987654',
-                guideLandline: '+49 30 654321',
-                destinationAccommodation: 'Hotel Berlin',
-                destinationAddress: 'Alexanderplatz 1, 10178 Berlin'
-            };
 
-            setLoading(false);
-        }, 1);
+    if (checkingAuth) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+                <div className="p-8 text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+                    <h2 className="text-xl font-semibold text-gray-700">{t.checkingAuth}</h2>
+                </div>
+            </div>
+        );
+    }
+
+    if (!isAuthenticated) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-10 px-4 sm:px-6">
+                <div className="max-w-lg mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div className="bg-red-50 border-l-4 border-red-400 p-5">
+                        <div className="flex items-center">
+                            <div className="flex-shrink-0">
+                                <FaLock className="h-6 w-6 text-red-500" aria-hidden="true" />
+                            </div>
+                            <div className="ml-3">
+                                <h3 className="text-lg font-medium text-red-800">{t.authRequired}</h3>
+                                <div className="mt-2 text-sm text-red-700">
+                                    <p>{t.authRequiredMessage}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="p-6">
+                        <button
+                            onClick={handleLogin}
+                            className="w-full flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        >
+                            <FaSignInAlt className="mr-2" /> {t.loginButton}
+                        </button>
+                        <button
+                            onClick={handleCancel}
+                            className="w-full mt-4 px-5 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        >
+                            {et.cancel}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    if (!isTagOwner && !isDemoRequest()) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-10 px-4 sm:px-6">
+                <div className="max-w-lg mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div className="bg-amber-50 border-l-4 border-amber-400 p-5">
+                        <div className="flex items-center">
+                            <div className="flex-shrink-0">
+                                <FaExclamationTriangle className="h-6 w-6 text-amber-500" aria-hidden="true" />
+                            </div>
+                            <div className="ml-3">
+                                <h3 className="text-lg font-medium text-amber-800">{t.notYourTag}</h3>
+                                <div className="mt-2 text-sm text-amber-700">
+                                    <p>{t.notYourTagMessage}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="p-6">
+                        <button
+                            onClick={handleCancel}
+                            className="w-full px-5 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        >
+                            {et.cancel}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     if (loading) {
-        return <div className="text-center p-8">{et.loading}</div>;
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+                <div className="p-8 text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+                    <h2 className="text-xl font-semibold text-gray-700">{et.loading}</h2>
+                </div>
+            </div>
+        );
     }
 
     // Format date for the date input

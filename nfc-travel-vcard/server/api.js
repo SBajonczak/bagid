@@ -94,7 +94,10 @@ app.get('/api/tag-owners/:tagId/verify', verifyToken, async (req, res) => {
   try {
     const repo = new TagRepo();
     const isOwner = await repo.verifyTagOwner(tagId, userId);
-
+    if (isOwner!==true){
+      res.status(403).json({ error: 'You are not the owner' });
+      return;
+    }
     res.json({ isOwner });
   } catch (error) {
     console.error('Error verifying tag ownership:', error);
