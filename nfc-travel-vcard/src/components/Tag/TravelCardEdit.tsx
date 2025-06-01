@@ -9,7 +9,7 @@ import { messages } from '../../i18n';
 import { TravelData } from '../../types';
 import authService from '../../services/AuthService';
 import { logger } from '@/utils/logger';
-import { FaLock, FaExclamationTriangle, FaSignInAlt } from 'react-icons/fa';
+import AuthRequired from '../Auth/AuthRequired';
 
 dayjs.extend(localizedFormat);
 
@@ -18,27 +18,6 @@ const TravelCardEdit: React.FC = () => {
     const navigate = useNavigate();
     const { lang } = useLanguage();
     const t = messages[lang].travelCard;
-    const editMessages = {
-        de: {
-            save: 'Speichern',
-            cancel: 'Abbrechen',
-            saving: 'Speichern...',
-            saveSuccess: 'Änderungen gespeichert',
-            saveError: 'Fehler beim Speichern',
-            loading: 'Lade Daten...',
-            required: 'Pflichtfeld'
-        },
-        en: {
-            save: 'Save',
-            cancel: 'Cancel',
-            saving: 'Saving...',
-            saveSuccess: 'Changes saved',
-            saveError: 'Error saving',
-            loading: 'Loading data...',
-            required: 'Required'
-        }
-    };
-    const et = editMessages[lang];
 
     // Form state
     const [formData, setFormData] = useState<Partial<TravelData>>({});
@@ -191,24 +170,15 @@ const TravelCardEdit: React.FC = () => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            setSaveMessage(et.saveSuccess);
+            setSaveMessage(t.saveSuccess);
             setSaving(false);
 
             // Redirect to view mode after successful save
             navigate(`/${tagId}`);
         } catch (err) {
             console.error('Error saving travel data:', err);
-            setError(et.saveError);
+            setError(t.saveError);
             setSaving(false);
-        }
-    };
-
-    // Cancel editing
-    const handleCancel = () => {
-        if (tagId) {
-            navigate(`/${tagId}`);
-        } else {
-            navigate('/');
         }
     };
 
@@ -217,11 +187,20 @@ const TravelCardEdit: React.FC = () => {
         await authService.login();
     };
 
+    // Handle cancel
+    const handleCancel = () => {
+        if (tagId) {
+            navigate(`/${tagId}`);
+        } else {
+            navigate('/');
+        }
+    };
+
     function isDemoRequest(): boolean {
         return tagId === "demo";
     }
 
-
+    // Show loading spinner
     if (checkingAuth) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -233,78 +212,36 @@ const TravelCardEdit: React.FC = () => {
         );
     }
 
+    // Show login component if not authenticated
     if (!isAuthenticated) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-10 px-4 sm:px-6">
-                <div className="max-w-lg mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
-                    <div className="bg-red-50 border-l-4 border-red-400 p-5">
-                        <div className="flex items-center">
-                            <div className="flex-shrink-0">
-                                <FaLock className="h-6 w-6 text-red-500" aria-hidden="true" />
-                            </div>
-                            <div className="ml-3">
-                                <h3 className="text-lg font-medium text-red-800">{t.authRequired}</h3>
-                                <div className="mt-2 text-sm text-red-700">
-                                    <p>{t.authRequiredMessage}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="p-6">
-                        <button
-                            onClick={handleLogin}
-                            className="w-full flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                        >
-                            <FaSignInAlt className="mr-2" /> {t.loginButton}
-                        </button>
-                        <button
-                            onClick={handleCancel}
-                            className="w-full mt-4 px-5 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                        >
-                            {et.cancel}
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <AuthRequired 
+                type="unauthenticated"
+                onLogin={handleLogin}
+                onCancel={handleCancel}
+            />
         );
     }
 
+    // Show unauthorized component if not tag owner
     if (!isTagOwner && !isDemoRequest()) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-10 px-4 sm:px-6">
-                <div className="max-w-lg mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
-                    <div className="bg-amber-50 border-l-4 border-amber-400 p-5">
-                        <div className="flex items-center">
-                            <div className="flex-shrink-0">
-                                <FaExclamationTriangle className="h-6 w-6 text-amber-500" aria-hidden="true" />
-                            </div>
-                            <div className="ml-3">
-                                <h3 className="text-lg font-medium text-amber-800">{t.notYourTag}</h3>
-                                <div className="mt-2 text-sm text-amber-700">
-                                    <p>{t.notYourTagMessage}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="p-6">
-                        <button
-                            onClick={handleCancel}
-                            className="w-full px-5 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                        >
-                            {et.cancel}
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <AuthRequired 
+                type="unauthorized"
+                onLogin={handleLogin}
+                onCancel={handleCancel}
+                email={userEmail}
+            />
         );
     }
 
+    // Show loading spinner while fetching data
     if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gray-50">
                 <div className="p-8 text-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
-                    <h2 className="text-xl font-semibold text-gray-700">{et.loading}</h2>
+                    <h2 className="text-xl font-semibold text-gray-700">{t.loading}</h2>
                 </div>
             </div>
         );
@@ -340,14 +277,14 @@ const TravelCardEdit: React.FC = () => {
                         className="bg-gray-500 text-white rounded px-8 py-3 text-lg cursor-pointer w-1/2"
                         disabled={saving}
                     >
-                        {et.cancel}
+                        {t.cancel}
                     </button>
                     <button
                         type="submit"
                         className="bg-green-600 text-white rounded px-8 py-3 text-lg cursor-pointer w-1/2"
                         disabled={saving}
                     >
-                        {saving ? et.saving : et.save}
+                        {saving ? t.saving : t.save}
                     </button>
                 </div>
             </div>
@@ -569,14 +506,14 @@ const TravelCardEdit: React.FC = () => {
                     className="bg-gray-500 text-white rounded px-8 py-3 text-lg cursor-pointer w-1/2"
                     disabled={saving}
                 >
-                    {et.cancel}
+                    {t.cancel}
                 </button>
                 <button
                     type="submit"
                     className="bg-green-600 text-white rounded px-8 py-3 text-lg cursor-pointer w-1/2"
                     disabled={saving}
                 >
-                    {saving ? et.saving : et.save}
+                    {saving ? t.saving : t.save}
                 </button>
             </div>
         </form>

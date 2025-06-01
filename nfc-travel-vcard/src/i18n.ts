@@ -38,6 +38,18 @@ export const messages = {
             loginButton: 'Anmelden',
             checkingAuth: 'Überprüfe Berechtigung...',
             unauthorized: 'Keine Berechtigung',
+            cancelButton: 'Zurück',
+            secureAccessMessage: 'Sicherer Zugriff von BagID',
+            loginHelp: 'Melde dich mit deinem Konto an, um deine Tags zu verwalten.',
+            unauthorizedHelp: 'Nur der Besitzer dieses Tags kann die Daten bearbeiten.',
+            // Edit messages
+            save: 'Speichern',
+            cancel: 'Abbrechen',
+            saving: 'Speichern...',
+            saveSuccess: 'Änderungen gespeichert',
+            saveError: 'Fehler beim Speichern',
+            loading: 'Lade Daten...',
+            required: 'Pflichtfeld'
         },
         noDataSection: {
             demoLinkText: "Demo ansehen",
@@ -167,6 +179,18 @@ export const messages = {
             loginButton: 'Sign in',
             checkingAuth: 'Checking authorization...',
             unauthorized: 'Unauthorized',
+            cancelButton: 'Back',
+            secureAccessMessage: 'Secure access control by BagID',
+            loginHelp: 'Sign in with your account to manage your tags.',
+            unauthorizedHelp: 'Only the owner of this tag can edit the data.',
+            // Edit messages
+            save: 'Save',
+            cancel: 'Cancel',
+            saving: 'Saving...',
+            saveSuccess: 'Changes saved',
+            saveError: 'Error saving',
+            loading: 'Loading data...',
+            required: 'Required'
         },
         noDataSection: {
             demoLinkText: "View Demo",
