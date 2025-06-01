@@ -1,113 +1,326 @@
 import sql from 'mssql';
 
-// Datenbankkonfiguration
-const dbConfig = {
-
-  user: 'sbaadmin',      // Ersetze mit deinem DB-Benutzernamen
-  password: '=S?p86`YCYjo*7TNc~[S', // Ersetze mit deinem DB-Passwort
-  server: 'sbadbprod.database.windows.net',       // Ersetze mit deinem DB-Server
-  database: 'nfc', // Ersetze mit deinem Datenbanknamen
-  options: {
-    encrypt: true,
-    trustServerCertificate: true // Nur für Entwicklungsumgebungen
-  }
-};
-
 export class TagRepo {
   constructor() {
-    this.pool = null;
+    // Datenbankkonfiguration aus Umgebungsvariablen
+    // dotenv laden, um Umgebungsvariablen aus .env-Datei zu lesen
+    import('dotenv').then(dotenv => dotenv.config());
+
+    this.config = {
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      server: process.env.DB_SERVER,
+      database: process.env.DB_DATABASE,
+      options: {
+      encrypt: true, // Für Azure SQL
+      trustServerCertificate: false
+      }
+    };
   }
 
-  // Verbindung zur Datenbank herstellen oder wiederverwenden
+  /**
+   * Stellt eine Verbindung zur Datenbank her
+   * @returns {Promise<sql.ConnectionPool>} Datenbankverbindung
+   */
   async getConnection() {
-    if (this.pool) {
-      return this.pool;
-    }
-    
     try {
-      this.pool = await sql.connect(dbConfig);
-      return this.pool;
+      console.log('Versuche, eine Verbindung zur Datenbank herzustellen...');
+      console.log('Datenbankkonfiguration:', this.config.server, this.config.database);
+      const pool = await sql.connect(this.config);
+      console.log('Datenbank erfolgreich verbunden');
+      return pool;
     } catch (err) {
       console.error('Datenbankverbindungsfehler:', err);
       throw new Error('Fehler bei der Verbindung zur Datenbank');
     }
   }
 
-  // Reisedaten anhand der Tag-ID abrufen
+  /**
+   * Ruft die Reisedaten für die angegebene Tag-ID ab
+   * @param {string} tagId - Die NFC-Tag-ID
+   * @returns {Promise<object|null>} Reisedaten oder null, wenn nicht gefunden
+   */
   async getTravelDataByTagId(tagId) {
     try {
-      // Wenn es sich um die Demo-ID handelt, Demo-Daten zurückgeben
-      if (tagId === 'demo') {
-        return this.getDemoData(tagId);
-      }
-
       const pool = await this.getConnection();
       
-      // SQL-Abfrage, um die Reisedaten zu erhalten
-      // Passe die Tabellen- und Spaltennamen entsprechend deiner Datenbankstruktur an
-    const result = await pool.request()
-      .input('tagId', sql.UniqueIdentifier, tagId)
-      .query(`
-        SELECT 
-        tagId,
-        hasData,
-        ownerFirstName,
-        ownerLastName,
-        ownerAddress,
-        ownerEmail,
-        ownerMobile,
-        ownerLandline,
-        ownerOther,
-        guideFirstName,
-        guideLastName,
-        guideEmail,
-        guideMobile,
-        guideLandline,
-        destinationAccommodation,
-        destinationAddress,
-        transportation,
-        transportationNumber,
-        transportationDate
-        FROM 
-        TravelTag
-        WHERE 
-        tagId = @tagId
-      `);
-
-      // Wenn keine Daten gefunden wurden
+      // Abfrage zum Abrufen der Reisedaten nach Tag-ID, angepasst an das TravelData Interface
+      const result = await pool.request()
+        .input('tagId', sql.UniqueIdentifier, tagId)
+        .query(`
+          SELECT 
+            TagID as tagId,
+            CASE WHEN 1=1 THEN 1 ELSE 0 END as hasData,
+            OwnerFirstName as ownerFirstName,
+            OwnerLastName as ownerLastName,
+            OwnerAddress as ownerAddress,
+            OwnerEmail as ownerEmail,
+            OwnerMobile as ownerMobile,
+            OwnerLandline as ownerLandline,
+            OwnerOther as ownerOther,
+            GuideFirstName as guideFirstName,
+            GuideLastName as guideLastName,
+            GuideEmail as guideEmail,
+            GuideMobile as guideMobile,
+            GuideLandline as guideLandline,
+            DestinationAccommodation as destinationAccommodation,
+            DestinationAddress as destinationAddress,
+            Transportation as transportation,
+            TransportationNumber as transportationNumber,
+            TransportationDate as transportationDate
+          FROM TravelTag
+          WHERE TagID = @tagId
+        `);
+      
+      // Verbindung schließen
+      await pool.close();
+      
       if (result.recordset.length === 0) {
         return null;
       }
-
-      return result.recordset[0];
-    } catch (err) {
-      console.error('Fehler beim Abrufen der Reisedaten:', err);
-      throw err;
+      
+      // Format the data according to the TravelData interface
+      const travelData = result.recordset[0];
+      travelData.hasData = true;
+      
+      return travelData;
+    } catch (error) {
+      console.error('Fehler beim Abrufen der Reisedaten:', error);
+      throw error;
     }
   }
 
-  // Demo-Daten für Testzwecke
-  getDemoData(tagId) {
-    return {
-      tagId: tagId,
-      hasData: true,
-      ownerFirstName: 'John',
-      ownerLastName: 'Doe',
-      ownerAddress: '123 Main St, Berlin',
-      ownerEmail: 'john.doe@example.com',
-      ownerMobile: '+49 123 456789',
-      ownerLandline: '+49 30 123456',
-      ownerOther: 'N/A',
-      transportation: 'Lufthansa',
-      transportationNumber: 'LH1234',
-      transportationDate: new Date(),
-      guideFirstName: 'Anna',
-      guideLastName: 'Schmidt',
-      guideEmail: 'anna.schmidt@example.com',
-      guideMobile: '+49 176 987654',
-      guideLandline: '+49 30 654321',
-      destinationAccommodation: 'Hotel Berlin',
-      destinationAddress: 'Alexanderplatz 1, 10178 Berlin'
-    };
+  /**
+   * Aktualisiert die Reisedaten für die angegebene Tag-ID
+   * @param {string} tagId - Die NFC-Tag-ID
+   * @param {object} updateData - Die zu aktualisierenden Daten
+   * @returns {Promise<boolean>} Wahr, wenn die Aktualisierung erfolgreich war
+   */
+  async updateTravelDataByTagId(tagId, updateData) {
+    try {
+      const pool = await this.getConnection();
+      
+      // Prüfen, ob der Datensatz existiert
+      const checkResult = await pool.request()
+        .input('tagId', sql.UniqueIdentifier, tagId)
+        .query('SELECT 1 FROM TravelTag WHERE TagID = @tagId');
+      
+      const request = pool.request().input('tagId', sql.UniqueIdentifier, tagId);
+      
+      // Wenn der Datensatz nicht existiert, erstellen wir einen neuen
+      if (checkResult.recordset.length === 0) {
+        // SQL-Felder und Werte für die Einfügung vorbereiten
+        const fields = ['TagID'];
+        const values = ['@tagId'];
+        
+        // Mapping der TravelData-Properties zu Datenbankspalten
+        const fieldMappings = {
+          ownerFirstName: {sqlField: 'OwnerFirstName', sqlType: sql.NVarChar},
+          ownerLastName: {sqlField: 'OwnerLastName', sqlType: sql.NVarChar},
+          ownerAddress: {sqlField: 'OwnerAddress', sqlType: sql.NVarChar},
+          ownerEmail: {sqlField: 'OwnerEmail', sqlType: sql.NVarChar},
+          ownerMobile: {sqlField: 'OwnerMobile', sqlType: sql.NVarChar},
+          ownerLandline: {sqlField: 'OwnerLandline', sqlType: sql.NVarChar},
+          ownerOther: {sqlField: 'OwnerOther', sqlType: sql.NVarChar},
+          guideFirstName: {sqlField: 'GuideFirstName', sqlType: sql.NVarChar},
+          guideLastName: {sqlField: 'GuideLastName', sqlType: sql.NVarChar},
+          guideEmail: {sqlField: 'GuideEmail', sqlType: sql.NVarChar},
+          guideMobile: {sqlField: 'GuideMobile', sqlType: sql.NVarChar},
+          guideLandline: {sqlField: 'GuideLandline', sqlType: sql.NVarChar},
+          destinationAccommodation: {sqlField: 'DestinationAccommodation', sqlType: sql.NVarChar},
+          destinationAddress: {sqlField: 'DestinationAddress', sqlType: sql.NVarChar},
+          transportation: {sqlField: 'Transportation', sqlType: sql.NVarChar},
+          transportationNumber: {sqlField: 'TransportationNumber', sqlType: sql.NVarChar},
+          transportationDate: {sqlField: 'TransportationDate', sqlType: sql.DateTime},
+        };
+        
+        // Für jedes Feld im updateData-Objekt
+        Object.keys(updateData).forEach(key => {
+          const mapping = fieldMappings[key];
+          if (mapping && updateData[key] !== undefined) {
+            fields.push(mapping.sqlField);
+            values.push(`@${key}`);
+            
+            const value = key === 'transportationDate' && updateData[key] 
+              ? new Date(updateData[key]) 
+              : updateData[key];
+            request.input(key, mapping.sqlType, value);
+          }
+        });
+        
+        // Zeitstempelfelder hinzufügen
+        const now = new Date();
+        
+        // Insert-Abfrage ausführen
+        const insertQuery = `
+          INSERT INTO TravelTag (${fields.join(', ')})
+          VALUES (${values.join(', ')})
+        `;
+        
+        await request.query(insertQuery);
+      } else {
+        // Aktualisierung eines vorhandenen Datensatzes
+        // SET-Klausel der UPDATE-Anweisung dynamisch erstellen
+        const updateColumns = [];
+        
+        // Mapping der TravelData-Properties zu Datenbankspalten
+        const fieldMappings = {
+          ownerFirstName: {sqlField: 'OwnerFirstName', sqlType: sql.NVarChar},
+          ownerLastName: {sqlField: 'OwnerLastName', sqlType: sql.NVarChar},
+          ownerAddress: {sqlField: 'OwnerAddress', sqlType: sql.NVarChar},
+          ownerEmail: {sqlField: 'OwnerEmail', sqlType: sql.NVarChar},
+          ownerMobile: {sqlField: 'OwnerMobile', sqlType: sql.NVarChar},
+          ownerLandline: {sqlField: 'OwnerLandline', sqlType: sql.NVarChar},
+          ownerOther: {sqlField: 'OwnerOther', sqlType: sql.NVarChar},
+          guideFirstName: {sqlField: 'GuideFirstName', sqlType: sql.NVarChar},
+          guideLastName: {sqlField: 'GuideLastName', sqlType: sql.NVarChar},
+          guideEmail: {sqlField: 'GuideEmail', sqlType: sql.NVarChar},
+          guideMobile: {sqlField: 'GuideMobile', sqlType: sql.NVarChar},
+          guideLandline: {sqlField: 'GuideLandline', sqlType: sql.NVarChar},
+          destinationAccommodation: {sqlField: 'DestinationAccommodation', sqlType: sql.NVarChar},
+          destinationAddress: {sqlField: 'DestinationAddress', sqlType: sql.NVarChar},
+          transportation: {sqlField: 'Transportation', sqlType: sql.NVarChar},
+          transportationNumber: {sqlField: 'TransportationNumber', sqlType: sql.NVarChar},
+          transportationDate: {sqlField: 'TransportationDate', sqlType: sql.DateTime},
+        };
+        
+        // Für jedes Feld im updateData-Objekt
+        Object.keys(updateData).forEach(key => {
+          const mapping = fieldMappings[key];
+          if (mapping && updateData[key] !== undefined) {
+            updateColumns.push(`${mapping.sqlField} = @${key}`);
+            
+            const value = key === 'transportationDate' && updateData[key] 
+              ? new Date(updateData[key]) 
+              : updateData[key];
+            request.input(key, mapping.sqlType, value);
+          }
+        });
+        
+        // Immer den LastUpdated-Zeitstempel aktualisieren
+        
+        // Wenn keine Spalten zu aktualisieren sind, true zurückgeben (keine Änderungen erforderlich)
+        if (updateColumns.length === 0) {
+          await pool.close();
+          return true;
+        }
+        
+        // Update-Abfrage ausführen
+        const updateQuery = `
+          UPDATE TravelTag
+          SET ${updateColumns.join(', ')}
+          WHERE TagID = @tagId
+        `;
+        
+        await request.query(updateQuery);
+      }
+      
+      await pool.close();
+      return true;
+    } catch (error) {
+      console.error('Fehler beim Aktualisieren der Reisedaten:', error);
+      throw error;
+    }
+  }
+  
+  /**
+   * Registriert einen Besitzer für einen Tag
+   * @param {string} tagId - Die NFC-Tag-ID
+   * @param {string} userId - Die Benutzer-ID aus Azure B2C
+   * @param {string} userEmail - Die E-Mail-Adresse des Benutzers
+   * @returns {Promise<boolean>} Wahr, wenn die Registrierung erfolgreich war
+   */
+  async registerTagOwner(tagId, userId, userEmail) {
+    try {
+      const pool = await this.getConnection();
+      
+      // Überprüfen, ob der Tag bereits einem anderen Benutzer gehört
+      const checkResult = await pool.request()
+        .input('tagId', sql.UniqueIdentifier, tagId)
+        .query(`
+          SELECT UserID 
+          FROM TagOwners 
+          WHERE TagID = @tagId
+        `);
+      
+      if (checkResult.recordset.length > 0) {
+        // Tag ist bereits registriert
+        pool.close();
+        return false;
+      }
+      
+      // Tag-Eigentümer registrieren
+      await pool.request()
+        .input('tagId', sql.UniqueIdentifier, tagId)
+        .input('userId', sql.NVarChar, userId)
+        .input('userEmail', sql.NVarChar, userEmail)
+        .input('registeredAt', sql.DateTime, new Date())
+        .query(`
+          INSERT INTO TagOwners (TagID, UserID, UserEmail, RegisteredAt)
+          VALUES (@tagId, @userId, @userEmail, @registeredAt)
+        `);
+      
+      pool.close();
+      return true;
+    } catch (error) {
+      console.error('Fehler bei der Registrierung des Tag-Eigentümers:', error);
+      throw error;
+    }
+  }
+  
+  /**
+   * Überprüft, ob ein Benutzer der Eigentümer eines Tags ist
+   * @param {string} tagId - Die NFC-Tag-ID
+   * @param {string} userId - Die Benutzer-ID aus Azure B2C
+   * @returns {Promise<boolean>} Wahr, wenn der Benutzer der Eigentümer ist
+   */
+  async verifyTagOwner(tagId, userId) {
+    try {
+      const pool = await this.getConnection();
+      
+      const result = await pool.request()
+        .input('tagId', sql.UniqueIdentifier, tagId)
+        .input('userId', sql.NVarChar, userId)
+        .query(`
+          SELECT 1 
+          FROM TagOwners 
+          WHERE TagID = @tagId AND UserID = @userId
+        `);
+      
+      pool.close();
+      return result.recordset.length > 0;
+    } catch (error) {
+      console.error('Fehler bei der Überprüfung des Tag-Eigentümers:', error);
+      throw error;
+    }
+  }
+  
+  /**
+   * Überprüft, ob ein Tag in der Datenbank existiert
+   * @param {string} tagId - Die NFC-Tag-ID
+   * @returns {Promise<boolean>} Wahr, wenn der Tag existiert
+   */
+  async tagExists(tagId) {
+    try {
+      const pool = await this.getConnection();
+      
+      const result = await pool.request()
+        .input('tagId', sql.UniqueIdentifier, tagId)
+        .query(`
+          SELECT 1 
+          FROM TagOwners 
+          WHERE TagID = @tagId
+          UNION
+          SELECT 1
+          FROM TravelTags
+          WHERE TagID = @tagId
+        `);
+      
+      pool.close();
+      return result.recordset.length > 0;
+    } catch (error) {
+      console.error('Fehler bei der Überprüfung, ob ein Tag existiert:', error);
+      throw error;
+    }
   }
 }
