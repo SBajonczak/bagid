@@ -2,9 +2,12 @@ import sql from 'mssql';
 
 export class TagRepo {
   constructor() {
-    // Datenbankkonfiguration aus Umgebungsvariablen
+   
     // dotenv laden, um Umgebungsvariablen aus .env-Datei zu lesen
-    import('dotenv').then(dotenv => dotenv.config());
+    // Die .env-Datei befindet sich im gleichen Verzeichnis wie diese Datei
+    import('dotenv').then(dotenv => {
+      dotenv.config();
+    });
 
     this.config = {
       user: process.env.DB_USER,
@@ -312,7 +315,7 @@ export class TagRepo {
           WHERE TagID = @tagId
           UNION
           SELECT 1
-          FROM TravelTags
+          FROM TravelTag
           WHERE TagID = @tagId
         `);
       

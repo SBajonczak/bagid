@@ -45,3 +45,10 @@ INSERT INTO TravelTag (
     'LH1234',
     '2025-08-15'
 );
+
+ INSERT INTO [dbo].[TagOwners] (
+        [TagID], [UserID], [UserEmail], [RegisteredAt]
+    ) VALUES
+    (
+        (SELECT TOP 1 tagId FROM TravelTag), 'user1', 'user1@email.com', GETDATE()
+    ),

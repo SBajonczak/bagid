@@ -10,6 +10,7 @@ export const messages = {
         edit: 'klicken um zu bearbeiten',
         login: '☁️ Mit Azure B2C anmelden',
         travelCard: {
+            edit: 'Bearbeiten',
             productname: 'Bag Tag',
             suitcase: 'Reisekoffer',
             favorite: 'Dies ist mein Lieblingskoffer',
@@ -103,6 +104,7 @@ export const messages = {
         edit: 'click to edit',
         login: '☁️ Sign in with Azure B2C',
         travelCard: {
+            edit: 'Edit',
             productname: 'Bag Tag',
             suitcase: 'Suitcase',
             favorite: 'This is my favorite suitcase',

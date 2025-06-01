@@ -1,114 +1,153 @@
+import { logger } from "@/utils/logger";
 import * as msal from "@azure/msal-browser";
+import { request } from "express";
+
+// Get environment variables from window._env_ (for runtime) or process.env (for build time)
+
+// Azure B2C tenant and policy information
+const tenant = "sbab2c";
+const policy = "B2C_1_susi";
 
 // Azure B2C configuration
 const msalConfig = {
-  auth: {
-    clientId: process.env.REACT_APP_AZURE_B2C_CLIENT_ID || "",
-    authority: process.env.REACT_APP_AZURE_B2C_AUTHORITY || "",
-    redirectUri: window.location.origin,
-    postLogoutRedirectUri: window.location.origin,
-    navigateToLoginRequestUrl: true,
-  },
-  cache: {
-    cacheLocation: "localStorage",
-    storeAuthStateInCookie: false,
-  },
+    auth: {
+        clientId: "a89e7807-f975-4c90-af58-0c602568ac1c",
+
+        // Correct format for Azure B2C authority URL - no oauth2/v2.0/authorize part
+        authority: `https://${tenant}.b2clogin.com/${tenant}.onmicrosoft.com/${policy}`,
+
+        // Add knownAuthorities to fix the "not a trusted authority" error
+        knownAuthorities: [`${tenant}.b2clogin.com`],
+
+        redirectUri: window.location.origin,
+        postLogoutRedirectUri: window.location.origin,
+        navigateToLoginRequestUrl: true,
+    },
+    cache: {
+        cacheLocation: "localStorage",
+        storeAuthStateInCookie: false,
+    },
+    system: {
+        // This is important - set it to "OIDC" to use ID tokens instead of access tokens
+        tokenRenewalOffsetSeconds: 300, // Renew token 5 minutes before expiry
+        allowRedirectInIframe: true
+    }
 };
+
+// Log configuration for debugging (remove in production)
+console.log('MSAL Config (without sensitive data):', {
+    redirectUri: msalConfig.auth.redirectUri,
+    hasClientId: !!msalConfig.auth.clientId,
+    authority: msalConfig.auth.authority,
+    knownAuthorities: msalConfig.auth.knownAuthorities
+});
 
 // MSAL instance
 const msalInstance = new msal.PublicClientApplication(msalConfig);
 
-// Authentication requests
+// Authentication requests with appropriate scope for ID tokens
 const loginRequest = {
-  scopes: ["openid", "profile", "email"],
+    scopes: ["openid", "profile", "email"],
+    // Don't attempt to get access tokens for API access from the client directly
+    // This is what's triggering the client_secret requirement
 };
 
 export interface AuthUser {
-  displayName?: string;
-  email?: string;
-  userId: string;
-  idToken?: string;
-  accessToken?: string;
+    displayName?: string;
+    email?: string;
+    userId: string;
+    idToken?: string;
+    accessToken?: string;
 }
 
 class AuthService {
-  private currentUser: AuthUser | null = null;
+    private currentUser: AuthUser | null = null;
 
-  constructor() {
-    // Handle redirect promise on page load
-    msalInstance.handleRedirectPromise().then(this.handleResponse).catch(console.error);
-    
-    // Check if user is already logged in
-    const accounts = msalInstance.getAllAccounts();
-    if (accounts.length > 0) {
-      this.setUserFromAccount(accounts[0]);
+    constructor() {
+        // Handle redirect promise on page load
+        msalInstance.handleRedirectPromise().then(this.handleResponse).catch(console.error);
+
+        // Check if user is already logged in
+        const accounts = msalInstance.getAllAccounts();
+        if (accounts.length > 0) {
+            this.setUserFromAccount(accounts[0]);
+        }
     }
-  }
 
-  private handleResponse = (response: msal.AuthenticationResult | null): void => {
-    if (response && response.account) {
-      this.setUserFromAccount(response.account);
-    }
-  };
-
-  private setUserFromAccount(account: msal.AccountInfo): void {
-    const claims = account.idTokenClaims as any;
-    
-    this.currentUser = {
-      displayName: claims.name,
-      email: claims.emails?.[0] || claims.email,
-      userId: account.localAccountId,
-      idToken: account.idToken,
+    private handleResponse = (response: msal.AuthenticationResult | null): void => {
+        if (response && response.account) {
+            this.setUserFromAccount(response.account);
+        }
     };
-  }
 
-  public async login(): Promise<AuthUser | null> {
-    try {
-      await msalInstance.loginRedirect(loginRequest);
-      return null; // This will redirect, so nothing will execute after this
-    } catch (error) {
-      console.error("Login failed", error);
-      return null;
+    private setUserFromAccount(account: msal.AccountInfo): void {
+        const claims = account.idTokenClaims as any;
+
+        this.currentUser = {
+            displayName: claims.name,
+            email: claims.emails?.[0] || claims.email,
+            userId: account.localAccountId,
+            idToken: account.idToken,
+        };
     }
-  }
 
-  public logout(): void {
-    msalInstance.logout();
-  }
+    public async login(): Promise<AuthUser | null> {
+        try {
+            if (!msalConfig.auth.clientId) {
+                console.error("Azure B2C client ID is not configured");
+                return null;
+            }
 
-  public async getAccessToken(): Promise<string | null> {
-    try {
-      const accounts = msalInstance.getAllAccounts();
-      if (accounts.length === 0) return null;
-      
-      const request = {
-        scopes: ["openid", "profile", "email"],
-        account: accounts[0],
-      };
-      
-      const response = await msalInstance.acquireTokenSilent(request);
-      return response.accessToken;
-    } catch (error) {
-      console.error("Error getting access token", error);
-      return null;
+            await msalInstance.loginRedirect(loginRequest);
+            return null; // This will redirect, so nothing will execute after this
+        } catch (error) {
+            console.error("Login failed", error);
+            return null;
+        }
     }
-  }
 
-  public isAuthenticated(): boolean {
-    return msalInstance.getAllAccounts().length > 0;
-  }
-
-  public getCurrentUser(): AuthUser | null {
-    if (this.currentUser) return this.currentUser;
-    
-    const accounts = msalInstance.getAllAccounts();
-    if (accounts.length > 0) {
-      this.setUserFromAccount(accounts[0]);
-      return this.currentUser;
+    public logout(): void {
+        msalInstance.logout();
     }
-    
-    return null;
-  }
+
+    public async getIdToken(): Promise<string | null> {
+        try {
+            logger.info("Requesting access token silently...");
+            const accounts = msalInstance.getAllAccounts();
+            if (accounts.length === 0) return null;
+
+            const silentRequest = {
+                ...loginRequest,
+                account: accounts[0]
+            };
+
+            const result = await msalInstance.acquireTokenSilent(silentRequest);
+            logger.info("Access token acquired successfully");  
+            logger.debug("Access token details:", {
+                accessToken: result.idToken,
+            });
+            return result.idToken || null;
+        } catch (error) {
+            console.error("Error getting ID token:", error);
+            return null;
+        }
+    }
+
+    public isAuthenticated(): boolean {
+        return msalInstance.getAllAccounts().length > 0;
+    }
+
+    public getCurrentUser(): AuthUser | null {
+        if (this.currentUser) return this.currentUser;
+
+        const accounts = msalInstance.getAllAccounts();
+        if (accounts.length > 0) {
+            this.setUserFromAccount(accounts[0]);
+            return this.currentUser;
+        }
+
+        return null;
+    }
 }
 
 export const authService = new AuthService();

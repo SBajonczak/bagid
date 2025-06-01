@@ -1,44 +1,81 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import 'dayjs/locale/de';
 import 'dayjs/locale/en';
 import { useLanguage } from '../../LanguageContext';
 import { messages } from '../../i18n';
+import { TravelData } from '../../types';
+import authService from '../../services/AuthService';
+import { logger } from '@/utils/logger';
 
-// import { TagData, TravelData } from '../../types';
 dayjs.extend(localizedFormat);
 
 const TravelCard: React.FC = () => {
     const { tagId } = useParams<{ tagId: string }>();
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     const { lang } = useLanguage();
     const t = messages[lang].travelCard;
+    const editText = lang === 'de' ? 'Bearbeiten' : 'Edit';
+    const registerText = lang === 'de' ? 'Tag registrieren' : 'Register Tag';
 
     // State for travel data
-    const [travelData, setTravelData] = useState<any | null>(null);
+    const [travelData, setTravelData] = useState<Partial<TravelData> | null>(null);
     const [loading, setLoading] = useState(true);
-    const [error] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
+    const [tagRegistered, setTagRegistered] = useState<boolean>(false);
+
+    // Check if tag exists and if user is the owner
+    useEffect(() => {
+        logger.debug("Checking tag status for tagId:", tagId);
+        const checkTagStatus = async () => {
+            if (!tagId || tagId === 'demo') return;
+
+            try {
+                // First check if tag exists
+                const existsResponse = await fetch(`/api/tags/${tagId}/exists`);
+                const { exists } = await existsResponse.json();
+                logger.debug("Tag exists:", !!exists);
+                setTagRegistered(!!exists);
+                // If tag doesn't exist, redirect to registration
+                if (!exists) {
+                    navigate(`/register/${tagId}`);
+                }
+            } catch (err) {
+                console.error('Error checking tag status:', err);
+            }
+        };
+
+        checkTagStatus();
+    }, [tagId, navigate]);
 
     // Fetch data from the API
     useEffect(() => {
+        logger.debug("Fetching travel data for tagId:", tagId, "Registered:", tagRegistered);
         const fetchTravelData = async () => {
-            // Simulate API call with dummy data and loading delay
-            injectDemoData();
-            if (isDemoRequest()) {
-                
-            } else {
-                if (tagId) {
-                    console.log(`Fetching data for tagId: ${tagId}`);
-                    // loadData(tagId);
+            if (!tagId || tagRegistered === false) return;
+
+            try {
+                console.log(`Fetching data for tagId: ${tagId}`);
+                const response = await fetch(`/api/travel/${tagId}`);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
+
+                const data = await response.json();
+                setTravelData(data);
+                setLoading(false);
+            } catch (err) {
+                console.error('Error fetching travel data:', err);
+                setError('Error loading travel data');
+                setLoading(false);
             }
         };
 
         fetchTravelData();
-    }, [tagId]); // Add dependency array to prevent infinite loop
-
+    }, [tagId, tagRegistered]);
 
     // Set language for dayjs
     dayjs.locale(lang);
@@ -52,68 +89,34 @@ const TravelCard: React.FC = () => {
             ? naText
             : dayjs(travelData.transportationDate).format('L');
 
+
     if (loading) {
-        return <div className="text-center"></div>;
+        return <div className="text-center p-8">Loading...</div>;
     }
 
     if (error) {
-        return <div className="text-center text-red-500">{error}</div>;
+        return <div className="text-center text-red-500 p-8">{error}</div>;
     }
 
     if (!travelData) {
-        return <div className="text-center">No data available</div>;
-    }
-
-    function isDemoRequest(): Boolean {
-        return tagId === "demo"
-    }
-    // function loadData(tagid: string) {
-    //     // let repo: TagRepo = new TagRepo();
-    //     // repo.getTravelDataByTagId(tagid).then((data: TravelData | null) => {
-    //     //     if (data) {
-    //     //         setTravelData(data);
-    //     //     }
-    //     // });
-    // }
-
-    function injectDemoData() {
-        setTimeout(() => {
-            const dummyData = {
-                ownerFirstName: 'John',
-                ownerLastName: 'Doe',
-                ownerAddress: '123 Main St, Berlin',
-                ownerEmail: 'john.doe@example.com',
-                ownerMobile: '+49 123 456789',
-                ownerLandline: '+49 30 123456',
-                ownerOther: 'N/A',
-                transportation: 'Lufthansa',
-                transportationNumber: 'LH1234',
-                transportationDate: '2024-06-01',
-                guideFirstName: 'Anna',
-                guideLastName: 'Schmidt',
-                guideEmail: 'anna.schmidt@example.com',
-                guideMobile: '+49 176 987654',
-                guideLandline: '+49 30 654321',
-                destinationAccommodation: 'Hotel Berlin',
-                destinationAddress: 'Alexanderplatz 1, 10178 Berlin'
-            };
-
-            // @ts-ignore
-            setTravelData(dummyData);
-            // @ts-ignore
-            setLoading(false);
-        }, 1);
+        return <div className="text-center p-8">No data available</div>;
     }
 
     return (
-        <div
-            className="travel-card text-black bg-white rounded-lg shadow-md p-6  w-full mx-auto my-6"
-        >
+        <div className="travel-card text-black bg-white rounded-lg shadow-md p-6 w-full mx-auto my-6">
             <div className="text-center mb-6">
                 <h1 className="font-bold uppercase text-2xl my-2">{t.suitcase}</h1>
                 <div className="text-gray-600">{t.favorite}</div>
-                <div className="bg-red-700 text-white rounded px-8 py-3 text-lg mt-4 cursor-pointer inline-block w-full text-center">
-                    {t.notify}
+                <div className="flex justify-between mt-4">
+                    <div className="bg-red-700 text-white rounded px-8 py-3 text-lg cursor-pointer inline-block text-center flex-1">
+                        {t.notify}
+                    </div>
+
+                    {/* Show edit button only if user is owner or demo */}
+                   
+                        <Link to={`/${tagId}/edit`} className="bg-blue-700 text-white rounded px-8 py-3 text-lg cursor-pointer inline-block text-center ml-4 flex-1">
+                            {editText}
+                        </Link>
                 </div>
             </div>
 

@@ -55,8 +55,8 @@ const TagRegistration: React.FC = () => {
                 throw new Error('User information not available');
             }
             
-            const accessToken = await authService.getAccessToken();
-            
+            const accessToken = await authService.getIdToken();
+            console.log('Access Token:', accessToken);
             if (!accessToken) {
                 throw new Error('Authentication token not available');
             }
