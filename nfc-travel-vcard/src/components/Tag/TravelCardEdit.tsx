@@ -32,8 +32,17 @@ const TravelCardEdit: React.FC = () => {
     const [checkingAuth, setCheckingAuth] = useState<boolean>(true);
     const [isTagOwner, setIsTagOwner] = useState<boolean>(false);
 
+    // Add a ref to track if we've already checked auth for this tagId
+    const authCheckedRef = React.useRef<{[key: string]: boolean}>({});
+    
+    // Add a ref to prevent cleanup actions from causing re-rendering loops
+    const isComponentMounted = React.useRef<boolean>(true);
+
     // Check authentication and tag ownership
     const checkAuthentication = async () => {
+        // Prevent running if the component is unmounting
+        if (!isComponentMounted.current) return;
+        
         setCheckingAuth(true);
 
         const isAuth = authService.isAuthenticated();
@@ -59,22 +68,38 @@ const TravelCardEdit: React.FC = () => {
 
             // Check if the user is the owner of the tag
             const token = await authService.getIdToken();
-            const response = await fetch(`/api/tag-owners/${tagId}/verify`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
+            console.log('Checking tag ownership for tagId:', tagId, 'with token:', token);
+            
+            try {
+                const response = await fetch(`/api/tag-owners/${tagId}/verify`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                // Explicitly handle 403 (Forbidden) response
+                if (response.status === 403) {
+                    console.log('User is not the owner of this tag (403 Forbidden)');
+                    // We still mark auth as checked even if it failed with 403
+                    setIsTagOwner(false);
+                    setCheckingAuth(false);
+                    return;
                 }
-            });
 
-            if (!response.ok) {
-                logger.error('Failed to verify tag ownership');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                setIsTagOwner(data.isOwner);
+            } catch (error) {
+                // Handle network errors or other fetch problems
+                logger.error('Error during tag ownership verification:', error);
                 setIsTagOwner(false);
+            } finally {
+                // Always mark auth as checked when done
                 setCheckingAuth(false);
-                return;
             }
-
-            const data = await response.json();
-            setIsTagOwner(data.isOwner);
-            setCheckingAuth(false);
         } catch (error) {
             logger.error('Error checking authentication:', error);
             setIsTagOwner(false);
@@ -83,13 +108,28 @@ const TravelCardEdit: React.FC = () => {
     };
 
     useEffect(() => {
-        checkAuthentication();
+        // Only check authentication if we haven't checked for this tagId yet
+        if (tagId && !authCheckedRef.current[tagId]) {
+            authCheckedRef.current[tagId] = true;
+            checkAuthentication();
+        }
+        
+        // Set up cleanup to prevent state updates after unmount
+        return () => {
+            isComponentMounted.current = false;
+        };
     }, [tagId]);
 
     // Handle auth state changes
     const handleAuthStateChange = () => {
-        // Re-run authentication check when auth state changes
-        checkAuthentication();
+        // Only re-run authentication check if the component is still mounted
+        if (isComponentMounted.current) {
+            // Clear the previously checked state for the current tagId to force a recheck
+            if (tagId) {
+                authCheckedRef.current[tagId] = false;
+            }
+            checkAuthentication();
+        }
     };
 
     // Fetch data from the API

@@ -5,21 +5,22 @@ import * as msal from "@azure/msal-browser";
 // Get environment variables from window._env_ (for runtime) or process.env (for build time)
 
 // Azure B2C tenant and policy information
-const tenant = "sbab2c";
+const tenant = "bagtagauth";
 const policy = "B2C_1_susi";
-const redirecturi= "https://vcard.bajonczak.com"
+//const redirecturi= "https://vcard.bajonczak.com"
+const redirecturi= "http://localhost:3000";
 // Azure B2C configuration
 const msalConfig = {
     auth: {
-        clientId: "a89e7807-f975-4c90-af58-0c602568ac1c",
+        clientId: "2e08ce02-4722-4efe-b6de-c98b201907ab",
 
         // Correct format for Azure B2C authority URL - no oauth2/v2.0/authorize part
         authority: `https://${tenant}.b2clogin.com/${tenant}.onmicrosoft.com/${policy}`,
 
         // Add knownAuthorities to fix the "not a trusted authority" error
         knownAuthorities: [`${tenant}.b2clogin.com`],
-
-        redirectUri: `${redirecturi}`,
+        redirectUri: `http://localhost:3000`, // Ensure this matches your Azure B2C configuration
+        // redirectUri: `${redirecturi}`,
         postLogoutRedirectUri: window.location.origin,
         navigateToLoginRequestUrl: true,
     },

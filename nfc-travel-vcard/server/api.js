@@ -12,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 // Configure JWT validation with Azure B2C - for ID tokens
-const tenant = process.env.AZURE_B2C_TENANT || "sbab2c";
+const tenant = process.env.AZURE_B2C_TENANT || "bagtagauth";
 const policy = process.env.AZURE_B2C_POLICY || "B2C_1_susi";
 
 const client = jwksClient({
@@ -48,8 +48,8 @@ const verifyToken = (req, res, next) => {
 
   // Verify the ID token
   jwt.verify(token, getKey, {
-    audience: process.env.AZURE_B2C_CLIENT_ID || "a89e7807-f975-4c90-af58-0c602568ac1c", // Your client ID
-    issuer: `https://sbab2c.b2clogin.com/f6bbcd21-1158-4ce1-ac68-b633ddaa32a4/v2.0/`
+    audience: "2e08ce02-4722-4efe-b6de-c98b201907ab", // Your client ID
+    issuer: `https://bagtagauth.b2clogin.com/430cd0a4-c177-46a9-8eff-cc6ecd09c9a2/v2.0/`
   }, (err, decoded) => {
     if (err) {
       console.error('Token verification error:', err);
