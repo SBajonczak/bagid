@@ -184,6 +184,6 @@ app.get('/api/travel/:tagId', async (req, res) => {
 });
 
 // Server starten
-app.listen(port, () => {
+app.listen(port,'0.0.0.0', () => {
   console.log(`API-Server läuft auf http://localhost:${port}`);
 });

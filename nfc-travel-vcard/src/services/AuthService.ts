@@ -7,7 +7,7 @@ import * as msal from "@azure/msal-browser";
 // Azure B2C tenant and policy information
 const tenant = "sbab2c";
 const policy = "B2C_1_susi";
-
+const redirecturi= "https://vcard.bajonczak.com"
 // Azure B2C configuration
 const msalConfig = {
     auth: {
@@ -19,7 +19,7 @@ const msalConfig = {
         // Add knownAuthorities to fix the "not a trusted authority" error
         knownAuthorities: [`${tenant}.b2clogin.com`],
 
-        redirectUri: window.location.origin,
+        redirectUri: `${redirecturi}`,
         postLogoutRedirectUri: window.location.origin,
         navigateToLoginRequestUrl: true,
     },
@@ -39,6 +39,7 @@ console.log('MSAL Config (without sensitive data):', {
     redirectUri: msalConfig.auth.redirectUri,
     hasClientId: !!msalConfig.auth.clientId,
     authority: msalConfig.auth.authority,
+
     knownAuthorities: msalConfig.auth.knownAuthorities
 });
 

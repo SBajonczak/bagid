@@ -25,10 +25,8 @@ const App: React.FC = () => {
                         preload="auto"
                         controls={false}
                         disablePictureInPicture
-                        controlsList="nodownload noremoteplayback"
-                    >
-                        <source src="/assets/bagid-loop.webm" type="video/webm" />
-                        <source src="/assets/bagid-loop.mp4" type="video/mp4" />
+                        controlsList="nodownload noremoteplayback">
+                        <source src="/assets/bagid-loop.mp4" type="video/mp4; codecs=avc1.4D401E,mp4a.40.2" />
                         Dein Browser unterstützt keine eingebetteten Videos.
                     </video>
                 </div>

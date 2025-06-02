@@ -85,7 +85,7 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                             {t.cta}
                         </a>
                         <a
-                            href="/demo"
+                            href="/5ea2a017-8976-4d28-a2c0-6c80395858a7"
                             className="bg-blue-500 text-white font-semibold px-6 py-2 rounded-lg shadow hover:bg-blue-600 transition text-center w-full md:w-auto mt-4"
                         >
                             {t.demoLinkText}
