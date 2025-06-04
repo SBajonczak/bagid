@@ -72,7 +72,8 @@ export const messages = {
             loading: 'Lade Daten...',
             required: 'Pflichtfeld',
             na: "k.A",
-            noData: "Keine Daten verfügbar"
+            noData: "Keine Daten verfügbar",
+            back: 'Zurück'
 
         },
         noDataSection: {
@@ -255,7 +256,8 @@ export const messages = {
             loading: 'Loading data...',
             required: 'Required',
             na: "N/A",
-            noData: "No data available"
+            noData: "No data available",
+            back: 'Back'
         },
         noDataSection: {
             demoLinkText: "View Demo",

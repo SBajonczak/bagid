@@ -106,6 +106,10 @@ const TravelCard: React.FC = () => {
                 <h1 className="font-bold uppercase text-2xl my-2">{t.suitcase}</h1>
                 <div className="text-gray-600">{t.favorite}</div>
                 <div className="flex justify-between mt-4">
+                    <Link to="/" className="bg-gray-600 text-white rounded px-8 py-3 text-lg cursor-pointer inline-block text-center flex-1 hover:bg-gray-700">
+                        {t.back}
+                    </Link>
+                    
                     {/* <div  
                         className="bg-red-700 text-white rounded px-8 py-3 text-lg cursor-pointer inline-block text-center flex-1"
                         onClick={() => setIsNotificationModalOpen(true)}
