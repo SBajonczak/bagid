@@ -7,7 +7,7 @@ import * as msal from "@azure/msal-browser";
 // Azure B2C tenant and policy information
 const tenant = "bagtagauth";
 const policy = "B2C_1_susi";
-const redirecturi= "https://www.bagtag.de"
+const redirecturi= "https://www.bag-tag.de"
 //const redirecturi= "http://localhost:3000";
 // Azure B2C configuration
 const msalConfig = {
@@ -19,8 +19,8 @@ const msalConfig = {
 
         // Add knownAuthorities to fix the "not a trusted authority" error
         knownAuthorities: [`${tenant}.b2clogin.com`],
-        redirectUri: `http://localhost:3000`, // Ensure this matches your Azure B2C configuration
-        // redirectUri: `${redirecturi}`,
+        //redirectUri: `http://localhost:3000`, // Ensure this matches your Azure B2C configuration
+        redirectUri: `${redirecturi}`,
         postLogoutRedirectUri: window.location.origin,
         navigateToLoginRequestUrl: true,
     },

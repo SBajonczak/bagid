@@ -7,6 +7,26 @@ export const messages = {
             features: 'Eigenschaften',
             faq: 'FAQ',
         },
+        seo: {
+            title: 'Bag-Tag.de | Smarte NFC Gepäckanhänger für sicheres Reisen',
+            description: 'Innovative NFC Gepäckanhänger zum schnellen Auffinden verlorenen Gepäcks. Moderne Reisebegleiter mit kontaktloser NFC-Technologie für alle Koffer und Taschen.',
+            keywords: 'NFC Gepäckanhänger, Kofferanhänger, Gepäck ID, verlorenes Gepäck, Reisezubehör, Koffer Tag, kontaktlose Technologie, smarter Gepäckanhänger',
+            productName: 'NFC Bag Tag',
+            brandName: 'Bag-Tag',
+            productPrice: '10.99',
+            shippingDetails: {
+                sameDay: false,
+                overnight: false,
+                twoDay: true,
+                deliveryTime: '2-3 Werktage',
+                shippingRate: '3.99',
+                shippingDestination: 'DE'
+            },
+            returnPolicy: {
+                merchantReturnDays: "14",
+                returnPolicyCategory: "MerchantReturnFiniteReturnWindow"
+            }
+        },
         edit: 'klicken um zu bearbeiten',
         login: '☁️ Mit Azure B2C anmelden',
         travelCard: {
@@ -151,6 +171,26 @@ export const messages = {
             productname: 'Bag-Tag',
             features: 'Features',
             faq: 'FAQ',
+        },
+        seo: {
+            title: 'Bag-Tag.de | Smart NFC Luggage Tags for Safe Travel',
+            description: 'Innovative NFC luggage tags for quick recovery of lost luggage. Modern travel companions with contactless NFC technology for all suitcases and bags.',
+            keywords: 'NFC luggage tags, luggage identifier, baggage ID, lost luggage, travel accessories, suitcase tag, contactless technology, smart luggage tag',
+            productName: 'NFC Bag Tag',
+            brandName: 'Bag-Tag',
+            productPrice: '10.99',
+            shippingDetails: {
+                sameDay: false,
+                overnight: false,
+                twoDay: true,
+                deliveryTime: '2-3 business days',
+                shippingRate: '3.99',
+                shippingDestination: 'DE'
+            },
+            returnPolicy: {
+                merchantReturnDays: "14",
+                returnPolicyCategory: "MerchantReturnFiniteReturnWindow"
+            }
         },
         edit: 'click to edit',
         login: '☁️ Sign in with Azure B2C',

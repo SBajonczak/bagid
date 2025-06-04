@@ -1,56 +1,140 @@
 import React from 'react';
-// import { Helmet } from 'react-helmet-async'; // Updated import
-// import { useLanguage } from '../LanguageContext';
-
-// interface IMetaData {
-//     title: string;
-//     description: string;
-//     keywords: string;
-// }
+import { Helmet } from 'react-helmet-async';
+import { useLanguage } from '../LanguageContext';
+import { messages } from '../i18n';
 
 const SeoMeta: React.FC = () => {
-    // const { lang } = useLanguage();
+    const { lang } = useLanguage();
 
-    // const meta: IMetaData = {
-    //     de: {
-    //         title: 'Bag Tag – Smarter Kofferanhänger mit NFC & QR-Code',
-    //         description:
-    //             'Bag Tag – der smarte Kofferanhänger mit NFC & QR-Code. Bearbeite Kontakt- und Reisedaten jederzeit online. Finde dein Gepäck schnell wieder – weltweit.',
-    //         keywords:
-    //             'bag tag, bagtag, bagid, nfc kofferanhänger, qr kofferanhänger, smart luggage tag, lost luggage tag, smart bag tag, nfc tag travel, qr code bag, lost and found tag, digital luggage label, reisetag, koffer label, gepäckanhänger mit nfc, gepäckanhänger mit qr, kontaktloser kofferanhänger, luggage recovery tag, baggage identifier, travel smart tag, suitcase tracker tag, koffer sicherheit tag, kofferanhänger kaufen, gepäckanhänger personalisiert, smart travel gadget, reise gadget, nfc reisepass tag, bag tag online edit, lost suitcase contact tag, qr nfc kombi tag',
-    //     },
-    //     en: {
-    //         title: 'Bag Tag – Smart Luggage Tag with NFC & QR Code',
-    //         description:
-    //             'Bag Tag – the smart luggage tag with NFC & QR code. Update your contact and travel data online anytime. Recover your luggage faster – worldwide.',
-    //         keywords:
-    //             'bag tag, bagtag, bagid, smart luggage tag, nfc luggage tag, qr code bag tag, digital luggage label, lost and found tag, travel nfc tag, suitcase tracker, luggage smart tag, no app luggage tag, qr nfc combo tag, contactless luggage tag, update bag info online, recover lost suitcase, smart travel gear, travel gadget luggage tag, nfc tag for travel bag, bagtag buy online',
-    //     },
-    // }[lang as 'de' | 'en'];
+    // Get SEO content from i18n
+    const {
+        title,
+        description,
+        keywords,
+        productName,
+        brandName,
+        productPrice,
+        shippingDetails,
+        returnPolicy
+    } = messages[lang].seo;
+    
+    // Get testimonials from i18n
+    const { testimonials } = messages[lang].noDataSection;
+    
+    // Calculate average rating from testimonials
+    const totalRating = testimonials.reduce((sum, testimonial) => sum + testimonial.rating, 0);
+    const averageRating = totalRating / testimonials.length;
+    const ratingValue = parseFloat(averageRating.toFixed(1)); // Round to 1 decimal place
+
+    // Map testimonials to review format for JSON-LD
+    const reviews = testimonials.map(testimonial => ({
+        "@type": "Review",
+        "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": testimonial.rating,
+            "bestRating": 5
+        },
+        "author": {
+            "@type": "Person",
+            "name": testimonial.name
+        },
+        "reviewBody": testimonial.text
+    }));
+
+    // Create the JSON-LD as a formatted object first
+    const productJsonLd = {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": productName,
+        "image": "https://www.bag-tag.de/assets/product-image.jpg",
+        "description": description,
+        "brand": {
+            "@type": "Brand",
+            "name": brandName
+        },
+        "review": reviews,
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": ratingValue,
+            "reviewCount": testimonials.length
+        },
+        "offers": {
+            "@type": "Offer",
+            "url": "https://www.bag-tag.de",
+            "priceCurrency": "EUR",
+            "price": productPrice,
+            "availability": "https://schema.org/InStock",
+            "shippingDetails": {
+                "@type": "OfferShippingDetails",
+                "shippingRate": {
+                    "@type": "MonetaryAmount",
+                    "value": shippingDetails.shippingRate,
+                    "currency": "EUR"
+                },
+                "shippingDestination": {
+                    "@type": "DefinedRegion",
+                    "addressCountry": shippingDetails.shippingDestination
+                },
+                "deliveryTime": {
+                    "@type": "ShippingDeliveryTime",
+                    "handlingTime": {
+                        "@type": "QuantitativeValue",
+                        "minValue": 1,
+                        "maxValue": 2,
+                        "unitCode": "DAY"
+                    },
+                    "transitTime": {
+                        "@type": "QuantitativeValue",
+                        "minValue": 1,
+                        "maxValue": 2,
+                        "unitCode": "DAY"
+                    }
+                },
+                "sameDay": shippingDetails.sameDay,
+                "overnight": shippingDetails.overnight,
+                "twoDay": shippingDetails.twoDay
+            },
+            "hasMerchantReturnPolicy": {
+                "@type": "MerchantReturnPolicy",
+                "returnPolicyCategory": returnPolicy.returnPolicyCategory,
+                "merchantReturnDays": returnPolicy.merchantReturnDays,
+                "returnMethod": "ReturnByMail"
+            }
+        }
+    };
 
     return (
-        <>
-        </>
-        // <Helmet>
-        //     <html lang={lang} />
-        //     <title>{meta.title}</title>
-        //     <meta name="description" content={meta.description} />
-        //     <meta name="keywords" content={meta.keywords} />
-        //     <meta name="robots" content="index, follow" />
+        <Helmet>
+            {/* Basic Meta Tags */}
+            <title>{title}</title>
+            <meta name="description" content={description} />
+            <meta name="keywords" content={keywords} />
+            <meta name="author" content="Bag-Tag.de" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <link rel="canonical" href="https://www.bag-tag.de" />
 
-        //     {/* Open Graph for social sharing */}
-        //     <meta property="og:title" content={meta.title} />
-        //     <meta property="og:description" content={meta.description} />
-        //     <meta property="og:type" content="website" />
-        //     <meta property="og:url" content="https://vcard.bajonczak.com" />
-        //     <meta property="og:image" content="https://vcard.bajonczak.com/og-image.jpg" />
+            {/* Language Setting */}
+            <html lang={lang} />
 
-        //     {/* Twitter Card */}
-        //     <meta name="twitter:card" content="summary_large_image" />
-        //     <meta name="twitter:title" content={meta.title} />
-        //     <meta name="twitter:description" content={meta.description} />
-        //     <meta name="twitter:image" content="https://vcard.bajonczak.com/og-image.jpg" />
-        // </Helmet>
+            {/* Open Graph / Facebook */}
+            <meta property="og:type" content="website" />
+            <meta property="og:url" content="https://www.bag-tag.de/" />
+            <meta property="og:title" content={title} />
+            <meta property="og:description" content={description} />
+            <meta property="og:image" content="https://www.bag-tag.de/assets/og-image.jpg" />
+
+            {/* Twitter */}
+            <meta property="twitter:card" content="summary_large_image" />
+            <meta property="twitter:url" content="https://www.bag-tag.de/" />
+            <meta property="twitter:title" content={title} />
+            <meta property="twitter:description" content={description} />
+            <meta property="twitter:image" content="https://www.bag-tag.de/assets/og-image.jpg" />
+
+            {/* Structured Data / JSON-LD */}
+            <script type="application/ld+json">
+                {JSON.stringify(productJsonLd, null, 2)}
+            </script>
+        </Helmet>
     );
 };
 
