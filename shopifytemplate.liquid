@@ -1,0 +1,70 @@
+<!-- Shopify Theme: Kreativschicht Custom Theme -->
+<!-- Place this in your Shopify theme's sections or templates as needed -->
+
+<!-- Main Layout -->
+<section style="width: 100%; background: #fefaf7; padding: 48px 0; font-family: 'Nunito', sans-serif;">
+  <!-- Hero Image with CTA -->
+  <div style="width: 100%; margin: 0 auto 32px; position: relative; overflow: hidden;">
+    <img src="{{ 'Hero-Image.png' | asset_url }}" alt="Kreativschicht Banner" style="width: 100%; display: block;">
+    <div style="position: absolute; top: 0; left: 0; padding: 5% 8%; max-width: 600px; text-align: left;">
+      <h1 style="font-size: 2.75rem; font-weight: 800; margin-bottom: 0.5rem; color: #5d3a2e; text-shadow: 0px 0px 8px rgba(255,255,255,0.8);">Einzigartige Kreationen für dein Zuhause</h1>
+      <p style="font-size: 1.25rem; color: #6b4c3b; margin-bottom: 1.5rem; text-shadow: 0px 0px 6px rgba(255,255,255,0.8);">Entdecke kreative 3D-Druck-Produkte und handgemachte Artikel!</p>
+      <a href="/collections/all" style="background-color: #d06c46; color: white; padding: 14px 28px; border-radius: 12px; font-weight: bold; font-size: 1.125rem; text-decoration: none; display: inline-block;">Jetzt kaufen</a>
+    </div>
+  </div>
+
+  <!-- Product Categories from kreativschicht.de -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 24px; max-width: 1120px; margin: 48px auto; padding: 0 16px;">
+    {% for collection in collections %}
+    <a href="{{ collection.url }}" style="text-align: center; text-decoration: none; color: #3c2c23;">
+      <div style="background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); padding: 16px; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+        <img src="{{ collection.image | img_url: 'medium' }}" alt="{{ collection.title }}" style="width: 100%; border-radius: 8px;">
+        <p style="margin-top: 8px; font-weight: 600;">{{ collection.title }}</p>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+
+  <!-- Bestseller Gallery (using 'bestseller' collection directly) -->
+  <div style="max-width: 1120px; margin: 48px auto; text-align: center; padding: 0 16px;">
+    <h2 style="font-size: 2rem; color: #5d3a2e; margin-bottom: 24px;">Unsere Bestseller</h2>
+    {% assign bestseller = collections['647787282774'] %}
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px;">
+      {% for product in bestseller.products %}
+        <div style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+          <a href="{{ product.url }}" style="text-decoration: none; color: #3c2c23;">
+            <img src="{{ product.featured_image | img_url: 'medium' }}" alt="{{ product.title }}" style="width: 100%; border-radius: 8px;">
+            <p style="margin-top: 8px; font-weight: 600;">{{ product.title }}</p>
+            <p>{{ product.price | money }}</p>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Customer Reviews -->
+  <div style="max-width: 960px; margin: 0 auto 48px;">
+    <h2 style="text-align: center; font-size: 2rem; margin-bottom: 24px; color: #5d3a2e;">Kundenbewertungen</h2>
+    <div style="display: flex; gap: 24px; flex-wrap: wrap; justify-content: center;">
+      <div style="flex: 1 1 280px; background: white; border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <strong>Laura</strong>
+        <p>Wunderbare Handwerkskunst! Die Qualität ist hervorragend, ich bin begeistert.</p>
+      </div>
+      <div style="flex: 1 1 280px; background: white; border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <strong>Tim</strong>
+        <p>Tolle, individuelle Designs und großartiger Service. Sehr zu empfehlen!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- About Section -->
+  <div style="max-width: 960px; margin: 0 auto 48px; text-align: center;">
+    <h2 style="font-size: 2rem; color: #5d3a2e;">Über uns</h2>
+    <p style="margin-top: 12px; color: #6b4c3b;">
+      Willkommen bei Kreativschicht – deinem Ort für kreative 3D-Drucke und handgemachte Lieblingsstücke.
+      Wir legen Wert auf Details, Qualität und Design – damit jedes Produkt etwas ganz Besonderes wird.
+    </p>
+  </div>
+</section>
+
+<!-- Add custom styles or additional blocks as needed -->

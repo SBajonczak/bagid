@@ -3,16 +3,16 @@ export const messages = {
     de: {
         common: {
             offerText: '🔥 Exklusives Angebot: Spare jetzt 15%! Nur für kurze Zeit – sichere dir deinen NFC-Kofferanhänger!',
-            productname: 'BagID',
+            productname: 'Bag-Tag',
             features: 'Eigenschaften',
             faq: 'FAQ',
         },
         edit: 'klicken um zu bearbeiten',
         login: '☁️ Mit Azure B2C anmelden',
         travelCard: {
-            loggedInAs:'Angemeldet als',
+            loggedInAs: 'Angemeldet als',
             edit: 'Bearbeiten',
-            productname: 'Bag Tag',
+            productname: 'Bag-Tag',
             suitcase: 'Reisekoffer',
             favorite: 'Dies ist mein Lieblingskoffer',
             notify: 'Besitzer benachrichtigen',
@@ -40,7 +40,7 @@ export const messages = {
             checkingAuth: 'Überprüfe Berechtigung...',
             unauthorized: 'Keine Berechtigung',
             cancelButton: 'Zurück',
-            secureAccessMessage: 'Sicherer Zugriff von BagID',
+            secureAccessMessage: 'Sicherer Zugriff von Bag-Tag',
             loginHelp: 'Melde dich mit deinem Konto an, um deine Tags zu verwalten.',
             unauthorizedHelp: 'Nur der Besitzer dieses Tags kann die Daten bearbeiten.',
             // Edit messages
@@ -50,7 +50,10 @@ export const messages = {
             saveSuccess: 'Änderungen gespeichert',
             saveError: 'Fehler beim Speichern',
             loading: 'Lade Daten...',
-            required: 'Pflichtfeld'
+            required: 'Pflichtfeld',
+            na: "k.A",
+            noData: "Keine Daten verfügbar"
+
         },
         noDataSection: {
             demoLinkText: "Demo ansehen",
@@ -78,7 +81,7 @@ export const messages = {
                     rating: 5,
                 },
             ],
-            headline: 'Bag Tag – Der smarte Kofferanhänger',
+            headline: 'Bag-Tag – Der smarte Kofferanhänger',
             subline: 'Mit NFC & QR-Code. Kontaktdaten und Reisedaten jederzeit online ändern. Finder können dich sofort kontaktieren oder den Koffer nachsenden.',
             features: [
                 'Sofortiger Zugriff per NFC & QR-Code',
@@ -90,22 +93,22 @@ export const messages = {
                 'Robustes und wasserfestes Design für jede Reise'
             ],
             contact: 'Kontakt aufnehmen',
-            cta: 'Bag Tag jetzt sichern'
+            cta: 'Bag-Tag jetzt sichern'
         },
         faq: {
             title: 'Häufig gestellte Fragen',
             questions: [
                 {
-                    question: 'Wie funktioniert der Bag Tag?',
-                    answer: 'Der Bag Tag nutzt NFC und QR-Code-Technologie, um Ihre Kontaktdaten sicher zu speichern und Finder zu ermöglichen, Sie schnell zu kontaktieren.',
+                    question: 'Wie funktioniert der Bag-Tag?',
+                    answer: 'Der Bag-Tag nutzt NFC und QR-Code-Technologie, um Ihre Kontaktdaten sicher zu speichern und Finder zu ermöglichen, Sie schnell zu kontaktieren.',
                 },
                 {
                     question: 'Kann ich meine Daten jederzeit ändern?',
                     answer: 'Ja, Sie können Ihre Daten jederzeit online aktualisieren, um sicherzustellen, dass sie immer aktuell sind.',
                 },
                 {
-                    question: 'Ist der Bag Tag wasserdicht?',
-                    answer: 'Ja, der Bag Tag ist robust und wasserdicht, sodass er für jede Reise geeignet ist.',
+                    question: 'Ist der Bag-Tag wasserdicht?',
+                    answer: 'Ja, der Bag-Tag ist robust und wasserdicht, sodass er für jede Reise geeignet ist.',
                 },
                 {
                     question: 'Was ist in dem Paket enthalten?',
@@ -115,11 +118,11 @@ export const messages = {
         },
         tagRegistration: {
             title: 'Tag Registrierung',
-            subtitle: 'Verbinde deinen BagID Tag mit deinem Konto',
+            subtitle: 'Verbinde deinen Bag-Tag Tag mit deinem Konto',
             loading: 'Lade Informationen...',
             unknownDeviceTitle: 'Unbekanntes Gerät',
-            unknownDeviceDescription: 'Dieser Tag ist nicht in unserem System registriert. Erwirbst du gerade einen neuen BagID Tag?',
-            considerPurchase: 'Entdecke unsere BagID Tags und mach jedes Gepäckstück smart:',
+            unknownDeviceDescription: 'Dieser Tag ist nicht in unserem System registriert. Erwirbst du gerade einen neuen Bag-Tag Tag?',
+            considerPurchase: 'Entdecke unsere Bag-Tag Tags und mach jedes Gepäckstück smart:',
             loginPrompt: 'Bitte melde dich an, um diesen Tag mit deinem Konto zu verknüpfen.',
             loggedInAs: 'Du bist angemeldet als',
             registerTagButton: 'Tag registrieren',
@@ -145,7 +148,7 @@ export const messages = {
     en: {
         common: {
             offerText: '🔥 Exclusive offer: Save 15% now! Limited time only – get your NFC luggage tag today!',
-            productname: 'BagID',
+            productname: 'Bag-Tag',
             features: 'Features',
             faq: 'FAQ',
         },
@@ -154,7 +157,7 @@ export const messages = {
         travelCard: {
             loggedInAs: 'Logged in as',
             edit: 'Edit',
-            productname: 'Bag Tag',
+            productname: 'Bag-Tag',
             suitcase: 'Suitcase',
             favorite: 'This is my favorite suitcase',
             notify: 'Notify the owner',
@@ -182,7 +185,7 @@ export const messages = {
             checkingAuth: 'Checking authorization...',
             unauthorized: 'Unauthorized',
             cancelButton: 'Back',
-            secureAccessMessage: 'Secure access control by BagID',
+            secureAccessMessage: 'Secure access control by Bag-Tag',
             loginHelp: 'Sign in with your account to manage your tags.',
             unauthorizedHelp: 'Only the owner of this tag can edit the data.',
             // Edit messages
@@ -192,12 +195,14 @@ export const messages = {
             saveSuccess: 'Changes saved',
             saveError: 'Error saving',
             loading: 'Loading data...',
-            required: 'Required'
+            required: 'Required',
+            na: "N/A",
+            noData: "No data available"
         },
         noDataSection: {
             demoLinkText: "View Demo",
             testimonialsTitle: "What our customers say",
-            headline: 'Bag Tag – The smart luggage tag',
+            headline: 'Bag-Tag – The smart luggage tag',
             subline: 'With NFC & QR code. Update your contact and travel data online anytime. Finders can contact you instantly or forward your luggage.',
             testimonials: [
                 {
@@ -232,22 +237,22 @@ export const messages = {
                 'Durable and waterproof design for every journey'
             ],
             contact: 'Contact us',
-            cta: 'Get your Bag Tag now'
+            cta: 'Get your Bag-Tag now'
         },
         faq: {
             title: 'Frequently Asked Questions',
             questions: [
                 {
-                    question: 'How does the Bag Tag work?',
-                    answer: 'The Bag Tag uses NFC and QR code technology to securely store your contact details and allow finders to contact you quickly.',
+                    question: 'How does the Bag-Tag work?',
+                    answer: 'The Bag-Tag uses NFC and QR code technology to securely store your contact details and allow finders to contact you quickly.',
                 },
                 {
                     question: 'Can I update my data anytime?',
                     answer: 'Yes, you can update your data online anytime to ensure it is always up-to-date.',
                 },
                 {
-                    question: 'Is the Bag Tag waterproof?',
-                    answer: 'Yes, the Bag Tag is durable and waterproof, making it suitable for any journey.',
+                    question: 'Is the Bag-Tag waterproof?',
+                    answer: 'Yes, the Bag-Tag is durable and waterproof, making it suitable for any journey.',
                 },
                 {
                     question: 'What is included in the package?',
@@ -257,11 +262,11 @@ export const messages = {
         },
         tagRegistration: {
             title: 'Tag Registration',
-            subtitle: 'Connect your BagID tag to your account',
+            subtitle: 'Connect your Bag-Tag tag to your account',
             loading: 'Loading information...',
             unknownDeviceTitle: 'Unknown Device',
-            unknownDeviceDescription: 'This tag is not registered in our system. Are you looking to purchase a new BagID tag?',
-            considerPurchase: 'Discover our BagID tags and make any luggage smart:',
+            unknownDeviceDescription: 'This tag is not registered in our system. Are you looking to purchase a new Bag-Tag tag?',
+            considerPurchase: 'Discover our Bag-Tag tags and make any luggage smart:',
             loginPrompt: 'Please log in to link this tag to your account.',
             loggedInAs: 'You are logged in as',
             registerTagButton: 'Register Tag',

@@ -1,0 +1,128 @@
+<!-- Shopify Theme: Kreativschicht Custom Theme -->
+<!-- Place this in your Shopify theme's sections or templates as needed -->
+
+<!-- Sticky CTA für Mobilgeräte -->
+<style>
+  @media (max-width: 768px) {
+    .sticky-cta {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #FF6F61;
+      color: #fff;
+      text-align: center;
+      padding: 14px;
+      font-size: 1.125rem;
+      z-index: 9999;
+    }
+  }
+  .product-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .product-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+</style>
+<a href="/collections/all" class="sticky-cta">🎯 Jetzt kaufen & sparen</a>
+
+<!-- Main Layout -->
+<section style="width: 100%; background: #fefaf7; padding: 48px 0; font-family: 'Nunito', sans-serif;">
+
+  <!-- FOMO Hinweis -->
+  <div style="background: #ffe9e1; color: #5d3a2e; text-align: center; padding: 12px 0;">
+    🔥 Nur heute: 10 % Rabatt auf alle Bestseller! Code: <strong>KREATIV10</strong>
+  </div>
+
+  <!-- Trust Badges (von externen Badge-Services) -->
+  <div style="display: flex; justify-content: center; gap: 24px; margin: 24px 0; flex-wrap: wrap;">
+    <img src="https://assets.trustedshops.com/badge/icon.svg" alt="Trusted Shops" style="height: 40px;">
+    <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="PayPal" style="height: 40px;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" alt="Visa" style="height: 40px;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" style="height: 40px;">
+  </div>
+
+  <!-- Hero Image with CTA -->
+  <div style="width: 100%; margin: 0 auto 32px; position: relative; overflow: hidden;">
+    <img
+      src="{{ 'hero-banner.png' | asset_url }}"
+      alt="Kreativschicht Banner"
+      style="width: 100%; height: 60vh; object-fit: cover; display: block;"
+    >
+    <div style="position: absolute; top: 0; left: 0; padding: 5% 8%; max-width: 600px; text-align: left;">
+      <h1 style="font-size: 3rem; font-weight: 900; margin-bottom: 1rem; color: #5d3a2e; text-shadow: 0px 0px 10px rgba(255,255,255,0.9);">
+        Einzigartige Kreationen für dein Zuhause
+      </h1>
+      <p style="font-size: 1.5rem; color: #6b4c3b; margin-bottom: 2rem; text-shadow: 0px 0px 8px rgba(255,255,255,0.9);">
+        Entdecke kreative 3D-Druck-Produkte und handgemachte Artikel!
+      </p>
+      <a
+        href="/collections/all"
+        style="
+          background-color: #FF6F61; color: white; padding: 16px 32px; border-radius: 14px;
+          font-weight: 700; font-size: 1.25rem; text-decoration: none; display: inline-block;
+          box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: background 0.3s ease;
+        "
+      >
+        Jetzt kaufen
+      </a>
+    </div>
+  </div>
+
+  <!-- USP Sektion -->
+  <div style="background: #fff; padding: 32px 16px; text-align: center; border-bottom: 1px solid #eee;">
+    <h2 style="font-size: 1.75rem; color: #5d3a2e; margin-bottom: 16px;">Warum Kreativschicht?</h2>
+    <div style="display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;">
+      <div><strong>✅ Handgemacht in Deutschland</strong></div>
+      <div><strong>🚀 Versand innerhalb 24h</strong></div>
+      <div><strong>🎁 Liebevolle Geschenkverpackung</strong></div>
+    </div>
+  </div>
+
+  <!-- Produktgalerie Hover-Effekt vorbereiten -->
+  <style>
+    .product-gallery-item {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .product-gallery-item:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+  </style>
+
+  <!-- FAQ Bereich (aufgefrischt) -->
+  <div style="background: #fff8f2; padding: 48px 16px; max-width: 960px; margin: 48px auto; border-radius: 16px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
+    <h2 style="text-align: center; font-size: 2.25rem; margin-bottom: 32px; color: #5d3a2e;">Häufige Fragen (FAQ)</h2>
+    <div style="max-width: 700px; margin: 0 auto;">
+      <details style="margin-bottom: 16px;">
+        <summary style="cursor: pointer; font-weight: bold; font-size: 1.1rem; color: #5d3a2e;">📦 Wie lange dauert der Versand?</summary>
+        <p style="margin-top: 8px; color: #6b4c3b;">Wir versenden innerhalb von 24h – dein Paket ist meist in 1–3 Werktagen bei dir.</p>
+      </details>
+      <details style="margin-bottom: 16px;">
+        <summary style="cursor: pointer; font-weight: bold; font-size: 1.1rem; color: #5d3a2e;">🎨 Kann ich das Produkt personalisieren?</summary>
+        <p style="margin-top: 8px; color: #6b4c3b;">Ja! Viele Artikel lassen sich individuell gestalten – gib deinen Wunschtext einfach im Bestellprozess an.</p>
+      </details>
+      <details style="margin-bottom: 16px;">
+        <summary style="cursor: pointer; font-weight: bold; font-size: 1.1rem; color: #5d3a2e;">↩️ Gibt es ein Rückgaberecht?</summary>
+        <p style="margin-top: 8px; color: #6b4c3b;">Natürlich – du kannst deine Bestellung innerhalb von 14 Tagen problemlos zurückgeben.</p>
+      </details>
+    </div>
+  </div>
+
+  <!-- About Section mit mehr Pep -->
+  <div style="max-width: 960px; margin: 64px auto; text-align: center; padding: 48px 16px; background: #fff; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+    <h2 style="font-size: 2.5rem; color: #5d3a2e; margin-bottom: 16px;">🌿 Unsere Geschichte</h2>
+    <p style="margin-top: 12px; font-size: 1.125rem; color: #6b4c3b; max-width: 720px; margin-left: auto; margin-right: auto;">
+      Ich bin Anna, Gründerin von Kreativschicht. Jedes Stück entsteht mit viel Liebe und Kreativität – inspiriert von der Natur, meiner Familie und dem Wunsch, Dinge langlebig und besonders zu machen.
+    </p>
+    <p style="margin-top: 16px; font-size: 1.125rem; color: #6b4c3b;">
+      Kreativschicht steht für Herzblut, Nachhaltigkeit und Persönlichkeit. Unser Ziel: Produkte, die nicht nur schön aussehen, sondern auch Freude schenken.
+    </p>
+  </div>
+
+</section>

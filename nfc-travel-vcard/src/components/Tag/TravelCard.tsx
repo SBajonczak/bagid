@@ -16,7 +16,7 @@ const TravelCard: React.FC = () => {
     const navigate = useNavigate();
     const { lang } = useLanguage();
     const t = messages[lang].travelCard;
-    const editText = lang === 'de' ? 'Bearbeiten' : 'Edit';
+    // const editText = lang === 'de' ? 'Bearbeiten' : 'Edit';
 
     // State for travel data
     const [travelData, setTravelData] = useState<Partial<TravelData> | null>(null);
@@ -78,18 +78,15 @@ const TravelCard: React.FC = () => {
     // Set language for dayjs
     dayjs.locale(lang);
 
-    // Localized "N/A" text
-    const naText = lang === 'de' ? 'k.A.' : 'N/A';
-
     // Format date
     const formattedDate =
         travelData?.transportationDate == null
-            ? naText
+            ? t.na
             : dayjs(travelData.transportationDate).format('L');
 
 
     if (loading) {
-        return <div className="text-center p-8">Loading...</div>;
+        return <div className="text-center p-8">{t.loading}</div>;
     }
 
     if (error) {
@@ -97,7 +94,7 @@ const TravelCard: React.FC = () => {
     }
 
     if (!travelData) {
-        return <div className="text-center p-8">No data available</div>;
+        return <div className="text-center p-8">{t.noData}</div>;
     }
 
     return (
@@ -111,10 +108,10 @@ const TravelCard: React.FC = () => {
                     </div>
 
                     {/* Show edit button only if user is owner or demo */}
-                   
-                        <Link to={`/${tagId}/edit`} className="bg-blue-700 text-white rounded px-8 py-3 text-lg cursor-pointer inline-block text-center ml-4 flex-1">
-                            {editText}
-                        </Link>
+
+                    <Link to={`/${tagId}/edit`} className="bg-blue-700 text-white rounded px-8 py-3 text-lg cursor-pointer inline-block text-center ml-4 flex-1">
+                        {t.edit}
+                    </Link>
                 </div>
             </div>
 
