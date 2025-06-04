@@ -8,6 +8,7 @@ import { useLanguage } from '../../LanguageContext';
 import { messages } from '../../i18n';
 import { TravelData } from '../../types';
 import { logger } from '@/utils/logger';
+import NotificationModal from './NotificationModal';
 
 dayjs.extend(localizedFormat);
 
@@ -16,13 +17,15 @@ const TravelCard: React.FC = () => {
     const navigate = useNavigate();
     const { lang } = useLanguage();
     const t = messages[lang].travelCard;
-    // const editText = lang === 'de' ? 'Bearbeiten' : 'Edit';
 
     // State for travel data
     const [travelData, setTravelData] = useState<Partial<TravelData> | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [tagRegistered, setTagRegistered] = useState<boolean>(false);
+    
+    // Notification modal state
+    const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
 
     // Check if tag exists and if user is the owner
     useEffect(() => {
@@ -103,11 +106,12 @@ const TravelCard: React.FC = () => {
                 <h1 className="font-bold uppercase text-2xl my-2">{t.suitcase}</h1>
                 <div className="text-gray-600">{t.favorite}</div>
                 <div className="flex justify-between mt-4">
-                    <div className="bg-red-700 text-white rounded px-8 py-3 text-lg cursor-pointer inline-block text-center flex-1">
+                    {/* <div  
+                        className="bg-red-700 text-white rounded px-8 py-3 text-lg cursor-pointer inline-block text-center flex-1"
+                        onClick={() => setIsNotificationModalOpen(true)}
+                    >
                         {t.notify}
-                    </div>
-
-                    {/* Show edit button only if user is owner or demo */}
+                    </div> */}
 
                     <Link to={`/${tagId}/edit`} className="bg-blue-700 text-white rounded px-8 py-3 text-lg cursor-pointer inline-block text-center ml-4 flex-1">
                         {t.edit}
@@ -236,6 +240,16 @@ const TravelCard: React.FC = () => {
                     </tbody>
                 </table>
             </section>
+
+            {/* Notification Modal */}
+            {travelData.ownerEmail && (
+                <NotificationModal 
+                    isOpen={isNotificationModalOpen}
+                    onClose={() => setIsNotificationModalOpen(false)}
+                    ownerEmail={travelData.ownerEmail}
+                    tagId={tagId || ''}
+                />
+            )}
         </div>
     );
 };

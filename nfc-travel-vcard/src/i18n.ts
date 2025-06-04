@@ -163,6 +163,24 @@ export const messages = {
                 'Mehrere Tags mit einem Konto verwalten',
                 'Bei Verlust schneller gefunden werden'
             ]
+        },
+        notification: {
+            title: 'Besitzer benachrichtigen',
+            description: 'Sende dem Besitzer eine Nachricht mit deinem aktuellen Standort.',
+            yourLocation: 'Dein aktueller Standort:',
+            locationDenied: 'Standortfreigabe wurde verweigert. Bitte erlaube den Zugriff auf deinen Standort, um den Besitzer zu benachrichtigen.',
+            openInMaps: 'In Google Maps öffnen',
+            messageLabel: 'Deine Nachricht:',
+            messagePlaceholder: 'Ich habe deinen Koffer gefunden und bin hier...',
+            send: 'Nachricht senden',
+            sending: 'Wird gesendet...',
+            success: 'Nachricht erfolgreich gesendet! Der Besitzer wurde benachrichtigt.',
+            sendError: 'Fehler beim Senden der Nachricht. Bitte versuche es später erneut.',
+            cancel: 'Abbrechen',
+            close: 'Schließen',
+            captchaRequired: 'Bitte bestätige, dass du kein Roboter bist.',
+            securityError: 'Sicherheitsproblem beim Verbindungsaufbau. Bitte versuche es später erneut.',
+            tooManyRequests: 'Zu viele Anfragen. Bitte warte einen Moment und versuche es dann erneut.',
         }
     },
     en: {
@@ -327,6 +345,24 @@ export const messages = {
                 'Manage multiple tags with one account',
                 'Get found faster if lost'
             ]
+        },
+        notification: {
+            title: 'Notify Owner',
+            description: 'Send a message to the owner with your current location.',
+            yourLocation: 'Your current location:',
+            locationDenied: 'Location access denied. Please allow access to your location to notify the owner.',
+            openInMaps: 'Open in Google Maps',
+            messageLabel: 'Your message:',
+            messagePlaceholder: 'I found your luggage and I\'m at...',
+            send: 'Send Message',
+            sending: 'Sending...',
+            success: 'Message sent successfully! The owner has been notified.',
+            sendError: 'Error sending message. Please try again later.',
+            cancel: 'Cancel',
+            close: 'Close',
+            captchaRequired: 'Please verify that you are not a robot.',
+            securityError: 'Security issue while establishing connection. Please try again later.',
+            tooManyRequests: 'Too many requests. Please wait a moment and try again later.',
         }
     }
 
