@@ -125,8 +125,8 @@ const TagRegistration: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-10 px-4 sm:px-6">
-            <div className="max-w-4xl mx-auto">
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-24 px-4 flex flex-col items-center">
+            <div className="w-full max-w-7xl">
                 {/* Header */}
                 <div className="text-center mb-8">
                     <h1 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
