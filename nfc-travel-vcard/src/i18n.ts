@@ -119,9 +119,9 @@ export const messages = {
         faq: {
             title: 'Häufig gestellte Fragen',
             questions: [
-                {
+                 {
                     question: 'Wie funktioniert der Bag-Tag?',
-                    answer: 'Der Bag-Tag nutzt NFC und QR-Code-Technologie, um Ihre Kontaktdaten sicher zu speichern und Finder zu ermöglichen, Sie schnell zu kontaktieren.',
+                    answer: 'Der Bag-Tag nutzt NFC und QR-Code-Technologie, um deine Kontaktdaten sicher zu speichern und Finder zu ermöglichen, dich schnell zu kontaktieren.',
                 },
                 {
                     question: 'Wie funktioniert die Registrierung?',
@@ -130,7 +130,7 @@ export const messages = {
 
                 {
                     question: 'Kann ich meine Daten jederzeit ändern?',
-                    answer: 'Ja, Sie können Ihre Daten jederzeit online aktualisieren, um sicherzustellen, dass sie immer aktuell sind.',
+                    answer: 'Ja, du kannst deine Daten jederzeit online aktualisieren, um sicherzustellen, dass sie immer aktuell sind.',
                 },
                 {
                     question: 'Ist der Bag-Tag wasserdicht?',
@@ -138,7 +138,7 @@ export const messages = {
                 },
                 {
                     question: 'Was ist in dem Paket enthalten?',
-                    answer: 'Sie erhalten ihr Persönliches Tag und ein Metallring zum befestigen des Tags.',
+                    answer: 'Du erhältst dein persönliches Tag und einen Metallring zum Befestigen des Tags.',
                 },
             ],
         },
