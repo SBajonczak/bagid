@@ -1,0 +1,11 @@
+# Python dependencies for OpenSCAD 3MF export script
+
+# Required external program:
+# - OpenSCAD must be installed and accessible in PATH
+
+# No additional Python packages are required as the script only uses standard library modules:
+# os, sys, subprocess, argparse, tempfile, shutil, pathlib, zipfile, xml.etree.ElementTree, uuid
+
+# Optional enhancements (uncomment if desired)
+# colorama>=0.4.6  # For colored terminal output
+# tqdm>=4.66.1     # For progress bars when processing multiple files

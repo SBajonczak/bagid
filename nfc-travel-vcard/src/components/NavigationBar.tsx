@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 import React from 'react';
 import { useLanguage } from '../LanguageContext';
 import { messages } from '../i18n';
@@ -13,10 +14,25 @@ const NavigationBar: React.FC = () => {
             {/* Language selection with flags */}
             <div className="flex gap-2">
             {/* Add more flags as needed */}
+            <span
+                className="font-extrabold text-blue-800 tracking-wide drop-shadow-sm flex items-center text-[1.25rem] md:text-2xl"
+            >
+                <img
+                    src={`${import.meta.env.BASE_URL}assets/icon_32_32.png`}
+                    alt="Logo"
+                    className="inline-block w-8 h-8 mr-2 align-middle flex-shrink-0"
+                />
+                <span className="hidden md:inline md:text-3xl whitespace-nowrap">
+                    {t1.productname}
+                </span>
+                <span className="inline md:hidden text-[1rem] whitespace-nowrap">
+                    {t1.productname}
+                </span>
+            </span>
             </div>
             <div className="flex-1 flex justify-center">
             <h1 className="font-bold px-4 py-2  text-md md:text-base text-center">
-                {t1.productname}
+              
             </h1>
             </div>
             <ul className="hidden md:flex gap-4 ml-auto">

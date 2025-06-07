@@ -114,7 +114,7 @@ export const messages = {
                 'Robustes und wasserfestes Design für jede Reise'
             ],
             contact: 'Kontakt aufnehmen',
-            cta: 'Bag-Tag jetzt sichern'
+            cta: 'jetzt sichern'
         },
         faq: {
             title: 'Häufig gestellte Fragen',
@@ -123,6 +123,11 @@ export const messages = {
                     question: 'Wie funktioniert der Bag-Tag?',
                     answer: 'Der Bag-Tag nutzt NFC und QR-Code-Technologie, um Ihre Kontaktdaten sicher zu speichern und Finder zu ermöglichen, Sie schnell zu kontaktieren.',
                 },
+                {
+                    question: 'Wie funktioniert die Registrierung?',
+                    answer: 'Du erhältst deinen Bag-Tag per Post. Sobald du den NFC-Chip mit deinem Smartphone ausliest oder den QR-Code scannst, wirst du automatisch zur Registrierungsseite weitergeleitet. Dort kannst du den Tag direkt mit deinem Konto verknüpfen und deine Kontaktdaten hinterlegen. So ist dein Gepäck im Handumdrehen geschützt und du kannst jederzeit Änderungen online vornehmen.',
+                },
+
                 {
                     question: 'Kann ich meine Daten jederzeit ändern?',
                     answer: 'Ja, Sie können Ihre Daten jederzeit online aktualisieren, um sicherzustellen, dass sie immer aktuell sind.',
@@ -297,7 +302,7 @@ export const messages = {
                 'Durable and waterproof design for every journey'
             ],
             contact: 'Contact us',
-            cta: 'Get your Bag-Tag now'
+            cta: 'Get now'
         },
         faq: {
             title: 'Frequently Asked Questions',
@@ -306,6 +311,11 @@ export const messages = {
                     question: 'How does the Bag-Tag work?',
                     answer: 'The Bag-Tag uses NFC and QR code technology to securely store your contact details and allow finders to contact you quickly.',
                 },
+                {
+                    question: 'How does registration work?',
+                    answer: 'You will receive your Bag-Tag by mail. As soon as you scan the NFC chip with your smartphone or the QR code, you will automatically be redirected to the registration page. There you can link the tag directly to your account and enter your contact details. This way your luggage is protected in no time and you can update your data online at any time.',
+                },
+
                 {
                     question: 'Can I update my data anytime?',
                     answer: 'Yes, you can update your data online anytime to ensure it is always up-to-date.',

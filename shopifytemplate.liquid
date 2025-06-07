@@ -1,37 +1,100 @@
 <!-- Shopify Theme: Kreativschicht Custom Theme -->
 <!-- Place this in your Shopify theme's sections or templates as needed -->
 
+<!-- Sticky CTA für Mobilgeräte -->
+<style>
+  @media (max-width: 768px) {
+    .sticky-cta {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #FF6F61;
+      color: #fff;
+      text-align: center;
+      padding: 14px;
+      font-size: 1.125rem;
+      z-index: 9999;
+    }
+  }
+  .product-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .product-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+</style>
+<a href="/collections/all" class="sticky-cta">🎯 Jetzt kaufen & sparen</a>
+
 <!-- Main Layout -->
 <section style="width: 100%; background: #fefaf7; padding: 48px 0; font-family: 'Nunito', sans-serif;">
+
+  <!-- FOMO Hinweis -->
+  <div style="background: #ffe9e1; color: #5d3a2e; text-align: center; padding: 12px 0;">
+    🔥 Nur heute: 10 % Rabatt auf alle Bestseller! Code: <strong>KREATIV10</strong>
+  </div>
+
+  <!-- Trust Badges -->
+  <div style="display: flex; justify-content: center; gap: 24px; margin: 24px 0; flex-wrap: wrap;">
+    <img src="https://assets.trustedshops.com/badge/icon.svg" alt="Trusted Shops" style="height: 40px;">
+    <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="PayPal" style="height: 40px;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" alt="Visa" style="height: 40px;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" style="height: 40px;">
+  </div>
+
   <!-- Hero Image with CTA -->
   <div style="width: 100%; margin: 0 auto 32px; position: relative; overflow: hidden;">
-    <img src="{{ 'Hero-Image.png' | asset_url }}" alt="Kreativschicht Banner" style="width: 100%; display: block;">
+    <img
+      src="{{ 'hero-banner.png' | asset_url }}"
+      alt="Kreativschicht Banner"
+      style="width: 100%; height: 60vh; object-fit: cover; display: block;"
+    >
     <div style="position: absolute; top: 0; left: 0; padding: 5% 8%; max-width: 600px; text-align: left;">
-      <h1 style="font-size: 2.75rem; font-weight: 800; margin-bottom: 0.5rem; color: #5d3a2e; text-shadow: 0px 0px 8px rgba(255,255,255,0.8);">Einzigartige Kreationen für dein Zuhause</h1>
-      <p style="font-size: 1.25rem; color: #6b4c3b; margin-bottom: 1.5rem; text-shadow: 0px 0px 6px rgba(255,255,255,0.8);">Entdecke kreative 3D-Druck-Produkte und handgemachte Artikel!</p>
-      <a href="/collections/all" style="background-color: #d06c46; color: white; padding: 14px 28px; border-radius: 12px; font-weight: bold; font-size: 1.125rem; text-decoration: none; display: inline-block;">Jetzt kaufen</a>
+      <h1 style="font-size: 3rem; font-weight: 900; margin-bottom: 1rem; color: #5d3a2e; text-shadow: 0px 0px 10px rgba(255,255,255,0.9);">
+        Einzigartige Kreationen für dein Zuhause
+      </h1>
+      <p style="font-size: 1.5rem; color: #6b4c3b; margin-bottom: 2rem; text-shadow: 0px 0px 8px rgba(255,255,255,0.9);">
+        Entdecke kreative 3D-Druck-Produkte und handgemachte Artikel!
+      </p>
+      <a
+        href="/collections/all"
+        style="
+          background-color: #FF6F61; color: white; padding: 16px 32px; border-radius: 14px;
+          font-weight: 700; font-size: 1.25rem; text-decoration: none; display: inline-block;
+          box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: background 0.3s ease;
+        "
+      >
+        Jetzt kaufen
+      </a>
     </div>
   </div>
 
-  <!-- Product Categories from kreativschicht.de -->
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 24px; max-width: 1120px; margin: 48px auto; padding: 0 16px;">
-    {% for collection in collections %}
-    <a href="{{ collection.url }}" style="text-align: center; text-decoration: none; color: #3c2c23;">
-      <div style="background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); padding: 16px; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-        <img src="{{ collection.image | img_url: 'medium' }}" alt="{{ collection.title }}" style="width: 100%; border-radius: 8px;">
-        <p style="margin-top: 8px; font-weight: 600;">{{ collection.title }}</p>
-      </div>
-    </a>
-    {% endfor %}
+  <!-- Collection Vorschau -->
+  <div style="max-width: 1120px; margin: 64px auto; text-align: center;">
+    <h2 style="font-size: 2rem; color: #5d3a2e; margin-bottom: 24px;">🛍️ Entdecke unsere Kategorien</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 24px; padding: 0 16px;">
+      {% for collection in collections %}
+      {% if collection.id == 648085602646 or collection.id ==  651449762134 or collection.id ==  648085504342 %} 
+        <a href="{{ collection.url }}" style="text-decoration: none; color: #3c2c23;">
+          <div class="product-gallery-item">
+            <img src="{{ collection.image | img_url: 'medium' }}" alt="{{ collection.title }}" style="width: 100%; border-radius: 8px;">
+            <p style="margin-top: 8px; font-weight: 600;">{{ collection.title }}</p>
+          </div>
+        </a>
+      {% endif %}
+
+      {% endfor %}
+    </div>
   </div>
 
-  <!-- Bestseller Gallery (using 'bestseller' collection directly) -->
-  <div style="max-width: 1120px; margin: 48px auto; text-align: center; padding: 0 16px;">
-    <h2 style="font-size: 2rem; color: #5d3a2e; margin-bottom: 24px;">Unsere Bestseller</h2>
+  <!-- Bestseller Galerie -->
+  <div style="max-width: 1120px; margin: 64px auto; text-align: center; padding: 0 16px;">
+    <h2 style="font-size: 2rem; color: #5d3a2e; margin-bottom: 24px;">🔥 Unsere Bestseller</h2>
     {% assign bestseller = collections['647787282774'] %}
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px;">
       {% for product in bestseller.products %}
-        <div style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+        <div class="product-gallery-item">
           <a href="{{ product.url }}" style="text-decoration: none; color: #3c2c23;">
             <img src="{{ product.featured_image | img_url: 'medium' }}" alt="{{ product.title }}" style="width: 100%; border-radius: 8px;">
             <p style="margin-top: 8px; font-weight: 600;">{{ product.title }}</p>
@@ -42,29 +105,88 @@
     </div>
   </div>
 
-  <!-- Customer Reviews -->
-  <div style="max-width: 960px; margin: 0 auto 48px;">
-    <h2 style="text-align: center; font-size: 2rem; margin-bottom: 24px; color: #5d3a2e;">Kundenbewertungen</h2>
+  <!-- Kundenbewertungen -->
+  <div style="max-width: 960px; margin: 64px auto;">
+    <h2 style="text-align: center; font-size: 2.25rem; margin-bottom: 32px; color: #5d3a2e;">💬 Kundenstimmen</h2>
     <div style="display: flex; gap: 24px; flex-wrap: wrap; justify-content: center;">
-      <div style="flex: 1 1 280px; background: white; border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-        <strong>Laura</strong>
-        <p>Wunderbare Handwerkskunst! Die Qualität ist hervorragend, ich bin begeistert.</p>
+      <div style="flex: 1 1 280px; background: white; border-radius: 16px; padding: 24px; box-shadow: 0 4px 8px rgba(0,0,0,0.08); text-align: center;">
+        <img src="https://randomuser.me/api/portraits/women/68.jpg" style="border-radius: 50%; width: 64px; height: 64px; margin-bottom: 12px;" alt="Laura">
+        <p style="font-weight: bold; color: #5d3a2e;">Laura</p>
+        <p style="font-style: italic; color: #6b4c3b;">„Wunderbare Handwerkskunst! Die Qualität ist hervorragend, ich bin begeistert.“</p>
       </div>
-      <div style="flex: 1 1 280px; background: white; border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-        <strong>Tim</strong>
-        <p>Tolle, individuelle Designs und großartiger Service. Sehr zu empfehlen!</p>
+      <div style="flex: 1 1 280px; background: white; border-radius: 16px; padding: 24px; box-shadow: 0 4px 8px rgba(0,0,0,0.08); text-align: center;">
+        <img src="https://randomuser.me/api/portraits/men/65.jpg" style="border-radius: 50%; width: 64px; height: 64px; margin-bottom: 12px;" alt="Tim">
+        <p style="font-weight: bold; color: #5d3a2e;">Tim</p>
+        <p style="font-style: italic; color: #6b4c3b;">„Tolle, individuelle Designs und großartiger Service. Sehr zu empfehlen!“</p>
       </div>
     </div>
   </div>
 
-  <!-- About Section -->
-  <div style="max-width: 960px; margin: 0 auto 48px; text-align: center;">
-    <h2 style="font-size: 2rem; color: #5d3a2e;">Über uns</h2>
-    <p style="margin-top: 12px; color: #6b4c3b;">
-      Willkommen bei Kreativschicht – deinem Ort für kreative 3D-Drucke und handgemachte Lieblingsstücke.
-      Wir legen Wert auf Details, Qualität und Design – damit jedes Produkt etwas ganz Besonderes wird.
+  <!-- FAQ Bereich -->
+  <div class="faq-section" style="background: #fff8f2; padding: 48px 16px; max-width: 960px; margin: 48px auto; border-radius: 16px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
+    <h2 style="text-align: center; font-size: 2.25rem; margin-bottom: 32px; color: #5d3a2e;">❓ Häufige Fragen</h2>
+    <div style="max-width: 700px; margin: 0 auto;">
+      <details style="margin-bottom: 16px;">
+        <summary style="cursor: pointer; font-weight: bold; font-size: 1.125rem; color: #5d3a2e;">📦 Wie lange dauert der Versand?</summary>
+        <p style="margin-top: 8px; color: #6b4c3b;">Wir versenden innerhalb von 24h – dein Paket ist meist in 1–3 Werktagen bei dir.</p>
+      </details>
+      <details style="margin-bottom: 16px;">
+        <summary style="cursor: pointer; font-weight: bold; font-size: 1.125rem; color: #5d3a2e;">🎨 Kann ich das Produkt personalisieren?</summary>
+        <p style="margin-top: 8px; color: #6b4c3b;">Ja! Viele Artikel lassen sich individuell gestalten – gib deinen Wunschtext einfach im Bestellprozess an.</p>
+      </details>
+      <details style="margin-bottom: 16px;">
+        <summary style="cursor: pointer; font-weight: bold; font-size: 1.125rem; color: #5d3a2e;">↩️ Gibt es ein Rückgaberecht?</summary>
+        <p style="margin-top: 8px; color: #6b4c3b;">Natürlich – du kannst deine Bestellung innerhalb von 14 Tagen problemlos zurückgeben.</p>
+      </details>
+    </div>
+  </div>
+
+  <!-- Über uns Section -->
+  <div class="about-section" style="max-width: 960px; margin: 64px auto; text-align: center; padding: 48px 16px; background: #fff; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+    <h2 style="font-size: 2.25rem; color: #5d3a2e; margin-bottom: 16px;">🌿 Unsere Geschichte</h2>
+    <p style="margin-top: 12px; font-size: 1.125rem; color: #6b4c3b; max-width: 720px; margin-left: auto; margin-right: auto;">
+      Hallo wir sind die Gründer von Kreativschicht. Jedes Stück entsteht mit viel Liebe und Kreativität – inspiriert von der Natur, unserer Familie und dem Wunsch, 
+      Dinge langlebig und besonders zu machen.
+    </p>
+    <p style="margin-top: 16px; font-size: 1.125rem; color: #6b4c3b;">
+      Kreativschicht steht für Herzblut, Nachhaltigkeit und Persönlichkeit. Unser Ziel: Produkte, die nicht nur schön aussehen, sondern auch Freude schenken.
     </p>
   </div>
-</section>
 
-<!-- Add custom styles or additional blocks as needed -->
+  <!-- Trust Score Badge -->
+  <div style="max-width: 960px; margin: 32px auto 0; text-align: center;">
+    <p style="font-size: 1.125rem; color: #5d3a2e;">
+      ⭐ <strong>4.9 / 5</strong> basierend auf über <strong>300+ Bewertungen</strong>
+    </p>
+  </div>
+
+  <!-- Add to Cart Animation Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const cartButtons = document.querySelectorAll('a[href*=\"/products/\"]');
+      cartButtons.forEach(btn => {
+        btn.addEventListener('click', function (e) {
+          const cartIcon = document.querySelector('.site-header__cart');
+          const clone = this.cloneNode(true);
+          clone.style.position = 'fixed';
+          clone.style.top = `${this.getBoundingClientRect().top}px`;
+          clone.style.left = `${this.getBoundingClientRect().left}px`;
+          clone.style.width = '100px';
+          clone.style.zIndex = '9999';
+          clone.style.transition = 'all 1s ease-in-out';
+          document.body.appendChild(clone);
+          setTimeout(() => {
+            clone.style.top = '10px';
+            clone.style.left = '90%';
+            clone.style.opacity = '0';
+            clone.style.transform = 'scale(0.2)';
+          }, 100);
+          setTimeout(() => {
+            document.body.removeChild(clone);
+          }, 1100);
+        });
+      });
+    });
+  </script>
+
+</section>
