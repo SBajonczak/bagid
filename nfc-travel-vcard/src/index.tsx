@@ -10,6 +10,7 @@ import { LanguageProvider } from './LanguageContext';
 import TravelCardEdit from './components/Tag/TravelCardEdit';
 import TagRegistration from './components/Tag/TagRegistration';
 import { logger } from './utils/logger';
+import Dashboard from './components/Dashboard';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 logger.info('Starting React application...');
@@ -20,10 +21,11 @@ root.render(
                 <Routes>
                     <Route path="/" element={<App />} />
                     <Route path="/register/:tagId" element={<TagRegistration />} />
-                    <Route path="/:tagId/register" element={<TagRegistration />} />
+                    {/* <Route path="/:tagId/register" element={<TagRegistration />} /> */}
                     <Route path="/:tagId/edit" element={<TravelCardEdit />} />
                     <Route path="/:tagId?" element={<TravelCard />} />
                     <Route path="/app" element={<App />} />
+
                 </Routes>
             </Router>
         </LanguageProvider>

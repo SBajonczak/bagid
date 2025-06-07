@@ -356,4 +356,29 @@ async tagRegistered(tagId) {
     }
   }
 
+  /**
+   * Ruft die Tags für einen bestimmten Benutzer ab
+   * @param {string} userId - Die Benutzer-ID aus Azure B2C
+   * @returns {Promise<Array<object>>} Liste der Tags des Benutzers
+   */
+  async getUserTags(userId) {
+    try {
+      const pool = await this.getConnection();
+      const result = await pool.request()
+        .input('userId', sql.NVarChar, userId)
+        .query(`
+          SELECT t.tagId, t.tagName, t.ownerFirstName, t.ownerLastName, t.hasData
+          FROM TravelTag t
+          JOIN TagOwners o ON t.tagId = o.TagID
+          WHERE o.UserID = @userId
+          ORDER BY t.tagName
+        `);
+      
+      return result.recordset;
+    } catch (error) {
+      console.error('Fehler beim Abrufen der Tags des Benutzers:', error);
+      throw error;
+    }
+  }
+
 }

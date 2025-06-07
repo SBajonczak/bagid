@@ -2,10 +2,26 @@ export type SupportedLang = 'de' | 'en';
 export const messages = {
     de: {
         common: {
+            dashboardSubtitle: 'Verwalte deine NFC-Reise-Tags bequem an einem Ort.',
             offerText: '🔥 Exklusives Angebot: Spare jetzt 15%! Nur für kurze Zeit – sichere dir deinen NFC-Kofferanhänger!',
             productname: 'Bag-Tag',
             features: 'Eigenschaften',
             faq: 'FAQ',
+            login: "Login",
+            logout: "Logout",
+            dashboard: "Dashboard",
+            myTags: "Meine Tags",
+            noTagsFound: "Du hast noch keine Tags.",
+            buyTag: "Tag kaufen",
+            untitledTag: "Unbenanntes Tag",
+            editTag: "Tag bearbeiten",
+            viewDetails: "Details anzeigen",
+            noDataWarning: "Dieses Tag hat noch keine Reisedaten",
+            loginRequired: "Anmeldung erforderlich",
+            loginToViewDashboard: "Bitte melde dich an, um dein Dashboard zu sehen",
+            error: "Fehler",
+            errorFetchingTags: "Konnte deine Tags nicht laden",
+            notAuthenticated: "Du musst dich anmelden, um diese Seite zu sehen",
         },
         seo: {
             title: 'Bag-Tag.de | Smarte NFC Gepäckanhänger für sicheres Reisen',
@@ -119,7 +135,7 @@ export const messages = {
         faq: {
             title: 'Häufig gestellte Fragen',
             questions: [
-                 {
+                {
                     question: 'Wie funktioniert der Bag-Tag?',
                     answer: 'Der Bag-Tag nutzt NFC und QR-Code-Technologie, um deine Kontaktdaten sicher zu speichern und Finder zu ermöglichen, dich schnell zu kontaktieren.',
                 },
@@ -187,14 +203,55 @@ export const messages = {
             captchaRequired: 'Bitte bestätige, dass du kein Roboter bist.',
             securityError: 'Sicherheitsproblem beim Verbindungsaufbau. Bitte versuche es später erneut.',
             tooManyRequests: 'Zu viele Anfragen. Bitte warte einen Moment und versuche es dann erneut.',
+        },
+        dashboard: {
+            title: "Mein Bag-Tag Dashboard",
+            subtitle: "Verwalte deine Tags und Reisedaten",
+            welcome: "Willkommen zurück",
+            yourTags: "Deine Tags",
+            addNewTag: "Neuen Tag hinzufügen",
+            registerTag: "Tag registrieren",
+            scanTag: "Tag scannen",
+            tagManagement: "Tag-Verwaltung",
+            tagDetails: "Tag-Details",
+            lastUpdated: "Zuletzt aktualisiert",
+            actions: "Aktionen",
+            noTagsMessage: "Du hast noch keine Tags registriert.",
+            noTagsSubtitle: "Kaufe und registriere einen Tag, um zu beginnen.",
+            loading: "Deine Tags werden geladen...",
+            errorLoading: "Es gab einen Fehler beim Laden deiner Tags.",
+            retryButton: "Erneut versuchen",
+            tagId: "Tag-ID",
+            owner: "Besitzer",
+            status: {
+                active: "Aktiv",
+                inactive: "Inaktiv",
+                pending: "Ausstehend"
+            }
         }
     },
     en: {
         common: {
+            dashboardSubtitle: 'Manage your NFC travel tags conveniently in one place.',
             offerText: '🔥 Exclusive offer: Save 15% now! Limited time only – get your NFC luggage tag today!',
             productname: 'Bag-Tag',
             features: 'Features',
             faq: 'FAQ',
+            login: "Login",
+            logout: "Logout",
+            dashboard: "Dashboard",
+            myTags: "My Tags",
+            noTagsFound: "You do not have any tags yet.",
+            buyTag: "Buy a tag",
+            untitledTag: "Untitled Tag",
+            editTag: "Edit tag",
+            viewDetails: "View Details",
+            noDataWarning: "This tag has no travel data yet",
+            loginRequired: "Login Required",
+            loginToViewDashboard: "Please log in to view your dashboard",
+            error: "Error",
+            errorFetchingTags: "Could not load your tags",
+            notAuthenticated: "You need to log in to view this page",
         },
         seo: {
             title: 'Bag-Tag.de | Smart NFC Luggage Tags for Safe Travel',
@@ -375,6 +432,31 @@ export const messages = {
             captchaRequired: 'Please verify that you are not a robot.',
             securityError: 'Security issue while establishing connection. Please try again later.',
             tooManyRequests: 'Too many requests. Please wait a moment and try again later.',
+        },
+        dashboard: {
+            title: "My Bag-Tag Dashboard",
+            subtitle: "Manage your tags and travel data",
+            welcome: "Welcome back",
+            yourTags: "Your Tags",
+            addNewTag: "Add New Tag",
+            registerTag: "Register Tag",
+            scanTag: "Scan Tag",
+            tagManagement: "Tag Management",
+            tagDetails: "Tag Details",
+            lastUpdated: "Last Updated",
+            actions: "Actions",
+            noTagsMessage: "You haven't registered any tags yet.",
+            noTagsSubtitle: "Purchase and register a tag to get started.",
+            loading: "Loading your tags...",
+            errorLoading: "There was an error loading your tags.",
+            retryButton: "Try Again",
+            tagId: "Tag ID",
+            owner: "Owner",
+            status: {
+                active: "Active",
+                inactive: "Inactive",
+                pending: "Pending"
+            }
         }
     }
 

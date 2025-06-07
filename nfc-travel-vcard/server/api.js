@@ -183,6 +183,20 @@ app.get('/api/travel/:tagId', async (req, res) => {
   }
 });
 
+// API route to get all tags owned by the current user
+app.get('/api/user/tags', verifyToken, async (req, res) => {
+  const userId = req.user.sub;
+
+  try {
+    const repo = new TagRepo();
+    const tags = await repo.getUserTags(userId);
+    res.json(tags);
+  } catch (error) {
+    console.error('Error fetching user tags:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // Server starten
 app.listen(port,'0.0.0.0', () => {
   console.log(`API-Server läuft auf http://localhost:${port}`);
