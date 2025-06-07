@@ -17,10 +17,10 @@ const SeoMeta: React.FC = () => {
         shippingDetails,
         returnPolicy
     } = messages[lang].seo;
-    
+
     // Get testimonials from i18n
     const { testimonials } = messages[lang].noDataSection;
-    
+
     // Calculate average rating from testimonials
     const totalRating = testimonials.reduce((sum, testimonial) => sum + testimonial.rating, 0);
     const averageRating = totalRating / testimonials.length;

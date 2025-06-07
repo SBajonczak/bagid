@@ -1,7 +1,7 @@
 CREATE TABLE TravelTag (
     tagId uniqueidentifier PRIMARY KEY,
     hasData bit NOT NULL,
- isRegistered bit default(0),
+    isRegistered bit default(0),
     -- Owner/Kontakt
     ownerFirstName VARCHAR(100) NOT NULL,
     ownerLastName VARCHAR(100) NOT NULL,
@@ -36,3 +36,8 @@ CREATE TABLE [dbo].[TagOwners] (
 );
 
 CREATE INDEX [IX_TagOwners_UserID] ON [dbo].[TagOwners] ([UserID]);
+
+IF COL_LENGTH('TravelTag', 'tagName') IS NULL
+BEGIN
+    ALTER TABLE TravelTag ADD tagName VARCHAR(500) NULL;
+END
