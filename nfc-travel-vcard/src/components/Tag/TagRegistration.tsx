@@ -224,7 +224,7 @@ const TagRegistration: React.FC = () => {
                                             {tr.howItWorksTitle}
                                         </h3>
                                         <ol className="space-y-3">
-                                            {tr.howItWorksSteps.map((step, idx) => (
+                                            {tr.howItWorksSteps.map((step:any, idx:number) => (
                                                 <li key={idx} className="flex items-start">
                                                     <span className="flex-shrink-0 h-6 w-6 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 font-medium text-sm mr-3">
                                                         {idx + 1}
@@ -240,7 +240,7 @@ const TagRegistration: React.FC = () => {
                                             {tr.whyRegisterTitle}
                                         </h3>
                                         <ul className="space-y-3">
-                                            {tr.whyRegisterPoints.map((point, idx) => (
+                                            {tr.whyRegisterPoints.map((point:any, idx:number) => (
                                                 <li key={idx} className="flex items-start">
                                                     <FaCheckCircle className="h-5 w-5 text-green-500 mr-3 flex-shrink-0 mt-0.5" />
                                                     <span className="text-gray-600">{point}</span>
