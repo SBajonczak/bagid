@@ -10,7 +10,6 @@ import { LanguageProvider } from './LanguageContext';
 import TravelCardEdit from './components/Tag/TravelCardEdit';
 import TagRegistration from './components/Tag/TagRegistration';
 import { logger } from './utils/logger';
-import Dashboard from './components/Dashboard';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 logger.info('Starting React application...');

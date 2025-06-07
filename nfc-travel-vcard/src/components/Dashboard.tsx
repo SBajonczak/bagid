@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../LanguageContext';
 import { messages } from '../i18n';
 import { Link } from 'react-router-dom';
-import { FaTag, FaSuitcase, FaEdit, FaExclamationTriangle } from 'react-icons/fa';
+import { FaTag, FaSuitcase, FaEdit } from 'react-icons/fa';
 import { logger } from '@/utils/logger';
 import authService from '@/services/AuthService';
 
@@ -26,7 +26,7 @@ const Dashboard: React.FC<DashboardProps> = (props:DashboardProps) => {
 
     const [tags, setTags] = useState<Tag[]>([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const [, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchUserTags = async () => {

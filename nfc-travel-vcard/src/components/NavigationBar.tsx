@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { useLanguage } from '../LanguageContext';
 import { messages } from '../i18n';
 import { FaUser, FaUserCircle } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
 import authService from '../services/AuthService';
 import { logger } from '@/utils/logger';
 

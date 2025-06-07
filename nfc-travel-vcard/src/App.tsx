@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import MessageContainer from './components/MessageContainer';
 import StartPageControl from './components/StartPageControl';
