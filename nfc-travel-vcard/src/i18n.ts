@@ -89,7 +89,10 @@ export const messages = {
             required: 'Pflichtfeld',
             na: "k.A",
             noData: "Keine Daten verfügbar",
-            back: 'Zurück'
+            back: 'Zurück',
+            tagDetails: "Tag-Details",
+            tagName: "Tag-Name",
+            tagNameHelp: "Geben Sie einen Namen ein, um diesen Tag in Ihrem Dashboard zu identifizieren"
 
         },
         noDataSection: {
@@ -319,7 +322,11 @@ export const messages = {
             required: 'Required',
             na: "N/A",
             noData: "No data available",
-            back: 'Back'
+            back: 'Back',
+            tagDetails: "Tag Details",
+            tagName: "Tag Name",
+            tagNameHelp: "Enter a name to identify this tag in your dashboard"
+
         },
         noDataSection: {
             demoLinkText: "View Demo",

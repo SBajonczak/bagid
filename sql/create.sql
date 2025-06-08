@@ -39,5 +39,5 @@ CREATE INDEX [IX_TagOwners_UserID] ON [dbo].[TagOwners] ([UserID]);
 
 IF COL_LENGTH('TravelTag', 'tagName') IS NULL
 BEGIN
-    ALTER TABLE TravelTag ADD tagName VARCHAR(500) NULL;
+    ALTER TABLE TravelTag ADD tagName VARCHAR(500)  NULL;
 END

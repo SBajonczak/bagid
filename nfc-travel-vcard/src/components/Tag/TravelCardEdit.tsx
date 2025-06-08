@@ -344,6 +344,27 @@ const TravelCardEdit: React.FC = () => {
 
             <section className="mb-8">
                 <h3 className="px-3 py-2 m-0 font-semibold bg-blue-700 text-white">
+                    {t.tagDetails || "Tag Details"}
+                </h3>
+
+                <div className="grid grid-cols-1 gap-4 p-4 bg-gray-50">
+                    <div className="form-group">
+                        <label className="block font-bold text-blue-800 mb-1">{t.tagName || "Tag Name"} <span className="text-red-500">*</span></label>
+                        <input
+                            type="text"
+                            name="tagName"
+                            value={formData.tagName || ''}
+                            onChange={handleChange}
+                            className="w-full p-2 border rounded"
+                            required
+                        />
+                        <small className="text-gray-500">{t.tagNameHelp || "Enter a name to identify this tag in your dashboard"}</small>
+                    </div>
+                </div>
+            </section>
+
+            <section className="mb-8">
+                <h3 className="px-3 py-2 m-0 font-semibold bg-blue-700 text-white">
                     {t.about}
                 </h3>
 

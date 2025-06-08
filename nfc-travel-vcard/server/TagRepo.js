@@ -1,13 +1,11 @@
 import { Logger } from 'concurrently';
 import sql from 'mssql';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export class TagRepo {
   constructor() {
-   
-    import('dotenv').then(dotenv => {
-      dotenv.config();
-    });
-
     this.config = {
       user: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
@@ -53,6 +51,7 @@ export class TagRepo {
           SELECT 
             TagID as tagId,
             CASE WHEN 1=1 THEN 1 ELSE 0 END as hasData,
+            tagName as tagName,
             OwnerFirstName as ownerFirstName,
             OwnerLastName as ownerLastName,
             OwnerAddress as ownerAddress,
@@ -117,6 +116,7 @@ export class TagRepo {
         
         // Mapping der TravelData-Properties zu Datenbankspalten
         const fieldMappings = {
+          tagName: {sqlField: 'tagName', sqlType: sql.NVarChar},
           ownerFirstName: {sqlField: 'OwnerFirstName', sqlType: sql.NVarChar},
           ownerLastName: {sqlField: 'OwnerLastName', sqlType: sql.NVarChar},
           ownerAddress: {sqlField: 'OwnerAddress', sqlType: sql.NVarChar},
@@ -167,6 +167,7 @@ export class TagRepo {
         
         // Mapping der TravelData-Properties zu Datenbankspalten
         const fieldMappings = {
+          tagName: {sqlField: 'tagName', sqlType: sql.NVarChar},
           ownerFirstName: {sqlField: 'OwnerFirstName', sqlType: sql.NVarChar},
           ownerLastName: {sqlField: 'OwnerLastName', sqlType: sql.NVarChar},
           ownerAddress: {sqlField: 'OwnerAddress', sqlType: sql.NVarChar},

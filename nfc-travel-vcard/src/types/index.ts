@@ -9,6 +9,7 @@ export interface User {
 export interface TravelData {
     tagId:string; //Contains a guid from the tag itself
     hasData:boolean;
+    tagName:string;
     // Kontakt/Owner
     ownerFirstName: string;
     ownerLastName: string;
