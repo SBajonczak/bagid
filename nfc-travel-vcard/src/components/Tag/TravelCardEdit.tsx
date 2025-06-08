@@ -308,8 +308,13 @@ const TravelCardEdit: React.FC = () => {
     return (
         <form onSubmit={handleSubmit} className="travel-card-edit text-black bg-white rounded-lg shadow-md p-6 w-full mx-auto my-6">
             <div className="text-center mb-6">
-                <h1 className="font-bold uppercase text-2xl my-2">{t.suitcase}</h1>
-                <div className="text-gray-600">{t.favorite}</div>
+                <h1 className="font-bold uppercase text-2xl my-2">{formData.tagName || t.suitcase}</h1>
+                <div className="text-gray-600"></div>
+
+                {/* Information note about empty fields */}
+                <div className="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded mt-4 text-sm">
+                    {t.emptyFieldsNote || "Hinweis: Leere Felder werden auf der Karte nicht angezeigt."}
+                </div>
 
                 {saveMessage && (
                     <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mt-4">
@@ -322,7 +327,7 @@ const TravelCardEdit: React.FC = () => {
                         {error}
                     </div>
                 )}
-
+                
                 <div className="flex justify-between mt-4 gap-4">
                     <button
                         type="button"
@@ -346,6 +351,11 @@ const TravelCardEdit: React.FC = () => {
                 <h3 className="px-3 py-2 m-0 font-semibold bg-blue-700 text-white">
                     {t.tagDetails || "Tag Details"}
                 </h3>
+                
+                {/* Tag details section hint */}
+                <div className="bg-gray-100 p-2 text-gray-700 text-sm mb-2">
+                    {t.tagDetailsHint || "Hier können Sie einen Namen für diesen Tag eingeben, der in Ihrem Dashboard angezeigt wird."}
+                </div>
 
                 <div className="grid grid-cols-1 gap-4 p-4 bg-gray-50">
                     <div className="form-group">
@@ -367,6 +377,11 @@ const TravelCardEdit: React.FC = () => {
                 <h3 className="px-3 py-2 m-0 font-semibold bg-blue-700 text-white">
                     {t.about}
                 </h3>
+                
+                {/* Owner information section hint */}
+                <div className="bg-gray-100 p-2 text-gray-700 text-sm mb-2">
+                    {t.ownerInfoHint || "Geben Sie hier Ihre Kontaktdaten als Eigentümer des Gepäcks ein."}
+                </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-50">
                     <div className="form-group">
@@ -450,6 +465,12 @@ const TravelCardEdit: React.FC = () => {
 
             <section className="mb-8">
                 <h3 className="bg-blue-700 text-white my-4 font-semibold px-3 py-2 m-0">{t.travelData}</h3>
+                
+                {/* Travel information section hint */}
+                <div className="bg-gray-100 p-2 text-gray-700 text-sm mb-2">
+                    {t.travelDataHint || "Informationen zu Ihrer Reise wie Transportmittel, Flugnummer oder Zugnummer und Datum."}
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-50">
                     <div className="form-group">
                         <label className="block font-bold text-blue-800 mb-1">{t.provider}</label>
@@ -488,6 +509,12 @@ const TravelCardEdit: React.FC = () => {
 
             <section className="mb-8">
                 <h3 className="bg-blue-700 text-white px-3 py-2 m-0 font-semibold">{t.guide}</h3>
+                
+                {/* Guide information section hint */}
+                <div className="bg-gray-100 p-2 text-gray-700 text-sm mb-2">
+                    {t.guideInfoHint || "Kontaktdaten Ihres Reiseleiters oder einer Kontaktperson am Zielort."}
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-50">
                     <div className="form-group">
                         <label className="block font-bold text-blue-800 mb-1">{t.firstName}</label>
@@ -548,6 +575,12 @@ const TravelCardEdit: React.FC = () => {
 
             <section>
                 <h3 className="bg-blue-700 text-white px-3 py-2 m-0 font-semibold">{t.destinationaddress}</h3>
+                
+                {/* Destination address section hint */}
+                <div className="bg-gray-100 p-2 text-gray-700 text-sm mb-2">
+                    {t.destinationAddressHint || "Informationen zu Ihrer Unterkunft am Zielort."}
+                </div>
+
                 <div className="grid grid-cols-1 gap-4 p-4 bg-gray-50">
                     <div className="form-group">
                         <label className="block font-bold text-blue-800 mb-1">{t.destinationaddress_Accmodation}</label>
@@ -572,7 +605,7 @@ const TravelCardEdit: React.FC = () => {
                     </div>
                 </div>
             </section>
-
+            
             <div className="mt-6 flex justify-between gap-4">
                 <button
                     type="button"

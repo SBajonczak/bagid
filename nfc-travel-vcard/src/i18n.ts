@@ -92,7 +92,13 @@ export const messages = {
             back: 'Zurück',
             tagDetails: "Tag-Details",
             tagName: "Tag-Name",
-            tagNameHelp: "Geben Sie einen Namen ein, um diesen Tag in Ihrem Dashboard zu identifizieren"
+            tagNameHelp: "Geben Sie einen Namen ein, um diesen Tag in Ihrem Dashboard zu identifizieren",
+            emptyFieldsNote: "Hinweis: Leere Felder werden auf der Karte nicht angezeigt.",
+            tagDetailsHint: "Hier können Sie einen Namen für diesen Tag eingeben, der in Ihrem Dashboard angezeigt wird.",
+            ownerInfoHint: "Geben Sie hier Ihre Kontaktdaten als Eigentümer des Gepäcks ein.",
+            travelDataHint: "Informationen zu Ihrer Reise wie Transportmittel, Flugnummer oder Zugnummer und Datum.",
+            guideInfoHint: "Kontaktdaten Ihres Reiseleiters oder einer Kontaktperson am Zielort.",
+            destinationAddressHint: "Informationen zu Ihrer Unterkunft am Zielort.",
 
         },
         noDataSection: {
@@ -325,7 +331,13 @@ export const messages = {
             back: 'Back',
             tagDetails: "Tag Details",
             tagName: "Tag Name",
-            tagNameHelp: "Enter a name to identify this tag in your dashboard"
+            tagNameHelp: "Enter a name to identify this tag in your dashboard",
+            emptyFieldsNote: "Note: Empty fields will not be displayed on the card.",
+            tagDetailsHint: "Enter a name for this tag that will appear in your dashboard.",
+            ownerInfoHint: "Enter your contact details as the owner of the luggage.",
+            travelDataHint: "Information about your journey such as transport type, flight number or train number, and date.",
+            guideInfoHint: "Contact information for your tour guide or a contact person at your destination.",
+            destinationAddressHint: "Information about your accommodation at the destination.",
 
         },
         noDataSection: {
