@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bag-Tag Login</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Azure B2C required scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    
+    <!-- Match your app's fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+        }
+        
+        .error p {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+        
+        #api {
+            width: 100%;
+        }
+        
+        .entry-item {
+            margin-bottom: 1.5rem;
+        }
+        
+        .entry-item label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #4b5563;
+            font-size: 0.875rem;
+        }
+        
+        .entry-item input, .entry-item select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            background-color: white;
+            font-size: 1rem;
+        }
+        
+        .entry-item input:focus, .entry-item select:focus {
+            outline: none;
+            ring: 2px;
+            ring-color: #3b82f6;
+            border-color: #3b82f6;
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        #continue {
+            background-color: #2563eb;
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        #continue:hover {
+            background-color: #1d4ed8;
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #d1d5db;
+        }
+        
+        .divider::before {
+            margin-right: 1rem;
+        }
+        
+        .divider::after {
+            margin-left: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen flex flex-col">
+        <!-- Navigation bar to match your app -->
+        <nav class="fixed top-0 left-0 w-full bg-white shadow-md py-4 px-6 flex justify-between items-center z-50">
+            <div class="flex gap-2">
+                <a href="https://bag-tag.de" class="font-extrabold text-blue-800 tracking-wide drop-shadow-sm flex items-center text-[1.25rem] md:text-2xl">
+                    <img src="https://bag-tag.de/assets/icon_32_32.png" alt="Logo" class="inline-block w-8 h-8 mr-2 align-middle flex-shrink-0">
+                    <span class="hidden md:inline md:text-3xl whitespace-nowrap">Bag-Tag</span>
+                    <span class="inline md:hidden text-[1rem] whitespace-nowrap">Bag-Tag</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- Main content -->
+        <div class="flex flex-1 items-center justify-center pt-24 px-4 pb-10">
+            <div class="max-w-md w-full bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="p-8">
+                    <div class="text-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-900">Willkommen bei Bag-Tag</h2>
+                        <p class="mt-2 text-gray-600" id="greeting">Bitte melde dich an oder erstelle ein Konto</p>
+                    </div>
+                    
+                    <!-- This is where Azure B2C will inject its form content -->
+                    <div id="api"></div>
+                    
+                    <div class="divider">
+                        <span class="px-2 text-gray-500 text-sm">oder</span>
+                    </div>
+                    
+                    <div class="text-center">
+                        <a href="https://bag-tag.de" class="text-blue-600 hover:underline text-sm">
+                            Zurück zur Startseite
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 px-8 py-4 text-center">
+                    <p class="text-xs text-gray-500">
+                        &copy; <span id="year"></span> Bag-Tag.de - Alle Rechte vorbehalten
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Update greeting based on the current page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current year in footer
+            document.getElementById('year').textContent = new Date().getFullYear();
+            
+            // Update greeting based on current page
+            const pageUrl = window.location.href.toLowerCase();
+            const greeting = document.getElementById('greeting');
+            
+            if (pageUrl.includes('signin')) {
+                greeting.textContent = 'Bitte melde dich mit deinem Konto an';
+            } else if (pageUrl.includes('signup')) {
+                greeting.textContent = 'Erstelle ein neues Konto';
+            } else if (pageUrl.includes('resetpassword')) {
+                greeting.textContent = 'Setze dein Passwort zurück';
+            }
+        });
+    </script>
+</body>
+</html>
