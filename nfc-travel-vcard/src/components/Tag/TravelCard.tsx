@@ -106,7 +106,7 @@ const TravelCard: React.FC = () => {
                 <h1 className="font-bold uppercase text-2xl my-2">
                     {travelData.tagName || t.suitcase}
                 </h1>
-                <div className="text-gray-600"></div>
+                <div className="text-gray-600">{t.favorite}</div>
                 <div className="flex justify-between mt-4">
                     <Link to="/" className="bg-gray-600 text-white rounded px-8 py-3 text-lg cursor-pointer inline-block text-center flex-1 hover:bg-gray-700">
                         {t.back}
@@ -125,127 +125,230 @@ const TravelCard: React.FC = () => {
                 </div>
             </div>
 
-            <section className="mb-8">
-                <h3 className="px-3 py-2 m-0 font-semibold bg-blue-700 text-white">
-                    {t.about}
-                </h3>
-                <table className="w-full border-collapse">
-                    <tbody>
-                        <tr className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50 md:bg-gray-100">
-                            <td className="font-bold text-blue-800">{t.firstName}</td>
-                            <td className="text-gray-800">{travelData.ownerFirstName}</td>
-                            <td className="font-bold text-blue-800">{t.lastName}</td>
-                            <td className="text-gray-800">{travelData.ownerLastName}</td>
-                        </tr>
-                        <tr className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50 md:bg-gray-100">
-                            <td className="font-bold text-blue-800">{t.address}</td>
-                            <td className="text-gray-800">{travelData.ownerAddress}</td>
-                            <td className="font-bold text-blue-800">{t.email}</td>
-                            <td>
-                                <a className="text-blue-600 hover:text-blue-500 underline" href={`mailto:${travelData.ownerEmail}`}>
-                                    {travelData.ownerEmail}
-                                </a>
-                            </td>
-                        </tr>
-                        <tr className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50 md:bg-gray-100">
-                            <td className="font-bold text-blue-800">{t.mobile}</td>
-                            <td>
-                                <a className="text-blue-600 hover:text-blue-500 underline" href={`tel:${travelData.ownerMobile}`}>
-                                    {travelData.ownerMobile}
-                                </a>
-                            </td>
-                            <td className="font-bold text-blue-800">{t.landline}</td>
-                            <td>
-                                <a className="text-blue-600 hover:text-blue-500 underline" href={`tel:${travelData.ownerLandline}`}>
-                                    {travelData.ownerLandline}
-                                </a>
-                            </td>
-                        </tr>
-                        <tr className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50 md:bg-gray-100">
-                            <td className="font-bold text-blue-800">{t.other}</td>
-                            <td className="text-gray-800">{travelData.ownerOther}</td>
-                            <td className="font-bold text-blue-800">{t.destinationaddress_Accmodation}</td>
-                            <td className="text-gray-800">{travelData.destinationAccommodation}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
+            {/* Helper function to check if a field has a value */}
+            {(() => {
+                // Helper function to check if a field has a meaningful value
+                const hasValue = (value: any): boolean => {
+                    return value !== null && value !== undefined && value !== '';
+                };
 
-            <section className="mb-8">
-                <h3 className="bg-blue-700 text-white my-4 font-semibold px-3 py-2 m-0">{t.travelData}</h3>
-                <table className="w-full border-collapse">
-                    <thead>
-                        <tr className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-blue-700 text-white">
-                            <th className="p-2 font-bold">{t.provider}</th>
-                            <th className="p-2 font-bold">{t.details}</th>
-                            <th className="p-2 font-bold">{t.date}</th>
-                            <th className="p-2 font-bold">{t.other}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50 md:bg-gray-100 text-gray-800">
-                            <td className="p-2">{travelData.transportation}</td>
-                            <td className="p-2">{travelData.transportationNumber}</td>
-                            <td className="p-2">{formattedDate}</td>
-                            <td className="p-2">{travelData.ownerOther}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
+                return (
+                    <>
+                        <section className="mb-8">
+                            <h3 className="px-3 py-2 m-0 font-semibold bg-blue-700 text-white">
+                                {t.about}
+                            </h3>
+                            <table className="w-full border-collapse">
+                                <tbody>
+                                    {(hasValue(travelData.ownerFirstName) || hasValue(travelData.ownerLastName)) && (
+                                        <tr className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50 md:bg-gray-100">
+                                            {hasValue(travelData.ownerFirstName) && (
+                                                <>
+                                                    <td className="font-bold text-blue-800">{t.firstName}</td>
+                                                    <td className="text-gray-800">{travelData.ownerFirstName}</td>
+                                                </>
+                                            )}
+                                            {hasValue(travelData.ownerLastName) && (
+                                                <>
+                                                    <td className="font-bold text-blue-800">{t.lastName}</td>
+                                                    <td className="text-gray-800">{travelData.ownerLastName}</td>
+                                                </>
+                                            )}
+                                        </tr>
+                                    )}
 
-            <section>
-                <h3 className="bg-blue-700 text-white px-3 py-2 m-0 font-semibold">{t.guide}</h3>
-                <table className="w-full border-collapse">
-                    <tbody>
-                        <tr className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50 md:bg-gray-100">
-                            <td className="font-bold text-blue-800">{t.firstName}</td>
-                            <td className="text-gray-800">{travelData.guideFirstName}</td>
-                            <td className="font-bold text-blue-800">{t.lastName}</td>
-                            <td className="text-gray-800">{travelData.guideLastName}</td>
-                        </tr>
-                        <tr className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50 md:bg-gray-100">
-                            <td className="font-bold text-blue-800">{t.email}</td>
-                            <td>
-                                <a className="text-blue-600 hover:text-blue-500 underline" href={`mailto:${travelData.guideEmail}`}>
-                                    {travelData.guideEmail}
-                                </a>
-                            </td>
-                            <td className="font-bold text-blue-800">{t.mobile}</td>
-                            <td>
-                                <a className="text-blue-600 hover:text-blue-500 underline" href={`tel:${travelData.guideMobile}`}>
-                                    {travelData.guideMobile}
-                                </a>
-                            </td>
-                        </tr>
-                        <tr className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50 md:bg-gray-100">
-                            <td className="font-bold text-blue-800">{t.landline}</td>
-                            <td>
-                                <a className="text-blue-600 hover:text-blue-500 underline" href={`tel:${travelData.guideLandline}`}>
-                                    {travelData.guideLandline}
-                                </a>
-                            </td>
-                            <td className="font-bold text-blue-800">{t.other}</td>
-                            <td className="text-gray-800">{travelData.ownerOther}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
+                                    {(hasValue(travelData.ownerAddress) || hasValue(travelData.ownerEmail)) && (
+                                        <tr className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50 md:bg-gray-100">
+                                            {hasValue(travelData.ownerAddress) && (
+                                                <>
+                                                    <td className="font-bold text-blue-800">{t.address}</td>
+                                                    <td className="text-gray-800">{travelData.ownerAddress}</td>
+                                                </>
+                                            )}
+                                            {hasValue(travelData.ownerEmail) && (
+                                                <>
+                                                    <td className="font-bold text-blue-800">{t.email}</td>
+                                                    <td>
+                                                        <a className="text-blue-600 hover:text-blue-500 underline" href={`mailto:${travelData.ownerEmail}`}>
+                                                            {travelData.ownerEmail}
+                                                        </a>
+                                                    </td>
+                                                </>
+                                            )}
+                                        </tr>
+                                    )}
 
-            <section>
-                <h3 className="bg-blue-700 text-white px-3 py-2 m-0 font-semibold">{t.destinationaddress}</h3>
-                <table className="w-full border-collapse">
-                    <tbody>
-                        <tr>
-                            <td className="w-36 font-bold">{t.destinationaddress_Accmodation}</td>
-                            <td>{travelData.destinationAccommodation}</td>
-                        </tr>
-                        <tr>
-                            <td className="w-36 font-bold">{t.destinationaddress_Address}</td>
-                            <td>{travelData.destinationAddress}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
+                                    {(hasValue(travelData.ownerMobile) || hasValue(travelData.ownerLandline)) && (
+                                        <tr className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50 md:bg-gray-100">
+                                            {hasValue(travelData.ownerMobile) && (
+                                                <>
+                                                    <td className="font-bold text-blue-800">{t.mobile}</td>
+                                                    <td>
+                                                        <a className="text-blue-600 hover:text-blue-500 underline" href={`tel:${travelData.ownerMobile}`}>
+                                                            {travelData.ownerMobile}
+                                                        </a>
+                                                    </td>
+                                                </>
+                                            )}
+                                            {hasValue(travelData.ownerLandline) && (
+                                                <>
+                                                    <td className="font-bold text-blue-800">{t.landline}</td>
+                                                    <td>
+                                                        <a className="text-blue-600 hover:text-blue-500 underline" href={`tel:${travelData.ownerLandline}`}>
+                                                            {travelData.ownerLandline}
+                                                        </a>
+                                                    </td>
+                                                </>
+                                            )}
+                                        </tr>
+                                    )}
+
+                                    {(hasValue(travelData.ownerOther) || hasValue(travelData.destinationAccommodation)) && (
+                                        <tr className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50 md:bg-gray-100">
+                                            {hasValue(travelData.ownerOther) && (
+                                                <>
+                                                    <td className="font-bold text-blue-800">{t.other}</td>
+                                                    <td className="text-gray-800">{travelData.ownerOther}</td>
+                                                </>
+                                            )}
+                                            {hasValue(travelData.destinationAccommodation) && (
+                                                <>
+                                                    <td className="font-bold text-blue-800">{t.destinationaddress_Accmodation}</td>
+                                                    <td className="text-gray-800">{travelData.destinationAccommodation}</td>
+                                                </>
+                                            )}
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </section>
+
+                        {/* Only show travel data section if at least one field has value */}
+                        {(hasValue(travelData.transportation) || hasValue(travelData.transportationNumber) || 
+                          hasValue(travelData.transportationDate)) && (
+                            <section className="mb-8">
+                                <h3 className="bg-blue-700 text-white my-4 font-semibold px-3 py-2 m-0">{t.travelData}</h3>
+                                <table className="w-full border-collapse">
+                                    <thead>
+                                        <tr className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-blue-700 text-white">
+                                            {hasValue(travelData.transportation) && <th className="p-2 font-bold">{t.provider}</th>}
+                                            {hasValue(travelData.transportationNumber) && <th className="p-2 font-bold">{t.details}</th>}
+                                            {hasValue(travelData.transportationDate) && <th className="p-2 font-bold">{t.date}</th>}
+                                            {hasValue(travelData.ownerOther) && <th className="p-2 font-bold">{t.other}</th>}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50 md:bg-gray-100 text-gray-800">
+                                            {hasValue(travelData.transportation) && <td className="p-2">{travelData.transportation}</td>}
+                                            {hasValue(travelData.transportationNumber) && <td className="p-2">{travelData.transportationNumber}</td>}
+                                            {hasValue(travelData.transportationDate) && <td className="p-2">{formattedDate}</td>}
+                                            {hasValue(travelData.ownerOther) && <td className="p-2">{travelData.ownerOther}</td>}
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </section>
+                        )}
+
+                        {/* Only show guide section if at least one field has value */}
+                        {(hasValue(travelData.guideFirstName) || hasValue(travelData.guideLastName) || 
+                          hasValue(travelData.guideEmail) || hasValue(travelData.guideMobile) ||
+                          hasValue(travelData.guideLandline)) && (
+                            <section>
+                                <h3 className="bg-blue-700 text-white px-3 py-2 m-0 font-semibold">{t.guide}</h3>
+                                <table className="w-full border-collapse">
+                                    <tbody>
+                                        {(hasValue(travelData.guideFirstName) || hasValue(travelData.guideLastName)) && (
+                                            <tr className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50 md:bg-gray-100">
+                                                {hasValue(travelData.guideFirstName) && (
+                                                    <>
+                                                        <td className="font-bold text-blue-800">{t.firstName}</td>
+                                                        <td className="text-gray-800">{travelData.guideFirstName}</td>
+                                                    </>
+                                                )}
+                                                {hasValue(travelData.guideLastName) && (
+                                                    <>
+                                                        <td className="font-bold text-blue-800">{t.lastName}</td>
+                                                        <td className="text-gray-800">{travelData.guideLastName}</td>
+                                                    </>
+                                                )}
+                                            </tr>
+                                        )}
+
+                                        {(hasValue(travelData.guideEmail) || hasValue(travelData.guideMobile)) && (
+                                            <tr className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50 md:bg-gray-100">
+                                                {hasValue(travelData.guideEmail) && (
+                                                    <>
+                                                        <td className="font-bold text-blue-800">{t.email}</td>
+                                                        <td>
+                                                            <a className="text-blue-600 hover:text-blue-500 underline" href={`mailto:${travelData.guideEmail}`}>
+                                                                {travelData.guideEmail}
+                                                            </a>
+                                                        </td>
+                                                    </>
+                                                )}
+                                                {hasValue(travelData.guideMobile) && (
+                                                    <>
+                                                        <td className="font-bold text-blue-800">{t.mobile}</td>
+                                                        <td>
+                                                            <a className="text-blue-600 hover:text-blue-500 underline" href={`tel:${travelData.guideMobile}`}>
+                                                                {travelData.guideMobile}
+                                                            </a>
+                                                        </td>
+                                                    </>
+                                                )}
+                                            </tr>
+                                        )}
+
+                                        {(hasValue(travelData.guideLandline) || hasValue(travelData.ownerOther)) && (
+                                            <tr className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50 md:bg-gray-100">
+                                                {hasValue(travelData.guideLandline) && (
+                                                    <>
+                                                        <td className="font-bold text-blue-800">{t.landline}</td>
+                                                        <td>
+                                                            <a className="text-blue-600 hover:text-blue-500 underline" href={`tel:${travelData.guideLandline}`}>
+                                                                {travelData.guideLandline}
+                                                            </a>
+                                                        </td>
+                                                    </>
+                                                )}
+                                                {hasValue(travelData.ownerOther) && (
+                                                    <>
+                                                        <td className="font-bold text-blue-800">{t.other}</td>
+                                                        <td className="text-gray-800">{travelData.ownerOther}</td>
+                                                    </>
+                                                )}
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </section>
+                        )}
+
+                        {/* Only show destination address section if at least one field has value */}
+                        {(hasValue(travelData.destinationAccommodation) || hasValue(travelData.destinationAddress)) && (
+                            <section>
+                                <h3 className="bg-blue-700 text-white px-3 py-2 m-0 font-semibold">{t.destinationaddress}</h3>
+                                <table className="w-full border-collapse">
+                                    <tbody>
+                                        {hasValue(travelData.destinationAccommodation) && (
+                                            <tr>
+                                                <td className="w-36 font-bold">{t.destinationaddress_Accmodation}</td>
+                                                <td>{travelData.destinationAccommodation}</td>
+                                            </tr>
+                                        )}
+                                        {hasValue(travelData.destinationAddress) && (
+                                            <tr>
+                                                <td className="w-36 font-bold">{t.destinationaddress_Address}</td>
+                                                <td>{travelData.destinationAddress}</td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </section>
+                        )}
+                    </>
+                );
+            })()}
 
             {/* Notification Modal */}
             {travelData.ownerEmail && (
