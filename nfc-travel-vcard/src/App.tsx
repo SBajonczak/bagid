@@ -10,6 +10,7 @@ import NavigationBar from './components/NavigationBar';
 import Dashboard from './components/Dashboard';
 import authService from './services/AuthService';
 import { logger } from './utils/logger';
+import Footer from './components/Footer';
 
 
 
@@ -102,9 +103,8 @@ const App: React.FC = () => {
                         <StartPageControl hidden={false} />
 
                     </div>
-                    <footer className="mt-10 py-4 text-center text-sm text-gray-600">
-                        <p>© {new Date().getFullYear()} Bag-Tag.de - Alle Rechte vorbehalten</p>
-                    </footer>
+                  
+                    <Footer/>
                 </AuthProvider>
             </LanguageProvider>
         </HelmetProvider>

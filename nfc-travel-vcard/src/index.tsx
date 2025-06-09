@@ -9,6 +9,7 @@ import TravelCard from './components/Tag/TravelCard';
 import { LanguageProvider } from './LanguageContext';
 import TravelCardEdit from './components/Tag/TravelCardEdit';
 import TagRegistration from './components/Tag/TagRegistration';
+import Impressum from './components/Impressum/Impressum';
 import { logger } from './utils/logger';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
@@ -22,9 +23,9 @@ root.render(
                     <Route path="/register/:tagId" element={<TagRegistration />} />
                     {/* <Route path="/:tagId/register" element={<TagRegistration />} /> */}
                     <Route path="/:tagId/edit" element={<TravelCardEdit />} />
+                    <Route path="/impressum" element={<Impressum />} />
                     <Route path="/:tagId?" element={<TravelCard />} />
                     <Route path="/app" element={<App />} />
-
                 </Routes>
             </Router>
         </LanguageProvider>

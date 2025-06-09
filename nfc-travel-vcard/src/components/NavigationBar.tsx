@@ -5,6 +5,7 @@ import { messages } from '../i18n';
 import { FaUser, FaUserCircle } from 'react-icons/fa';
 import authService from '../services/AuthService';
 import { logger } from '@/utils/logger';
+import { Link } from 'react-router-dom';
 
 const NavigationBar: React.FC = () => {
     const { lang } = useLanguage();
@@ -81,8 +82,9 @@ const NavigationBar: React.FC = () => {
             {/* Language selection with flags */}
             <div className="flex gap-2">
                 {/* Add more flags as needed */}
-                <span
-                    className="font-extrabold text-blue-800 tracking-wide drop-shadow-sm flex items-center text-[1.25rem] md:text-2xl"
+                <Link
+                    to="/"
+                    className="font-extrabold text-blue-800 tracking-wide drop-shadow-sm flex items-center text-[1.25rem] md:text-2xl hover:text-blue-600 transition-colors"
                 >
                     <img
                         src={`${import.meta.env.BASE_URL}assets/icon_32_32.png`}
@@ -95,7 +97,7 @@ const NavigationBar: React.FC = () => {
                     <span className="inline md:hidden text-[1rem] whitespace-nowrap">
                         {t1.productname}
                     </span>
-                </span>
+                </Link>
             </div>
             <div className="flex-1 flex justify-center">
                 <h1 className="font-bold px-4 py-2  text-md md:text-base text-center">
@@ -107,7 +109,7 @@ const NavigationBar: React.FC = () => {
                 <li><a href="#faq" className="text-blue-700 font-bold hover:underline">{t1.faq}</a></li>
             </ul>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center pl-2 gap-2">
                 {/* High-conversion "Buy Now" button */}
                 <a
                     href="https://kreativschicht.de/products/bagid-koffer-tag-mit-nfc"

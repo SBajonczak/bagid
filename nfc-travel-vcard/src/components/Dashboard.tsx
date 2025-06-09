@@ -182,11 +182,6 @@ const Dashboard: React.FC<DashboardProps> = ({ hidden }) => {
                 ID: {tag.tagId}
             </div>
 
-            {!tag.hasData && (
-                <div className="bg-yellow-100 text-yellow-800 text-sm p-2 rounded mb-3">
-                    {t.noDataWarning || 'This tag has no travel data yet'}
-                </div>
-            )}
 
             <div className="mt-4">
                 <Link

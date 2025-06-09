@@ -91,7 +91,7 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                             {t.demoLinkText}
                         </a>
                         <p className="text-sm text-gray-600 mt-4 text-center">
-                            * Secure your luggage and travel worry-free with Bag Tag.
+                            * {t.disclaimer}
                         </p>
 
                     </div>

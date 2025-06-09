@@ -139,7 +139,8 @@ export const messages = {
                 'Robustes und wasserfestes Design für jede Reise'
             ],
             contact: 'Kontakt aufnehmen',
-            cta: 'jetzt sichern'
+            cta: 'jetzt sichern',
+            disclaimer: 'Sichere dein Gepäck und reise sorgenfrei mit Bag-Tag.'
         },
         faq: {
             title: 'Häufig gestellte Fragen',
@@ -237,6 +238,14 @@ export const messages = {
                 inactive: "Inaktiv",
                 pending: "Ausstehend"
             }
+        },
+        impressum: {
+            title: "Impressum",
+            companyName: "Kreativschicht.de",
+            legalNotice: "Angaben gemäß § 5 TMG",
+            contact: "Kontakt",
+            responsibleContent: "Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV",
+            email: "E-Mail: kreativchschicht_de[at]outlook.com"
         }
     },
     en: {
@@ -378,7 +387,8 @@ export const messages = {
                 'Durable and waterproof design for every journey'
             ],
             contact: 'Contact us',
-            cta: 'Get now'
+            cta: 'Get now',
+            disclaimer: 'Secure your luggage and travel worry-free with Bag-Tag.'
         },
         faq: {
             title: 'Frequently Asked Questions',
@@ -476,6 +486,14 @@ export const messages = {
                 inactive: "Inactive",
                 pending: "Pending"
             }
+        },
+        impressum: {
+            title: "Legal Notice",
+            companyName: "Kreativschicht.de",
+            legalNotice: "Information according to § 5 TMG",
+            contact: "Contact",
+            responsibleContent: "Responsible for content according to § 55 para. 2 RStV",
+            email: "E-Mail: kreativchschicht_de[at]outlook.com"
         }
     }
 
