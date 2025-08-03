@@ -55,34 +55,48 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                     </ul>
                     {/* CTA */}
                     <div className="flex flex-col gap-4 w-full md:w-auto items-center">
+                        {/* Familienpack Highlight */}
+                        <div className="bg-gradient-to-r from-orange-400 to-red-500 text-white px-4 py-2 rounded-full shadow-lg transform -rotate-2 animate-pulse">
+                            <span className="text-sm font-bold uppercase tracking-wide">🔥 FAMILIENPACK ANGEBOT 🔥</span>
+                        </div>
+                        
                         {/* Preis-Anzeige */}
                         <div className="flex flex-col items-center md:items-start w-full md:w-auto mb-2">
+                            <div className="text-center md:text-left mb-2">
+                                <span className="text-lg font-semibold text-gray-700">3 Stück zum Preis von:</span>
+                            </div>
                             <div className="flex items-baseline gap-3">
-                                <span className="text-gray-400 line-through text-lg">12,99&nbsp;€</span>
+                                <span className="text-gray-400 line-through text-lg">38,97&nbsp;€</span>
                                 {(() => {
-                                    const originalPrice = 12.99;
-                                    const discountedPrice = 10.99;
-                                    const discountPercent = Math.round(((originalPrice - discountedPrice) / originalPrice) * 100);
+                                    const originalPrice = 38.97; // 3 × 12,99
+                                    const familyPackPrice = 19.99;
+                                    const discountPercent = Math.round(((originalPrice - familyPackPrice) / originalPrice) * 100);
                                     return (
                                         <>
-                                            <span className="text-2xl font-bold text-green-600">
-                                                {discountedPrice.toFixed(2).replace('.', ',')}&nbsp;€
+                                            <span className="text-3xl font-bold text-green-600">
+                                                {familyPackPrice.toFixed(2).replace('.', ',')}&nbsp;€
                                             </span>
-                                            <span className="bg-green-100 text-green-700 text-xs font-semibold px-2 py-0.5 rounded">
-                                                -{discountPercent}%
+                                            <span className="bg-red-100 text-red-700 text-sm font-bold px-3 py-1 rounded-full animate-bounce">
+                                                SPARE {discountPercent}%!
                                             </span>
                                         </>
                                     );
                                 })()}
                             </div>
+                            <div className="text-center md:text-left mt-1">
+                                <span className="text-sm text-gray-600">Das sind nur {(19.99/3).toFixed(2).replace('.', ',')}&nbsp;€ pro Stück!</span>
+                            </div>
                         </div>
                         <a
-                            href="https://kreativschicht.de/products/bagid-koffer-tag-mit-nfc"
+                            href="https://kreativschicht.de/cart/50710421668182:3"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="bg-green-500 text-white font-bold px-8 py-3 rounded-lg shadow hover:bg-green-600 transition text-center w-full md:w-auto"
+                            className="bg-gradient-to-r from-green-500 to-green-600 text-white font-bold px-8 py-4 rounded-lg shadow-lg hover:from-green-600 hover:to-green-700 transition-all transform hover:scale-105 text-center w-full md:w-auto relative overflow-hidden"
                         >
-                            {t.cta}
+                            <span className="relative z-10 flex items-center justify-center gap-2">
+                                🚀 {t.cta} - FAMILIENPACK
+                            </span>
+                            <div className="absolute inset-0 bg-white opacity-20 transform -skew-x-12 translate-x-full group-hover:translate-x-0 transition-transform duration-700"></div>
                         </a>
                         <a
                             href="/5ea2a017-8976-4d28-a2c0-6c80395858a7"

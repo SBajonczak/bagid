@@ -315,9 +315,9 @@ export class TagRepo {
   }
   
   /**
-   * Überprüft, ob ein Tag in der Datenbank existiert
+   * Überprüft, ob ein Tag in der Datenbank existiert und erstellt ihn falls nicht vorhanden
    * @param {string} tagId - Die NFC-Tag-ID
-   * @returns {Promise<boolean>} Wahr, wenn der Tag existiert
+   * @returns {Promise<boolean>} Wahr, wenn der Tag existiert (oder erstellt wurde)
    */
   async tagExists(tagId) {
     try {
@@ -330,10 +330,61 @@ export class TagRepo {
           FROM TravelTag
           WHERE TagID = @tagId and isRegistered=0
         `);      
+      
+      // Wenn Tag nicht existiert, erstelle ihn mit Standard-Werten
+      if (result.recordset.length === 0) {
+        await pool.request()
+          .input('tagId', sql.UniqueIdentifier, tagId)
+          .query(`
+            INSERT INTO TravelTag (
+              tagId,
+              hasData,
+              ownerFirstName,
+              ownerLastName,
+              ownerAddress,
+              ownerEmail,
+              ownerMobile,
+              ownerLandline,
+              ownerOther,
+              guideFirstName,
+              guideLastName,
+              guideEmail,
+              guideMobile,
+              guideLandline,
+              destinationAccommodation,
+              destinationAddress,
+              transportation,
+              transportationNumber,
+              transportationDate
+            ) VALUES (
+              @tagId,
+              0,
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              ''
+            )
+          `);
+        console.log('Neuer Tag erstellt mit ID:', tagId);
+      }
+      
       pool.close();
-      return result.recordset.length > 0;
+      return true; // Tag existiert jetzt auf jeden Fall
     } catch (error) {
-      console.error('Fehler bei der Überprüfung, ob ein Tag existiert:', error);
+      console.error('Fehler bei der Überprüfung/Erstellung des Tags:', error);
       throw error;
     }
   }

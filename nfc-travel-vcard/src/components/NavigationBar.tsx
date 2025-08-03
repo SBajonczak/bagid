@@ -112,7 +112,7 @@ const NavigationBar: React.FC = () => {
             <div className="flex items-center pl-2 gap-2">
                 {/* High-conversion "Buy Now" button */}
                 <a
-                    href="https://kreativschicht.de/products/bagid-koffer-tag-mit-nfc"
+                    href="https://kreativschicht.de/cart/50710421668182:1"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="bg-green-500 text-white font-bold px-6 py-2 rounded-lg shadow hover:bg-green-600 transition"
