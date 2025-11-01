@@ -17,3 +17,143 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Christmas Theme Styles */
+.christmas-background {
+  position: relative;
+  overflow: hidden;
+}
+
+.christmas-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(3px 3px at 20px 30px, rgba(220, 38, 127, 0.4), transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(22, 163, 74, 0.5), transparent),
+    radial-gradient(1px 1px at 90px 40px, rgba(255, 215, 0, 0.6), transparent),
+    radial-gradient(2px 2px at 130px 80px, rgba(220, 38, 127, 0.3), transparent),
+    radial-gradient(3px 3px at 160px 30px, rgba(22, 163, 74, 0.4), transparent);
+  background-repeat: repeat;
+  background-size: 200px 100px;
+  animation: christmas-sparkle 15s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes christmas-sparkle {
+  0% { transform: translateY(-100vh) translateX(0) rotate(0deg); }
+  50% { transform: translateY(-50vh) translateX(50px) rotate(180deg); }
+  100% { transform: translateY(100vh) translateX(100px) rotate(360deg); }
+}
+
+.christmas-card {
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(220, 38, 127, 0.2);
+  box-shadow: 
+    0 25px 50px -12px rgba(220, 38, 127, 0.15),
+    0 0 0 1px rgba(22, 163, 74, 0.1) inset;
+}
+
+.christmas-title {
+  text-shadow: 0 2px 4px rgba(220, 38, 127, 0.2);
+}
+
+.christmas-highlight {
+  background: linear-gradient(135deg, #dc2626, #16a34a, #dc2626);
+  box-shadow: 
+    0 10px 25px rgba(220, 38, 127, 0.4),
+    0 0 20px rgba(22, 163, 74, 0.3);
+}
+
+.christmas-price {
+  background: linear-gradient(135deg, #dc2626, #16a34a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.christmas-cta {
+  background: linear-gradient(135deg, #dc2626, #16a34a, #dc2626);
+  box-shadow: 
+    0 10px 25px rgba(220, 38, 127, 0.4),
+    0 0 20px rgba(22, 163, 74, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.christmas-cta::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(135deg, #fbbf24, #dc2626, #16a34a);
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.christmas-cta:hover::before {
+  opacity: 1;
+}
+
+.christmas-savings {
+  animation: christmas-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes christmas-glow {
+  0% { box-shadow: 0 0 5px rgba(220, 38, 127, 0.2); }
+  100% { box-shadow: 0 0 20px rgba(220, 38, 127, 0.4), 0 0 30px rgba(22, 163, 74, 0.2); }
+}
+
+/* Christmas Feature Styling */
+.christmas-feature {
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.christmas-feature:hover {
+  transform: translateX(5px);
+  color: rgb(153, 27, 27);
+}
+
+/* Zusätzliche Weihnachtsdekoration */
+.christmas-background::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(2px 2px at 50px 20px, rgba(255, 215, 0, 0.8), transparent),
+    radial-gradient(1px 1px at 120px 60px, rgba(220, 38, 127, 0.6), transparent),
+    radial-gradient(3px 3px at 200px 10px, rgba(22, 163, 74, 0.5), transparent);
+  background-repeat: repeat;
+  background-size: 250px 120px;
+  animation: christmas-twinkle 20s linear infinite reverse;
+  pointer-events: none;
+}
+
+@keyframes christmas-twinkle {
+  0% { transform: translateY(-100vh) translateX(-50px) scale(0.8); }
+  50% { transform: translateY(-50vh) translateX(25px) scale(1.2); }
+  100% { transform: translateY(100vh) translateX(50px) scale(0.8); }
+}
+
+/* Weihnachtsanimationen für bessere Performance */
+@media (prefers-reduced-motion: reduce) {
+  .christmas-background::before,
+  .christmas-background::after {
+    animation: none;
+  }
+  
+  .christmas-highlight,
+  .christmas-savings {
+    animation: none;
+  }
+}
