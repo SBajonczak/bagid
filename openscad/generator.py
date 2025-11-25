@@ -155,7 +155,7 @@ def main():
     parser.add_argument("--format", default="3mf", choices=["stl", "3mf", "amf", "off", "dxf", "svg", "csg"], 
                       help="Output file format (default: 3mf)")
     parser.add_argument("--manual-guids", help="Comma-separated list of GUIDs to process")
-    parser.add_argument("--count", type=int, default=1, help="Number of new GUIDs to generate (if no GUIDs provided)")
+    parser.add_argument("--count", type=int, default=3, help="Number of new GUIDs to generate (if no GUIDs provided)")
     parser.add_argument("--sql-file", help="File to write SQL INSERT statements")
     
     args = parser.parse_args()
