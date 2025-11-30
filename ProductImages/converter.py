@@ -137,15 +137,113 @@ def _find_by_label(root: ET.Element, label: str) -> list[ET.Element]:
 	return matches
 
 
+def _apply_watermark_setting(root: ET.Element, watermark: Optional[int]) -> None:
+	"""Toggle visibility of elements labeled 'Wasserzeichen'.
+
+	If `watermark` is None, do nothing. If 1 => show (remove display:none),
+	if 0 => hide (set display:none) on the group's style attribute.
+	"""
+	if watermark is None:
+		return
+	show = bool(watermark)
+	for el in _find_by_label(root, "Wasserzeichen"):
+		style = el.get("style") or ""
+		# parse style into dict
+		props: dict[str, str] = {}
+		for part in (s.strip() for s in style.split(";") if s.strip()):
+			if ":" in part:
+				k, v = part.split(":", 1)
+				props[k.strip()] = v.strip()
+		if show:
+			# remove display:none if present
+			if props.get("display", "").strip() == "none":
+				del props["display"]
+		else:
+			# ensure hidden
+			props["display"] = "none"
+		# rebuild style
+		if props:
+			new_style = ";".join(f"{k}:{v}" for k, v in props.items())
+			el.set("style", new_style)
+		else:
+			if "style" in el.attrib:
+				del el.attrib["style"]
+
+
 def _get_image_size(path: str) -> Tuple[int, int]:
 	"""Return (width, height) of the raster image in pixels. Requires Pillow."""
-	if Image is None:
+	# Try Pillow first if available
+	if Image is not None:
+		try:
+			with Image.open(path) as im:
+				im.load()
+				return im.width, im.height
+		except Exception:
+			# Fallthrough to format-specific parsers
+			pass
+
+	# Fallback: implement lightweight WebP header parser to avoid requiring Pillow
+	if path.lower().endswith(".webp"):
+		size = _get_webp_size(path)
+		if size:
+			return size
+		# If parser failed, raise explicit error
 		raise RuntimeError(
-			"Pillow ist nicht installiert. Bitte 'pip install Pillow' ausführen oder Bildabmessungen anders bereitstellen."
+			"Konnte Bildabmessungen nicht bestimmen. Installiere 'Pillow' mit WebP-Unterstützung oder verwende ein anderes Bildformat."
 		)
-	with Image.open(path) as im:
-		im.load()
-		return im.width, im.height
+
+	raise RuntimeError(
+		"Pillow ist nicht installiert oder kann das Bild nicht öffnen. Bitte 'pip install Pillow' ausführen."
+	)
+
+
+def _get_webp_size(path: str) -> Optional[Tuple[int, int]]:
+	"""Read WebP file header and return (width, height) if parseable.
+
+	Supports VP8 (lossy), VP8L (lossless) and VP8X (extended) chunks.
+	Returns None if parsing fails.
+	"""
+	try:
+		with open(path, "rb") as f:
+			header = f.read(12)
+			if len(header) < 12 or header[0:4] != b"RIFF" or header[8:12] != b"WEBP":
+				return None
+			# walk chunks
+			while True:
+				chunk_hdr = f.read(8)
+				if len(chunk_hdr) < 8:
+					break
+				chunk_type = chunk_hdr[0:4]
+				chunk_size = int.from_bytes(chunk_hdr[4:8], "little")
+				if chunk_type == b"VP8X":
+					data = f.read(chunk_size)
+					if len(data) >= 10:
+						# width and height stored as 24-bit little-endian, values are (minus one)
+						w = int.from_bytes(data[4:7], "little") + 1
+						h = int.from_bytes(data[7:10], "little") + 1
+						return w, h
+				elif chunk_type == b"VP8 ":
+					data = f.read(chunk_size)
+					# lossy VP8: start code at offset 3..5 and width/height at 6..9
+					if len(data) >= 10:
+						w = ((data[6] | (data[7] << 8)) & 0x3FFF) + 0
+						h = ((data[8] | (data[9] << 8)) & 0x3FFF) + 0
+						return w, h
+				elif chunk_type == b"VP8L":
+					data = f.read(chunk_size)
+					# lossless VP8L: size encoded in first 5 bytes
+					if len(data) >= 5 and data[0] == 0x2F:
+						b1, b2, b3, b4 = data[1], data[2], data[3], data[4]
+						w = ((b1 | ((b2 & 0x3F) << 8)) + 1)
+						h = (((b2 >> 6) | (b3 << 2) | ((b4 & 0x0F) << 10)) + 1)
+						return w, h
+				else:
+					# skip this chunk
+					f.seek((chunk_size + 1) & ~1, os.SEEK_CUR)
+			# not found
+			return None
+	except Exception:
+		return None
 
 
 # NOTE: Alte Skalierungsfunktion entfernt; nun wird direkt über user-space Limits skaliert.
@@ -167,6 +265,38 @@ def _svg_tree_to_bytes(tree: ET.ElementTree) -> bytes:
 	return buf.getvalue()
 
 
+def _make_image_href(svg_path: str, image_path: str, embed: bool, *, prefer_relative: bool = False) -> str:
+	"""Return an href value for an <image> element.
+
+	- If `embed` is True -> return a data:...;base64,... URI (uses original bytes and MIME).
+	- If `embed` is False and `prefer_relative` is True -> return a relative path from svg_path to image_path.
+	- If `embed` is False and `prefer_relative` is False -> return an absolute file:// URI.
+
+	Additionally: when not embedding and the image is a .webp, some renderers (CairoSVG)
+	cannot read WebP. In contexts that require an absolute/consumable href (prefer_relative=False)
+	the caller may expect a file:// URI; this helper will not convert WebP to PNG here —
+	conversion for in-memory rendering is handled by callers that need it.
+	"""
+	lp = image_path.lower()
+	if embed:
+		# Determine MIME
+		if lp.endswith((".jpg", ".jpeg")):
+			mime = "image/jpeg"
+		elif lp.endswith(".webp"):
+			mime = "image/webp"
+		else:
+			mime = "image/png"
+		with open(image_path, "rb") as f:
+			b64 = base64.b64encode(f.read()).decode("ascii")
+		return f"data:{mime};base64,{b64}"
+
+	if prefer_relative:
+		return _relative_href(svg_path, image_path)
+
+	# absolute file URI
+	return Path(os.path.abspath(image_path)).as_uri()
+
+
 def _build_svg_tree_bytes(
 	svg_path: str,
 	image_path: str,
@@ -175,10 +305,14 @@ def _build_svg_tree_bytes(
 	before_layer_label: Optional[str],
 	after_layer_label: Optional[str],
 	new_layer_label: str,
+    watermark: Optional[int] = None,
 ) -> bytes:
 	"""Erstellt die SVG (mit Bild) im Speicher und gibt Bytes zurück."""
 	tree = ET.parse(svg_path)
 	root = tree.getroot()
+
+	# Apply watermark visibility setting if requested
+	_apply_watermark_setting(root, watermark)
 
 	minx, miny, canvas_w, canvas_h = _get_canvas_user_space(root)
 	if canvas_w is None or canvas_h is None or minx is None or miny is None:
@@ -260,20 +394,21 @@ def _build_svg_tree_bytes(
 	image_el.set("width", f"{scaled_w:.3f}")
 	image_el.set("height", f"{scaled_h:.3f}")
 	image_el.set("preserveAspectRatio", "xMidYMid meet")
-	if embed_data_uri:
-		mime = "image/jpeg" if image_path.lower().endswith((".jpg", ".jpeg")) else "image/png"
-		with open(image_path, "rb") as f:
-			b64 = base64.b64encode(f.read()).decode("ascii")
-		href_val = f"data:{mime};base64,{b64}"
-		image_el.set(f"{{{XLINK_NS}}}href", href_val)
-		image_el.set("href", href_val)
-	else:
-		# Für Rendering (in-memory) benötigen wir auflösbare absolute Pfade (file:// URI),
-		# da relative Pfade aus Bytestrings weder von CairoSVG noch von Inkscape zuverlässig
-		# aufgelöst werden.
-		href_val = Path(os.path.abspath(image_path)).as_uri()
-		image_el.set(f"{{{XLINK_NS}}}href", href_val)
-		image_el.set("href", href_val)
+	href_val = _make_image_href(svg_path, image_path, embed_data_uri, prefer_relative=False)
+	# If renderer can't handle webp for non-embedded images, convert to PNG and embed
+	if not embed_data_uri and image_path.lower().endswith('.webp') and Image is not None:
+		# try convert to PNG data-uri to make rendering reliable
+		try:
+			with Image.open(image_path) as im:
+				buf = io.BytesIO()
+				im.convert('RGBA').save(buf, format='PNG')
+				b64 = base64.b64encode(buf.getvalue()).decode('ascii')
+				href_val = f"data:image/png;base64,{b64}"
+		except Exception:
+			# keep file URI
+			pass
+	image_el.set(f"{{{XLINK_NS}}}href", href_val)
+	image_el.set("href", href_val)
 
 	# Optionaler Wrapper-Layer
 	if new_layer_label:
@@ -303,6 +438,7 @@ def insert_image_into_svg(
 	before_layer_label: Optional[str] = None,
 	after_layer_label: Optional[str] = None,
 	new_layer_label: str = "Bild",
+    watermark: Optional[int] = None,
 ) -> str:
 	"""Insert image into the penultimate layer of the SVG, centered and scaled.
 
@@ -315,6 +451,9 @@ def insert_image_into_svg(
 
 	tree = ET.parse(svg_path)
 	root = tree.getroot()
+
+	# Apply watermark visibility setting if requested
+	_apply_watermark_setting(root, watermark)
 
 	# Canvas user space (use viewBox if present)
 	minx, miny, canvas_w, canvas_h = _get_canvas_user_space(root)
@@ -421,19 +560,10 @@ def insert_image_into_svg(
 	image_el.set("width", f"{scaled_w:.3f}")
 	image_el.set("height", f"{scaled_h:.3f}")
 	image_el.set("preserveAspectRatio", "xMidYMid meet")
-
-	if embed_data_uri:
-		# Embed as data URI (increases SVG size but is self-contained)
-		mime = "image/jpeg" if image_path.lower().endswith((".jpg", ".jpeg")) else "image/png"
-		with open(image_path, "rb") as f:
-			b64 = base64.b64encode(f.read()).decode("ascii")
-		href_val = f"data:{mime};base64,{b64}"
-		image_el.set(f"{{{XLINK_NS}}}href", href_val)
-		image_el.set("href", href_val)  # new-style attribute
-	else:
-		href_val = _relative_href(svg_path, image_path)
-		image_el.set(f"{{{XLINK_NS}}}href", href_val)
-		image_el.set("href", href_val)  # also set non-namespaced for compatibility
+	# Use relative href for written SVGs (so files remain portable)
+	href_val = _make_image_href(svg_path, image_path, embed_data_uri, prefer_relative=True)
+	image_el.set(f"{{{XLINK_NS}}}href", href_val)
+	image_el.set("href", href_val)  # also set non-namespaced for compatibility
 
 	# Decide if we need a wrapper group (named) and insert at the computed spot
 	node_to_insert: ET.Element
@@ -574,6 +704,13 @@ def _build_arg_parser() -> argparse.ArgumentParser:
 		default=85,
 		help="WEBP-Qualität (0-100), nur relevant wenn --out auf .webp endet",
 	)
+	p.add_argument(
+		"--watermark",
+		type=int,
+		choices=[0, 1],
+		default=None,
+		help="0=Wasserzeichen ausblenden, 1=einblenden. Wenn nicht angegeben: Template unverändert.",
+	)
 	return p
 
 
@@ -617,6 +754,7 @@ def main(argv: Optional[list[str]] = None) -> int:
 				before_layer_label=args.before_layer,
 				after_layer_label=args.after_layer,
 				new_layer_label=args.layer_name,
+				watermark=args.watermark,
 			)
 			_render_svg_bytes_to_webp(svg_bytes, out_path, quality=args.quality)
 			print(f"WEBP erstellt: {out_path}")
@@ -632,6 +770,7 @@ def main(argv: Optional[list[str]] = None) -> int:
 				before_layer_label=args.before_layer,
 				after_layer_label=args.after_layer,
 				new_layer_label=args.layer_name,
+				watermark=args.watermark,
 			)
 			_render_svg_bytes_to_webp(svg_bytes, args.out, quality=args.quality)
 			print(f"WEBP erstellt: {args.out}")
@@ -647,6 +786,7 @@ def main(argv: Optional[list[str]] = None) -> int:
 			before_layer_label=args.before_layer,
 			after_layer_label=args.after_layer,
 			new_layer_label=args.layer_name,
+			watermark=args.watermark,
 		)
 		print(f"Erfolgreich erstellt: {out_svg}")
 		_verify_image_present(out_svg)
