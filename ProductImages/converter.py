@@ -176,11 +176,13 @@ def _get_image_size(path: str) -> Tuple[int, int]:
 	if Image is not None:
 		try:
 			with Image.open(path) as im:
-				im.load()
-				return im.width, im.height
-		except Exception:
-			# Fallthrough to format-specific parsers
-			pass
+				# Access size without forcing full image decode to avoid DecompressionBomb
+				return im.size
+		except Exception as e:
+			# Provide a clearer error when Pillow is present but cannot open the file
+			raise RuntimeError(
+				f"Pillow konnte die Bilddatei nicht öffnen: {e}"
+			)
 
 	# Fallback: implement lightweight WebP header parser to avoid requiring Pillow
 	if path.lower().endswith(".webp"):
@@ -195,6 +197,50 @@ def _get_image_size(path: str) -> Tuple[int, int]:
 	raise RuntimeError(
 		"Pillow ist nicht installiert oder kann das Bild nicht öffnen. Bitte 'pip install Pillow' ausführen."
 	)
+
+
+def _prepare_image_for_web(path: str, max_pixels: int = 25_000_000, quality: int = 85) -> str:
+	"""Ensure the image has at most `max_pixels` by downscaling before processing.
+
+	Returns a path to the possibly downscaled temporary image. If no changes are needed,
+	returns the original path. Requires Pillow.
+	"""
+	if Image is None:
+		# Without Pillow, we cannot preprocess; return original path
+		return path
+	try:
+		# Allow opening large images; we'll downscale if needed
+		try:
+			# Pillow >= 9 exposes MAX_IMAGE_PIXELS; set to None to disable protection for open
+			Image.MAX_IMAGE_PIXELS = None  # type: ignore[attr-defined]
+		except Exception:
+			pass
+
+		with Image.open(path) as im:
+			w, h = im.size
+			total = w * h
+			if total <= max_pixels:
+				return path
+			# Compute scale factor to get under the max pixel threshold
+			import math
+			scale = math.sqrt(max_pixels / float(total))
+			target_w = max(1, int(w * scale))
+			target_h = max(1, int(h * scale))
+
+			# Perform high-quality downscale
+			im = im.convert("RGB")
+			im = im.resize((target_w, target_h), resample=Image.LANCZOS)
+
+			# Save to a temp JPEG optimized for web
+			td = tempfile.mkdtemp(prefix="imgweb_")
+			base = os.path.splitext(os.path.basename(path))[0]
+			out_path = os.path.join(td, f"{base}-webopt.jpg")
+			im.save(out_path, format="JPEG", quality=quality, optimize=True, progressive=True)
+			return out_path
+	except Exception as e:
+		# If preprocessing fails, fall back to original; upstream code will handle/report
+		print(f"Hinweis: Vorab-Optimierung fehlgeschlagen: {e}")
+		return path
 
 
 def _get_webp_size(path: str) -> Optional[Tuple[int, int]]:
@@ -371,6 +417,8 @@ def _build_svg_tree_bytes(
 			insert_parent = root
 
 	# Bildgröße und Skalierung
+	# Preprocess image to keep below pixel threshold for web if necessary
+	image_path = _prepare_image_for_web(image_path)
 	img_w, img_h = _get_image_size(image_path)
 	width_px = _parse_length(root.get("width"))
 	height_px = _parse_length(root.get("height"))
@@ -528,6 +576,8 @@ def insert_image_into_svg(
 		else:
 			insert_parent = root
 
+	# Preprocess image to keep below pixel threshold for web if necessary
+	image_path = _prepare_image_for_web(image_path)
 	# Get image size
 	img_w, img_h = _get_image_size(image_path)
 
@@ -667,7 +717,9 @@ def _render_svg_bytes_to_webp(svg_bytes: bytes, out_path: str, quality: int = 85
 def _build_arg_parser() -> argparse.ArgumentParser:
 	p = argparse.ArgumentParser(description="Fügt ein Bild zwischen zwei Layern in eine SVG ein. Optional: WEBP erzeugen, wenn --out auf .webp endet.")
 	p.add_argument("--svg", required=False, default=None, help="Pfad zur SVG-Vorlage (Standard: 'Vorlage.svg' oder 'ProductImages/Vorlage.svg' oder neben converter.py)")
-	p.add_argument("--image", required=True, help="Pfad zum Bild (JPG/PNG)")
+	# Einzelbild ODER Verzeichnis, daher --image optional, wenn --dir genutzt wird
+	p.add_argument("--image", required=False, help="Pfad zum Bild (JPG/PNG)")
+	p.add_argument("--dir", required=False, help="Pfad zu einem Verzeichnis, dessen Bilder konvertiert werden sollen")
 	p.add_argument("--out", default=None, help="Ausgabepfad (.svg oder .webp). Standard: output/<Bildname>.webp relativ zum Ausführungsverzeichnis")
 	p.add_argument(
 		"--max-size",
@@ -705,6 +757,17 @@ def _build_arg_parser() -> argparse.ArgumentParser:
 		help="WEBP-Qualität (0-100), nur relevant wenn --out auf .webp endet",
 	)
 	p.add_argument(
+		"--max-pixels",
+		type=int,
+		default=25_000_000,
+		help="Bild vorab auf diese maximale Pixelanzahl herunterskalieren (Web-Optimierung)",
+	)
+	p.add_argument(
+		"--shrink-only",
+		action="store_true",
+		help="Bilder im Verzeichnis nur verkleinern und als optimiertes JPEG ausgeben (ohne SVG/WEBP)",
+	)
+	p.add_argument(
 		"--watermark",
 		type=int,
 		choices=[0, 1],
@@ -717,6 +780,10 @@ def _build_arg_parser() -> argparse.ArgumentParser:
 def main(argv: Optional[list[str]] = None) -> int:
 	args = _build_arg_parser().parse_args(argv)
 	try:
+		# Validierung: entweder --image oder --dir
+		if not args.image and not args.dir:
+			raise ValueError("Bitte entweder --image oder --dir angeben.")
+
 		# Ermittele Standard-SVG, falls nicht angegeben
 		svg_path = args.svg
 		if not svg_path:
@@ -737,12 +804,127 @@ def main(argv: Optional[list[str]] = None) -> int:
 					"Keine Vorlage gefunden. Erwartet 'Vorlage.svg' im Arbeitsverzeichnis, 'ProductImages/Vorlage.svg' oder neben converter.py."
 				)
 
-		# Standard-Ausgabepfad: ./output/<eingangsdatei>.webp relativ zum Arbeitsverzeichnis
-		out_path = args.out
-		if not out_path:
-			base = os.path.splitext(os.path.basename(args.image))[0]
-			out_dir = os.path.join(os.getcwd(), "output")
-			out_path = os.path.join(out_dir, f"{base}.webp")
+		# Einzeldatei-Verarbeitung
+		if args.image:
+			# Standard-Ausgabepfad: ./output/<eingangsdatei>.webp relativ zum Arbeitsverzeichnis
+			out_path = args.out
+			if not out_path:
+				base = os.path.splitext(os.path.basename(args.image))[0]
+				out_dir = os.path.join(os.getcwd(), "output")
+				out_path = os.path.join(out_dir, f"{base}.webp")
+
+			# Wenn WEBP: in-memory SVG bauen und rendern
+			if out_path and out_path.lower().endswith(".webp"):
+				svg_bytes = _build_svg_tree_bytes(
+					svg_path=svg_path,
+					image_path=_prepare_image_for_web(args.image, max_pixels=args.max_pixels, quality=args.quality),
+					max_size=args.max_size,
+					embed_data_uri=args.embed,
+					before_layer_label=args.before_layer,
+					after_layer_label=args.after_layer,
+					new_layer_label=args.layer_name,
+					watermark=args.watermark,
+				)
+				_render_svg_bytes_to_webp(svg_bytes, out_path, quality=args.quality)
+				print(f"WEBP erstellt: {out_path}")
+				return 0
+
+			# Wenn --out auf .webp endet (alternative Pfadangabe), rendern wir eine WEBP-Datei statt SVG zu schreiben
+			if args.out and args.out.lower().endswith(".webp"):
+				svg_bytes = _build_svg_tree_bytes(
+					svg_path=svg_path,
+					image_path=_prepare_image_for_web(args.image, max_pixels=args.max_pixels, quality=args.quality),
+					max_size=args.max_size,
+					embed_data_uri=args.embed,
+					before_layer_label=args.before_layer,
+					after_layer_label=args.after_layer,
+					new_layer_label=args.layer_name,
+					watermark=args.watermark,
+				)
+				_render_svg_bytes_to_webp(svg_bytes, args.out, quality=args.quality)
+				print(f"WEBP erstellt: {args.out}")
+				return 0
+
+			# Standard: SVG schreiben
+			out_svg = insert_image_into_svg(
+				svg_path=svg_path,
+				image_path=_prepare_image_for_web(args.image, max_pixels=args.max_pixels, quality=args.quality),
+				out_path=args.out,
+				max_size=args.max_size,
+				embed_data_uri=args.embed,
+				before_layer_label=args.before_layer,
+				after_layer_label=args.after_layer,
+				new_layer_label=args.layer_name,
+				watermark=args.watermark,
+			)
+			print(f"Erfolgreich erstellt: {out_svg}")
+			_verify_image_present(out_svg)
+			return 0
+
+		# Verzeichnis-Verarbeitung: iteriere Bilder und schreibe Ausgaben in output/<dir_name>/
+		if args.dir:
+			input_dir = os.path.abspath(args.dir)
+			if not os.path.isdir(input_dir):
+				raise FileNotFoundError(f"Verzeichnis nicht gefunden: {input_dir}")
+			# Ziel-Unterverzeichnis: output/<dir_name>
+			dir_name = os.path.basename(os.path.normpath(input_dir))
+			out_root = os.path.join(os.getcwd(), "output", dir_name)
+			os.makedirs(out_root, exist_ok=True)
+
+			# unterstützte Bild-Endungen (rekursiv suchen)
+			valid_ext = {".jpg", ".jpeg", ".png", ".webp"}
+			images: list[str] = []
+			for root_dir, _, files in os.walk(input_dir):
+				for f in files:
+					ext = os.path.splitext(f)[1].lower()
+					if ext in valid_ext:
+						images.append(os.path.join(root_dir, f))
+			if not images:
+				print(f"Hinweis: Keine unterstützten Bilddateien in '{input_dir}' gefunden.")
+
+			# Optional: Nur verkleinern und ausgeben
+			if args.shrink_only:
+				shrunk = 0
+				for img in images:
+					out_path = _prepare_image_for_web(img, max_pixels=args.max_pixels, quality=args.quality)
+					if out_path and os.path.isfile(out_path):
+						# Move/copy optimized image to out_root with consistent naming
+						base = os.path.splitext(os.path.basename(img))[0]
+						dest = os.path.join(out_root, f"{base}-webopt.jpg")
+						try:
+							shutil.copyfile(out_path, dest)
+							shrunk += 1
+							print(f"Optimiert: {dest}")
+						except Exception as e:
+							print(f"Fehler beim Kopieren '{out_path}' -> '{dest}': {e}", file=sys.stderr)
+				print(f"Fertig: {shrunk} Bild(er) optimiert. Ausgabe: {out_root}")
+				return 0
+
+			converted = 0
+			for img in images:
+				base = os.path.splitext(os.path.basename(img))[0]
+				# Standard-Ausgabe: WEBP im Ziel-Unterverzeichnis
+				out_webp = os.path.join(out_root, f"{base}.webp")
+				try:
+					# SVG im Speicher bauen und direkt zu WEBP rendern
+					svg_bytes = _build_svg_tree_bytes(
+						svg_path=svg_path,
+						image_path=_prepare_image_for_web(img, max_pixels=args.max_pixels, quality=args.quality),
+						max_size=args.max_size,
+						embed_data_uri=args.embed,
+						before_layer_label=args.before_layer,
+						after_layer_label=args.after_layer,
+						new_layer_label=args.layer_name,
+						watermark=args.watermark,
+					)
+					_render_svg_bytes_to_webp(svg_bytes, out_webp, quality=args.quality)
+					converted += 1
+					print(f"WEBP erstellt: {out_webp}")
+				except Exception as e:
+					print(f"Fehler bei '{img}': {e}", file=sys.stderr)
+
+			print(f"Fertig: {converted} Datei(en) konvertiert. Ausgabe: {out_root}")
+			return 0
 
 		# Wenn WEBP: in-memory SVG bauen und rendern
 		if out_path and out_path.lower().endswith(".webp"):
