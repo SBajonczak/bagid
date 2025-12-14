@@ -1,0 +1,196 @@
+<meta charset="utf-8">
+<style>
+  :root {
+    --ks-beige: #F5F5DC;
+    --ks-gray: #D3D3D3;
+    --ks-dark: #333333;
+    --ks-white: #ffffff;
+    --ks-softwhite: #fffdf7;
+  }
+
+  body {
+    background: var(--ks-beige) !important;
+    color: var(--ks-dark) !important;
+    font-family: var(--font-body-family);
+    line-height: 1.65;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  .ks-frame {
+    max-width: 1100px;
+    margin: auto;
+    background: var(--ks-white);
+    padding: clamp(16px, 3vw, 25px);
+    border: 12px solid var(--ks-beige);
+    outline: 4px solid var(--ks-gray);
+    border-radius: 18px;
+  }
+
+  /* ARTICLE AREA */
+  .ks-article {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    margin-bottom: 20px;
+  }
+
+  .ks-left {
+    flex: 1 1 45%;
+    text-align: center;
+  }
+
+  .ks-left img {
+    max-width: 100%;
+    border: 2px solid var(--ks-gray);
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  }
+
+  .ks-thumbs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 12px;
+    align-items: start;
+  }
+
+  .ks-thumbs img {
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--ks-gray);
+    border-radius: 8px;
+    transition: 0.25s ease;
+    display: block;
+  }
+
+  .ks-thumbs img:hover {
+    transform: scale(1.05);
+  }
+
+  .ks-right {
+    flex: 1 1 45%;
+  }
+
+  .ks-title {
+    font-size: clamp(22px, 4vw, 28px);
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+
+  /* DYNAMIC HIGHLIGHTS */
+  .ks-usp-grid {
+    margin-top: 14px;
+  }
+
+  .ks-usp-item {
+    background: var(--ks-softwhite);
+    border: 1px solid var(--ks-gray);
+    padding: 10px 14px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+
+  /* TABS / BUTTONS */
+  .ks-tabs { display: none; }
+
+  /* Stacked sections */
+  .ks-section {
+    margin-top: 20px;
+    background: var(--ks-softwhite);
+    border: 1px solid var(--ks-gray);
+    padding: clamp(14px, 3vw, 18px);
+    border-radius: 14px;
+  }
+
+  .ks-section h2 {
+    margin: 0 0 10px 0;
+    font-size: clamp(18px, 3.5vw, 22px);
+    font-weight: 800;
+  }
+
+  /* MOBILE FIX */
+  @media(max-width: 768px) {
+    .ks-article { flex-direction: column; gap: 16px; }
+    .ks-left, .ks-right { flex: 1 1 100%; }
+    .ks-thumbs { grid-template-columns: 1fr; gap: 10px; }
+    .ks-frame { border-width: 8px; outline-width: 3px; border-radius: 14px; }
+    .ks-usp-item { font-weight: 600; }
+    a[style] { display: inline-block; padding: 12px 18px !important; }
+  }
+</style>
+
+
+<!-- FRAME START -->
+<div class="ks-frame">
+
+  <!-- PRODUCT AREA -->
+  <div class="ks-article">
+
+    <!-- LEFT: IMAGES -->
+    <div class="ks-left">
+      <img src="{DefaultProductImage}" width="700px" height="700px">
+
+      <div class="ks-thumbs">
+        {for images step=2}
+          {for Images count=2 start={position}}
+            <img src="{images.Source}" width="400px" height="400px">
+          {/for}
+        {/for}
+      </div>
+    </div>
+
+    <!-- RIGHT: TITLE + DESCRIPTION + USP -->
+    <div class="ks-right">
+
+      <div class="ks-title">{Title}</div>
+
+      <p>{Subtitle}</p>
+      <p>{Description}</p>
+    </div>
+  </div>
+
+
+  <!-- BUTTON TABS removed for stacked layout -->
+
+
+  <!-- STACKED CONTENT SECTIONS -->
+
+  <section class="ks-section">
+    <h2>Warum Kreativschicht?</h2>
+    <p>
+      Wir sind ein kleines Familienprojekt &ndash; mit echter Liebe zum Detail.
+      Jedes Produkt w&auml;hlen wir bewusst aus:
+    </p>
+
+    <ul>
+      <li>&#x2702;&#xFE0F; Kreatives &amp; Handgemachtes &ndash; erstellt von meiner Frau</li>
+      <li>&#x1F41D; Imkerprodukte aus eigener Hobbyimkerei</li>
+      <li>&#x1F527; Elektronik &amp; 3D-Druck &ndash; gepr&uuml;ft &amp; ausgew&auml;hlt von mir</li>
+    </ul>
+
+    <p>
+      Wir verkaufen nur Artikel, von denen wir selbst &uuml;berzeugt sind &ndash;
+      keine Massenware, sondern ehrliche, sorgf&auml;ltig kuratierte Produkte.
+    </p>
+  </section>
+
+  <section class="ks-section">
+    <h2>Versand & Rechnung</h2>
+    <ul>
+      <li>Schneller Versand: 2&ndash;4 Werktage</li>
+      <li>Sauber &amp; sicher verpackt</li>
+      <li>Nachhaltige Verpackung, wo m&ouml;glich</li>
+    </ul>
+  </section>
+
+  <section class="ks-section">
+    <h2>Shop speichern</h2>
+    <p>Folge unserem Shop, um keine neuen Produkte zu verpassen!</p>
+     <a href="https://www.ebay.de/usr/{EbayUserID}"
+       style="padding:12px 20px; display:inline-block; border-radius:10px; background:var(--ks-dark); color:var(--ks-beige); text-decoration:none; border:2px solid var(--ks-gray); font-weight:bold;">
+       &#x2764;&#xFE0F; Kreativschicht folgen
+    </a>
+  </section>
+
+</div>
