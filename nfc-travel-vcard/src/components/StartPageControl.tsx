@@ -13,7 +13,7 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
     const { lang } = useLanguage();
     const t = messages[lang as keyof typeof messages].noDataSection;
     const t1 = messages[lang as keyof typeof messages].common;
-    const testimoial = messages[lang].noDataSection.testimonials;
+    const testimonial = messages[lang].noDataSection.testimonials;
     return (
         <section hidden={hidden} className="w-full landing-background py-12 px-4 flex flex-col items-center">
             {/* Hero Section - Main Container */}
@@ -234,7 +234,7 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                 <h2 className="text-3xl md:text-4xl font-bold text-center text-blue-900 mb-8">
                     Was unsere Kunden sagen
                 </h2>
-                <Testimonial testimonials={testimoial} />
+                <Testimonial testimonials={testimonial} />
             </div>
             {/* FAQ Section */}
             <div id="faq" className="w-full max-w-7xl mt-12">
