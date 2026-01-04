@@ -18,142 +18,124 @@ code {
     monospace;
 }
 
-/* Christmas Theme Styles */
-.christmas-background {
+/* Modern Professional Theme Styles */
+.landing-background {
   position: relative;
-  overflow: hidden;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
 }
 
-.christmas-background::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: 
-    radial-gradient(3px 3px at 20px 30px, rgba(220, 38, 127, 0.4), transparent),
-    radial-gradient(2px 2px at 40px 70px, rgba(22, 163, 74, 0.5), transparent),
-    radial-gradient(1px 1px at 90px 40px, rgba(255, 215, 0, 0.6), transparent),
-    radial-gradient(2px 2px at 130px 80px, rgba(220, 38, 127, 0.3), transparent),
-    radial-gradient(3px 3px at 160px 30px, rgba(22, 163, 74, 0.4), transparent);
-  background-repeat: repeat;
-  background-size: 200px 100px;
-  animation: christmas-sparkle 15s linear infinite;
-  pointer-events: none;
-}
-
-@keyframes christmas-sparkle {
-  0% { transform: translateY(-100vh) translateX(0) rotate(0deg); }
-  50% { transform: translateY(-50vh) translateX(50px) rotate(180deg); }
-  100% { transform: translateY(100vh) translateX(100px) rotate(360deg); }
-}
-
-.christmas-card {
+.professional-card {
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(220, 38, 127, 0.2);
+  border: 1px solid rgba(59, 130, 246, 0.1);
   box-shadow: 
-    0 25px 50px -12px rgba(220, 38, 127, 0.15),
-    0 0 0 1px rgba(22, 163, 74, 0.1) inset;
+    0 25px 50px -12px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(59, 130, 246, 0.05) inset;
 }
 
-.christmas-title {
-  text-shadow: 0 2px 4px rgba(220, 38, 127, 0.2);
+.professional-title {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  color: #1e40af;
 }
 
-.christmas-highlight {
-  background: linear-gradient(135deg, #dc2626, #16a34a, #dc2626);
-  box-shadow: 
-    0 10px 25px rgba(220, 38, 127, 0.4),
-    0 0 20px rgba(22, 163, 74, 0.3);
+.highlight-badge {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
-.christmas-price {
-  background: linear-gradient(135deg, #dc2626, #16a34a);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.price-highlight {
+  color: #1e40af;
+  font-weight: 700;
 }
 
-.christmas-cta {
-  background: linear-gradient(135deg, #dc2626, #16a34a, #dc2626);
-  box-shadow: 
-    0 10px 25px rgba(220, 38, 127, 0.4),
-    0 0 20px rgba(22, 163, 74, 0.3);
+.primary-cta {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
   position: relative;
   overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.christmas-cta::before {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(135deg, #fbbf24, #dc2626, #16a34a);
-  border-radius: inherit;
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+.primary-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
 }
 
-.christmas-cta:hover::before {
-  opacity: 1;
+.secondary-cta {
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.christmas-savings {
-  animation: christmas-glow 2s ease-in-out infinite alternate;
+.secondary-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(75, 85, 99, 0.4);
 }
 
-@keyframes christmas-glow {
-  0% { box-shadow: 0 0 5px rgba(220, 38, 127, 0.2); }
-  100% { box-shadow: 0 0 20px rgba(220, 38, 127, 0.4), 0 0 30px rgba(22, 163, 74, 0.2); }
+.feature-item {
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
 }
 
-/* Christmas Feature Styling */
-.christmas-feature {
-  transition: transform 0.2s ease, color 0.2s ease;
-}
-
-.christmas-feature:hover {
+.feature-item:hover {
   transform: translateX(5px);
-  color: rgb(153, 27, 27);
+  background-color: rgba(59, 130, 246, 0.05);
 }
 
-/* Zusätzliche Weihnachtsdekoration */
-.christmas-background::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: 
-    radial-gradient(2px 2px at 50px 20px, rgba(255, 215, 0, 0.8), transparent),
-    radial-gradient(1px 1px at 120px 60px, rgba(220, 38, 127, 0.6), transparent),
-    radial-gradient(3px 3px at 200px 10px, rgba(22, 163, 74, 0.5), transparent);
-  background-repeat: repeat;
-  background-size: 250px 120px;
-  animation: christmas-twinkle 20s linear infinite reverse;
-  pointer-events: none;
+.benefit-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(59, 130, 246, 0.1);
 }
 
-@keyframes christmas-twinkle {
-  0% { transform: translateY(-100vh) translateX(-50px) scale(0.8); }
-  50% { transform: translateY(-50vh) translateX(25px) scale(1.2); }
-  100% { transform: translateY(100vh) translateX(50px) scale(0.8); }
+.benefit-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(59, 130, 246, 0.15);
 }
 
-/* Weihnachtsanimationen für bessere Performance */
+/* Modern section styling */
+.how-it-works-section {
+  background: linear-gradient(to bottom, #ffffff, #f9fafb);
+}
+
+.step-number {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Responsive adjustments */
 @media (prefers-reduced-motion: reduce) {
-  .christmas-background::before,
-  .christmas-background::after {
-    animation: none;
+  .primary-cta,
+  .secondary-cta,
+  .benefit-card,
+  .feature-item {
+    transition: none;
   }
   
-  .christmas-highlight,
-  .christmas-savings {
+  .animate-fade-in-up {
     animation: none;
   }
 }

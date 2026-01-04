@@ -15,11 +15,10 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
     const t1 = messages[lang as keyof typeof messages].common;
     const testimoial = messages[lang].noDataSection.testimonials;
     return (
-        <section hidden={hidden} className="w-full bg-gradient-to-br from-red-50 via-green-50 to-red-100 py-12 px-4 flex flex-col items-center christmas-background">
-            {/* Navigation */}
-            {/* Hauptcontainer */}
-            <div className="w-full max-w-7xl bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-red-200 flex flex-col md:flex-row items-center p-6 md:p-12 gap-8 christmas-card">
-                {/* Productbild-Bereich */}
+        <section hidden={hidden} className="w-full landing-background py-12 px-4 flex flex-col items-center">
+            {/* Hero Section - Main Container */}
+            <div className="w-full max-w-7xl bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border border-blue-100 flex flex-col md:flex-row items-center p-6 md:p-12 gap-8 professional-card animate-fade-in-up">
+                {/* Product Image Area */}
                 <div className="flex-1 flex justify-center items-stretch md:h-full">
                     <img
                         src="/assets/productimage.webp"
@@ -29,113 +28,212 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                     />
                 </div>
 
-                {/* Textbereich */}
+                {/* Hero Text Area */}
                 <div className="flex-1">
-                    <h1 className="text-4xl md:text-5xl font-extrabold text-red-800 mb-4 text-center md:text-left flex items-center gap-4 christmas-title">
+                    <h1 className="text-4xl md:text-5xl font-extrabold text-blue-900 mb-4 text-center md:text-left flex items-center gap-4 professional-title">
                         <img
                             src="/assets/tag.png"
                             alt={`${t1.productname} Logo`}
                             className="w-16"
                             loading="lazy"
                         />
-                        {t1.productname}
-                        <span className="text-2xl">🎄</span>
+                        Nie wieder den Koffer verlieren
                     </h1>
                     <p className="text-lg md:text-xl text-gray-700 mb-6 text-center md:text-left break-words">
-                        {t.subline}
+                        Mit dem smarten Travel Tag – NFC & QR-Code für sicheres Reisen
                     </p>
-                    <ul id="features" className="mb-6 space-y-2 text-base text-red-800">
+                    <ul id="features" className="mb-6 space-y-2 text-base text-gray-700">
                         {t.features.map((feature, idx) => (
-                            <li key={idx} className="flex items-center gap-2 christmas-feature">
-                                <span className="inline-block w-6 h-6 text-red-600">
-                                    {['📱', '🔄', '✈️', '📦', '🔒', '🎄', '🎁'][idx]}
+                            <li key={idx} className="flex items-center gap-3 feature-item">
+                                <span className="inline-block w-6 h-6 text-blue-600 flex-shrink-0">
+                                    {['📱', '🔄', '✈️', '📦', '🔒', '💡', '🌍'][idx]}
                                 </span>
-                                {feature}
+                                <span>{feature}</span>
                             </li>
                         ))}
                     </ul>
-                    {/* CTA */}
-                    <div className="flex flex-col gap-4 w-full md:w-auto items-center">
-                        {/* Weihnachts Sparpack Highlight */}
-                        <div className="bg-gradient-to-r from-red-500 via-green-500 to-red-600 text-white px-6 py-3 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300 christmas-highlight animate-pulse">
-                            <span className="text-sm font-bold uppercase tracking-wide">🎄 WEIHNACHTS SPARPACK 🎁</span>
-                        </div>
-                        
-                        {/* Preis-Anzeige */}
+                    {/* Call to Action */}
+                    <div className="flex flex-col gap-4 w-full md:w-auto items-center mt-8">
+                        {/* Price Display */}
                         <div className="flex flex-col items-center md:items-start w-full md:w-auto mb-2">
-                            <div className="text-center md:text-left mb-3">
-                                <span className="text-lg font-semibold text-red-700">🎁 3 Stück Weihnachts-Edition:</span>
-                            </div>
                             <div className="flex items-baseline gap-3 mb-2">
-                                <span className="text-gray-400 line-through text-lg">38,97&nbsp;€</span>
-                                {(() => {
-                                    const originalPrice = 38.97; // 3 × 12,99
-                                    const christmasPackPrice = 19.99;
-                                    const discountPercent = Math.round(((originalPrice - christmasPackPrice) / originalPrice) * 100);
-                                    return (
-                                        <>
-                                            <span className="text-3xl font-bold text-red-700 christmas-price">
-                                                {christmasPackPrice.toFixed(2).replace('.', ',')}&nbsp;€
-                                            </span>
-                                            <span className="bg-green-100 text-green-700 text-sm font-bold px-3 py-1 rounded-full animate-bounce">
-                                                🎄 -{discountPercent}%!
-                                            </span>
-                                        </>
-                                    );
-                                })()}
+                                <span className="text-3xl font-bold price-highlight">
+                                    12,99&nbsp;€
+                                </span>
+                                <span className="text-sm text-gray-600">pro Stück</span>
                             </div>
                             <div className="text-center md:text-left">
-                                <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-2 christmas-savings">
-                                    <div className="text-red-800 font-bold text-lg">
-                                        🎁 Du sparst {(38.97 - 19.99).toFixed(2).replace('.', ',')}&nbsp;€!
+                                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-2">
+                                    <div className="text-blue-900 font-semibold text-sm">
+                                        ✓ Kostenloser Versand ab 2 Stück
                                     </div>
-                                    <div className="text-green-700 text-sm">
-                                        Das sind nur {(19.99/3).toFixed(2).replace('.', ',')}&nbsp;€ pro Stück statt 12,99&nbsp;€
+                                    <div className="text-gray-600 text-sm mt-1">
+                                        ✓ 14 Tage Rückgaberecht
                                     </div>
                                 </div>
-                                <span className="text-sm text-red-600">🎄 Das perfekte Weihnachtsgeschenk für die Familie</span>
                             </div>
                         </div>
+                        
+                        {/* Primary CTA */}
                         <a
-                            href="https://kreativschicht.de/cart/50710421668182:1"
+                            href="https://kreativschicht.de/products/bagid-koffer-tag-mit-nfc?utm_source=copyToPasteBoard&utm_medium=product-links&utm_content=web"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="bg-gradient-to-r from-red-600 via-green-600 to-red-700 text-white font-bold px-8 py-4 rounded-lg shadow-lg hover:from-red-700 hover:via-green-700 hover:to-red-800 transition-all transform hover:scale-105 text-center w-full md:w-auto relative overflow-hidden christmas-cta"
+                            className="text-white font-bold px-8 py-4 rounded-lg shadow-lg text-center w-full md:w-auto primary-cta"
                         >
                             <span className="relative z-10 flex items-center justify-center gap-2">
-                                🎁 {t.cta} - WEIHNACHTS SPARPACK (3 Stück)
+                                {t.cta} – Travel Tag sichern
                             </span>
-                            <div className="absolute inset-0 bg-white opacity-20 transform -skew-x-12 translate-x-full group-hover:translate-x-0 transition-transform duration-700"></div>
                         </a>
                         
-                        {/* Einzelkauf Option */}
+                        {/* Secondary Option */}
                         <div className="text-center">
-                            <span className="text-sm text-red-400 mb-2 block">oder</span>
+                            <span className="text-sm text-gray-500 mb-2 block">oder</span>
                             <a
-                                href="https://kreativschicht.de/products/bagid-koffer-tag-mit-nfc?utm_source=copyToPasteBoard&utm_medium=product-links&utm_content=web"
+                                href="https://kreativschicht.de/cart/50710421668182:1"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="bg-gradient-to-r from-green-600 via-red-500 to-green-700 text-white font-semibold px-6 py-3 rounded-lg shadow hover:from-green-700 hover:via-red-600 hover:to-green-800 transition-all text-center inline-block"
+                                className="text-white font-semibold px-6 py-3 rounded-lg shadow text-center inline-block secondary-cta"
                             >
-                                🎄 Einzeln kaufen und Farbe selbst wählen (12,99&nbsp;€)
+                                3er-Set kaufen und sparen
                             </a>
                         </div>
                         <a
                             href="/5ea2a017-8976-4d28-a2c0-6c80395858a7"
-                            className="bg-blue-500 text-white font-semibold px-6 py-2 rounded-lg shadow hover:bg-blue-600 transition text-center w-full md:w-auto mt-4"
+                            className="bg-gray-100 text-blue-900 font-semibold px-6 py-2 rounded-lg shadow hover:bg-gray-200 transition text-center w-full md:w-auto mt-4 border border-gray-300"
                         >
                             {t.demoLinkText}
                         </a>
                         <p className="text-sm text-gray-600 mt-4 text-center">
                             * {t.disclaimer}
                         </p>
-
                     </div>
                 </div>
             </div>
 
+            {/* How It Works Section */}
+            <div className="w-full max-w-7xl mt-16 bg-white rounded-2xl shadow-lg p-8 md:p-12 how-it-works-section">
+                <h2 className="text-3xl md:text-4xl font-bold text-center text-blue-900 mb-4">
+                    Wie es funktioniert
+                </h2>
+                <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+                    In nur wenigen Schritten zu mehr Sicherheit auf Reisen
+                </p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    {/* Step 1 */}
+                    <div className="flex flex-col items-center text-center">
+                        <div className="step-number mb-4">1</div>
+                        <div className="text-4xl mb-4">📦</div>
+                        <h3 className="font-bold text-lg text-gray-800 mb-2">Anhänger anbringen</h3>
+                        <p className="text-gray-600 text-sm">
+                            Befestigen Sie den Travel Tag am Koffer oder der Tasche
+                        </p>
+                    </div>
+                    
+                    {/* Step 2 */}
+                    <div className="flex flex-col items-center text-center">
+                        <div className="step-number mb-4">2</div>
+                        <div className="text-4xl mb-4">📱</div>
+                        <h3 className="font-bold text-lg text-gray-800 mb-2">Online registrieren</h3>
+                        <p className="text-gray-600 text-sm">
+                            Scannen Sie den NFC/QR-Code und hinterlegen Sie Ihre Daten
+                        </p>
+                    </div>
+                    
+                    {/* Step 3 */}
+                    <div className="flex flex-col items-center text-center">
+                        <div className="step-number mb-4">3</div>
+                        <div className="text-4xl mb-4">✈️</div>
+                        <h3 className="font-bold text-lg text-gray-800 mb-2">Sorgenfrei reisen</h3>
+                        <p className="text-gray-600 text-sm">
+                            Ihre Kontaktdaten sind jederzeit aktualisierbar
+                        </p>
+                    </div>
+                    
+                    {/* Step 4 */}
+                    <div className="flex flex-col items-center text-center">
+                        <div className="step-number mb-4">4</div>
+                        <div className="text-4xl mb-4">🔔</div>
+                        <h3 className="font-bold text-lg text-gray-800 mb-2">Gefunden werden</h3>
+                        <p className="text-gray-600 text-sm">
+                            Im Verlustfall kann der Finder Sie sofort kontaktieren
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-            <div id="faq" className="w-full max-w-7xl mt-12">
+            {/* Benefits Section */}
+            <div className="w-full max-w-7xl mt-16">
+                <h2 className="text-3xl md:text-4xl font-bold text-center text-blue-900 mb-4">
+                    Ihre Vorteile
+                </h2>
+                <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+                    Warum tausende Reisende dem {t1.productname} vertrauen
+                </p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {/* Benefit 1 */}
+                    <div className="bg-white p-6 rounded-xl shadow-md benefit-card">
+                        <div className="text-4xl mb-4">📱</div>
+                        <h3 className="font-bold text-lg text-gray-800 mb-2">Keine App nötig</h3>
+                        <p className="text-gray-600 text-sm">
+                            Funktioniert mit jedem modernen Smartphone – einfach scannen und fertig
+                        </p>
+                    </div>
+                    
+                    {/* Benefit 2 */}
+                    <div className="bg-white p-6 rounded-xl shadow-md benefit-card">
+                        <div className="text-4xl mb-4">🔋</div>
+                        <h3 className="font-bold text-lg text-gray-800 mb-2">Keine Batterien</h3>
+                        <p className="text-gray-600 text-sm">
+                            NFC-Technologie ohne Stromversorgung – wartungsfrei und zuverlässig
+                        </p>
+                    </div>
+                    
+                    {/* Benefit 3 */}
+                    <div className="bg-white p-6 rounded-xl shadow-md benefit-card">
+                        <div className="text-4xl mb-4">🌍</div>
+                        <h3 className="font-bold text-lg text-gray-800 mb-2">Weltweit einsetzbar</h3>
+                        <p className="text-gray-600 text-sm">
+                            Funktioniert überall – keine Roaming-Gebühren, keine Grenzen
+                        </p>
+                    </div>
+                    
+                    {/* Benefit 4 */}
+                    <div className="bg-white p-6 rounded-xl shadow-md benefit-card">
+                        <div className="text-4xl mb-4">🔒</div>
+                        <h3 className="font-bold text-lg text-gray-800 mb-2">Datenschutzkonform</h3>
+                        <p className="text-gray-600 text-sm">
+                            DSGVO-konform – Sie entscheiden, welche Daten geteilt werden
+                        </p>
+                    </div>
+                    
+                    {/* Benefit 5 */}
+                    <div className="bg-white p-6 rounded-xl shadow-md benefit-card">
+                        <div className="text-4xl mb-4">💧</div>
+                        <h3 className="font-bold text-lg text-gray-800 mb-2">Robust & wasserfest</h3>
+                        <p className="text-gray-600 text-sm">
+                            Hochwertiges Material hält jeder Reise stand
+                        </p>
+                    </div>
+                    
+                    {/* Benefit 6 */}
+                    <div className="bg-white p-6 rounded-xl shadow-md benefit-card">
+                        <div className="text-4xl mb-4">🔄</div>
+                        <h3 className="font-bold text-lg text-gray-800 mb-2">Jederzeit aktualisierbar</h3>
+                        <p className="text-gray-600 text-sm">
+                            Ändern Sie Ihre Daten online – kein neuer Tag nötig
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Testimonials Section */}
+            <div id="testimonials" className="w-full max-w-7xl mt-16">
+                <h2 className="text-3xl md:text-4xl font-bold text-center text-blue-900 mb-8">
+                    Was unsere Kunden sagen
+                </h2>
                 <Testimonial testimonials={testimoial} />
             </div>
             {/* FAQ Section */}
