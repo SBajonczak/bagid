@@ -85,11 +85,14 @@ const NavigationBar: React.FC = () => {
                 <Link
                     to="/"
                     className="font-extrabold text-blue-800 tracking-wide drop-shadow-sm flex items-center text-[1.25rem] md:text-2xl hover:text-blue-600 transition-colors"
+                    aria-label="Zur Startseite"
                 >
                     <img
                         src={`${import.meta.env.BASE_URL}assets/icon_32_32.png`}
-                        alt="Logo"
+                        alt="Bag-Tag Logo"
                         className="inline-block w-8 h-8 mr-2 align-middle flex-shrink-0"
+                        width="32"
+                        height="32"
                     />
                     <span className="hidden md:inline md:text-3xl whitespace-nowrap">
                         {t1.productname}
@@ -100,9 +103,9 @@ const NavigationBar: React.FC = () => {
                 </Link>
             </div>
             <div className="flex-1 flex justify-center">
-                <h1 className="font-bold px-4 py-2  text-md md:text-base text-center">
+                <span className="font-bold px-4 py-2  text-md md:text-base text-center">
 
-                </h1>
+                </span>
             </div>
             <ul className="hidden md:flex gap-4 ml-auto">
                 <li><a href="#features" className="text-blue-700 font-bold hover:underline">{t1.features}</a></li>
@@ -116,13 +119,14 @@ const NavigationBar: React.FC = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="bg-green-500 text-white font-bold px-6 py-2 rounded-lg shadow hover:bg-green-600 transition"
+                    aria-label="Jetzt kaufen"
                 >
                     {t2.cta}
                 </a>
 
                 {/* User authentication button */}
                 {loading ? (
-                    <div className="w-8 h-8 flex items-center justify-center">
+                    <div className="w-8 h-8 flex items-center justify-center" role="status" aria-label="Lädt">
                         <div className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
                     </div>
                 ) : isAuthenticated ? (
@@ -131,10 +135,11 @@ const NavigationBar: React.FC = () => {
                     <button
                         onClick={handleLogout}
                         className="text-blue-700 flex items-center gap-1 ml-2"
-                        title={t1.login || "Login"}
+                        title={t1.logout || "Logout"}
+                        aria-label={`Abmelden als ${userEmail}`}
                         disabled={loading}
                     >
-                        <FaUserCircle className="text-2xl" />
+                        <FaUserCircle className="text-2xl" aria-hidden="true" />
                         <span className="hidden md:inline font-bold">{userEmail ? userEmail : t1.dashboard}</span>
                     </button>
 
@@ -143,9 +148,10 @@ const NavigationBar: React.FC = () => {
                         onClick={handleLogin}
                         className="text-blue-700 flex items-center gap-1 ml-2"
                         title={t1.login || "Login"}
+                        aria-label="Anmelden"
                         disabled={loading}
                     >
-                        <FaUser className="text-2xl" />
+                        <FaUser className="text-2xl" aria-hidden="true" />
                         <span className="hidden md:inline font-bold">{t1.login}</span>
                     </button>
                 )}

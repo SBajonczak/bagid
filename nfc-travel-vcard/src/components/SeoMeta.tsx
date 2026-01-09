@@ -12,8 +12,6 @@ const SeoMeta: React.FC = () => {
         description,
         keywords,
         productName,
-        brandName,
-        productPrice,
         shippingDetails,
         returnPolicy
     } = messages[lang].seo;
@@ -46,11 +44,11 @@ const SeoMeta: React.FC = () => {
         "@context": "https://schema.org",
         "@type": "Product",
         "name": productName,
-        "image": "https://www.bag-tag.de/assets/product-image.jpg",
+        "image": "https://www.bag-tag.de/assets/productimage.webp",
         "description": description,
         "brand": {
             "@type": "Brand",
-            "name": brandName
+            "name": "Bag-Tag"
         },
         "review": reviews,
         "aggregateRating": {
@@ -62,7 +60,7 @@ const SeoMeta: React.FC = () => {
             "@type": "Offer",
             "url": "https://www.bag-tag.de",
             "priceCurrency": "EUR",
-            "price": productPrice,
+            "price": "12.99",
             "availability": "https://schema.org/InStock",
             "shippingDetails": {
                 "@type": "OfferShippingDetails",
@@ -103,6 +101,23 @@ const SeoMeta: React.FC = () => {
         }
     };
 
+    // Get FAQ data from i18n
+    const { faq } = messages[lang];
+
+    // Create FAQPage JSON-LD schema
+    const faqJsonLd = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": faq.questions.map(item => ({
+            "@type": "Question",
+            "name": item.question,
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": item.answer
+            }
+        }))
+    };
+
     return (
         <Helmet>
             {/* Basic Meta Tags */}
@@ -111,28 +126,50 @@ const SeoMeta: React.FC = () => {
             <meta name="keywords" content={keywords} />
             <meta name="author" content="Bag-Tag.de" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <link rel="canonical" href="https://www.bag-tag.de" />
+            <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+            <link rel="canonical" href="https://www.bag-tag.de/" />
+            
+            {/* Favicon and Manifest */}
+            <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+            <link rel="manifest" href="/manifest.json" />
 
             {/* Language Setting */}
             <html lang={lang} />
+
+            {/* Hreflang Tags for Multi-language Support */}
+            <link rel="alternate" hrefLang="de" href="https://www.bag-tag.de/?lang=de" />
+            <link rel="alternate" hrefLang="en" href="https://www.bag-tag.de/?lang=en" />
+            <link rel="alternate" hrefLang="nl" href="https://www.bag-tag.de/?lang=nl" />
+            <link rel="alternate" hrefLang="x-default" href="https://www.bag-tag.de/" />
 
             {/* Open Graph / Facebook */}
             <meta property="og:type" content="website" />
             <meta property="og:url" content="https://www.bag-tag.de/" />
             <meta property="og:title" content={title} />
             <meta property="og:description" content={description} />
-            <meta property="og:image" content="https://www.bag-tag.de/assets/og-image.jpg" />
+            <meta property="og:image" content="https://www.bag-tag.de/assets/productimage.webp" />
+            <meta property="og:image:width" content="600" />
+            <meta property="og:image:height" content="600" />
+            <meta property="og:image:alt" content="Bag-Tag NFC Gepäckanhänger" />
+            <meta property="og:site_name" content="Bag-Tag.de" />
+            <meta property="og:locale" content={lang === 'de' ? 'de_DE' : lang === 'en' ? 'en_US' : 'nl_NL'} />
 
             {/* Twitter */}
-            <meta property="twitter:card" content="summary_large_image" />
-            <meta property="twitter:url" content="https://www.bag-tag.de/" />
-            <meta property="twitter:title" content={title} />
-            <meta property="twitter:description" content={description} />
-            <meta property="twitter:image" content="https://www.bag-tag.de/assets/og-image.jpg" />
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:url" content="https://www.bag-tag.de/" />
+            <meta name="twitter:title" content={title} />
+            <meta name="twitter:description" content={description} />
+            <meta name="twitter:image" content="https://www.bag-tag.de/assets/productimage.webp" />
+            <meta name="twitter:image:alt" content="Bag-Tag NFC Gepäckanhänger" />
 
-            {/* Structured Data / JSON-LD */}
+            {/* Structured Data / JSON-LD - Product Schema */}
             <script type="application/ld+json">
                 {JSON.stringify(productJsonLd, null, 2)}
+            </script>
+
+            {/* Structured Data / JSON-LD - FAQ Schema */}
+            <script type="application/ld+json">
+                {JSON.stringify(faqJsonLd, null, 2)}
             </script>
         </Helmet>
     );

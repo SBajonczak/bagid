@@ -17,14 +17,17 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
     return (
         <section hidden={hidden} className="w-full landing-background py-12 px-4 flex flex-col items-center">
             {/* Hero Section - Main Container */}
-            <div className="w-full max-w-7xl bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border border-blue-100 flex flex-col md:flex-row items-center p-6 md:p-12 gap-8 professional-card animate-fade-in-up">
+            <article className="w-full max-w-7xl bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border border-blue-100 flex flex-col md:flex-row items-center p-6 md:p-12 gap-8 professional-card animate-fade-in-up">
                 {/* Product Image Area */}
                 <div className="flex-1 flex justify-center items-stretch md:h-full">
                     <img
                         src="/assets/productimage.webp"
-                        alt={`${t1.productname} Produktbild`}
+                        alt="NFC Gepäckanhänger Bag-Tag am Koffer - Smart Travel Tag für sicheres Reisen"
                         className="w-full max-w-xs h-full object-contain rounded"
                         style={{ minHeight: '8rem' }}
+                        loading="eager"
+                        width="300"
+                        height="300"
                     />
                 </div>
 
@@ -33,9 +36,11 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                     <h1 className="text-4xl md:text-5xl font-extrabold text-blue-900 mb-4 text-center md:text-left flex items-center gap-4 professional-title">
                         <img
                             src="/assets/tag.png"
-                            alt={`${t1.productname} Logo`}
+                            alt="Bag-Tag Logo"
                             className="w-16"
-                            loading="lazy"
+                            loading="eager"
+                            width="64"
+                            height="64"
                         />
                         Nie wieder den Koffer verlieren
                     </h1>
@@ -45,7 +50,7 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                     <ul id="features" className="mb-6 space-y-2 text-base text-gray-700">
                         {t.features.map((feature, idx) => (
                             <li key={idx} className="flex items-center gap-3 feature-item">
-                                <span className="inline-block w-6 h-6 text-blue-600 flex-shrink-0">
+                                <span className="inline-block w-6 h-6 text-blue-600 flex-shrink-0" role="img" aria-label={['NFC-Technologie', 'Daten aktualisieren', 'Reise', 'Versand', 'Sicherheit', 'Innovation', 'Weltweit'][idx]}>
                                     {['📱', '🔄', '✈️', '📦', '🔒', '💡', '🌍'][idx]}
                                 </span>
                                 <span>{feature}</span>
@@ -77,6 +82,7 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                             target="_blank"
                             rel="noopener noreferrer"
                             className="bg-green-500 text-white font-bold px-8 py-4 rounded-lg shadow-lg text-center w-full md:w-auto primary-cta"
+                            aria-label="Bag-Tag Travel Tag jetzt kaufen"
                         >
                             <span className="relative z-10 flex items-center justify-center gap-2">
                                 {t.cta} – Travel Tag sichern
@@ -91,6 +97,7 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="bg-green-500 text-white font-semibold px-6 py-3 rounded-lg shadow text-center inline-block secondary-cta"
+                                aria-label="3er-Set Bag-Tag kaufen"
                             >
                                 3er-Set kaufen und sparen
                             </a>
@@ -98,6 +105,7 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                         <a
                             href="/5ea2a017-8976-4d28-a2c0-6c80395858a7"
                             className="bg-gray-100 text-blue-900 font-semibold px-6 py-2 rounded-lg shadow hover:bg-gray-200 transition text-center w-full md:w-auto mt-4 border border-gray-300"
+                            aria-label="Demo ansehen"
                         >
                             {t.demoLinkText}
                         </a>
@@ -106,10 +114,10 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                         </p>
                     </div>
                 </div>
-            </div>
+            </article>
 
             {/* How It Works Section */}
-            <div className="w-full max-w-7xl mt-16 bg-white rounded-2xl shadow-lg p-8 md:p-12 how-it-works-section">
+            <section className="w-full max-w-7xl mt-16 bg-white rounded-2xl shadow-lg p-8 md:p-12 how-it-works-section">
                 <h2 className="text-3xl md:text-4xl font-bold text-center text-blue-900 mb-4">
                     Wie es funktioniert
                 </h2>
@@ -158,10 +166,10 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                         </p>
                     </div>
                 </div>
-            </div>
+            </section>
 
             {/* Benefits Section */}
-            <div className="w-full max-w-7xl mt-16">
+            <section className="w-full max-w-7xl mt-16">
                 <h2 className="text-3xl md:text-4xl font-bold text-center text-blue-900 mb-4">
                     Ihre Vorteile
                 </h2>
@@ -224,19 +232,19 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                         </p>
                     </div>
                 </div>
-            </div>
+            </section>
 
             {/* Testimonials Section */}
-            <div id="testimonials" className="w-full max-w-7xl mt-16">
+            <section id="testimonials" className="w-full max-w-7xl mt-16">
                 <h2 className="text-3xl md:text-4xl font-bold text-center text-blue-900 mb-8">
                     Was unsere Kunden sagen
                 </h2>
                 <Testimonial testimonials={testimonial} />
-            </div>
+            </section>
             {/* FAQ Section */}
-            <div id="faq" className="w-full max-w-7xl mt-12">
+            <section id="faq" className="w-full max-w-7xl mt-12">
                 <FaqSection />
-            </div>
+            </section>
         </section>
     );
 };
