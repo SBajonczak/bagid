@@ -110,7 +110,7 @@ echo ""
 
 # Count words in SEO content
 echo "Checking content length..."
-word_count=$(grep -oP '(?<=<div id="seo-content").*?(?=</div>)' dist/index.html | wc -w)
+word_count=$(sed -n '/seo-content/,/SEO Content End/p' dist/index.html | wc -w)
 if [ "$word_count" -gt 300 ]; then
     echo "  ✅ SEO content has $word_count words (>300)"
 else

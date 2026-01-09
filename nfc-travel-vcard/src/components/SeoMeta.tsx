@@ -125,15 +125,7 @@ const SeoMeta: React.FC = () => {
         "name": "Bag-Tag.de",
         "url": "https://bag-tag.de/",
         "description": description,
-        "inLanguage": [lang],
-        "potentialAction": {
-            "@type": "SearchAction",
-            "target": {
-                "@type": "EntryPoint",
-                "urlTemplate": "https://bag-tag.de/?q={search_term_string}"
-            },
-            "query-input": "required name=search_term_string"
-        }
+        "inLanguage": [lang]
     };
 
     // Create Organization JSON-LD schema
