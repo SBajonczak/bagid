@@ -33,11 +33,13 @@ root.render(
                         {/* Tag-related routes */}
                         <Route path="/register/:tagId" element={<TagRegistration />} />
                         <Route path="/:tagId/edit" element={<TravelCardEdit />} />
-                        <Route path="/:tagId" element={<TravelCard />} />
                         
                         {/* Other routes */}
                         <Route path="/impressum" element={<Impressum />} />
                         <Route path="/app" element={<App />} />
+                        
+                        {/* Catch-all for tag IDs - must be last */}
+                        <Route path="/:tagId" element={<TravelCard />} />
                     </Routes>
                 </Suspense>
             </Router>
