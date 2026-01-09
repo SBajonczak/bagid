@@ -44,7 +44,7 @@ const SeoMeta: React.FC = () => {
         "@context": "https://schema.org",
         "@type": "Product",
         "name": productName,
-        "image": "https://www.bag-tag.de/assets/productimage.webp",
+        "image": "https://bag-tag.de/assets/productimage.webp",
         "description": description,
         "brand": {
             "@type": "Brand",
@@ -58,7 +58,7 @@ const SeoMeta: React.FC = () => {
         },
         "offers": {
             "@type": "Offer",
-            "url": "https://www.bag-tag.de",
+            "url": "https://bag-tag.de",
             "priceCurrency": "EUR",
             "price": "12.99",
             "availability": "https://schema.org/InStock",
@@ -118,6 +118,39 @@ const SeoMeta: React.FC = () => {
         }))
     };
 
+    // Create WebSite JSON-LD schema
+    const websiteJsonLd = {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Bag-Tag.de",
+        "url": "https://bag-tag.de/",
+        "description": description,
+        "inLanguage": [lang],
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": "https://bag-tag.de/?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+        }
+    };
+
+    // Create Organization JSON-LD schema
+    const organizationJsonLd = {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Bag-Tag.de",
+        "url": "https://bag-tag.de/",
+        "logo": "https://bag-tag.de/assets/tag.png",
+        "sameAs": [],
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "customer service",
+            "availableLanguage": ["de", "en", "nl"]
+        }
+    };
+
     return (
         <Helmet>
             {/* Basic Meta Tags */}
@@ -127,7 +160,7 @@ const SeoMeta: React.FC = () => {
             <meta name="author" content="Bag-Tag.de" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-            <link rel="canonical" href="https://www.bag-tag.de/" />
+            <link rel="canonical" href="https://bag-tag.de/" />
             
             {/* Favicon and Manifest */}
             <link rel="icon" type="image/x-icon" href="/favicon.ico" />
@@ -137,17 +170,17 @@ const SeoMeta: React.FC = () => {
             <html lang={lang} />
 
             {/* Hreflang Tags for Multi-language Support */}
-            <link rel="alternate" hrefLang="de" href="https://www.bag-tag.de/?lang=de" />
-            <link rel="alternate" hrefLang="en" href="https://www.bag-tag.de/?lang=en" />
-            <link rel="alternate" hrefLang="nl" href="https://www.bag-tag.de/?lang=nl" />
-            <link rel="alternate" hrefLang="x-default" href="https://www.bag-tag.de/" />
+            <link rel="alternate" hrefLang="de" href="https://bag-tag.de/?lang=de" />
+            <link rel="alternate" hrefLang="en" href="https://bag-tag.de/?lang=en" />
+            <link rel="alternate" hrefLang="nl" href="https://bag-tag.de/?lang=nl" />
+            <link rel="alternate" hrefLang="x-default" href="https://bag-tag.de/" />
 
             {/* Open Graph / Facebook */}
             <meta property="og:type" content="website" />
-            <meta property="og:url" content="https://www.bag-tag.de/" />
+            <meta property="og:url" content="https://bag-tag.de/" />
             <meta property="og:title" content={title} />
             <meta property="og:description" content={description} />
-            <meta property="og:image" content="https://www.bag-tag.de/assets/productimage.webp" />
+            <meta property="og:image" content="https://bag-tag.de/assets/productimage.webp" />
             <meta property="og:image:width" content="600" />
             <meta property="og:image:height" content="600" />
             <meta property="og:image:alt" content="Bag-Tag NFC Gepäckanhänger" />
@@ -156,10 +189,10 @@ const SeoMeta: React.FC = () => {
 
             {/* Twitter */}
             <meta name="twitter:card" content="summary_large_image" />
-            <meta name="twitter:url" content="https://www.bag-tag.de/" />
+            <meta name="twitter:url" content="https://bag-tag.de/" />
             <meta name="twitter:title" content={title} />
             <meta name="twitter:description" content={description} />
-            <meta name="twitter:image" content="https://www.bag-tag.de/assets/productimage.webp" />
+            <meta name="twitter:image" content="https://bag-tag.de/assets/productimage.webp" />
             <meta name="twitter:image:alt" content="Bag-Tag NFC Gepäckanhänger" />
 
             {/* Structured Data / JSON-LD - Product Schema */}
@@ -170,6 +203,16 @@ const SeoMeta: React.FC = () => {
             {/* Structured Data / JSON-LD - FAQ Schema */}
             <script type="application/ld+json">
                 {JSON.stringify(faqJsonLd, null, 2)}
+            </script>
+
+            {/* Structured Data / JSON-LD - WebSite Schema */}
+            <script type="application/ld+json">
+                {JSON.stringify(websiteJsonLd, null, 2)}
+            </script>
+
+            {/* Structured Data / JSON-LD - Organization Schema */}
+            <script type="application/ld+json">
+                {JSON.stringify(organizationJsonLd, null, 2)}
             </script>
         </Helmet>
     );

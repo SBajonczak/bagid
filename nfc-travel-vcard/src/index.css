@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* SEO Content Visibility */
+#seo-content {
+  display: none !important;
+}
+
 /* ...dein bestehendes CSS... */
 
 body {

@@ -78,7 +78,8 @@ const App: React.FC = () => {
                                     playsInline
                                     className="w-full max-w-7xl h-40 object-cover rounded shadow"
                                     style={{ height: '55vh', width: '100%' }}
-                                    preload="auto"
+                                    preload="metadata"
+                                    poster="/assets/video-poster.jpg"
                                     controls={false}
                                     disablePictureInPicture
                                     controlsList="nodownload noremoteplayback"

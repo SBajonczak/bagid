@@ -1,6 +1,5 @@
 User-agent: *
 Allow: /
 Disallow: /api/
-Disallow: /register/
 
-Sitemap: https://www.bag-tag.de/sitemap.xml
+Sitemap: https://bag-tag.de/sitemap.xml

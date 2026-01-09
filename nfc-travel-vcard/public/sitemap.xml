@@ -2,24 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://www.bag-tag.de/</loc>
+    <loc>https://bag-tag.de/</loc>
     <lastmod>2026-01-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="de" href="https://www.bag-tag.de/?lang=de" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.bag-tag.de/?lang=en" />
-    <xhtml:link rel="alternate" hreflang="nl" href="https://www.bag-tag.de/?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://bag-tag.de/?lang=de" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://bag-tag.de/?lang=en" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://bag-tag.de/?lang=nl" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bag-tag.de/" />
   </url>
   <url>
-    <loc>https://www.bag-tag.de/impressum</loc>
+    <loc>https://bag-tag.de/impressum</loc>
     <lastmod>2026-01-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://www.bag-tag.de/app</loc>
-    <lastmod>2026-01-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
   </url>
 </urlset>
