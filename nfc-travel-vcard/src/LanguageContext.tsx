@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import { SupportedLang, getBrowserLanguage } from './i18n';
+import { SupportedLang } from './i18n';
 
 interface LanguageContextProps {
     lang: SupportedLang;
@@ -14,7 +14,21 @@ const LanguageContext = createContext<LanguageContextProps>({
 export const useLanguage = () => useContext(LanguageContext);
 
 export const LanguageProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
-    const [lang, setLang] = useState<SupportedLang>(getBrowserLanguage());
+    const [lang, setLangState] = useState<SupportedLang>(() => {
+        // Check for saved preference first
+        const savedLang = localStorage.getItem('preferred_language') as SupportedLang;
+        if (savedLang && ['de', 'en', 'nl', 'ko', 'ar', 'th'].includes(savedLang)) {
+            return savedLang;
+        }
+        // Default to German for SEO (not browser detection)
+        return 'de';
+    });
+
+    const setLang = (newLang: SupportedLang) => {
+        setLangState(newLang);
+        localStorage.setItem('preferred_language', newLang);
+    };
+
     return (
         <LanguageContext.Provider value={{ lang, setLang }}>
             {children}

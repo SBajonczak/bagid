@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import { LanguageProvider } from './LanguageContext';
 import { logger } from './utils/logger';
+import LandingPageWrapper from './components/LandingPageWrapper';
 
 // Lazy load components for better code splitting
 const TravelCard = lazy(() => import('./components/Tag/TravelCard'));
@@ -22,12 +23,20 @@ root.render(
             <Router>
                 <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div></div>}>
                     <Routes>
-                        <Route path="/" element={<App />} />
+                        {/* Language-specific routes for landing page */}
+                        <Route path="/de" element={<LandingPageWrapper />} />
+                        <Route path="/en" element={<LandingPageWrapper />} />
+                        
+                        {/* Root path - defaults to German with language detection banner */}
+                        <Route path="/" element={<LandingPageWrapper />} />
+                        
+                        {/* Tag-related routes */}
                         <Route path="/register/:tagId" element={<TagRegistration />} />
-                        {/* <Route path="/:tagId/register" element={<TagRegistration />} /> */}
                         <Route path="/:tagId/edit" element={<TravelCardEdit />} />
+                        <Route path="/:tagId" element={<TravelCard />} />
+                        
+                        {/* Other routes */}
                         <Route path="/impressum" element={<Impressum />} />
-                        <Route path="/:tagId?" element={<TravelCard />} />
                         <Route path="/app" element={<App />} />
                     </Routes>
                 </Suspense>

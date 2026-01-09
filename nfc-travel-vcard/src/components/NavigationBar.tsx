@@ -6,6 +6,7 @@ import { FaUser, FaUserCircle } from 'react-icons/fa';
 import authService from '../services/AuthService';
 import { logger } from '@/utils/logger';
 import { Link } from 'react-router-dom';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const NavigationBar: React.FC = () => {
     const { lang } = useLanguage();
@@ -113,6 +114,9 @@ const NavigationBar: React.FC = () => {
             </ul>
 
             <div className="flex items-center pl-2 gap-2">
+                {/* Language Switcher */}
+                <LanguageSwitcher />
+                
                 {/* High-conversion "Buy Now" button */}
                 <a
                     href="https://kreativschicht.de/cart/50710421668182:1"

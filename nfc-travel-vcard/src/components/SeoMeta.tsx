@@ -2,9 +2,11 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useLanguage } from '../LanguageContext';
 import { messages } from '../i18n';
+import { useLocation } from 'react-router-dom';
 
 const SeoMeta: React.FC = () => {
     const { lang } = useLanguage();
+    const location = useLocation();
 
     // Get SEO content from i18n
     const {
@@ -18,6 +20,22 @@ const SeoMeta: React.FC = () => {
 
     // Get testimonials from i18n
     const { testimonials } = messages[lang].noDataSection;
+
+    // Determine canonical URL based on current route
+    const getCanonicalUrl = () => {
+        const baseUrl = 'https://www.bag-tag.de';
+        const path = location.pathname;
+        
+        // For landing page routes
+        if (path === '/' || path === '/de' || path === '/en') {
+            return `${baseUrl}${path === '/' ? '/de' : path}`;
+        }
+        
+        // For other routes, use as-is
+        return `${baseUrl}${path}`;
+    };
+
+    const canonicalUrl = getCanonicalUrl();
 
     // Calculate average rating from testimonials
     const totalRating = testimonials.reduce((sum, testimonial) => sum + testimonial.rating, 0);
@@ -58,7 +76,7 @@ const SeoMeta: React.FC = () => {
         },
         "offers": {
             "@type": "Offer",
-            "url": "https://www.bag-tag.de",
+            "url": canonicalUrl,
             "priceCurrency": "EUR",
             "price": "12.99",
             "availability": "https://schema.org/InStock",
@@ -127,7 +145,7 @@ const SeoMeta: React.FC = () => {
             <meta name="author" content="Bag-Tag.de" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-            <link rel="canonical" href="https://www.bag-tag.de/" />
+            <link rel="canonical" href={canonicalUrl} />
             
             {/* Favicon and Manifest */}
             <link rel="icon" type="image/x-icon" href="/favicon.ico" />
@@ -137,14 +155,13 @@ const SeoMeta: React.FC = () => {
             <html lang={lang} />
 
             {/* Hreflang Tags for Multi-language Support */}
-            <link rel="alternate" hrefLang="de" href="https://www.bag-tag.de/?lang=de" />
-            <link rel="alternate" hrefLang="en" href="https://www.bag-tag.de/?lang=en" />
-            <link rel="alternate" hrefLang="nl" href="https://www.bag-tag.de/?lang=nl" />
-            <link rel="alternate" hrefLang="x-default" href="https://www.bag-tag.de/" />
+            <link rel="alternate" hrefLang="de" href="https://www.bag-tag.de/de" />
+            <link rel="alternate" hrefLang="en" href="https://www.bag-tag.de/en" />
+            <link rel="alternate" hrefLang="x-default" href="https://www.bag-tag.de/de" />
 
             {/* Open Graph / Facebook */}
             <meta property="og:type" content="website" />
-            <meta property="og:url" content="https://www.bag-tag.de/" />
+            <meta property="og:url" content={canonicalUrl} />
             <meta property="og:title" content={title} />
             <meta property="og:description" content={description} />
             <meta property="og:image" content="https://www.bag-tag.de/assets/productimage.webp" />
@@ -156,7 +173,7 @@ const SeoMeta: React.FC = () => {
 
             {/* Twitter */}
             <meta name="twitter:card" content="summary_large_image" />
-            <meta name="twitter:url" content="https://www.bag-tag.de/" />
+            <meta name="twitter:url" content={canonicalUrl} />
             <meta name="twitter:title" content={title} />
             <meta name="twitter:description" content={description} />
             <meta name="twitter:image" content="https://www.bag-tag.de/assets/productimage.webp" />
