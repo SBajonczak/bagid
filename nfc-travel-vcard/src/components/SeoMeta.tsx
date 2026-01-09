@@ -162,7 +162,7 @@ const SeoMeta: React.FC = () => {
             <meta name="author" content="Bag-Tag.de" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-            <link rel="canonical" href={`${siteConfig.siteUrl}/`} />
+            <link rel="canonical" href={`${siteConfig.siteUrl}/${lang}`} />
             
             {/* Favicon and Manifest */}
             <link rel="icon" type="image/x-icon" href="/favicon.ico" />
@@ -172,14 +172,14 @@ const SeoMeta: React.FC = () => {
             <html lang={lang} />
 
             {/* Hreflang Tags for Multi-language Support */}
-            <link rel="alternate" hrefLang="de" href={`${siteConfig.siteUrl}/?lang=de`} />
-            <link rel="alternate" hrefLang="en" href={`${siteConfig.siteUrl}/?lang=en`} />
-            <link rel="alternate" hrefLang="nl" href={`${siteConfig.siteUrl}/?lang=nl`} />
-            <link rel="alternate" hrefLang="x-default" href={`${siteConfig.siteUrl}/`} />
+            <link rel="alternate" hrefLang="de" href={`${siteConfig.siteUrl}/de`} />
+            <link rel="alternate" hrefLang="en" href={`${siteConfig.siteUrl}/en`} />
+            <link rel="alternate" hrefLang="nl" href={`${siteConfig.siteUrl}/nl`} />
+            <link rel="alternate" hrefLang="x-default" href={`${siteConfig.siteUrl}/de`} />
 
             {/* Open Graph / Facebook */}
             <meta property="og:type" content="website" />
-            <meta property="og:url" content={`${siteConfig.siteUrl}/`} />
+            <meta property="og:url" content={`${siteConfig.siteUrl}/${lang}`} />
             <meta property="og:title" content={title} />
             <meta property="og:description" content={description} />
             <meta property="og:image" content={`${siteConfig.siteUrl}${siteConfig.ogImage}`} />
@@ -191,7 +191,7 @@ const SeoMeta: React.FC = () => {
 
             {/* Twitter */}
             <meta name="twitter:card" content="summary_large_image" />
-            <meta name="twitter:url" content={`${siteConfig.siteUrl}/`} />
+            <meta name="twitter:url" content={`${siteConfig.siteUrl}/${lang}`} />
             <meta name="twitter:title" content={title} />
             <meta name="twitter:description" content={description} />
             <meta name="twitter:image" content={`${siteConfig.siteUrl}${siteConfig.ogImage}`} />

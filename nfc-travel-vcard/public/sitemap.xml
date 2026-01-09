@@ -1,24 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <!-- German (Default) -->
   <url>
-    <loc>https://bag-tag.de/</loc>
+    <loc>https://bag-tag.de/de</loc>
     <lastmod>2026-01-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="de" href="https://bag-tag.de/?lang=de" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://bag-tag.de/?lang=en" />
-    <xhtml:link rel="alternate" hreflang="nl" href="https://bag-tag.de/?lang=nl" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://bag-tag.de/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://bag-tag.de/de" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://bag-tag.de/en" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://bag-tag.de/nl" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bag-tag.de/de" />
   </url>
+  
+  <!-- English -->
   <url>
-    <loc>https://bag-tag.de/impressum</loc>
+    <loc>https://bag-tag.de/en</loc>
+    <lastmod>2026-01-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bag-tag.de/de" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://bag-tag.de/en" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://bag-tag.de/nl" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bag-tag.de/de" />
+  </url>
+  
+  <!-- Dutch -->
+  <url>
+    <loc>https://bag-tag.de/nl</loc>
+    <lastmod>2026-01-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bag-tag.de/de" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://bag-tag.de/en" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://bag-tag.de/nl" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bag-tag.de/de" />
+  </url>
+  
+  <!-- Impressum (German only for now) -->
+  <url>
+    <loc>https://bag-tag.de/de/impressum</loc>
     <lastmod>2026-01-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
+  
+  <!-- App (all languages) -->
   <url>
-    <loc>https://bag-tag.de/app</loc>
+    <loc>https://bag-tag.de/de/app</loc>
+    <lastmod>2026-01-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bag-tag.de/en/app</loc>
+    <lastmod>2026-01-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bag-tag.de/nl/app</loc>
     <lastmod>2026-01-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

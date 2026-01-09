@@ -83,7 +83,7 @@ const NavigationBar: React.FC = () => {
             <div className="flex gap-2">
                 {/* Add more flags as needed */}
                 <Link
-                    to="/"
+                    to={`/${lang}`}
                     className="font-extrabold text-blue-800 tracking-wide drop-shadow-sm flex items-center text-[1.25rem] md:text-2xl hover:text-blue-600 transition-colors"
                     aria-label="Zur Startseite"
                 >
