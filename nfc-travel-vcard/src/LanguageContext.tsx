@@ -37,10 +37,8 @@ export const LanguageProvider: React.FC<{children: React.ReactNode}> = ({ childr
     // Update language when URL changes
     useEffect(() => {
         const newLang = getLangFromUrl();
-        if (newLang !== lang) {
-            setLangState(newLang);
-        }
-    }, [params.lang]); // Only depend on params.lang to avoid infinite loops
+        setLangState(newLang);
+    }, [params.lang]); // Update whenever URL lang parameter changes
     
     // Function to change language by navigating to new route
     const setLang = (newLang: SupportedLang) => {
