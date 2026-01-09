@@ -162,7 +162,7 @@ const SeoMeta: React.FC = () => {
             <meta name="author" content="Bag-Tag.de" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-            <link rel="canonical" href={`${siteConfig.siteUrl}/${lang}`} />
+            <link rel="canonical" href={`${siteConfig.siteUrl}/${lang || 'de'}`} />
             
             {/* Favicon and Manifest */}
             <link rel="icon" type="image/x-icon" href="/favicon.ico" />

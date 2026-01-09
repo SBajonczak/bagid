@@ -3,7 +3,7 @@ import App from './App';
 import './styles/App.css';
 import ReactDOM from 'react-dom/client';
 
-import { BrowserRouter as Router, Route, Routes, Navigate, useParams } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 
 import { LanguageProvider } from './LanguageContext';
 import { logger } from './utils/logger';
@@ -13,11 +13,6 @@ const TravelCard = lazy(() => import('./components/Tag/TravelCard'));
 const TravelCardEdit = lazy(() => import('./components/Tag/TravelCardEdit'));
 const TagRegistration = lazy(() => import('./components/Tag/TagRegistration'));
 const Impressum = lazy(() => import('./components/Impressum/Impressum'));
-
-// Wrapper component to handle language routing
-const LanguageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    return <>{children}</>;
-};
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 logger.info('Starting React application...');
@@ -31,14 +26,14 @@ root.render(
                         <Route path="/" element={<Navigate to="/de" replace />} />
                         
                         {/* Language-based routes */}
-                        <Route path="/:lang" element={<LanguageWrapper><App /></LanguageWrapper>} />
-                        <Route path="/:lang/register/:tagId" element={<LanguageWrapper><TagRegistration /></LanguageWrapper>} />
-                        <Route path="/:lang/:tagId/edit" element={<LanguageWrapper><TravelCardEdit /></LanguageWrapper>} />
-                        <Route path="/:lang/impressum" element={<LanguageWrapper><Impressum /></LanguageWrapper>} />
-                        <Route path="/:lang/app" element={<LanguageWrapper><App /></LanguageWrapper>} />
-                        <Route path="/:lang/:tagId" element={<LanguageWrapper><TravelCard /></LanguageWrapper>} />
+                        <Route path="/:lang" element={<App />} />
+                        <Route path="/:lang/register/:tagId" element={<TagRegistration />} />
+                        <Route path="/:lang/:tagId/edit" element={<TravelCardEdit />} />
+                        <Route path="/:lang/impressum" element={<Impressum />} />
+                        <Route path="/:lang/app" element={<App />} />
+                        <Route path="/:lang/:tagId" element={<TravelCard />} />
                         
-                        {/* Legacy routes with query params - redirect to route-based */}
+                        {/* Fallback for invalid routes */}
                         <Route path="*" element={<Navigate to="/de" replace />} />
                     </Routes>
                 </Suspense>
