@@ -67,9 +67,6 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                                     <div className="text-blue-900 font-semibold text-sm">
                                         ✓ Kostenloser Versand ab 2 Stück
                                     </div>
-                                    <div className="text-gray-600 text-sm mt-1">
-                                        ✓ 14 Tage Rückgaberecht
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -79,7 +76,7 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                             href="https://kreativschicht.de/products/bagid-koffer-tag-mit-nfc?utm_source=copyToPasteBoard&utm_medium=product-links&utm_content=web"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-white font-bold px-8 py-4 rounded-lg shadow-lg text-center w-full md:w-auto primary-cta"
+                            className="bg-green-500 text-white font-bold px-8 py-4 rounded-lg shadow-lg text-center w-full md:w-auto primary-cta"
                         >
                             <span className="relative z-10 flex items-center justify-center gap-2">
                                 {t.cta} – Travel Tag sichern
@@ -93,7 +90,7 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                                 href="https://kreativschicht.de/cart/50710421668182:1"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-white font-semibold px-6 py-3 rounded-lg shadow text-center inline-block secondary-cta"
+                                className="bg-green-500 text-white font-semibold px-6 py-3 rounded-lg shadow text-center inline-block secondary-cta"
                             >
                                 3er-Set kaufen und sparen
                             </a>
