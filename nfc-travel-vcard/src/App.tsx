@@ -78,14 +78,15 @@ const App: React.FC = () => {
                                     playsInline
                                     className="w-full max-w-7xl h-40 object-cover rounded shadow"
                                     style={{ height: '55vh', width: '100%' }}
-                                    preload="auto"
+                                    preload="metadata"
                                     controls={false}
                                     disablePictureInPicture
                                     controlsList="nodownload noremoteplayback"
                                     aria-label="Bag Tag Produktdemonstration"
                                     title="Bag Tag Produktdemonstration"
                                     width="1920"
-                                    height="1080">
+                                    height="1080"
+                                    poster="/assets/video-poster.jpg">
                                     <source src="/assets/bagid-loop.mp4" type="video/mp4; codecs=avc1.4D401E,mp4a.40.2" />
                                     Dein Browser unterstützt keine eingebetteten Videos.
                                 </video>
