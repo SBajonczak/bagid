@@ -42,10 +42,10 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                             width="64"
                             height="64"
                         />
-                        Nie wieder den Koffer verlieren
+                        {lang === 'de' ? 'NFC Gepäckanhänger für sicheres Reisen' : lang === 'en' ? 'NFC Luggage Tag for Safe Travel' : 'NFC Bagagelabel voor Veilig Reizen'}
                     </h1>
                     <p className="text-lg md:text-xl text-gray-700 mb-6 text-center md:text-left break-words">
-                        Mit dem smarten Travel Tag – NFC & QR-Code für sicheres Reisen
+                        {lang === 'de' ? 'Smarter Kofferanhänger mit NFC & QR-Code – nie wieder Gepäck verlieren' : lang === 'en' ? 'Smart luggage tag with NFC & QR code – never lose your baggage again' : 'Slimme bagagelabel met NFC & QR-code – verlies nooit meer uw bagage'}
                     </p>
                     <ul id="features" className="mb-6 space-y-2 text-base text-gray-700">
                         {t.features.map((feature, idx) => (
@@ -241,6 +241,106 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                 </h2>
                 <Testimonial testimonials={testimonial} />
             </section>
+
+            {/* SEO Content Section - Why Choose Bag-Tag */}
+            {lang === 'de' && (
+                <section className="w-full max-w-7xl mt-16 bg-white rounded-2xl shadow-lg p-8 md:p-12">
+                    <h2 className="text-3xl md:text-4xl font-bold text-center text-blue-900 mb-8">
+                        Warum ein NFC Gepäckanhänger die beste Wahl für Ihre Reise ist
+                    </h2>
+                    <div className="prose prose-lg max-w-none text-gray-700 space-y-6">
+                        <p>
+                            Verlorenes Gepäck gehört zu den größten Ärgernissen auf Reisen. Jedes Jahr gehen weltweit 
+                            Millionen von Koffern verloren oder werden verspätet ausgeliefert. Mit einem <strong>NFC Gepäckanhänger 
+                            von Bag-Tag</strong> schützen Sie sich effektiv vor diesem Problem und sorgen dafür, dass Ihr 
+                            Gepäck sicher bei Ihnen ankommt.
+                        </p>
+                        <h3 className="text-2xl font-bold text-blue-900 mt-8 mb-4">
+                            Digitale Gepäckanhänger – Die moderne Alternative
+                        </h3>
+                        <p>
+                            Im Gegensatz zu herkömmlichen Kofferanhängern aus Papier oder Plastik bietet ein 
+                            <strong> digitaler Gepäckanhänger mit NFC-Technologie</strong> entscheidende Vorteile: 
+                            Die Kontaktdaten können jederzeit online aktualisiert werden, ohne dass ein neuer Anhänger 
+                            benötigt wird. Der Finder Ihres Gepäcks kann durch einfaches Scannen mit dem Smartphone 
+                            sofort Ihre aktuellen Kontaktinformationen abrufen – schnell, einfach und datenschutzkonform.
+                        </p>
+                        <h3 className="text-2xl font-bold text-blue-900 mt-8 mb-4">
+                            NFC Technologie – Kontaktlos und zukunftssicher
+                        </h3>
+                        <p>
+                            Die <strong>NFC-Technologie (Near Field Communication)</strong> ist der Standard für kontaktlose 
+                            Datenübertragung. Fast jedes moderne Smartphone unterstützt NFC – eine zusätzliche App ist 
+                            nicht erforderlich. Einfach das Handy an den <strong>NFC Koffer Tag</strong> halten, und schon 
+                            werden alle wichtigen Informationen angezeigt. Zusätzlich bietet unser Bag-Tag einen 
+                            <strong> QR-Code als Backup</strong>, falls das Smartphone des Finders keine NFC-Funktion hat.
+                        </p>
+                        <h3 className="text-2xl font-bold text-blue-900 mt-8 mb-4">
+                            Ideal für Reisen, Geschäftsreisen und Familien
+                        </h3>
+                        <p>
+                            Ob Sie geschäftlich oder privat unterwegs sind, mehrere Koffer für die Familie haben oder 
+                            häufig zwischen verschiedenen Städten und Ländern reisen – der <strong>Bag-Tag NFC Travel Tag</strong> 
+                            ist die perfekte Lösung. Dank der robusten, wasserfesten Bauweise hält der Anhänger auch 
+                            extremen Bedingungen stand. Sie können jeden Tag Ihre Reisedaten, Hoteladressen und 
+                            Kontaktinformationen aktualisieren – so sind Sie immer erreichbar.
+                        </p>
+                        <h3 className="text-2xl font-bold text-blue-900 mt-8 mb-4">
+                            DSGVO-konform und sicher
+                        </h3>
+                        <p>
+                            Datenschutz ist uns wichtig. Sie allein entscheiden, welche Informationen Sie auf Ihrem 
+                            <strong> smarten Kofferanhänger</strong> hinterlegen möchten. Alle Daten werden sicher 
+                            gespeichert und können jederzeit von Ihnen geändert oder gelöscht werden. Der Bag-Tag 
+                            entspricht vollständig den deutschen und europäischen Datenschutzbestimmungen (DSGVO).
+                        </p>
+                        <h3 className="text-2xl font-bold text-blue-900 mt-8 mb-4">
+                            Einfache Einrichtung und Nutzung
+                        </h3>
+                        <p>
+                            Die Aktivierung Ihres NFC Tags dauert nur wenige Minuten: Tag am Koffer befestigen, 
+                            QR-Code oder NFC scannen, Daten online eingeben – fertig! Ab sofort ist Ihr Gepäck 
+                            geschützt. Änderungen nehmen Sie bequem über Ihr Smartphone oder am Computer vor, 
+                            ohne zusätzliche App oder Software.
+                        </p>
+                    </div>
+                </section>
+            )}
+
+            {lang === 'en' && (
+                <section className="w-full max-w-7xl mt-16 bg-white rounded-2xl shadow-lg p-8 md:p-12">
+                    <h2 className="text-3xl md:text-4xl font-bold text-center text-blue-900 mb-8">
+                        Why an NFC Luggage Tag is the Best Choice for Your Journey
+                    </h2>
+                    <div className="prose prose-lg max-w-none text-gray-700 space-y-6">
+                        <p>
+                            Lost luggage is one of the biggest frustrations when traveling. Every year, millions of 
+                            suitcases worldwide are lost or delayed. With an <strong>NFC luggage tag from Bag-Tag</strong>, 
+                            you effectively protect yourself from this problem and ensure your baggage arrives safely.
+                        </p>
+                        <h3 className="text-2xl font-bold text-blue-900 mt-8 mb-4">
+                            Digital Luggage Tags – The Modern Alternative
+                        </h3>
+                        <p>
+                            Unlike traditional paper or plastic luggage tags, a <strong>digital luggage tag with NFC 
+                            technology</strong> offers crucial advantages: Contact details can be updated online anytime 
+                            without needing a new tag. Anyone who finds your luggage can instantly access your current 
+                            contact information by simply scanning with their smartphone – fast, easy, and privacy-compliant.
+                        </p>
+                        <h3 className="text-2xl font-bold text-blue-900 mt-8 mb-4">
+                            NFC Technology – Contactless and Future-Proof
+                        </h3>
+                        <p>
+                            <strong>NFC (Near Field Communication) technology</strong> is the standard for contactless 
+                            data transfer. Almost every modern smartphone supports NFC – no additional app required. 
+                            Simply hold the phone to the <strong>NFC travel tag</strong> and all important information 
+                            is displayed. Additionally, our Bag-Tag features a <strong>QR code as backup</strong> in case 
+                            the finder's smartphone doesn't have NFC.
+                        </p>
+                    </div>
+                </section>
+            )}
+
             {/* FAQ Section */}
             <section id="faq" className="w-full max-w-7xl mt-12">
                 <FaqSection />
