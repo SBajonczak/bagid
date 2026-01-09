@@ -64,13 +64,13 @@ const App: React.FC = () => {
         <HelmetProvider>
             <LanguageProvider>
                 <AuthProvider>
-                    <div>
+                    <>
                         <SeoMeta />
                         <NavigationBar />
 
-                        {/* Video shown only when NOT authenticated */}
+                        {/* Video header shown only when NOT authenticated */}
                         {!isAuthenticated && (
-                            <div className="w-full flex justify-center bg-gradient-to-br py-6">
+                            <header className="w-full flex justify-center bg-gradient-to-br py-6">
                                 <video
                                     autoPlay
                                     muted
@@ -83,28 +83,30 @@ const App: React.FC = () => {
                                     disablePictureInPicture
                                     controlsList="nodownload noremoteplayback"
                                     aria-label="Bag Tag Produktdemonstration"
-                                    title="Bag Tag Produktdemonstration">
+                                    title="Bag Tag Produktdemonstration"
+                                    width="1920"
+                                    height="1080">
                                     <source src="/assets/bagid-loop.mp4" type="video/mp4; codecs=avc1.4D401E,mp4a.40.2" />
                                     Dein Browser unterstützt keine eingebetteten Videos.
                                 </video>
-                            </div>
+                            </header>
                         )}
 
                         <Header />
                         <MessageContainer message={''} type={'none'} />
 
-                        {/* Show Dashboard when authenticated, StartPageControl when not */}
-                       {isAuthenticated && (
-                            <>
+                        {/* Main content area */}
+                        <main>
+                            {/* Show Dashboard when authenticated, StartPageControl when not */}
+                            {isAuthenticated && (
                                 <Dashboard hidden={false} />
-                            </>
-                        )}
+                            )}
 
-                        <StartPageControl hidden={false} />
+                            <StartPageControl hidden={false} />
+                        </main>
 
-                    </div>
-                  
-                    <Footer/>
+                        <Footer/>
+                    </>
                 </AuthProvider>
             </LanguageProvider>
         </HelmetProvider>
