@@ -50,6 +50,7 @@ const Dashboard: React.FC<DashboardProps> = ({ hidden }) => {
             setLoading(true)
             try {
                 const token = await getToken();
+                console.log("Fetching tags with token:", token ? "Token exists" : "No token");
                 const response = await fetch('/api/user/tags', {
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -61,6 +62,7 @@ const Dashboard: React.FC<DashboardProps> = ({ hidden }) => {
                 }
 
                 const data = await response.json();
+                console.log("Tags fetched successfully:", data);
                 setTags(data);
             } catch (err) {
                 console.error('Error fetching tags:', err);
@@ -71,7 +73,19 @@ const Dashboard: React.FC<DashboardProps> = ({ hidden }) => {
         };
 
         fetchUserTags();
-    }, [isAuthenticated, t.notAuthenticated, t.errorFetchingTags]);
+        
+        // Listen for auth state changes
+        const handleAuthChange = () => {
+            console.log("Auth state changed, refetching tags");
+            fetchUserTags();
+        };
+        
+        window.addEventListener('auth_state_changed', handleAuthChange);
+        
+        return () => {
+            window.removeEventListener('auth_state_changed', handleAuthChange);
+        };
+    }, [isAuthenticated, getToken, t.notAuthenticated, t.errorFetchingTags]);
 
     /**
      * Render a loading skeleton
@@ -136,7 +150,7 @@ const Dashboard: React.FC<DashboardProps> = ({ hidden }) => {
                     {tag.tagName || `${t.untitledTag || 'Untitled Tag'}`}
                 </h2>
                 <Link
-                    to={`/${tag.tagId}/edit`}
+                    href={`/${tag.tagId}/edit`}
                     className="text-blue-600 hover:text-blue-800"
                     title={t.editTag || 'Edit tag'}
                 >
@@ -155,7 +169,7 @@ const Dashboard: React.FC<DashboardProps> = ({ hidden }) => {
 
             <div className="mt-4">
                 <Link
-                    to={`/${tag.tagId}`}
+                    href={`/${tag.tagId}`}
                     className="bg-blue-600 text-white text-sm py-1 px-3 rounded hover:bg-blue-700"
                 >
                     {t.viewDetails || 'View Details'}

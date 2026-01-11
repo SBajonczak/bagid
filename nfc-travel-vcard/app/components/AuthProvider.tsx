@@ -6,8 +6,8 @@ import * as msal from "@azure/msal-browser";
 interface AuthContextType {
   isAuthenticated: boolean;
   user: any | null;
-  login: () => void;
-  logout: () => void;
+  login: () => Promise<void>;
+  logout: () => Promise<void>;
   getToken: () => Promise<string>;
   isInitializing: boolean;
 }
@@ -15,8 +15,8 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   user: null,
-  login: () => {},
-  logout: () => {},
+  login: async () => {},
+  logout: async () => {},
   getToken: async () => '',
   isInitializing: true,
 });
@@ -63,12 +63,25 @@ const msalConfig: msal.Configuration = {
 };
 
 let msalInstance: msal.PublicClientApplication | null = null;
+let initializationPromise: Promise<void> | null = null;
 
 const getMsalInstance = () => {
   if (!msalInstance && typeof window !== 'undefined') {
     msalInstance = new msal.PublicClientApplication(msalConfig);
   }
   return msalInstance;
+};
+
+const initializeMsal = async () => {
+  if (!initializationPromise) {
+    initializationPromise = (async () => {
+      const instance = getMsalInstance();
+      if (instance) {
+        await instance.initialize();
+      }
+    })();
+  }
+  return initializationPromise;
 };
 
 const tokenRequest = {
@@ -91,50 +104,48 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const initializeAuth = async () => {
       try {
         setIsInitializing(true);
+        
+        // Initialize MSAL first
+        await initializeMsal();
+        
         const instance = getMsalInstance();
         if (!instance) return;
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const errorDesc = urlParams.get("error_description");
-        const code = urlParams.get("code");
-        const state = urlParams.get("state");
-        const isRedirectCallback = code && state;
-        
-        if (errorDesc) {
-          console.error("Auth error from redirect:", errorDesc);
-          setIsInitializing(false);
-          return;
-        }
-        
-        if (isRedirectCallback) {
-          try {
-            const response = await instance.handleRedirectPromise();
-            if (response) {
-              console.log("Successfully handled redirect response");
-              setIsAuthenticated(true);
-              setUser(response.account);
-              localStorage.setItem('user_info', JSON.stringify(response.account));
-              localStorage.setItem('auth_token', response.idToken || '');
-              
-              // Dispatch custom event for auth state change
-              window.dispatchEvent(new Event('auth_state_changed'));
-            } 
-          } catch (err) {
-            console.error("Error handling redirect:", err);
+        // MSAL handles both query params and hash fragments automatically
+        // Always call handleRedirectPromise() to check for auth callbacks
+        try {
+          const response = await instance.handleRedirectPromise();
+          if (response) {
+            console.log("Successfully handled redirect response", response);
+            setIsAuthenticated(true);
+            setUser(response.account);
+            localStorage.setItem('user_info', JSON.stringify(response.account));
+            localStorage.setItem('auth_token', response.idToken || '');
+            
+            // Clean URL by removing hash fragment
+            window.history.replaceState({}, document.title, window.location.pathname);
+            
+            // Dispatch custom event for auth state change
+            window.dispatchEvent(new Event('auth_state_changed'));
           }
+        } catch (err) {
+          console.error("Error handling redirect:", err);
         }
         
+        // Check for existing accounts
         const accounts = instance.getAllAccounts();
         if (accounts.length > 0) {
-          console.log("Found existing account");
+          console.log("Found existing account", accounts[0]);
           setIsAuthenticated(true);
           setUser(accounts[0]);
           
           try {
-            await instance.acquireTokenSilent({
+            const tokenResponse = await instance.acquireTokenSilent({
               ...tokenRequest,
               account: accounts[0]
             });
+            console.log("Token acquired silently");
+            localStorage.setItem('auth_token', tokenResponse.idToken || '');
           } catch (err) {
             console.warn("Silent token acquisition failed:", err);
           }
@@ -149,14 +160,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
     initializeAuth();
   }, []);
 
-  const login = () => {
+  const login = async () => {
+    await initializeMsal();
     const instance = getMsalInstance();
     if (instance) {
       instance.loginRedirect(tokenRequest);
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
+    await initializeMsal();
     const instance = getMsalInstance();
     if (!instance) return;
 
@@ -179,6 +192,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const getToken = async (): Promise<string> => {
     try {
+      await initializeMsal();
       const instance = getMsalInstance();
       if (!instance) return '';
 
@@ -197,6 +211,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     } catch (error) {
       console.error("Error acquiring token:", error);
       try {
+        await initializeMsal();
         const instance = getMsalInstance();
         if (!instance) return '';
         

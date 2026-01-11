@@ -6,6 +6,7 @@ import { messages } from '@/lib/i18n';
 import { FaUser, FaUserCircle } from 'react-icons/fa';
 import { useAuth } from './AuthProvider';
 import Link from 'next/link';
+import Image from "next/image";
 
 const NavigationBar: React.FC = () => {
     const { language } = useLanguage();
@@ -44,17 +45,17 @@ const NavigationBar: React.FC = () => {
             <div className="flex gap-2">
                 {/* Add more flags as needed */}
                 <Link
-                    to="/"
+                    href="/"
                     className="font-extrabold text-blue-800 tracking-wide drop-shadow-sm flex items-center text-[1.25rem] md:text-2xl hover:text-blue-600 transition-colors"
                     aria-label="Zur Startseite"
                 >
-                    <img
-                        src={`${import.meta.env.BASE_URL}assets/icon_32_32.png`}
-                        alt="Bag-Tag Logo"
-                        className="inline-block w-8 h-8 mr-2 align-middle flex-shrink-0"
-                        width="32"
-                        height="32"
-                    />
+                    <Image
+  src="/assets/icon_32_32.png"
+  alt="Bag-Tag Logo"
+  width={32}
+  height={32}
+  className="inline-block mr-2 align-middle flex-shrink-0"
+/>
                     <span className="hidden md:inline md:text-3xl whitespace-nowrap">
                         {t1.productname}
                     </span>

@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import { useParams, useRouter } from 'next/navigation';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import 'dayjs/locale/de';
@@ -26,8 +27,9 @@ const hasValue = (value: any): boolean => {
  */
 const TravelCard: React.FC = () => {
     // Hooks for routing and localization
-    const { tagId } = useParams<{ tagId: string }>();
-    const navigate = useNavigate();
+    const params = useParams();
+    const router = useRouter();
+    const tagId = (params?.tagId as string) ?? undefined;
     const { language: lang } = useLanguage();
     const t = messages[lang].travelCard;
 
@@ -61,7 +63,7 @@ const TravelCard: React.FC = () => {
                 
                 // If tag doesn't exist, redirect to registration
                 if (!registered) {
-                    navigate(`/register/${tagId}`);
+                    router.push(`/register/${tagId}`);
                 }
             } catch (err) {
                 console.error('Error checking tag status:', err);
@@ -70,7 +72,7 @@ const TravelCard: React.FC = () => {
 
         logger.debug("Checking tag status for tagId:", tagId);
         checkTagStatus();
-    }, [tagId, navigate]);
+    }, [tagId, router]);
 
     /**
      * Fetch travel data from the API
@@ -388,10 +390,10 @@ const TravelCard: React.FC = () => {
                     {travelData.tagName || t.suitcase}
                 </h1>
                 <div className="flex justify-between mt-4">
-                    <Link to="/" className="bg-gray-600 text-white rounded px-8 py-3 text-lg cursor-pointer inline-block text-center flex-1 hover:bg-gray-700">
+                    <Link href="/" className="bg-gray-600 text-white rounded px-8 py-3 text-lg cursor-pointer inline-block text-center flex-1 hover:bg-gray-700">
                         {t.back}
                     </Link>
-                    <Link to={`/${tagId}/edit`} className="bg-blue-700 text-white rounded px-8 py-3 text-lg cursor-pointer inline-block text-center ml-4 flex-1">
+                    <Link href={`/${tagId}/edit`} className="bg-blue-700 text-white rounded px-8 py-3 text-lg cursor-pointer inline-block text-center ml-4 flex-1">
                         {t.edit}
                     </Link>
                 </div>

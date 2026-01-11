@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useRouter } from 'next/navigation';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import 'dayjs/locale/de';
@@ -7,15 +7,16 @@ import 'dayjs/locale/en';
 import { useLanguage } from '../LanguageProvider';
 import { messages } from '@/lib/i18n';
 import { TravelData } from '@/lib/types';
-import authService from '../../services/AuthService';
 import { logger } from '@/utils/logger';
 import AuthRequired from '../Auth/AuthRequired';
+import authService from '@/services/AuthService';
 
 dayjs.extend(localizedFormat);
 
 const TravelCardEdit: React.FC = () => {
-    const { tagId } = useParams<{ tagId: string }>();
-    const navigate = useNavigate();
+    const params = useParams();
+    const router = useRouter();
+    const tagId = (params?.tagId as string) ?? undefined;
     const { language: lang } = useLanguage();
     const t = messages[lang].travelCard;
 
@@ -220,7 +221,7 @@ const TravelCardEdit: React.FC = () => {
             setSaving(false);
 
             // Redirect to view mode after successful save
-            navigate(`/${tagId}`);
+            router.push(`/${tagId}`);
         } catch (err) {
             console.error('Error saving travel data:', err);
             setError(t.saveError);
@@ -241,9 +242,9 @@ const TravelCardEdit: React.FC = () => {
     // Handle cancel
     const handleCancel = () => {
         if (tagId) {
-            navigate(`/${tagId}`);
+            router.push(`/${tagId}`);
         } else {
-            navigate('/');
+            router.push('/');
         }
     };
 

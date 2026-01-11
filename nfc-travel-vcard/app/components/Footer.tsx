@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { useLanguage } from './LanguageProvider';
 import { messages } from '@/i18n';
 import LanguageSelection from './LoginSection';
@@ -14,7 +14,7 @@ const Footer: React.FC = () => {
                 <LanguageSelection />
                 <div className="flex flex-col items-center space-y-2">
                     <nav className="flex items-center space-x-4">
-                        <Link to="/impressum" className="hover:text-gray-800 underline">
+                        <Link href="/impressum" className="hover:text-gray-800 underline">
                             {t.impressum.title}
                         </Link>
                     </nav>
