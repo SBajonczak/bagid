@@ -4,9 +4,9 @@ import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import 'dayjs/locale/de';
 import 'dayjs/locale/en';
-import { useLanguage } from '../../LanguageContext';
-import { messages } from '../../i18n';
-import { TravelData } from '../../types';
+import { useLanguage } from '../LanguageProvider';
+import { messages } from '@/lib/i18n';
+import { TravelData } from '@/lib/types';
 import authService from '../../services/AuthService';
 import { logger } from '@/utils/logger';
 import AuthRequired from '../Auth/AuthRequired';
@@ -16,7 +16,7 @@ dayjs.extend(localizedFormat);
 const TravelCardEdit: React.FC = () => {
     const { tagId } = useParams<{ tagId: string }>();
     const navigate = useNavigate();
-    const { lang } = useLanguage();
+    const { language: lang } = useLanguage();
     const t = messages[lang].travelCard;
 
     // Form state

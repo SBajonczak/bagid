@@ -1,12 +1,14 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import 'dayjs/locale/de';
 import 'dayjs/locale/en';
-import { useLanguage } from '../../LanguageContext';
-import { messages } from '../../i18n';
-import { TravelData } from '../../types';
+import { useLanguage } from '../LanguageProvider';
+import { messages } from '@/lib/i18n';
+import { TravelData } from '@/lib/types';
 import { logger } from '@/utils/logger';
 import NotificationModal from './NotificationModal';
 
@@ -26,7 +28,7 @@ const TravelCard: React.FC = () => {
     // Hooks for routing and localization
     const { tagId } = useParams<{ tagId: string }>();
     const navigate = useNavigate();
-    const { lang } = useLanguage();
+    const { language: lang } = useLanguage();
     const t = messages[lang].travelCard;
 
     // Component state

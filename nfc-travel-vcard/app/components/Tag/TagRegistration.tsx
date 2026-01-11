@@ -1,7 +1,9 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { useLanguage } from '../../LanguageContext';
-import { messages } from '../../i18n';
+import { useLanguage } from '../LanguageProvider';
+import { messages } from '@/lib/i18n';
 import authService from '../../services/AuthService';
 import { logger } from '@/utils/logger';
 import App from '@/App';
@@ -12,7 +14,7 @@ import { FaCheckCircle, FaExclamationTriangle, FaLock, FaSuitcase, FaUserCheck }
 const TagRegistration: React.FC = () => {
     const { tagId } = useParams<{ tagId: string }>();
     const navigate = useNavigate();
-    const { lang } = useLanguage();
+    const { language: lang } = useLanguage();
     const t = messages[lang].common;
     const tr = messages[lang].tagRegistration;
 

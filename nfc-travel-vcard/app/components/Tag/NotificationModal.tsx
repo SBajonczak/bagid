@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useLanguage } from '../../LanguageContext';
-import { messages } from '../../i18n';
+import { useLanguage } from '../LanguageProvider';
+import { messages } from '@/lib/i18n';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 interface NotificationModalProps {
@@ -11,7 +11,7 @@ interface NotificationModalProps {
 }
 
 const NotificationModal: React.FC<NotificationModalProps> = ({ isOpen, onClose, tagId }) => {
-    const { lang } = useLanguage();
+    const { language: lang } = useLanguage();
     const t = messages[lang].notification;
 
     const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
