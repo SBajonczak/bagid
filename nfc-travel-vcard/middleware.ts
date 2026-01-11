@@ -1,38 +1,23 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-const locales = ['en', 'de'];
+const locales = ['de', 'en'] as const;
 const defaultLocale = 'de';
 
-// Get the preferred locale based on Accept-Language header
-function getLocale(request: NextRequest): string {
-  const acceptLanguage = request.headers.get('accept-language');
+function detectLocale(req: NextRequest): string {
+  const acceptLanguage = req.headers.get('accept-language');
   if (!acceptLanguage) return defaultLocale;
 
-  // Parse Accept-Language header
-  const languages = acceptLanguage
-    .split(',')
-    .map(lang => {
-      const [locale, q = 'q=1'] = lang.trim().split(';');
-      const quality = parseFloat(q.replace('q=', ''));
-      return { locale: locale.split('-')[0], quality };
-    })
-    .sort((a, b) => b.quality - a.quality);
-
-  // Find first matching locale
-  for (const { locale } of languages) {
-    if (locales.includes(locale)) {
-      return locale;
-    }
-  }
-
+  const lower = acceptLanguage.toLowerCase();
+  if (lower.startsWith('de') || lower.includes(' de')) return 'de';
+  if (lower.startsWith('en') || lower.includes(' en')) return 'en';
+  
   return defaultLocale;
 }
 
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
-  // Check if pathname already has a locale
+  // Check if pathname already has a locale prefix
   const pathnameHasLocale = locales.some(
     locale => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
   );
@@ -52,19 +37,22 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Redirect root path based on browser language
-  const locale = getLocale(request);
-  const newUrl = new URL(`/${locale}${pathname}`, request.url);
-  
-  // Preserve query parameters
-  newUrl.search = request.nextUrl.search;
+  // Only redirect the homepage '/' based on browser language
+  // Leave all other paths (like /{tagId}) untouched
+  if (pathname === '/') {
+    const locale = detectLocale(request);
+    const url = request.nextUrl.clone();
+    url.pathname = `/${locale}`;
+    return NextResponse.redirect(url);
+  }
 
-  return NextResponse.redirect(newUrl);
+  // Do not interfere with other paths (e.g., '/{tagId}' tag pages)
+  return NextResponse.next();
 }
 
 export const config = {
   matcher: [
-    // Skip all internal paths (_next, assets, etc.)
-    '/((?!api|_next/static|_next/image|assets|img|favicon.ico|robots.txt|sitemap.xml|manifest.json|.*\\..*).*)' 
+    '/',
+    '/((?!api|_next/static|_next/image|assets|img|favicon.ico|robots.txt|sitemap.xml|manifest.json|.*\\..*).*)'
   ]
 };

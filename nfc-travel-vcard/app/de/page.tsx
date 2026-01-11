@@ -8,9 +8,8 @@ import StartPageControl from '../components/StartPageControl';
 import Dashboard from '../components/Dashboard';
 import Footer from '../components/Footer';
 import { useAuth } from '../components/AuthProvider';
-import type { Locale } from '@/lib/i18n-config';
 
-export default function Home({ params }: { params: { lang: Locale } }) {
+export default function DeHome() {
   const { isAuthenticated } = useAuth();
   const [showDashboard, setShowDashboard] = useState(false);
 
@@ -20,9 +19,8 @@ export default function Home({ params }: { params: { lang: Locale } }) {
 
   return (
     <>
-      <NavigationBar lang={params.lang} />
+      <NavigationBar />
 
-      {/* Video header shown only when NOT authenticated */}
       {!isAuthenticated && (
         <header className="w-full flex justify-center bg-gradient-to-br py-6">
           <video
@@ -46,16 +44,15 @@ export default function Home({ params }: { params: { lang: Locale } }) {
         </header>
       )}
 
-      <Header lang={params.lang} />
+      <Header />
       <MessageContainer message={''} type={'none'} />
 
-      {/* Dashboard shown only when authenticated */}
-      <Dashboard hidden={!showDashboard} lang={params.lang} />
+      <main>
+        {showDashboard && <Dashboard hidden={false} />}
+        <StartPageControl hidden={false} />
+      </main>
 
-      {/* Start page controls shown only when NOT authenticated */}
-      {!isAuthenticated && <StartPageControl lang={params.lang} />}
-
-      <Footer lang={params.lang} />
+      <Footer />
     </>
   );
 }
