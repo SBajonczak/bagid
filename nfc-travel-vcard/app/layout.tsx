@@ -30,7 +30,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="de">
+    <html lang="de" suppressHydrationWarning>
+      <head>
+        <link rel="alternate" hrefLang="de" href="/de" />
+        <link rel="alternate" hrefLang="en" href="/en" />
+        <link rel="alternate" hrefLang="x-default" href="/" />
+      </head>
       <body>
         <AuthProvider>
           {children}

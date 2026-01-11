@@ -24,14 +24,20 @@ export function LanguageProvider({ children, initialLanguage }: LanguageProvider
   const [language, setLanguageState] = useState<SupportedLang>(initialLanguage || 'de');
 
   useEffect(() => {
-    // Check localStorage for saved language preference
-    const saved = localStorage.getItem('preferred-language') as SupportedLang;
-    if (saved) {
-      setLanguageState(saved);
-    } else if (!initialLanguage) {
-      // Detect browser language if no saved preference and no initial language
-      const detected = getBrowserLanguage();
-      setLanguageState(detected);
+    // If initialLanguage is provided (from route), always use it and update localStorage
+    if (initialLanguage) {
+      setLanguageState(initialLanguage);
+      localStorage.setItem('preferred-language', initialLanguage);
+    } else {
+      // Only check localStorage if no initialLanguage is provided
+      const saved = localStorage.getItem('preferred-language') as SupportedLang;
+      if (saved) {
+        setLanguageState(saved);
+      } else {
+        // Detect browser language if no saved preference and no initial language
+        const detected = getBrowserLanguage();
+        setLanguageState(detected);
+      }
     }
   }, [initialLanguage]);
 

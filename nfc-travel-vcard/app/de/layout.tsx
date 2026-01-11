@@ -32,15 +32,6 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function DeLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="de">
-      <head>
-        <link rel="alternate" hrefLang="de" href="/de" />
-        <link rel="alternate" hrefLang="en" href="/en" />
-        <link rel="alternate" hrefLang="x-default" href="/" />
-      </head>
-      <body>
-        <LanguageProvider initialLanguage="de">{children}</LanguageProvider>
-      </body>
-    </html>
+    <LanguageProvider initialLanguage="de">{children}</LanguageProvider>
   );
 }

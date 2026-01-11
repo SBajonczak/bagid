@@ -104,6 +104,31 @@ export const messages = {
         noDataSection: {
             demoLinkText: "Demo ansehen",
             testimonialsTitle: "Was unsere Kunden sagen",
+            heroTitle: "Nie wieder den Koffer verlieren",
+            heroSubtitle: "Mit dem smarten Travel Tag – NFC & QR-Code für sicheres Reisen",
+            pricePerPiece: "pro Stück",
+            freeShipping: "✓ Kostenloser Versand ab 2 Stück",
+            ctaSecure: "– Travel Tag sichern",
+            ctaBundle: "3er-Set kaufen und sparen",
+            or: "oder",
+            howItWorksTitle: "Wie es funktioniert",
+            howItWorksSubtitle: "In nur wenigen Schritten zu mehr Sicherheit auf Reisen",
+            howItWorksSteps: [
+                { title: "Anhänger anbringen", description: "Befestigen Sie den Travel Tag am Koffer oder der Tasche" },
+                { title: "Online registrieren", description: "Scannen Sie den NFC/QR-Code und hinterlegen Sie Ihre Daten" },
+                { title: "Sorgenfrei reisen", description: "Ihre Kontaktdaten sind jederzeit aktualisierbar" },
+                { title: "Gefunden werden", description: "Im Verlustfall kann der Finder Sie sofort kontaktieren" }
+            ],
+            benefitsTitle: "Ihre Vorteile",
+            benefitsSubtitle: "Warum tausende Reisende dem {productname} vertrauen",
+            benefits: [
+                { title: "Keine App nötig", description: "Funktioniert mit jedem modernen Smartphone – einfach scannen und fertig" },
+                { title: "Keine Batterien", description: "NFC-Technologie ohne Stromversorgung – wartungsfrei und zuverlässig" },
+                { title: "Weltweit einsetzbar", description: "Funktioniert überall – keine Roaming-Gebühren, keine Grenzen" },
+                { title: "Datenschutzkonform", description: "DSGVO-konform – Sie entscheiden, welche Daten geteilt werden" },
+                { title: "Robust & wasserfest", description: "Hochwertiges Material hält jeder Reise stand" },
+                { title: "Jederzeit aktualisierbar", description: "Ändern Sie Ihre Daten online – kein neuer Tag nötig" }
+            ],
             testimonials: [
                 {
                     name: "Anna S.",
@@ -352,6 +377,31 @@ export const messages = {
         noDataSection: {
             demoLinkText: "View Demo",
             testimonialsTitle: "What our customers say",
+            heroTitle: "Never lose your luggage again",
+            heroSubtitle: "With the smart Travel Tag – NFC & QR code for safe travel",
+            pricePerPiece: "per piece",
+            freeShipping: "✓ Free shipping from 2 pieces",
+            ctaSecure: "– Secure Travel Tag",
+            ctaBundle: "Buy 3-pack and save",
+            or: "or",
+            howItWorksTitle: "How it works",
+            howItWorksSubtitle: "More security for your travels in just a few steps",
+            howItWorksSteps: [
+                { title: "Attach tag", description: "Attach the Travel Tag to your suitcase or bag" },
+                { title: "Register online", description: "Scan the NFC/QR code and enter your details" },
+                { title: "Travel worry-free", description: "Your contact details can be updated anytime" },
+                { title: "Be found", description: "If lost, the finder can contact you immediately" }
+            ],
+            benefitsTitle: "Your benefits",
+            benefitsSubtitle: "Why thousands of travelers trust {productname}",
+            benefits: [
+                { title: "No app needed", description: "Works with any modern smartphone – just scan and you're done" },
+                { title: "No batteries", description: "NFC technology without power supply – maintenance-free and reliable" },
+                { title: "Works worldwide", description: "Functions everywhere – no roaming fees, no borders" },
+                { title: "Privacy compliant", description: "GDPR compliant – you decide which data is shared" },
+                { title: "Robust & waterproof", description: "High-quality material withstands any journey" },
+                { title: "Always updatable", description: "Change your data online – no new tag needed" }
+            ],
             headline: 'Bag-Tag – The smart luggage tag',
             subline: 'With NFC & QR code. Update your contact and travel data online anytime. Finders can contact you instantly or forward your luggage.',
             testimonials: [

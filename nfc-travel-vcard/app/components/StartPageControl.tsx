@@ -43,10 +43,10 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                             width="64"
                             height="64"
                         />
-                        Nie wieder den Koffer verlieren
+                        {t.heroTitle}
                     </h1>
                     <p className="text-lg md:text-xl text-gray-700 mb-6 text-center md:text-left break-words">
-                        Mit dem smarten Travel Tag – NFC & QR-Code für sicheres Reisen
+                        {t.heroSubtitle}
                     </p>
                     <ul id="features" className="mb-6 space-y-2 text-base text-gray-700">
                         {t.features.map((feature, idx) => (
@@ -66,12 +66,12 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                                 <span className="text-3xl font-bold price-highlight">
                                     12,99&nbsp;€
                                 </span>
-                                <span className="text-sm text-gray-600">pro Stück</span>
+                                <span className="text-sm text-gray-600">{t.pricePerPiece}</span>
                             </div>
                             <div className="text-center md:text-left">
                                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-2">
                                     <div className="text-blue-900 font-semibold text-sm">
-                                        ✓ Kostenloser Versand ab 2 Stück
+                                        {t.freeShipping}
                                     </div>
                                 </div>
                             </div>
@@ -86,13 +86,13 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                             aria-label="Bag-Tag Travel Tag jetzt kaufen"
                         >
                             <span className="relative z-10 flex items-center justify-center gap-2">
-                                {t.cta} – Travel Tag sichern
+                                {t.cta} {t.ctaSecure}
                             </span>
                         </a>
                         
                         {/* Secondary Option */}
                         <div className="text-center">
-                            <span className="text-sm text-gray-500 mb-2 block">oder</span>
+                            <span className="text-sm text-gray-500 mb-2 block">{t.or}</span>
                             <a
                                 href="https://kreativschicht.de/cart/50710421668182:1"
                                 target="_blank"
@@ -100,7 +100,7 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                                 className="bg-green-500 text-white font-semibold px-6 py-3 rounded-lg shadow text-center inline-block secondary-cta"
                                 aria-label="3er-Set Bag-Tag kaufen"
                             >
-                                3er-Set kaufen und sparen
+                                {t.ctaBundle}
                             </a>
                         </div>
                         <a
@@ -120,125 +120,52 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
             {/* How It Works Section */}
             <section className="w-full max-w-7xl mt-16 bg-white rounded-2xl shadow-lg p-8 md:p-12 how-it-works-section">
                 <h2 className="text-3xl md:text-4xl font-bold text-center text-blue-900 mb-4">
-                    Wie es funktioniert
+                    {t.howItWorksTitle}
                 </h2>
                 <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-                    In nur wenigen Schritten zu mehr Sicherheit auf Reisen
+                    {t.howItWorksSubtitle}
                 </p>
                 
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    {/* Step 1 */}
-                    <div className="flex flex-col items-center text-center">
-                        <div className="step-number mb-4">1</div>
-                        <div className="text-4xl mb-4">📦</div>
-                        <h3 className="font-bold text-lg text-gray-800 mb-2">Anhänger anbringen</h3>
-                        <p className="text-gray-600 text-sm">
-                            Befestigen Sie den Travel Tag am Koffer oder der Tasche
-                        </p>
-                    </div>
-                    
-                    {/* Step 2 */}
-                    <div className="flex flex-col items-center text-center">
-                        <div className="step-number mb-4">2</div>
-                        <div className="text-4xl mb-4">📱</div>
-                        <h3 className="font-bold text-lg text-gray-800 mb-2">Online registrieren</h3>
-                        <p className="text-gray-600 text-sm">
-                            Scannen Sie den NFC/QR-Code und hinterlegen Sie Ihre Daten
-                        </p>
-                    </div>
-                    
-                    {/* Step 3 */}
-                    <div className="flex flex-col items-center text-center">
-                        <div className="step-number mb-4">3</div>
-                        <div className="text-4xl mb-4">✈️</div>
-                        <h3 className="font-bold text-lg text-gray-800 mb-2">Sorgenfrei reisen</h3>
-                        <p className="text-gray-600 text-sm">
-                            Ihre Kontaktdaten sind jederzeit aktualisierbar
-                        </p>
-                    </div>
-                    
-                    {/* Step 4 */}
-                    <div className="flex flex-col items-center text-center">
-                        <div className="step-number mb-4">4</div>
-                        <div className="text-4xl mb-4">🔔</div>
-                        <h3 className="font-bold text-lg text-gray-800 mb-2">Gefunden werden</h3>
-                        <p className="text-gray-600 text-sm">
-                            Im Verlustfall kann der Finder Sie sofort kontaktieren
-                        </p>
-                    </div>
+                    {t.howItWorksSteps.map((step, idx) => (
+                        <div key={idx} className="flex flex-col items-center text-center">
+                            <div className="step-number mb-4">{idx + 1}</div>
+                            <div className="text-4xl mb-4">{['📦', '📱', '✈️', '🔔'][idx]}</div>
+                            <h3 className="font-bold text-lg text-gray-800 mb-2">{step.title}</h3>
+                            <p className="text-gray-600 text-sm">
+                                {step.description}
+                            </p>
+                        </div>
+                    ))}
                 </div>
             </section>
 
             {/* Benefits Section */}
             <section className="w-full max-w-7xl mt-16">
                 <h2 className="text-3xl md:text-4xl font-bold text-center text-blue-900 mb-4">
-                    Ihre Vorteile
+                    {t.benefitsTitle}
                 </h2>
                 <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-                    Warum tausende Reisende dem {t1.productname} vertrauen
+                    {t.benefitsSubtitle.replace('{productname}', t1.productname)}
                 </p>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {/* Benefit 1 */}
-                    <div className="bg-white p-6 rounded-xl shadow-md benefit-card">
-                        <div className="text-4xl mb-4">📱</div>
-                        <h3 className="font-bold text-lg text-gray-800 mb-2">Keine App nötig</h3>
-                        <p className="text-gray-600 text-sm">
-                            Funktioniert mit jedem modernen Smartphone – einfach scannen und fertig
-                        </p>
-                    </div>
-                    
-                    {/* Benefit 2 */}
-                    <div className="bg-white p-6 rounded-xl shadow-md benefit-card">
-                        <div className="text-4xl mb-4">🔋</div>
-                        <h3 className="font-bold text-lg text-gray-800 mb-2">Keine Batterien</h3>
-                        <p className="text-gray-600 text-sm">
-                            NFC-Technologie ohne Stromversorgung – wartungsfrei und zuverlässig
-                        </p>
-                    </div>
-                    
-                    {/* Benefit 3 */}
-                    <div className="bg-white p-6 rounded-xl shadow-md benefit-card">
-                        <div className="text-4xl mb-4">🌍</div>
-                        <h3 className="font-bold text-lg text-gray-800 mb-2">Weltweit einsetzbar</h3>
-                        <p className="text-gray-600 text-sm">
-                            Funktioniert überall – keine Roaming-Gebühren, keine Grenzen
-                        </p>
-                    </div>
-                    
-                    {/* Benefit 4 */}
-                    <div className="bg-white p-6 rounded-xl shadow-md benefit-card">
-                        <div className="text-4xl mb-4">🔒</div>
-                        <h3 className="font-bold text-lg text-gray-800 mb-2">Datenschutzkonform</h3>
-                        <p className="text-gray-600 text-sm">
-                            DSGVO-konform – Sie entscheiden, welche Daten geteilt werden
-                        </p>
-                    </div>
-                    
-                    {/* Benefit 5 */}
-                    <div className="bg-white p-6 rounded-xl shadow-md benefit-card">
-                        <div className="text-4xl mb-4">💧</div>
-                        <h3 className="font-bold text-lg text-gray-800 mb-2">Robust & wasserfest</h3>
-                        <p className="text-gray-600 text-sm">
-                            Hochwertiges Material hält jeder Reise stand
-                        </p>
-                    </div>
-                    
-                    {/* Benefit 6 */}
-                    <div className="bg-white p-6 rounded-xl shadow-md benefit-card">
-                        <div className="text-4xl mb-4">🔄</div>
-                        <h3 className="font-bold text-lg text-gray-800 mb-2">Jederzeit aktualisierbar</h3>
-                        <p className="text-gray-600 text-sm">
-                            Ändern Sie Ihre Daten online – kein neuer Tag nötig
-                        </p>
-                    </div>
+                    {t.benefits.map((benefit, idx) => (
+                        <div key={idx} className="bg-white p-6 rounded-xl shadow-md benefit-card">
+                            <div className="text-4xl mb-4">{['📱', '🔋', '🌍', '🔒', '💧', '🔄'][idx]}</div>
+                            <h3 className="font-bold text-lg text-gray-800 mb-2">{benefit.title}</h3>
+                            <p className="text-gray-600 text-sm">
+                                {benefit.description}
+                            </p>
+                        </div>
+                    ))}
                 </div>
             </section>
 
             {/* Testimonials Section */}
             <section id="testimonials" className="w-full max-w-7xl mt-16">
                 <h2 className="text-3xl md:text-4xl font-bold text-center text-blue-900 mb-8">
-                    Was unsere Kunden sagen
+                    {t.testimonialsTitle}
                 </h2>
                 <Testimonial testimonials={testimonial} />
             </section>
