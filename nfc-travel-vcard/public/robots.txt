@@ -2,5 +2,11 @@ User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /register/
+Disallow: /*/*/edit
 
-Sitemap: https://www.bag-tag.de/sitemap.xml
+# Prevent indexing of private tag pages
+# Note: Dynamic routes like /[tagId] cannot be fully blocked here
+# They are protected via meta robots tags and X-Robots-Tag headers
+
+Sitemap: https://bag-tag.de/sitemap.xml
+

@@ -17,8 +17,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: 'website',
     },
     robots: {
-      index: true,
-      follow: true,
+      index: false,
+      follow: false,
+      noarchive: true,
+      nosnippet: true,
     },
   };
 }

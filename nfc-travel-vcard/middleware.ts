@@ -37,6 +37,19 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Add X-Robots-Tag header for private/sensitive routes
+  // This provides an extra layer of protection beyond meta tags
+  const isPrivateRoute = 
+    /^\/[^\/]+\/edit/.test(pathname) || // /[tagId]/edit
+    /^\/register\/[^\/]+/.test(pathname) || // /register/[tagId]
+    /^\/[a-zA-Z0-9_-]{8,}$/.test(pathname); // /[tagId] - alphanumeric IDs
+
+  if (isPrivateRoute) {
+    const response = NextResponse.next();
+    response.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive, nosnippet');
+    return response;
+  }
+
   // Only redirect the homepage '/' based on browser language
   // Leave all other paths (like /{tagId}) untouched
   if (pathname === '/') {
