@@ -37,6 +37,12 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Known public routes that should NOT be marked as private
+  const publicRoutes = ['/impressum'];
+  if (publicRoutes.includes(pathname)) {
+    return NextResponse.next();
+  }
+
   // Add X-Robots-Tag header for private/sensitive routes
   // This provides an extra layer of protection beyond meta tags
   const isPrivateRoute = 
