@@ -118,6 +118,53 @@ export default function EnLayout({ children }: { children: React.ReactNode }) {
     ],
   };
 
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'How does the Bag-Tag work?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'The Bag-Tag uses NFC and QR code technology to securely store your contact details and allow finders to contact you quickly.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'How does registration work?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'You will receive your Bag-Tag by mail. As soon as you scan the NFC chip with your smartphone or the QR code, you will automatically be redirected to the registration page. There you can link the tag directly to your account and enter your contact details. This way your luggage is protected in no time and you can update your data online at any time.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Can I update my data anytime?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Yes, you can update your data online anytime to ensure it is always up-to-date.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Is the Bag-Tag waterproof?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Yes, the Bag-Tag is durable and waterproof, making it suitable for any journey.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'What is included in the package?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'You will receive your personalized tag and a metal ring to attach the tag.',
+        },
+      },
+    ],
+  };
+
   return (
     <LanguageProvider initialLanguage="en">
       <Script
@@ -134,6 +181,11 @@ export default function EnLayout({ children }: { children: React.ReactNode }) {
         id="breadcrumb-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <Script
+        id="faq-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       {children}
     </LanguageProvider>

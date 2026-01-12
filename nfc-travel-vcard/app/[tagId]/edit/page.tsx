@@ -10,8 +10,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `Edit Tag ${params.tagId} | Bag-Tag.de`,
     description: `Edit travel information for your NFC luggage tag ${params.tagId}`,
     robots: {
-      index: false, // Don't index edit pages
+      index: false,
       follow: false,
+      noarchive: true,
+      nosnippet: true,
     },
   };
 }

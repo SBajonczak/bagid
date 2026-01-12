@@ -11,7 +11,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: `Register your NFC luggage tag ${params.tagId} to activate tracking and owner information`,
     robots: {
       index: false,
-      follow: true,
+      follow: false,
+      noarchive: true,
+      nosnippet: true,
     },
   };
 }
