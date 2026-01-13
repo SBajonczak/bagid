@@ -9,7 +9,7 @@ export async function GET(
   try {
     const { tagId } = params;
     const repo = new TagRepo();
-    const tagData = await repo.getTagData(tagId);
+    const tagData = await repo.getTravelDataByTagId(tagId);
     
     if (!tagData) {
       return NextResponse.json(
@@ -57,7 +57,7 @@ export async function PUT(
     }
     
     // Update tag data
-    const success = await repo.updateTagData(tagId, body);
+    const success = await repo.updateTravelDataByTagId(tagId, body);
     
     if (success) {
       return NextResponse.json({ message: 'Tag updated successfully' });
