@@ -23,7 +23,7 @@ export default function Home() {
 
       {/* Video header shown only when NOT authenticated */}
       {!isAuthenticated && (
-        <header className="w-full flex justify-center bg-gradient-to-br py-6">
+        <header className="w-full flex justify-center bg-gradient-to-br py-6 mt-6">
           <video
             autoPlay
             muted
@@ -49,11 +49,9 @@ export default function Home() {
       <MessageContainer message={''} type={'none'} />
 
       {/* Main content area */}
-      <main>
+      <main className="flex flex-col items-center gap-12">
         {/* Show Dashboard when authenticated, StartPageControl when not */}
-        {showDashboard && (
-          <Dashboard hidden={false} />
-        )}
+        {showDashboard && <Dashboard hidden={false} />}
 
         <StartPageControl hidden={false} />
       </main>

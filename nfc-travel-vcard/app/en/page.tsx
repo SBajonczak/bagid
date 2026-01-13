@@ -22,7 +22,7 @@ export default function EnHome() {
       <NavigationBar />
 
       {!isAuthenticated && (
-        <header className="w-full flex justify-center bg-gradient-to-br py-6">
+        <header className="w-full flex justify-center bg-gradient-to-br py-6 mt-6">
           <video
             autoPlay
             muted
@@ -47,7 +47,7 @@ export default function EnHome() {
       <Header />
       <MessageContainer message={''} type={'none'} />
 
-      <main>
+      <main className="flex flex-col items-center gap-12">
         {showDashboard && <Dashboard hidden={false} />}
         <StartPageControl hidden={false} />
       </main>

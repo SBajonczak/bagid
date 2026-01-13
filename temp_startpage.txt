@@ -16,7 +16,7 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
     const t1 = messages[lang as keyof typeof messages].common;
     const testimonial = messages[lang].noDataSection.testimonials;
     return (
-        <section hidden={hidden} className="border full w-full landing-background py-12 px-4 flex flex-col items-center">
+        <section hidden={hidden} className="w-full landing-background py-12 px-4 flex flex-col items-center">
             {/* Hero Section - Main Container */}
             <article className="w-full max-w-7xl bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border border-blue-100 flex flex-col md:flex-row items-center p-6 md:p-12 gap-8 professional-card animate-fade-in-up">
                 {/* Product Image Area */}
