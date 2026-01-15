@@ -8,8 +8,9 @@ import { messages } from '@/lib/i18n';
 import NavigationBar from '../../components/NavigationBar';
 import Footer from '../../components/Footer';
 
+
 interface TravelCardEditClientProps {
-  tagId: string;
+    tagId: string;
 }
 
 const TravelCardEditClient: React.FC<TravelCardEditClientProps> = ({ tagId }) => {
@@ -38,11 +39,27 @@ const TravelCardEditClient: React.FC<TravelCardEditClientProps> = ({ tagId }) =>
         destinationAddress: ''
     });
 
+    const tagTitle = formData.tagName?.trim() || t.productname;
+    const ownerFullName = [formData.ownerFirstName, formData.ownerLastName].filter(Boolean).join(' ');
+
+    const loadTagData = async (tagid: string, token: string) => {
+        // Fetch tag data
+        const headers: RequestInit | undefined = token != null ? { headers: { 'Authorization': `Bearer ${token}` } } : undefined;
+        const dataResponse = await fetch(`/api/tags/${tagid}`, headers);
+
+        if (dataResponse.ok) {
+            const data = await dataResponse.json();
+            setFormData(prev => ({ ...prev, ...data }));
+        }
+
+    };
+
     useEffect(() => {
         const verifyOwnership = async () => {
             if (isInitializing) return;
-            
-            if (!isAuthenticated) {
+
+
+            if (!isAuthenticated && tagId !== "demo") {
                 router.push(`/${tagId}`);
                 return;
             }
@@ -55,23 +72,15 @@ const TravelCardEditClient: React.FC<TravelCardEditClientProps> = ({ tagId }) =>
                     }
                 });
 
-                if (!response.ok) {
+                if (!response.ok && tagId !== "demo") {
                     router.push(`/${tagId}`);
                     return;
                 }
 
                 setIsOwner(true);
-                // Fetch tag data
-                const dataResponse = await fetch(`/api/tags/${tagId}`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
                 
-                if (dataResponse.ok) {
-                    const data = await dataResponse.json();
-                    setFormData(prev => ({ ...prev, ...data }));
-                }
+                loadTagData(tagId, token);
+
             } catch (err) {
                 console.error('Error verifying ownership:', err);
                 router.push(`/${tagId}`);
@@ -82,6 +91,7 @@ const TravelCardEditClient: React.FC<TravelCardEditClientProps> = ({ tagId }) =>
 
         verifyOwnership();
     }, [tagId, isAuthenticated, isInitializing, getToken, router]);
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormData({
@@ -132,145 +142,251 @@ const TravelCardEditClient: React.FC<TravelCardEditClientProps> = ({ tagId }) =>
     }
 
     return (
-        <div className="min-h-screen flex flex-col">
+        <div className="min-h-screen flex flex-col bg-slate-50">
             <NavigationBar />
-            
-            <main className="flex-grow container mx-auto px-4 py-8">
-                <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-lg p-6">
-                    <h1 className="text-3xl font-bold mb-6">{t.edit} - {t.productname}</h1>
-                    
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        {/* Tag Details */}
-                        <section>
-                            <h2 className="text-xl font-semibold mb-4">{t.tagDetails}</h2>
-                            <div className="space-y-4">
-                                <div>
-                                    <label className="block font-medium mb-1">{t.tagName}</label>
+
+            <main className="flex-grow">
+                <section className="bg-slate-950 px-4 py-12 text-white sm:py-16">
+                    <div className="mx-auto flex max-w-5xl flex-col gap-6">
+                        <div className="space-y-4">
+                            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-lime-300">
+                                {t.secureAccessMessage}
+                            </p>
+                            <h1 className="text-3xl font-extrabold leading-tight sm:text-4xl">
+                                {t.edit} · {tagTitle}
+                            </h1>
+                            {ownerFullName && (
+                                <p className="text-base text-slate-200">{ownerFullName}</p>
+                            )}
+                        </div>
+                        <div className="flex flex-wrap gap-3 text-sm text-slate-200">
+                            <span className="rounded-full border border-white/30 bg-white/10 px-3 py-1">
+                                {t.productname} · {tagId}
+                            </span>
+                            {formData.transportationProvider && (
+                                <span className="rounded-full border border-white/30 bg-white/10 px-3 py-1">
+                                    {formData.transportationProvider}
+                                </span>
+                            )}
+                            {formData.transportationDetails && (
+                                <span className="rounded-full border border-white/30 bg-white/10 px-3 py-1">
+                                    {formData.transportationDetails}
+                                </span>
+                            )}
+                            {formData.transportationDate && (
+                                <span className="rounded-full border border-white/30 bg-white/10 px-3 py-1">
+                                    {new Date(formData.transportationDate).toLocaleDateString(lang)}
+                                </span>
+                            )}
+                        </div>
+                        <div className="flex flex-col gap-3 sm:flex-row">
+                        
+                            <button
+                                type="button"
+                                onClick={() => router.push(`/${tagId}`)}
+                                className="inline-flex items-center justify-center rounded-xl bg-white/15 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/25"
+                            >
+                                {t.cancel}
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <section className="px-4 py-10 sm:py-12">
+                    <div className="mx-auto max-w-4xl">
+                        <form onSubmit={handleSubmit} className="space-y-8">
+                            <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                                <h2 className="text-xl font-semibold text-slate-900 mb-4">{t.tagDetails}</h2>
+                                <div className="space-y-4">
+                                    <label className="block text-sm font-medium text-slate-700">{t.tagName}</label>
                                     <input
                                         type="text"
                                         name="tagName"
                                         value={formData.tagName}
                                         onChange={handleChange}
-                                        className="w-full border rounded px-3 py-2"
+                                        className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-slate-900 focus:outline-none"
                                         placeholder={t.tagNameHelp}
                                     />
                                 </div>
-                            </div>
-                        </section>
+                            </section>
 
-                        {/* Owner Information */}
-                        <section>
-                            <h2 className="text-xl font-semibold mb-4">{t.about}</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block font-medium mb-1">{t.firstName}</label>
-                                    <input
-                                        type="text"
-                                        name="ownerFirstName"
-                                        value={formData.ownerFirstName}
-                                        onChange={handleChange}
-                                        className="w-full border rounded px-3 py-2"
-                                    />
+                            <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                                <h2 className="text-xl font-semibold text-slate-900 mb-4">{t.about}</h2>
+                                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700">{t.firstName}</label>
+                                        <input
+                                            type="text"
+                                            name="ownerFirstName"
+                                            value={formData.ownerFirstName}
+                                            onChange={handleChange}
+                                            className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-slate-900 focus:outline-none"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700">{t.lastName}</label>
+                                        <input
+                                            type="text"
+                                            name="ownerLastName"
+                                            value={formData.ownerLastName}
+                                            onChange={handleChange}
+                                            className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-slate-900 focus:outline-none"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700">{t.email}</label>
+                                        <input
+                                            type="email"
+                                            name="ownerEmail"
+                                            value={formData.ownerEmail}
+                                            onChange={handleChange}
+                                            className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-slate-900 focus:outline-none"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700">{t.mobile}</label>
+                                        <input
+                                            type="tel"
+                                            name="ownerMobile"
+                                            value={formData.ownerMobile}
+                                            onChange={handleChange}
+                                            className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-slate-900 focus:outline-none"
+                                        />
+                                    </div>
+                                    <div className="md:col-span-2">
+                                        <label className="block text-sm font-medium text-slate-700">{t.address}</label>
+                                        <textarea
+                                            name="ownerAddress"
+                                            value={formData.ownerAddress}
+                                            onChange={handleChange}
+                                            className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-slate-900 focus:outline-none"
+                                            rows={3}
+                                        />
+                                    </div>
                                 </div>
-                                <div>
-                                    <label className="block font-medium mb-1">{t.lastName}</label>
-                                    <input
-                                        type="text"
-                                        name="ownerLastName"
-                                        value={formData.ownerLastName}
-                                        onChange={handleChange}
-                                        className="w-full border rounded px-3 py-2"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block font-medium mb-1">{t.email}</label>
-                                    <input
-                                        type="email"
-                                        name="ownerEmail"
-                                        value={formData.ownerEmail}
-                                        onChange={handleChange}
-                                        className="w-full border rounded px-3 py-2"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block font-medium mb-1">{t.mobile}</label>
-                                    <input
-                                        type="tel"
-                                        name="ownerMobile"
-                                        value={formData.ownerMobile}
-                                        onChange={handleChange}
-                                        className="w-full border rounded px-3 py-2"
-                                    />
-                                </div>
-                                <div className="md:col-span-2">
-                                    <label className="block font-medium mb-1">{t.address}</label>
-                                    <textarea
-                                        name="ownerAddress"
-                                        value={formData.ownerAddress}
-                                        onChange={handleChange}
-                                        className="w-full border rounded px-3 py-2"
-                                        rows={2}
-                                    />
-                                </div>
-                            </div>
-                        </section>
+                            </section>
 
-                        {/* Travel Data */}
-                        <section>
-                            <h2 className="text-xl font-semibold mb-4">{t.travelData}</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block font-medium mb-1">{t.provider}</label>
-                                    <input
-                                        type="text"
-                                        name="transportationProvider"
-                                        value={formData.transportationProvider}
-                                        onChange={handleChange}
-                                        className="w-full border rounded px-3 py-2"
-                                    />
+                            <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                                <h2 className="text-xl font-semibold text-slate-900 mb-4">{t.travelData}</h2>
+                                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700">{t.provider}</label>
+                                        <input
+                                            type="text"
+                                            name="transportationProvider"
+                                            value={formData.transportationProvider}
+                                            onChange={handleChange}
+                                            className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-slate-900 focus:outline-none"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700">{t.details}</label>
+                                        <input
+                                            type="text"
+                                            name="transportationDetails"
+                                            value={formData.transportationDetails}
+                                            onChange={handleChange}
+                                            className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-slate-900 focus:outline-none"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700">{t.date}</label>
+                                        <input
+                                            type="date"
+                                            name="transportationDate"
+                                            value={formData.transportationDate}
+                                            onChange={handleChange}
+                                            className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-slate-900 focus:outline-none"
+                                        />
+                                    </div>
                                 </div>
-                                <div>
-                                    <label className="block font-medium mb-1">{t.details}</label>
-                                    <input
-                                        type="text"
-                                        name="transportationDetails"
-                                        value={formData.transportationDetails}
-                                        onChange={handleChange}
-                                        className="w-full border rounded px-3 py-2"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block font-medium mb-1">{t.date}</label>
-                                    <input
-                                        type="date"
-                                        name="transportationDate"
-                                        value={formData.transportationDate}
-                                        onChange={handleChange}
-                                        className="w-full border rounded px-3 py-2"
-                                    />
-                                </div>
-                            </div>
-                        </section>
+                            </section>
 
-                        {/* Action Buttons */}
-                        <div className="flex gap-4">
-                            <button
-                                type="submit"
-                                disabled={saving}
-                                className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 disabled:opacity-50"
-                            >
-                                {saving ? t.saving : t.save}
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => router.push(`/${tagId}`)}
-                                className="flex-1 bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700"
-                            >
-                                {t.cancel}
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                            <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                                <h2 className="text-xl font-semibold text-slate-900 mb-4">
+                                    {t.destinationaddress || 'Destination'}
+                                </h2>
+                                <div className="space-y-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700">
+                                            { t.destinationaddress || 'Name'}
+                                        </label>
+                                        <input
+                                            type="text"
+                                            name="destinationName"
+                                            value={formData.destinationName}
+                                            onChange={handleChange}
+                                            className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-slate-900 focus:outline-none"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700">{t.address}</label>
+                                        <textarea
+                                            name="destinationAddress"
+                                            value={formData.destinationAddress}
+                                            onChange={handleChange}
+                                            className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-slate-900 focus:outline-none"
+                                            rows={3}
+                                        />
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                                <h2 className="text-xl font-semibold text-slate-900 mb-4">{t.guide}</h2>
+                                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700">{t.firstName}</label>
+                                        <input
+                                            type="text"
+                                            name="guideFirstName"
+                                            value={formData.guideFirstName}
+                                            onChange={handleChange}
+                                            className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-slate-900 focus:outline-none"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700">{t.lastName}</label>
+                                        <input
+                                            type="text"
+                                            name="guideLastName"
+                                            value={formData.guideLastName}
+                                            onChange={handleChange}
+                                            className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-slate-900 focus:outline-none"
+                                        />
+                                    </div>
+                                    <div className="md:col-span-2">
+                                        <label className="block text-sm font-medium text-slate-700">{t.mobile}</label>
+                                        <input
+                                            type="tel"
+                                            name="guidePhone"
+                                            value={formData.guidePhone}
+                                            onChange={handleChange}
+                                            className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-slate-900 focus:outline-none"
+                                        />
+                                    </div>
+                                </div>
+                            </section>
+
+                            <div className="flex flex-col gap-3 sm:flex-row">
+                                <button
+                                    type="submit"
+                                    disabled={saving}
+                                    className="flex-1 rounded-xl bg-slate-900 px-6 py-4 text-sm font-semibold text-white shadow-lg transition hover:bg-slate-800 disabled:opacity-60"
+                                >
+                                    {saving ? t.saving : t.save}
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => router.push(`/${tagId}`)}
+                                    className="flex-1 rounded-xl border border-slate-300 px-6 py-4 text-sm font-semibold text-slate-700 transition hover:border-slate-400"
+                                >
+                                    {t.cancel}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
             </main>
 
             <Footer />
