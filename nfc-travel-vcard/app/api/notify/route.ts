@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import formData from 'form-data';
+import FormData from 'form-data';
 import Mailgun from 'mailgun.js';
-import twilio from 'twilio';
+import Twilio from 'twilio';
 import { TagRepo } from '@/lib/TagRepo';
 import { verifySecurityToken } from '@/lib/notifySecurity';
 import { getConfig } from '@/lib/config';
@@ -31,8 +31,8 @@ type NotifyRequestBody = {
 const ipLimiter = new Map<string, { count: number; timestamp: number }>();
 const tagLimiter = new Map<string, { count: number; timestamp: number }>();
 
-let cachedMailgunClient: ReturnType<ReturnType<typeof Mailgun>['client']> | null = null;
-let cachedTwilioClient: ReturnType<typeof twilio> | null = null;
+let cachedMailgunClient: any = null;
+let cachedTwilioClient: any = null;
 
 export async function POST(request: NextRequest) {
   const config = getConfig();
@@ -333,7 +333,7 @@ async function verifyRecaptcha(token: string, secret: string): Promise<boolean> 
   return Boolean(data.success);
 }
 
-function getMailgunClient(emailConfig: { apiKey: string; domain: string }) {
+function getMailgunClient(emailConfig: { apiKey: string; domain: string }): any {
   if (cachedMailgunClient) {
     return cachedMailgunClient;
   }
@@ -342,7 +342,7 @@ function getMailgunClient(emailConfig: { apiKey: string; domain: string }) {
     throw new Error('Mailgun is not configured.');
   }
 
-  const mailgun = new Mailgun(formData);
+  const mailgun = new Mailgun(FormData);
   cachedMailgunClient = mailgun.client({
     username: 'api',
     key: emailConfig.apiKey
@@ -351,7 +351,7 @@ function getMailgunClient(emailConfig: { apiKey: string; domain: string }) {
   return cachedMailgunClient;
 }
 
-function getTwilioClient(smsConfig: { accountSid: string; authToken: string }) {
+function getTwilioClient(smsConfig: { accountSid: string; authToken: string }): any {
   if (cachedTwilioClient) {
     return cachedTwilioClient;
   }
@@ -360,7 +360,7 @@ function getTwilioClient(smsConfig: { accountSid: string; authToken: string }) {
     throw new Error('Twilio is not configured.');
   }
 
-  cachedTwilioClient = twilio(smsConfig.accountSid, smsConfig.authToken);
+  cachedTwilioClient = Twilio(smsConfig.accountSid, smsConfig.authToken);
   return cachedTwilioClient;
 }
 
