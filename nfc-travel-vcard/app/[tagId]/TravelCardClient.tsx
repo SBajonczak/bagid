@@ -331,7 +331,8 @@ const TravelCardClient: React.FC<TravelCardClientProps> = ({ tagId }) => {
                 <NotificationModal
                     tagId={tagId}
                     isOpen={isNotificationModalOpen}
-                    ownerEmail={travelData.ownerEmail || ''}
+                    supportsEmail={hasValue(travelData.ownerEmail)}
+                    supportsSms={hasValue(travelData.ownerMobile)}
                     onClose={() => setIsNotificationModalOpen(false)}
                 />
             )}
