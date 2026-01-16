@@ -10,14 +10,15 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@sendgrid/mail": "^8.1.0",
     "@azure/msal-browser": "^3.26.1",
     "@azure/msal-node": "^2.15.0",
     "axios": "^1.9.0",
     "dayjs": "^1.11.13",
     "dotenv": "^17.2.3",
+    "form-data": "^4.0.5",
     "jwks-rsa": "^3.2.0",
     "lucide-react": "^0.562.0",
+    "mailgun.js": "^12.6.1",
     "mssql": "^9.3.2",
     "next": "^14.2.0",
     "next-auth": "^4.24.0",

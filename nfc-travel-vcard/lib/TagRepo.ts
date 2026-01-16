@@ -1,19 +1,23 @@
 import { Logger } from 'concurrently';
 import sql from 'mssql';
 import dotenv from 'dotenv';
+import { getConfig } from './config';
 
 dotenv.config();
 
 export class TagRepo {
+  private config: sql.config;
+
   constructor() {
+    const appConfig = getConfig();
     this.config = {
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      server: process.env.DB_SERVER,
-      database: process.env.DB_DATABASE,
+      user: appConfig.database.user,
+      password: appConfig.database.password,
+      server: appConfig.database.server,
+      database: appConfig.database.database,
       options: {
-        encrypt: true, // Für Azure SQL
-        trustServerCertificate: false
+        encrypt: appConfig.database.encrypt,
+        trustServerCertificate: appConfig.database.trustServerCertificate
       }
     };
   }
