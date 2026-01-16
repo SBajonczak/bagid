@@ -12,8 +12,8 @@ export class TagRepo {
       server: process.env.DB_SERVER,
       database: process.env.DB_DATABASE,
       options: {
-      encrypt: true, // Für Azure SQL
-      trustServerCertificate: false
+        encrypt: true, // Für Azure SQL
+        trustServerCertificate: false
       }
     };
   }
@@ -40,10 +40,35 @@ export class TagRepo {
    * @param {string} tagId - Die NFC-Tag-ID
    * @returns {Promise<object|null>} Reisedaten oder null, wenn nicht gefunden
    */
-  async getTravelDataByTagId(tagId) {
+  async getTravelDataByTagId(tagId: string) {
     try {
+      if (tagId === "demo") {
+        return {
+          "tagId": "demo",
+          "hasData": 1,
+          "tagName": "Mein Koffer Tag",
+          "ownerFirstName": "Max",
+          "ownerLastName": "Mustermann",
+          "ownerAddress": "Musterstraße 12, 12345 Berlin, Deutschland",
+          "ownerEmail": "max.mustermann@example.com",
+          "ownerMobile": "+49 171 1234567",
+          "ownerLandline": "+49 30 987654",
+          "ownerOther": "Emergency contact via WhatsApp",
+          "guideFirstName": "Laura",
+          "guideLastName": "Schmidt",
+          "guideEmail": "laura.schmidt@example.com",
+          "guideMobile": "+49 160 7654321",
+          "guideLandline": null,
+          "destinationAccommodation": "Hotel Bella Vista",
+          "destinationAddress": "Via Roma 42, 00100 Rom, Italien",
+          "transportation": "Flight",
+          "transportationNumber": "LH1234",
+          "transportationDate": "2026-05-18T09:45:00Z"
+        }
+      }
+
       const pool = await this.getConnection();
-      
+
       // Abfrage zum Abrufen der Reisedaten nach Tag-ID, angepasst an das TravelData Interface
       const result = await pool.request()
         .input('tagId', sql.UniqueIdentifier, tagId)
@@ -72,18 +97,18 @@ export class TagRepo {
           FROM TravelTag
           WHERE TagID = @tagId and isRegistered=1
         `);
-      
+
       // Verbindung schließen
       await pool.close();
-      
+
       if (result.recordset.length === 0) {
         return null;
       }
-      
+
       // Format the data according to the TravelData interface
       const travelData = result.recordset[0];
       travelData.hasData = true;
-      
+
       return travelData;
     } catch (error) {
       console.error('Fehler beim Abrufen der Reisedaten:', error);
@@ -100,124 +125,124 @@ export class TagRepo {
   async updateTravelDataByTagId(tagId, updateData) {
     try {
       const pool = await this.getConnection();
-      
+
       // Prüfen, ob der Datensatz existiert
       const checkResult = await pool.request()
         .input('tagId', sql.UniqueIdentifier, tagId)
         .query('SELECT 1 FROM TravelTag WHERE TagID = @tagId');
-      
+
       const request = pool.request().input('tagId', sql.UniqueIdentifier, tagId);
-      
+
       // Wenn der Datensatz nicht existiert, erstellen wir einen neuen
       if (checkResult.recordset.length === 0) {
         // SQL-Felder und Werte für die Einfügung vorbereiten
         const fields = ['TagID'];
         const values = ['@tagId'];
-        
+
         // Mapping der TravelData-Properties zu Datenbankspalten
         const fieldMappings = {
-          tagName: {sqlField: 'tagName', sqlType: sql.NVarChar},
-          ownerFirstName: {sqlField: 'OwnerFirstName', sqlType: sql.NVarChar},
-          ownerLastName: {sqlField: 'OwnerLastName', sqlType: sql.NVarChar},
-          ownerAddress: {sqlField: 'OwnerAddress', sqlType: sql.NVarChar},
-          ownerEmail: {sqlField: 'OwnerEmail', sqlType: sql.NVarChar},
-          ownerMobile: {sqlField: 'OwnerMobile', sqlType: sql.NVarChar},
-          ownerLandline: {sqlField: 'OwnerLandline', sqlType: sql.NVarChar},
-          ownerOther: {sqlField: 'OwnerOther', sqlType: sql.NVarChar},
-          guideFirstName: {sqlField: 'GuideFirstName', sqlType: sql.NVarChar},
-          guideLastName: {sqlField: 'GuideLastName', sqlType: sql.NVarChar},
-          guideEmail: {sqlField: 'GuideEmail', sqlType: sql.NVarChar},
-          guideMobile: {sqlField: 'GuideMobile', sqlType: sql.NVarChar},
-          guideLandline: {sqlField: 'GuideLandline', sqlType: sql.NVarChar},
-          destinationAccommodation: {sqlField: 'DestinationAccommodation', sqlType: sql.NVarChar},
-          destinationAddress: {sqlField: 'DestinationAddress', sqlType: sql.NVarChar},
-          transportation: {sqlField: 'Transportation', sqlType: sql.NVarChar},
-          transportationNumber: {sqlField: 'TransportationNumber', sqlType: sql.NVarChar},
-          transportationDate: {sqlField: 'TransportationDate', sqlType: sql.DateTime},
+          tagName: { sqlField: 'tagName', sqlType: sql.NVarChar },
+          ownerFirstName: { sqlField: 'OwnerFirstName', sqlType: sql.NVarChar },
+          ownerLastName: { sqlField: 'OwnerLastName', sqlType: sql.NVarChar },
+          ownerAddress: { sqlField: 'OwnerAddress', sqlType: sql.NVarChar },
+          ownerEmail: { sqlField: 'OwnerEmail', sqlType: sql.NVarChar },
+          ownerMobile: { sqlField: 'OwnerMobile', sqlType: sql.NVarChar },
+          ownerLandline: { sqlField: 'OwnerLandline', sqlType: sql.NVarChar },
+          ownerOther: { sqlField: 'OwnerOther', sqlType: sql.NVarChar },
+          guideFirstName: { sqlField: 'GuideFirstName', sqlType: sql.NVarChar },
+          guideLastName: { sqlField: 'GuideLastName', sqlType: sql.NVarChar },
+          guideEmail: { sqlField: 'GuideEmail', sqlType: sql.NVarChar },
+          guideMobile: { sqlField: 'GuideMobile', sqlType: sql.NVarChar },
+          guideLandline: { sqlField: 'GuideLandline', sqlType: sql.NVarChar },
+          destinationAccommodation: { sqlField: 'DestinationAccommodation', sqlType: sql.NVarChar },
+          destinationAddress: { sqlField: 'DestinationAddress', sqlType: sql.NVarChar },
+          transportation: { sqlField: 'Transportation', sqlType: sql.NVarChar },
+          transportationNumber: { sqlField: 'TransportationNumber', sqlType: sql.NVarChar },
+          transportationDate: { sqlField: 'TransportationDate', sqlType: sql.DateTime },
         };
-        
+
         // Für jedes Feld im updateData-Objekt
         Object.keys(updateData).forEach(key => {
           const mapping = fieldMappings[key];
           if (mapping && updateData[key] !== undefined) {
             fields.push(mapping.sqlField);
             values.push(`@${key}`);
-            
-            const value = key === 'transportationDate' && updateData[key] 
-              ? new Date(updateData[key]) 
+
+            const value = key === 'transportationDate' && updateData[key]
+              ? new Date(updateData[key])
               : updateData[key];
             request.input(key, mapping.sqlType, value);
           }
         });
-        
+
         // Zeitstempelfelder hinzufügen
         const now = new Date();
-        
+
         // Insert-Abfrage ausführen
         const insertQuery = `
           INSERT INTO TravelTag (${fields.join(', ')})
           VALUES (${values.join(', ')})
         `;
-        
+
         await request.query(insertQuery);
       } else {
         // Aktualisierung eines vorhandenen Datensatzes
         // SET-Klausel der UPDATE-Anweisung dynamisch erstellen
         const updateColumns = [];
-        
+
         // Mapping der TravelData-Properties zu Datenbankspalten
         const fieldMappings = {
-          tagName: {sqlField: 'tagName', sqlType: sql.NVarChar},
-          ownerFirstName: {sqlField: 'OwnerFirstName', sqlType: sql.NVarChar},
-          ownerLastName: {sqlField: 'OwnerLastName', sqlType: sql.NVarChar},
-          ownerAddress: {sqlField: 'OwnerAddress', sqlType: sql.NVarChar},
-          ownerEmail: {sqlField: 'OwnerEmail', sqlType: sql.NVarChar},
-          ownerMobile: {sqlField: 'OwnerMobile', sqlType: sql.NVarChar},
-          ownerLandline: {sqlField: 'OwnerLandline', sqlType: sql.NVarChar},
-          ownerOther: {sqlField: 'OwnerOther', sqlType: sql.NVarChar},
-          guideFirstName: {sqlField: 'GuideFirstName', sqlType: sql.NVarChar},
-          guideLastName: {sqlField: 'GuideLastName', sqlType: sql.NVarChar},
-          guideEmail: {sqlField: 'GuideEmail', sqlType: sql.NVarChar},
-          guideMobile: {sqlField: 'GuideMobile', sqlType: sql.NVarChar},
-          guideLandline: {sqlField: 'GuideLandline', sqlType: sql.NVarChar},
-          destinationAccommodation: {sqlField: 'DestinationAccommodation', sqlType: sql.NVarChar},
-          destinationAddress: {sqlField: 'DestinationAddress', sqlType: sql.NVarChar},
-          transportation: {sqlField: 'Transportation', sqlType: sql.NVarChar},
-          transportationNumber: {sqlField: 'TransportationNumber', sqlType: sql.NVarChar},
-          transportationDate: {sqlField: 'TransportationDate', sqlType: sql.DateTime},
+          tagName: { sqlField: 'tagName', sqlType: sql.NVarChar },
+          ownerFirstName: { sqlField: 'OwnerFirstName', sqlType: sql.NVarChar },
+          ownerLastName: { sqlField: 'OwnerLastName', sqlType: sql.NVarChar },
+          ownerAddress: { sqlField: 'OwnerAddress', sqlType: sql.NVarChar },
+          ownerEmail: { sqlField: 'OwnerEmail', sqlType: sql.NVarChar },
+          ownerMobile: { sqlField: 'OwnerMobile', sqlType: sql.NVarChar },
+          ownerLandline: { sqlField: 'OwnerLandline', sqlType: sql.NVarChar },
+          ownerOther: { sqlField: 'OwnerOther', sqlType: sql.NVarChar },
+          guideFirstName: { sqlField: 'GuideFirstName', sqlType: sql.NVarChar },
+          guideLastName: { sqlField: 'GuideLastName', sqlType: sql.NVarChar },
+          guideEmail: { sqlField: 'GuideEmail', sqlType: sql.NVarChar },
+          guideMobile: { sqlField: 'GuideMobile', sqlType: sql.NVarChar },
+          guideLandline: { sqlField: 'GuideLandline', sqlType: sql.NVarChar },
+          destinationAccommodation: { sqlField: 'DestinationAccommodation', sqlType: sql.NVarChar },
+          destinationAddress: { sqlField: 'DestinationAddress', sqlType: sql.NVarChar },
+          transportation: { sqlField: 'Transportation', sqlType: sql.NVarChar },
+          transportationNumber: { sqlField: 'TransportationNumber', sqlType: sql.NVarChar },
+          transportationDate: { sqlField: 'TransportationDate', sqlType: sql.DateTime },
         };
-        
+
         // Für jedes Feld im updateData-Objekt
         Object.keys(updateData).forEach(key => {
           const mapping = fieldMappings[key];
           if (mapping && updateData[key] !== undefined) {
             updateColumns.push(`${mapping.sqlField} = @${key}`);
-            
-            const value = key === 'transportationDate' && updateData[key] 
-              ? new Date(updateData[key]) 
+
+            const value = key === 'transportationDate' && updateData[key]
+              ? new Date(updateData[key])
               : updateData[key];
             request.input(key, mapping.sqlType, value);
           }
         });
-        
+
         // Immer den LastUpdated-Zeitstempel aktualisieren
-        
+
         // Wenn keine Spalten zu aktualisieren sind, true zurückgeben (keine Änderungen erforderlich)
         if (updateColumns.length === 0) {
           await pool.close();
           return true;
         }
-        
+
         // Update-Abfrage ausführen
         const updateQuery = `
           UPDATE TravelTag
           SET ${updateColumns.join(', ')}
           WHERE TagID = @tagId
         `;
-        
+
         await request.query(updateQuery);
       }
-      
+
       await pool.close();
       return true;
     } catch (error) {
@@ -225,7 +250,7 @@ export class TagRepo {
       throw error;
     }
   }
-  
+
   /**
    * Registriert einen Besitzer für einen Tag
    * @param {string} tagId - Die NFC-Tag-ID
@@ -236,7 +261,7 @@ export class TagRepo {
   async registerTagOwner(tagId, userId, userEmail) {
     try {
       const pool = await this.getConnection();
-      
+
       // Überprüfen, ob der Tag bereits einem anderen Benutzer gehört
       const checkResult = await pool.request()
         .input('tagId', sql.UniqueIdentifier, tagId)
@@ -245,7 +270,7 @@ export class TagRepo {
           FROM TagOwners 
           WHERE TagID = @tagId and userid <>'${userId}'
         `);
-      
+
       if (checkResult.recordset.length > 0) {
         console.log('Tag ist bereits registriert für einen anderen Benutzer:', checkResult.recordset[0].UserID);
         // Tag ist bereits registriert
@@ -286,7 +311,7 @@ export class TagRepo {
       throw error;
     }
   }
-  
+
   /**
    * Überprüft, ob ein Benutzer der Eigentümer eines Tags ist
    * @param {string} tagId - Die NFC-Tag-ID
@@ -294,9 +319,12 @@ export class TagRepo {
    * @returns {Promise<boolean>} Wahr, wenn der Benutzer der Eigentümer ist
    */
   async verifyTagOwner(tagId, userId) {
+    if (tagId === "demotag") {
+      return false;
+    }
     try {
       const pool = await this.getConnection();
-      
+
       const result = await pool.request()
         .input('tagId', sql.UniqueIdentifier, tagId)
         .input('userId', sql.NVarChar, userId)
@@ -305,7 +333,7 @@ export class TagRepo {
           FROM TagOwners 
           WHERE TagID = @tagId AND UserID = @userId
         `);
-      
+
       pool.close();
       return result.recordset.length > 0;
     } catch (error) {
@@ -313,24 +341,28 @@ export class TagRepo {
       throw error;
     }
   }
-  
+
   /**
    * Überprüft, ob ein Tag in der Datenbank existiert und erstellt ihn falls nicht vorhanden
    * @param {string} tagId - Die NFC-Tag-ID
    * @returns {Promise<boolean>} Wahr, wenn der Tag existiert (oder erstellt wurde)
    */
   async tagExists(tagId) {
+    if (tagId === "demotag") {
+      return true;
+    }
+
     try {
       const pool = await this.getConnection();
-      
+
       const result = await pool.request()
         .input('tagId', sql.UniqueIdentifier, tagId)
         .query(`
           SELECT 1
           FROM TravelTag
           WHERE TagID = @tagId and isRegistered=0
-        `);      
-      
+        `);
+
       // Wenn Tag nicht existiert, erstelle ihn mit Standard-Werten
       if (result.recordset.length === 0) {
         await pool.request()
@@ -380,7 +412,7 @@ export class TagRepo {
           `);
         console.log('Neuer Tag erstellt mit ID:', tagId);
       }
-      
+
       pool.close();
       return true; // Tag existiert jetzt auf jeden Fall
     } catch (error) {
@@ -389,17 +421,17 @@ export class TagRepo {
     }
   }
 
-async tagRegistered(tagId) {
+  async tagRegistered(tagId) {
     try {
       const pool = await this.getConnection();
-      
+
       const result = await pool.request()
         .input('tagId', sql.UniqueIdentifier, tagId)
         .query(`
           SELECT 1
           FROM TravelTag
           WHERE TagID = @tagId and isRegistered=1
-        `);      
+        `);
       pool.close();
       return result.recordset.length > 0;
     } catch (error) {
@@ -425,7 +457,7 @@ async tagRegistered(tagId) {
           WHERE o.UserID = @userId
           ORDER BY t.tagName
         `);
-      
+
       return result.recordset;
     } catch (error) {
       console.error('Fehler beim Abrufen der Tags des Benutzers:', error);

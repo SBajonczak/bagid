@@ -3,8 +3,8 @@
 //  const isProd =false;// process.env.NODE_ENV === 'production';
 
 export const logger = {
-    error: (...args: any[]) => console.error(...args),
-    warn: (...args: any[]) => console.warn(...args),
-    info: (...args: any[]) => console.info(...args),
-    debug: (...args: any[]) => console.debug(...args),
+    error: (...args: unknown[]) => console.error(...args),
+    warn: (...args: unknown[]) => console.warn(...args),
+    info: (...args: unknown[]) => console.info(...args),
+    debug: (...args: unknown[]) => console.debug(...args),
 };

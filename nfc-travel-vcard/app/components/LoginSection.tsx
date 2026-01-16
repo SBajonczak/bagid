@@ -63,7 +63,7 @@ const LanguageSelection: React.FC = () => {
         </svg>
     );
 
-    const { lang, setLang } = useLanguage();
+    const { language, setLanguage } = useLanguage();
 
     const languages = [
         { code: 'de', flag: FlagDE, label: 'Deutsch' },
@@ -81,15 +81,15 @@ const LanguageSelection: React.FC = () => {
                     key={code}
                     onClick={() => {
                         console.log(`Setting language to ${label}`);
-                        if (typeof setLang === 'function') {
-                            setLang(code as any);
+                        if (typeof setLanguage === 'function') {
+                            setLanguage(code as any);
                             console.log(`Language set to ${label}`);
                         } else {
-                            console.error('setLang is not a function');
+                            console.error('setLanguage is not a function');
                         }
                     }}
                     className={`p-1 transition hover:scale-110 ${
-                        lang === code ? 'opacity-100' : 'opacity-40'
+                        language === code ? 'opacity-100' : 'opacity-40'
                     }`}
                     aria-label={`Set language to ${label}`}
                     title={label}

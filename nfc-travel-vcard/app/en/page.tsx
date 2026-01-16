@@ -21,33 +21,10 @@ export default function EnHome() {
     <>
       <NavigationBar />
 
-      {!isAuthenticated && (
-        <header className="w-full flex justify-center bg-gradient-to-br py-6">
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="w-full max-w-7xl h-40 object-cover rounded shadow"
-            style={{ height: '55vh', width: '100%' }}
-            preload="auto"
-            controls={false}
-            disablePictureInPicture
-            controlsList="nodownload noremoteplayback"
-            aria-label="Bag Tag Product Demo"
-            title="Bag Tag Product Demo"
-            width="1920"
-            height="1080">
-            <source src="/assets/bagid-loop.mp4" type="video/mp4; codecs=avc1.4D401E,mp4a.40.2" />
-            Your browser does not support embedded videos.
-          </video>
-        </header>
-      )}
-
       <Header />
       <MessageContainer message={''} type={'none'} />
 
-      <main>
+      <main className="flex flex-col items-center gap-12">
         {showDashboard && <Dashboard hidden={false} />}
         <StartPageControl hidden={false} />
       </main>

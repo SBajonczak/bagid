@@ -9,7 +9,7 @@ const client = jwksClient({
   jwksUri: `https://${tenant}.b2clogin.com/${tenant}.onmicrosoft.com/${policy}/discovery/v2.0/keys`
 });
 
-function getKey(header: any, callback: jwt.SigningKeyCallback) {
+function getKey(header: unknown, callback: jwt.SigningKeyCallback) {
   client.getSigningKey(header.kid, function (err, key) {
     if (err) {
       console.error('Error getting signing key:', err);

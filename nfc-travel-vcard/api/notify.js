@@ -1,4 +1,5 @@
-const nodemailer = require('nodemailer');
+const Mailgun = require('mailgun.js');
+const formData = require('form-data');
 
 module.exports = async function (context, req) {
     context.log('JavaScript HTTP trigger function processed a request.');
@@ -14,7 +15,15 @@ module.exports = async function (context, req) {
         }
         
         const { to, message, location, mapUrl } = req.body;
-        
+
+        if (!process.env.MAILGUN_API_KEY || !process.env.MAILGUN_DOMAIN) {
+            context.res = {
+                status: 500,
+                body: { error: 'Mailgun is not configured (missing MAILGUN_API_KEY or MAILGUN_DOMAIN).' }
+            };
+            return;
+        }
+
         // Create email content
         const subject = "Your Bag-Tag: Someone found your luggage";
         const htmlBody = `
@@ -43,19 +52,17 @@ module.exports = async function (context, req) {
                 </div>
             </div>
         `;
-        
-        // Configure email transport (use your preferred email service)
-        const transporter = nodemailer.createTransport({
-            service: process.env.EMAIL_SERVICE,
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS
-            }
+
+        // Send email using Mailgun
+        const mailgun = new Mailgun(formData);
+        const mg = mailgun.client({
+            username: 'api',
+            key: process.env.MAILGUN_API_KEY,
+            url: process.env.MAILGUN_API_BASE || 'https://api.mailgun.net'
         });
-        
-        // Send email
-        await transporter.sendMail({
-            from: process.env.EMAIL_FROM,
+
+        await mg.messages.create(process.env.MAILGUN_DOMAIN, {
+            from: process.env.MAILGUN_FROM || `Bag-Tag <mailgun@${process.env.MAILGUN_DOMAIN}>`,
             to,
             subject,
             html: htmlBody

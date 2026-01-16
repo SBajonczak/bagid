@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useLanguage } from './LanguageProvider';
 import { messages } from '@/lib/i18n';
 import { FaUser, FaUserCircle } from 'react-icons/fa';
@@ -41,7 +41,7 @@ const NavigationBar: React.FC = () => {
 
 
     return (
-        <nav className="fixed top-0 left-0 w-full bg-white shadow-md py-4 px-6 flex justify-between items-center z-50 md:flex">
+        <nav className="sticky top-0 left-0 right-0 z-50 w-full bg-white/95 backdrop-blur shadow-md py-4 px-6 flex justify-between items-center">
             {/* Logo + Language Switcher */}
             <div className="flex gap-3 items-center">
                 {/* Add more flags as needed */}

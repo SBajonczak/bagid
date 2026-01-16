@@ -406,12 +406,13 @@ const TravelCard: React.FC = () => {
             {renderDestinationSection()}
 
             {/* Notification Modal */}
-            {travelData.ownerEmail && (
+            {(hasValue(travelData.ownerEmail) || hasValue(travelData.ownerMobile)) && (
                 <NotificationModal 
                     isOpen={isNotificationModalOpen}
                     onClose={() => setIsNotificationModalOpen(false)}
-                    ownerEmail={travelData.ownerEmail}
                     tagId={tagId || ''}
+                    supportsEmail={hasValue(travelData.ownerEmail)}
+                    supportsSms={hasValue(travelData.ownerMobile)}
                 />
             )}
         </div>

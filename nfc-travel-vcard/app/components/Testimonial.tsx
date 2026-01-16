@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper/modules';
 // import 'swiper/swiper-bundle.min.css'
 // import 'swiper/swiper.min.css'
 import 'swiper/css';
@@ -17,11 +18,15 @@ interface TestimonialProps {
 
 const Testimonial: React.FC<TestimonialProps> = ({ testimonials }) => {
   return (
-    <div className="bg-white shadow-2xl z-50 py-6 px-4 md:px-12">
+    <div className="w-full bg-white shadow-2xl z-50 py-6 px-4 md:px-12 rounded-2xl border border-blue-100">
       <Swiper
+        modules={[Autoplay]}
         autoplay={{ delay: 3000, disableOnInteraction: false }}
         spaceBetween={30}
-        slidesPerView={2}
+        slidesPerView={1}
+        breakpoints={{
+          768: { slidesPerView: 2 },
+        }}
         // navigation
         // scrollbar={{ draggable: true }}
         onSwiper={(swiper) => console.log(swiper)}

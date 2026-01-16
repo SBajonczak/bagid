@@ -3,7 +3,7 @@ export const messages = {
     de: {
         common: {
             dashboardSubtitle: 'Verwalte deine NFC-Reise-Tags bequem an einem Ort.',
-            offerText: '🔥 Exklusives Angebot: Spare jetzt 15%! Nur für kurze Zeit – sichere dir deinen NFC-Kofferanhänger!',
+            offerText: 'Exklusives Angebot: Spare jetzt 15%! Nur für kurze Zeit – sichere dir deinen NFC-Kofferanhänger!',
             productname: 'Bag-Tag',
             features: 'Eigenschaften',
             faq: 'FAQ',
@@ -25,7 +25,7 @@ export const messages = {
         },
         seo: {
             title: 'Bag-Tag.de | Smarte NFC Gepäckanhänger für sicheres Reisen',
-            description: 'Innovative NFC Gepäckanhänger zum schnellen Auffinden verlorenen Gepäcks. Moderne Reisebegleiter mit kontaktloser NFC-Technologie für alle Koffer und Taschen.',
+            description: 'Bag-Tag verbindet NFC und QR-Code für lebenslange Gepäckkennzeichnung: einmal kaufen, ohne Batterien nutzen und Kontaktdaten jederzeit online aktualisieren.',
             keywords: 'NFC Gepäckanhänger, Kofferanhänger, Gepäck ID, verlorenes Gepäck, Reisezubehör, Koffer Tag, kontaktlose Technologie, smarter Gepäckanhänger',
             productName: 'NFC Bag Tag',
             brandName: 'Bag-Tag',
@@ -44,7 +44,7 @@ export const messages = {
             }
         },
         edit: 'klicken um zu bearbeiten',
-        login: '☁️ Mit Azure B2C anmelden',
+        login: 'Mit Azure B2C anmelden',
         travelCard: {
             loggedInAs: 'Angemeldet als',
             edit: 'Bearbeiten',
@@ -107,7 +107,7 @@ export const messages = {
             heroTitle: "Nie wieder den Koffer verlieren",
             heroSubtitle: "Mit dem smarten Travel Tag – NFC & QR-Code für sicheres Reisen",
             pricePerPiece: "pro Stück",
-            freeShipping: "✓ Kostenloser Versand ab 2 Stück",
+            freeShipping: "Kostenloser Versand ab 2 Stück",
             ctaSecure: "– Travel Tag sichern",
             ctaBundle: "3er-Set kaufen und sparen",
             or: "oder",
@@ -276,7 +276,7 @@ export const messages = {
     en: {
         common: {
             dashboardSubtitle: 'Manage your NFC travel tags conveniently in one place.',
-            offerText: '🔥 Exclusive offer: Save 15% now! Limited time only – get your NFC luggage tag today!',
+            offerText: 'Exclusive offer: Save 15% now! Limited time only – get your NFC luggage tag today!',
             productname: 'Bag-Tag',
             features: 'Features',
             faq: 'FAQ',
@@ -298,7 +298,7 @@ export const messages = {
         },
         seo: {
             title: 'Bag-Tag.de | Smart NFC Luggage Tags for Safe Travel',
-            description: 'Innovative NFC luggage tags for quick recovery of lost luggage. Modern travel companions with contactless NFC technology for all suitcases and bags.',
+            description: 'Bag-Tag pairs NFC with QR codes for lifelong luggage identification—buy once, skip batteries, and keep contact data accessible from anywhere.',
             keywords: 'NFC luggage tags, luggage identifier, baggage ID, lost luggage, travel accessories, suitcase tag, contactless technology, smart luggage tag',
             productName: 'NFC Bag Tag',
             brandName: 'Bag-Tag',
@@ -317,7 +317,7 @@ export const messages = {
             }
         },
         edit: 'click to edit',
-        login: '☁️ Sign in with Azure B2C',
+        login: 'Sign in with Azure B2C',
         travelCard: {
             loggedInAs: 'Logged in as',
             edit: 'Edit',
@@ -380,7 +380,7 @@ export const messages = {
             heroTitle: "Never lose your luggage again",
             heroSubtitle: "With the smart Travel Tag – NFC & QR code for safe travel",
             pricePerPiece: "per piece",
-            freeShipping: "✓ Free shipping from 2 pieces",
+            freeShipping: "Free shipping from 2 pieces",
             ctaSecure: "– Secure Travel Tag",
             ctaBundle: "Buy 3-pack and save",
             or: "or",
@@ -549,7 +549,7 @@ export const messages = {
     nl: {
         common: {
             dashboardSubtitle: 'Beheer je NFC-reisetags gemakkelijk op één plek.',
-            offerText: '🔥 Exclusieve aanbieding: Bespaar nu 15%! Beperkte tijd - krijg je NFC-bagagetag!',
+            offerText: 'Exclusieve aanbieding: Bespaar nu 15%! Beperkte tijd - krijg je NFC-bagagetag!',
             productname: 'Bag-Tag',
             features: 'Eigenschappen',
             faq: 'FAQ',
@@ -590,7 +590,7 @@ export const messages = {
             }
         },
         edit: 'klik om te bewerken',
-        login: '☁️ Inloggen met Azure B2C',
+        login: 'Inloggen met Azure B2C',
         travelCard: {
             loggedInAs: 'Ingelogd als',
             edit: 'Bewerken',
@@ -791,7 +791,7 @@ export const messages = {
     ko: {
         common: {
             dashboardSubtitle: 'NFC 여행 태그를 한 곳에서 편리하게 관리하세요.',
-            offerText: '🔥 독점 할인: 지금 15% 할인! 한정 시간 - NFC 수하물 태그를 받으세요!',
+            offerText: '독점 할인: 지금 15% 할인! 한정 시간 - NFC 수하물 태그를 받으세요!',
             productname: 'Bag-Tag',
             features: '기능',
             faq: 'FAQ',
@@ -832,7 +832,7 @@ export const messages = {
             }
         },
         edit: '편집하려면 클릭',
-        login: '☁️ Azure B2C로 로그인',
+        login: 'Azure B2C로 로그인',
         travelCard: {
             loggedInAs: '로그인한 사용자',
             edit: '편집',
@@ -1035,7 +1035,7 @@ export const messages = {
     ar: {
         common: {
             dashboardSubtitle: 'إدارة علامات السفر NFC بسهولة في مكان واحد.',
-            offerText: '🔥 عرض حصري: وفر الآن 15%! لفترة محدودة - احصل على علامة الأمتعة NFC!',
+            offerText: 'عرض حصري: وفر الآن 15%! لفترة محدودة - احصل على علامة الأمتعة NFC!',
             productname: 'Bag-Tag',
             features: 'الميزات',
             faq: 'الأسئلة الشائعة',
@@ -1076,7 +1076,7 @@ export const messages = {
             }
         },
         edit: 'انقر للتحرير',
-        login: '☁️ تسجيل الدخول بـ Azure B2C',
+        login: 'تسجيل الدخول بـ Azure B2C',
         travelCard: {
             loggedInAs: 'مسجل الدخول كـ',
             edit: 'تحرير',
@@ -1279,7 +1279,7 @@ export const messages = {
     th: {
         common: {
             dashboardSubtitle: 'จัดการแท็กเดินทาง NFC ของคุณได้อย่างสะดวกในที่เดียว',
-            offerText: '🔥 ข้อเสนอพิเศษ: ประหยัด 15% ตอนนี้! เวลาจำกัด - รับแท็กกระเป๋าเดินทาง NFC!',
+            offerText: 'ข้อเสนอพิเศษ: ประหยัด 15% ตอนนี้! เวลาจำกัด - รับแท็กกระเป๋าเดินทาง NFC!',
             productname: 'Bag-Tag',
             features: 'คุณสมบัติ',
             faq: 'คำถามที่พบบ่อย',
@@ -1320,7 +1320,7 @@ export const messages = {
             }
         },
         edit: 'คลิกเพื่อแก้ไข',
-        login: '☁️ เข้าสู่ระบบด้วย Azure B2C',
+        login: 'เข้าสู่ระบบด้วย Azure B2C',
         travelCard: {
             loggedInAs: 'เข้าสู่ระบบในนาม',
             edit: 'แก้ไข',

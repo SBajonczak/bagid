@@ -19,5 +19,7 @@ export interface TravelData {
   transportation: string;
   transportationNumber: string;
   transportationDate?: Date;
+  transportationProvider?: string;
+  transportationDetails?:string;
   // ...any other fields...
 }

@@ -8,7 +8,13 @@ export async function GET(
   try {
     const { tagId } = params;
     const repo = new TagRepo();
-    
+   if (tagId==="demo")
+   
+      return NextResponse.json(
+        { exists: true, registered: true },
+        { status: 200 }
+      );
+   ;
     const exists = await repo.tagExists(tagId);
     if (!exists) {
       return NextResponse.json(
@@ -17,7 +23,7 @@ export async function GET(
       );
     }
     
-    const isRegistered = await repo.isTagRegistered(tagId);
+    const isRegistered = await repo.tagRegistered(tagId);
     
     return NextResponse.json({
       exists: true,

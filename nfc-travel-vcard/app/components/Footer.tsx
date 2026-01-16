@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useLanguage } from './LanguageProvider';
-import { messages } from '@/i18n';
+import { messages } from '@/lib/i18n';
 import LanguageSelection from './LoginSection';
 
 const Footer: React.FC = () => {
