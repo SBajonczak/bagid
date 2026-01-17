@@ -75,6 +75,15 @@ export interface FeatureFlags {
   emailNotifications: boolean;
   asyncNotifications: boolean;
   recaptchaValidation: boolean;
+  notifyButton: boolean;
+}
+
+export interface PublicFeatureFlags {
+  notifyButton: boolean;
+}
+
+export interface PublicConfig {
+  features: PublicFeatureFlags;
 }
 
 /**
@@ -93,8 +102,15 @@ export interface AppConfig {
 /**
  * Get environment variable with optional default
  */
+function readEnv(key: string): string | undefined {
+  if (typeof process === 'undefined' || !process.env) {
+    return undefined;
+  }
+  return process.env[key];
+}
+
 function getEnv(key: string, defaultValue?: string): string {
-  const value = process.env[key];
+  const value = readEnv(key);
   if (value === undefined) {
     if (defaultValue !== undefined) {
       return defaultValue;
@@ -108,7 +124,7 @@ function getEnv(key: string, defaultValue?: string): string {
  * Get boolean environment variable
  */
 function getBoolEnv(key: string, defaultValue: boolean): boolean {
-  const value = process.env[key];
+  const value = readEnv(key);
   if (value === undefined) {
     return defaultValue;
   }
@@ -119,7 +135,7 @@ function getBoolEnv(key: string, defaultValue: boolean): boolean {
  * Get number environment variable
  */
 function getNumberEnv(key: string, defaultValue: number): number {
-  const value = process.env[key];
+  const value = readEnv(key);
   if (value === undefined) {
     return defaultValue;
   }
@@ -217,6 +233,13 @@ function buildFeatureFlags(): FeatureFlags {
     emailNotifications: getBoolEnv('FEATURE_EMAIL_NOTIFICATIONS', true),
     asyncNotifications: getBoolEnv('FEATURE_ASYNC_NOTIFICATIONS', false),
     recaptchaValidation: getBoolEnv('FEATURE_RECAPTCHA_VALIDATION', false),
+    notifyButton: getBoolEnv('NEXT_PUBLIC_FEATURE_NOTIFY_BUTTON_ENABLED', false),
+  };
+}
+
+function buildPublicFeatureFlags(): PublicFeatureFlags {
+  return {
+    notifyButton: process.env.NEXT_PUBLIC_FEATURE_NOTIFY_BUTTON_ENABLED === 'true',
   };
 }
 
@@ -242,6 +265,7 @@ function loadConfig(): AppConfig {
 
 // Singleton instance - loaded once at startup
 let configInstance: AppConfig | null = null;
+let publicConfigInstance: PublicConfig | null = null;
 
 /**
  * Get application configuration
@@ -254,11 +278,21 @@ export function getConfig(): AppConfig {
   return configInstance;
 }
 
+export function getPublicConfig(): PublicConfig {
+  if (!publicConfigInstance) {
+    publicConfigInstance = {
+      features: buildPublicFeatureFlags(),
+    };
+  }
+  return publicConfigInstance;
+}
+
 /**
  * Reset configuration cache (useful for testing)
  */
 export function resetConfig(): void {
   configInstance = null;
+  publicConfigInstance = null;
 }
 
 /**
@@ -296,6 +330,7 @@ export function validateConfig(): void {
 // Export a default config accessor
 const config = {
   get: getConfig,
+  getPublic: getPublicConfig,
   validate: validateConfig,
   reset: resetConfig,
 };
