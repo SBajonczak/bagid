@@ -100,11 +100,11 @@ const NavigationBar: React.FC = () => {
                         onClick={handleLogout}
                         className="text-blue-700 flex items-center gap-1 ml-2"
                         title={t1.logout || "Logout"}
-                        aria-label={`Abmelden als ${user?.email || user?.username}`}
+                        aria-label={`Abmelden als ${ user?.username}`}
                         disabled={loading}
                     >
                         <FaUserCircle className="text-2xl" aria-hidden="true" />
-                        <span className="hidden md:inline font-bold">{user?.email || user?.username || t1.dashboard}</span>
+                        <span className="hidden md:inline font-bold">{ user?.username || t1.dashboard}</span>
                     </button>
 
                 ) : (

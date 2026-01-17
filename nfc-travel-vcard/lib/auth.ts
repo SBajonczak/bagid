@@ -10,6 +10,7 @@ const client = jwksClient({
 });
 
 function getKey(header: unknown, callback: jwt.SigningKeyCallback) {
+  //@ts-expect-error kid will not be undefined
   client.getSigningKey(header.kid, function (err, key) {
     if (err) {
       console.error('Error getting signing key:', err);

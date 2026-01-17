@@ -1,19 +1,19 @@
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import { useRouter, useParams } from 'next/navigation';
 import { useLanguage } from '../LanguageProvider';
 import { messages } from '@/lib/i18n';
-import authService from '../../services/AuthService';
+import authService from '@/services/AuthService';
 import { logger } from '@/utils/logger';
-import App from '@/App';
 
 // Import icons
 import { FaCheckCircle, FaExclamationTriangle, FaLock, FaSuitcase, FaUserCheck } from 'react-icons/fa';
+import App from 'next/app';
 
 const TagRegistration: React.FC = () => {
     const { tagId } = useParams<{ tagId: string }>();
-    const navigate = useNavigate();
+    const router = useRouter();
     const { language: lang } = useLanguage();
     const t = messages[lang].common;
     const tr = messages[lang].tagRegistration;
@@ -107,7 +107,7 @@ const TagRegistration: React.FC = () => {
             }
 
             // Redirect to the edit page after successful registration
-            navigate(`/${tagId}/edit`);
+            router.push(`/${tagId}/edit`);
         } catch (err) {
             if (err instanceof Error) {
                 setError(err.message);

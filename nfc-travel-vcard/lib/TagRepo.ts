@@ -121,11 +121,11 @@ export class TagRepo {
 
   /**
    * Aktualisiert die Reisedaten für die angegebene Tag-ID
-   * @param {string} tagId - Die NFC-Tag-ID
-   * @param {object} updateData - Die zu aktualisierenden Daten
-   * @returns {Promise<boolean>} Wahr, wenn die Aktualisierung erfolgreich war
+   * @param tagId - Die NFC-Tag-ID
+   * @param updateData - Die zu aktualisierenden Daten
+   * @returns Wahr, wenn die Aktualisierung erfolgreich war
    */
-  async updateTravelDataByTagId(tagId, updateData) {
+  async updateTravelDataByTagId(tagId: string, updateData: Record<string, unknown>): Promise<boolean> {
     try {
       const pool = await this.getConnection();
 
@@ -136,47 +136,51 @@ export class TagRepo {
 
       const request = pool.request().input('tagId', sql.UniqueIdentifier, tagId);
 
+      // Mapping der TravelData-Properties zu Datenbankspalten
+      const fieldMappings = {
+        tagName: { sqlField: 'tagName', sqlType: sql.NVarChar(255) },
+        ownerFirstName: { sqlField: 'OwnerFirstName', sqlType: sql.NVarChar(255) },
+        ownerLastName: { sqlField: 'OwnerLastName', sqlType: sql.NVarChar(255) },
+        ownerAddress: { sqlField: 'OwnerAddress', sqlType: sql.NVarChar(500) },
+        ownerEmail: { sqlField: 'OwnerEmail', sqlType: sql.NVarChar(255) },
+        ownerMobile: { sqlField: 'OwnerMobile', sqlType: sql.NVarChar(50) },
+        ownerLandline: { sqlField: 'OwnerLandline', sqlType: sql.NVarChar(50) },
+        ownerOther: { sqlField: 'OwnerOther', sqlType: sql.NVarChar(500) },
+        guideFirstName: { sqlField: 'GuideFirstName', sqlType: sql.NVarChar(255) },
+        guideLastName: { sqlField: 'GuideLastName', sqlType: sql.NVarChar(255) },
+        guideEmail: { sqlField: 'GuideEmail', sqlType: sql.NVarChar(255) },
+        guideMobile: { sqlField: 'GuideMobile', sqlType: sql.NVarChar(50) },
+        guideLandline: { sqlField: 'GuideLandline', sqlType: sql.NVarChar(50) },
+        destinationAccommodation: { sqlField: 'DestinationAccommodation', sqlType: sql.NVarChar(255) },
+        destinationAddress: { sqlField: 'DestinationAddress', sqlType: sql.NVarChar(500) },
+        transportation: { sqlField: 'Transportation', sqlType: sql.NVarChar(100) },
+        transportationNumber: { sqlField: 'TransportationNumber', sqlType: sql.NVarChar(50) },
+        transportationDate: { sqlField: 'TransportationDate', sqlType: sql.DateTime },
+      };
+
       // Wenn der Datensatz nicht existiert, erstellen wir einen neuen
       if (checkResult.recordset.length === 0) {
         // SQL-Felder und Werte für die Einfügung vorbereiten
         const fields = ['TagID'];
         const values = ['@tagId'];
 
-        // Mapping der TravelData-Properties zu Datenbankspalten
-        const fieldMappings = {
-          tagName: { sqlField: 'tagName', sqlType: sql.NVarChar },
-          ownerFirstName: { sqlField: 'OwnerFirstName', sqlType: sql.NVarChar },
-          ownerLastName: { sqlField: 'OwnerLastName', sqlType: sql.NVarChar },
-          ownerAddress: { sqlField: 'OwnerAddress', sqlType: sql.NVarChar },
-          ownerEmail: { sqlField: 'OwnerEmail', sqlType: sql.NVarChar },
-          ownerMobile: { sqlField: 'OwnerMobile', sqlType: sql.NVarChar },
-          ownerLandline: { sqlField: 'OwnerLandline', sqlType: sql.NVarChar },
-          ownerOther: { sqlField: 'OwnerOther', sqlType: sql.NVarChar },
-          guideFirstName: { sqlField: 'GuideFirstName', sqlType: sql.NVarChar },
-          guideLastName: { sqlField: 'GuideLastName', sqlType: sql.NVarChar },
-          guideEmail: { sqlField: 'GuideEmail', sqlType: sql.NVarChar },
-          guideMobile: { sqlField: 'GuideMobile', sqlType: sql.NVarChar },
-          guideLandline: { sqlField: 'GuideLandline', sqlType: sql.NVarChar },
-          destinationAccommodation: { sqlField: 'DestinationAccommodation', sqlType: sql.NVarChar },
-          destinationAddress: { sqlField: 'DestinationAddress', sqlType: sql.NVarChar },
-          transportation: { sqlField: 'Transportation', sqlType: sql.NVarChar },
-          transportationNumber: { sqlField: 'TransportationNumber', sqlType: sql.NVarChar },
-          transportationDate: { sqlField: 'TransportationDate', sqlType: sql.DateTime },
-        };
-
         // Für jedes Feld im updateData-Objekt
-        Object.keys(updateData).forEach(key => {
-          const mapping = fieldMappings[key];
-          if (mapping && updateData[key] !== undefined) {
-            fields.push(mapping.sqlField);
-            values.push(`@${key}`);
+        for (const key in updateData) {
+          if (Object.prototype.hasOwnProperty.call(updateData, key)) {
+            const mapping = fieldMappings[key as keyof typeof fieldMappings];
+            const value = updateData[key];
 
-            const value = key === 'transportationDate' && updateData[key]
-              ? new Date(updateData[key])
-              : updateData[key];
-            request.input(key, mapping.sqlType, value);
+            if (mapping && value !== undefined) {
+              fields.push(mapping.sqlField);
+              values.push(`@${key}`);
+
+              const finalValue = key === 'transportationDate' && value
+                ? new Date(value as string | number)
+                : value;
+              request.input(key, mapping.sqlType, finalValue);
+            }
           }
-        });
+        }
 
         // Zeitstempelfelder hinzufügen
 
@@ -190,38 +194,16 @@ export class TagRepo {
       } else {
         // Aktualisierung eines vorhandenen Datensatzes
         // SET-Klausel der UPDATE-Anweisung dynamisch erstellen
-        const updateColumns = [];
-
-        // Mapping der TravelData-Properties zu Datenbankspalten
-        const fieldMappings = {
-          tagName: { sqlField: 'tagName', sqlType: sql.NVarChar },
-          ownerFirstName: { sqlField: 'OwnerFirstName', sqlType: sql.NVarChar },
-          ownerLastName: { sqlField: 'OwnerLastName', sqlType: sql.NVarChar },
-          ownerAddress: { sqlField: 'OwnerAddress', sqlType: sql.NVarChar },
-          ownerEmail: { sqlField: 'OwnerEmail', sqlType: sql.NVarChar },
-          ownerMobile: { sqlField: 'OwnerMobile', sqlType: sql.NVarChar },
-          ownerLandline: { sqlField: 'OwnerLandline', sqlType: sql.NVarChar },
-          ownerOther: { sqlField: 'OwnerOther', sqlType: sql.NVarChar },
-          guideFirstName: { sqlField: 'GuideFirstName', sqlType: sql.NVarChar },
-          guideLastName: { sqlField: 'GuideLastName', sqlType: sql.NVarChar },
-          guideEmail: { sqlField: 'GuideEmail', sqlType: sql.NVarChar },
-          guideMobile: { sqlField: 'GuideMobile', sqlType: sql.NVarChar },
-          guideLandline: { sqlField: 'GuideLandline', sqlType: sql.NVarChar },
-          destinationAccommodation: { sqlField: 'DestinationAccommodation', sqlType: sql.NVarChar },
-          destinationAddress: { sqlField: 'DestinationAddress', sqlType: sql.NVarChar },
-          transportation: { sqlField: 'Transportation', sqlType: sql.NVarChar },
-          transportationNumber: { sqlField: 'TransportationNumber', sqlType: sql.NVarChar },
-          transportationDate: { sqlField: 'TransportationDate', sqlType: sql.DateTime },
-        };
+        const updateColumns: string[] = [];
 
         // Für jedes Feld im updateData-Objekt
         Object.keys(updateData).forEach(key => {
-          const mapping = fieldMappings[key];
+          const mapping = fieldMappings[key as keyof typeof fieldMappings];
           if (mapping && updateData[key] !== undefined) {
             updateColumns.push(`${mapping.sqlField} = @${key}`);
 
             const value = key === 'transportationDate' && updateData[key]
-              ? new Date(updateData[key])
+              ? new Date(updateData[key] as string | number)
               : updateData[key];
             request.input(key, mapping.sqlType, value);
           }
@@ -255,12 +237,12 @@ export class TagRepo {
 
   /**
    * Registriert einen Besitzer für einen Tag
-   * @param {string} tagId - Die NFC-Tag-ID
-   * @param {string} userId - Die Benutzer-ID aus Azure B2C
-   * @param {string} userEmail - Die E-Mail-Adresse des Benutzers
-   * @returns {Promise<boolean>} Wahr, wenn die Registrierung erfolgreich war
+   * @param tagId - Die NFC-Tag-ID
+   * @param userId - Die Benutzer-ID aus Azure B2C
+   * @param userEmail - Die E-Mail-Adresse des Benutzers
+   * @returns Wahr, wenn die Registrierung erfolgreich war
    */
-  async registerTagOwner(tagId, userId, userEmail) {
+  async registerTagOwner(tagId: string, userId: string, userEmail: string): Promise<boolean> {
     try {
       const pool = await this.getConnection();
 
@@ -316,11 +298,11 @@ export class TagRepo {
 
   /**
    * Überprüft, ob ein Benutzer der Eigentümer eines Tags ist
-   * @param {string} tagId - Die NFC-Tag-ID
-   * @param {string} userId - Die Benutzer-ID aus Azure B2C
-   * @returns {Promise<boolean>} Wahr, wenn der Benutzer der Eigentümer ist
+   * @param tagId - Die NFC-Tag-ID
+   * @param userId - Die Benutzer-ID aus Azure B2C
+   * @returns Wahr, wenn der Benutzer der Eigentümer ist
    */
-  async verifyTagOwner(tagId, userId) {
+  async verifyTagOwner(tagId: string, userId: string): Promise<boolean> {
     if (tagId === "demotag") {
       return false;
     }
@@ -346,10 +328,10 @@ export class TagRepo {
 
   /**
    * Überprüft, ob ein Tag in der Datenbank existiert und erstellt ihn falls nicht vorhanden
-   * @param {string} tagId - Die NFC-Tag-ID
-   * @returns {Promise<boolean>} Wahr, wenn der Tag existiert (oder erstellt wurde)
+   * @param tagId - Die NFC-Tag-ID
+   * @returns Wahr, wenn der Tag existiert (oder erstellt wurde)
    */
-  async tagExists(tagId) {
+  async tagExists(tagId: string): Promise<boolean> {
     if (tagId === "demotag") {
       return true;
     }
@@ -423,7 +405,7 @@ export class TagRepo {
     }
   }
 
-  async tagRegistered(tagId) {
+  async tagRegistered(tagId: string): Promise<boolean> {
     try {
       const pool = await this.getConnection();
 
@@ -444,10 +426,10 @@ export class TagRepo {
 
   /**
    * Ruft die Tags für einen bestimmten Benutzer ab
-   * @param {string} userId - Die Benutzer-ID aus Azure B2C
-   * @returns {Promise<Array<object>>} Liste der Tags des Benutzers
+   * @param userId - Die Benutzer-ID aus Azure B2C
+   * @returns Liste der Tags des Benutzers
    */
-  async getUserTags(userId) {
+  async getUserTags(userId: string): Promise<unknown[]> {
     try {
       const pool = await this.getConnection();
       const result = await pool.request()

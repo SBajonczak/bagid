@@ -18,7 +18,7 @@ const msalConfig = {
 
         // Add knownAuthorities to fix the "not a trusted authority" error
         knownAuthorities: [`${tenant}.b2clogin.com`],
-        redirectUri: import.meta.env.DEV ? "http://localhost:3000" : redirecturi,
+        redirectUri: process.env.NODE_ENV === 'development' ? "http://localhost:3000" : redirecturi,
         postLogoutRedirectUri: window.location.origin,
         navigateToLoginRequestUrl: true,
     },
