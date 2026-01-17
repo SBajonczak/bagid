@@ -1,4 +1,3 @@
-import { Logger } from 'concurrently';
 import sql from 'mssql';
 import dotenv from 'dotenv';
 import { getConfig } from './config';
@@ -180,7 +179,6 @@ export class TagRepo {
         });
 
         // Zeitstempelfelder hinzufügen
-        const now = new Date();
 
         // Insert-Abfrage ausführen
         const insertQuery = `

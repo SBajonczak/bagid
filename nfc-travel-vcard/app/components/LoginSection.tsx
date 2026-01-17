@@ -82,7 +82,7 @@ const LanguageSelection: React.FC = () => {
                     onClick={() => {
                         console.log(`Setting language to ${label}`);
                         if (typeof setLanguage === 'function') {
-                            setLanguage(code as any);
+                            setLanguage(code);
                             console.log(`Language set to ${label}`);
                         } else {
                             console.error('setLanguage is not a function');

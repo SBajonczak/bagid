@@ -17,7 +17,7 @@ import { Building2, Lock, MapPin, Plane, ShieldCheck, User } from 'lucide-react'
 
 dayjs.extend(localizedFormat);
 
-const hasValue = (value: any): boolean => {
+const hasValue = (value: string | null | undefined): boolean => {
     return value !== null && value !== undefined && value !== '';
 };
 
@@ -217,7 +217,7 @@ const TravelCardClient: React.FC<TravelCardClientProps> = ({ tagId }) => {
     const transportRows: InfoRow[] = [
         { label: t.provider, value: transportMode },
         { label: t.details, value: transportNumber },
-        { label: t.date, value: hasValue(travelData.transportationDate) ? formattedDate : null },
+        { label: t.date, value: travelData.transportationDate!= null ? formattedDate : null },
     ];
 
     const tagTitle = travelData.tagName || t.productname;
@@ -256,7 +256,7 @@ const TravelCardClient: React.FC<TravelCardClientProps> = ({ tagId }) => {
                                     {transportNumber}
                                 </span>
                             )}
-                            {hasValue(travelData.transportationDate) && (
+                            {travelData.transportationDate != null && (
                                 <span className="rounded-full border border-white/30 bg-white/10 px-3 py-1">
                                     {formattedDate}
                                 </span>

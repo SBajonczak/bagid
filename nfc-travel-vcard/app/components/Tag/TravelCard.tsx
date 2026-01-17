@@ -18,7 +18,7 @@ dayjs.extend(localizedFormat);
 /**
  * Helper function to check if a field has a meaningful value
  */
-const hasValue = (value: any): boolean => {
+const hasValue = (value: unknown): boolean => {
     return value !== null && value !== undefined && value !== '';
 };
 

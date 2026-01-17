@@ -5,7 +5,7 @@ import * as msal from "@azure/msal-browser";
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  user: any | null;
+  user: msal.AccountInfo | null;
   login: () => Promise<void>;
   logout: () => Promise<void>;
   getToken: () => Promise<string>;
@@ -97,7 +97,7 @@ interface AuthProviderProps {
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [user, setUser] = useState<any | null>(null);
+  const [user, setUser] = useState<msal.AccountInfo | null>(null);
   const [isInitializing, setIsInitializing] = useState<boolean>(true);
 
   useEffect(() => {

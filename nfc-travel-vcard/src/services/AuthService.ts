@@ -81,7 +81,11 @@ export class AuthService {
     };
 
     private setUserFromAccount(account: msal.AccountInfo): void {
-        const claims = account.idTokenClaims as any;
+        const claims = account.idTokenClaims as {
+            name?: string;
+            emails?: string[];
+            email?: string;
+        };
 
         this.currentUser = {
             displayName: claims.name,

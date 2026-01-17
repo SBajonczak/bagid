@@ -4,7 +4,7 @@ import authService from './services/AuthService';
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  user: any | null;
+  user: msal.AccountInfo | null;
   login: () => void;
   logout: () => void;
   getToken: () => Promise<string>;
@@ -74,7 +74,7 @@ const tokenRequest = {
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [user, setUser] = useState<any | null>(null);
+  const [user, setUser] = useState<msal.AccountInfo | null>(null);
   const [isInitializing, setIsInitializing] = useState<boolean>(true);
 
   useEffect(() => {

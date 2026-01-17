@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import FormData from 'form-data';
-import Mailgun from 'mailgun.js';
-import Twilio from 'twilio';
+
+//@ts-expect-error Missing types
+import Mailgun, { IMailgunClient } from 'mailgun.js';
+import { Twilio } from 'twilio';
 import { TagRepo } from '@/lib/TagRepo';
 import { verifySecurityToken } from '@/lib/notifySecurity';
 import { getConfig } from '@/lib/config';
@@ -31,8 +33,8 @@ type NotifyRequestBody = {
 const ipLimiter = new Map<string, { count: number; timestamp: number }>();
 const tagLimiter = new Map<string, { count: number; timestamp: number }>();
 
-let cachedMailgunClient: any = null;
-let cachedTwilioClient: any = null;
+let cachedMailgunClient: IMailgunClient | null = null;
+let cachedTwilioClient: Twilio | null = null;
 
 export async function POST(request: NextRequest) {
   const config = getConfig();
@@ -333,7 +335,7 @@ async function verifyRecaptcha(token: string, secret: string): Promise<boolean> 
   return Boolean(data.success);
 }
 
-function getMailgunClient(emailConfig: { apiKey: string; domain: string }): any {
+function getMailgunClient(emailConfig: { apiKey: string; domain: string }): IMailgunClient {
   if (cachedMailgunClient) {
     return cachedMailgunClient;
   }
@@ -351,7 +353,7 @@ function getMailgunClient(emailConfig: { apiKey: string; domain: string }): any 
   return cachedMailgunClient;
 }
 
-function getTwilioClient(smsConfig: { accountSid: string; authToken: string }): any {
+function getTwilioClient(smsConfig: { accountSid: string; authToken: string }): Twilio {
   if (cachedTwilioClient) {
     return cachedTwilioClient;
   }
@@ -360,7 +362,7 @@ function getTwilioClient(smsConfig: { accountSid: string; authToken: string }): 
     throw new Error('Twilio is not configured.');
   }
 
-  cachedTwilioClient = Twilio(smsConfig.accountSid, smsConfig.authToken);
+  cachedTwilioClient = new Twilio(smsConfig.accountSid, smsConfig.authToken);
   return cachedTwilioClient;
 }
 

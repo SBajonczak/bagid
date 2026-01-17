@@ -294,8 +294,10 @@ export function validateConfig(): void {
 }
 
 // Export a default config accessor
-export default {
+const config = {
   get: getConfig,
   validate: validateConfig,
   reset: resetConfig,
 };
+
+export default config;
