@@ -31,7 +31,7 @@ const heroCopy = {
             'Finder können dich kontaktieren oder den Versand anstoßen, ohne sensible Daten preiszugeben.',
             'Änderungen deiner Kontaktdaten werden sofort live geschaltet – kein neuer Tag nötig.',
         ],
-        price: '12,99 €',
+        price: '00,99 €',
     },
     en: {
         badge: 'Buy once, travel worry-free',
@@ -70,7 +70,7 @@ const Header: React.FC = () => {
     
     const featureList = Array.isArray(t.features) ? t.features : [];
     const priceLabel = (locale === 'de' ? 'pro Stück' : 'per piece');
-    const shippingLabel = (locale === 'de' ? 'Kostenloser Versand ab 2 Stück' : 'Free shipping from 2 pieces');
+    const shippingLabel = (locale === 'de' ? '' : '');
     const featuredFeatures = featureList.slice(0, 3);
     const detailIcons = [Database, ShieldCheck, RefreshCw];
 
