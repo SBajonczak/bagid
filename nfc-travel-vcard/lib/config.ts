@@ -10,12 +10,17 @@
  * Database Configuration
  */
 export interface DatabaseConfig {
-  server: string;
-  database: string;
-  user: string;
-  password: string;
-  encrypt: boolean;
-  trustServerCertificate: boolean;
+  provider: 'mssql' | 'turso';
+  // MSSQL specific
+  server?: string;
+  database?: string;
+  user?: string;
+  password?: string;
+  encrypt?: boolean;
+  trustServerCertificate?: boolean;
+  // Turso specific
+  tursoUrl?: string;
+  tursoAuthToken?: string;
 }
 
 /**
@@ -150,7 +155,19 @@ function getNumberEnv(key: string, defaultValue: number): number {
  * Build database configuration from environment variables
  */
 function buildDatabaseConfig(): DatabaseConfig {
+  const provider = getEnv('DB_PROVIDER', 'mssql') as 'mssql' | 'turso';
+  
+  if (provider === 'turso') {
+    return {
+      provider,
+      tursoUrl: getEnv('TURSO_DATABASE_URL'),
+      tursoAuthToken: getEnv('TURSO_AUTH_TOKEN', ''),
+    };
+  }
+
+  // Default to MSSQL
   return {
+    provider: 'mssql',
     server: getEnv('DB_SERVER'),
     database: getEnv('DB_DATABASE'),
     user: getEnv('DB_USER'),
@@ -303,8 +320,15 @@ export function validateConfig(): void {
   const config = getConfig();
   
   // Validate database config
-  if (!config.database.server || !config.database.database) {
-    throw new Error('Database configuration is incomplete');
+  if (config.database.provider === 'turso') {
+    if (!config.database.tursoUrl) {
+      throw new Error('Turso database configuration is incomplete (TURSO_DATABASE_URL required)');
+    }
+  } else {
+    // Validate MSSQL config
+    if (!config.database.server || !config.database.database) {
+      throw new Error('Database (MSSQL) configuration is incomplete');
+    }
   }
   
   // Validate email if enabled

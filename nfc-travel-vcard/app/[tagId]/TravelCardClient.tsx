@@ -295,12 +295,14 @@ const TravelCardClient: React.FC<TravelCardClientProps> = ({ tagId }) => {
                             <p className="text-sm text-slate-600">
                                 {marketingCopy.subline}
                             </p>
+                            {showNotifyButton && (
                             <div className="mt-4 flex items-start gap-3 rounded-xl border border-lime-200 bg-lime-50 px-4 py-3 text-slate-800">
                                 <Lock className="mt-0.5 h-5 w-5 text-lime-700" aria-hidden="true" />
                                 <p className="text-sm leading-relaxed">
-                                    {privacyCopy.highlight}
+                                    {privacyCopy.highlight} 
                                 </p>
                             </div>
+                            )}
                         </div>
 
                         <div className="grid gap-6 md:grid-cols-2">

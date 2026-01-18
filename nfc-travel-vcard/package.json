@@ -12,6 +12,7 @@
   "dependencies": {
     "@azure/msal-browser": "^3.26.1",
     "@azure/msal-node": "^2.15.0",
+    "@libsql/client": "^0.17.0",
     "axios": "^1.9.0",
     "dayjs": "^1.11.13",
     "dotenv": "^17.2.3",

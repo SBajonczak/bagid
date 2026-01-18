@@ -66,7 +66,7 @@ const TagRegistrationClient: React.FC<TagRegistrationClientProps> = ({ tagId }) 
                 },
                 body: JSON.stringify({
                     tagId,
-                    userId: user.homeAccountId,
+                    userId: user.idTokenClaims?.oid || user.nativeAccountId,
                     userEmail:  user.username
                 })
             });
