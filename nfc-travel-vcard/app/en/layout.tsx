@@ -76,7 +76,7 @@ export default function EnLayout({ children }: { children: React.ReactNode }) {
       '@type': 'Offer',
       url: 'https://bag-tag.de/en',
       priceCurrency: 'EUR',
-      price: '12.99',
+      price: '10.99',
       priceValidUntil: '2026-12-31',
       availability: 'https://schema.org/InStock',
       seller: {

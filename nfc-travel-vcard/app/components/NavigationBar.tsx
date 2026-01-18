@@ -103,7 +103,7 @@ const NavigationBar: React.FC = () => {
             <div className="h-6 w-px bg-slate-200 mx-2" />
             
             <a
-                href="https://kreativschicht.de/cart/50710421668182:1"
+                href="https://kreativschicht.de/products/bagid-koffer-tag-mit-nfc?utm_source=bag-tag&utm_medium=hero&utm_campaign=landing"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hidden lg:flex items-center gap-2 bg-green-600/90 text-white text-sm font-semibold px-4 py-2 rounded-full shadow-sm hover:bg-green-600 hover:shadow transition-all"
