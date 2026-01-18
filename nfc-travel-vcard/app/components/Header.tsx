@@ -57,7 +57,7 @@ const heroCopy = {
             'Finders can notify you or arrange shipping without exposing private data.',
             'Update your contact info remotely without replacing the tag.',
         ],
-        price: '€12.99',
+        price: '€10.99',
     },
 } as const;
 

@@ -76,7 +76,7 @@ export default function DeLayout({ children }: { children: React.ReactNode }) {
       '@type': 'Offer',
       url: 'https://bag-tag.de/de',
       priceCurrency: 'EUR',
-      price: '12.99',
+      price: '10.99',
       priceValidUntil: '2026-12-31',
       availability: 'https://schema.org/InStock',
       seller: {

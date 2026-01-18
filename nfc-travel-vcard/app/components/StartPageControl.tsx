@@ -32,7 +32,7 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
         offers: {
             '@type': 'Offer',
             priceCurrency: 'EUR',
-            price: '12.99',
+            price: '10.99',
             availability: 'https://schema.org/InStock',
         },
         // FAQ Schema hilft extrem bei Google Snippets
