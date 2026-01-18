@@ -28,14 +28,6 @@ COPY <<EOF /etc/supervisor.d/services.ini
 [supervisord]
 nodaemon=true
 
-[program:api]
-command=node server/api.js
-environment=API_PORT=3001
-stdout_logfile=/dev/stdout
-stdout_logfile_maxbytes=0
-stderr_logfile=/dev/stderr
-stderr_logfile_maxbytes=0
-
 [program:ui]
 command=npm start -- -p 3000
 stdout_logfile=/dev/stdout

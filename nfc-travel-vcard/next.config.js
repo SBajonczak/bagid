@@ -13,6 +13,14 @@ const nextConfig = {
     });
     return config;
   },
+  async rewrites() {
+    return [
+      {
+        source: '/api/travel/:tagId',
+        destination: '/api/tags/:tagId',
+      },
+    ];
+  },
 }
 
 module.exports = nextConfig
