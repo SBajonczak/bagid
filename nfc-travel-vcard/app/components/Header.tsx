@@ -31,7 +31,7 @@ const heroCopy = {
             'Finder können dich kontaktieren oder den Versand anstoßen, ohne sensible Daten preiszugeben.',
             'Änderungen deiner Kontaktdaten werden sofort live geschaltet – kein neuer Tag nötig.',
         ],
-        price: '00,99 €',
+        price: '10,99 €',
     },
     en: {
         badge: 'Buy once, travel worry-free',
