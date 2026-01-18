@@ -1,127 +1,216 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useLanguage } from './LanguageProvider';
-import { messages } from '@/lib/i18n';
-import { FaUser, FaUserCircle } from 'react-icons/fa';
-import { useAuth } from './AuthProvider';
 import Link from 'next/link';
 import Image from "next/image";
+import { usePathname } from 'next/navigation';
+import { Menu, X, Globe, LogOut, LogIn, LayoutDashboard, QrCode, ShoppingBag, Loader2 } from 'lucide-react';
+import { useLanguage } from './LanguageProvider';
+import { useAuth } from './AuthProvider';
+import { messages } from '@/lib/i18n';
 import LanguageSwitcher from './LanguageSwitcher';
 
 const NavigationBar: React.FC = () => {
-    const { language } = useLanguage();
-    const { isAuthenticated, user, login, logout } = useAuth();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { language } = useLanguage();
+  const { isAuthenticated, login, logout } = useAuth();
+  const pathname = usePathname();
+  const t = messages[language].common;
+  const t2 = messages[language].noDataSection;
 
-    const t1 = messages[language].common;
-    const t2 = messages[language].noDataSection;
+  const [loading, setLoading] = useState(false);
 
-    const [loading, setLoading] = useState(false);
+  const handleLogin = async () => {
+      try {
+          setLoading(true);
+          await login();
+      } catch (error) {
+          console.error("Login error", error);
+      } finally {
+          setLoading(false);
+      }
+  };
 
-    // Handle login button click
-    const handleLogin = async () => {
-        try {
-            setLoading(true);
-            login();
-        } catch (error) {
-            console.error("NavigationBar: Login error:", error);
-        } finally {
-            setLoading(false);
-        }
-    };
+  const handleLogout = async () => {
+      await logout();
+      setIsMobileMenuOpen(false);
+  };
 
-    // Handle logout button click
-    const handleLogout = async () => {
-        try {
-            logout();
-        } catch (error) {
-            console.error("NavigationBar: Logout error:", error);
-        }
-    };
+  const menuItems = [
+    ...(isAuthenticated ? [{ 
+        href: '/dashboard', 
+        label: t.myTags,
+        icon: LayoutDashboard 
+    }] : []),
+    {
+        href: '/#features',
+        label: t.features,
+        icon: null
+    },
+    {
+        href: '/#faq',
+        label: t.faq,
+        icon: null
+    }
+  ];
 
-
-    return (
-        <nav className="sticky top-0 left-0 right-0 z-50 w-full bg-white/95 backdrop-blur shadow-md py-4 px-6 flex justify-between items-center">
-            {/* Logo + Language Switcher */}
-            <div className="flex gap-3 items-center">
-                {/* Add more flags as needed */}
-                <Link
-                    href="/"
-                    className="font-extrabold text-blue-800 tracking-wide drop-shadow-sm flex items-center text-[1.25rem] md:text-2xl hover:text-blue-600 transition-colors"
-                    aria-label="Zur Startseite"
-                >
-                    <Image
-  src="/assets/icon_32_32.png"
-  alt="Bag-Tag Logo"
-  width={32}
-  height={32}
-  className="inline-block mr-2 align-middle flex-shrink-0"
-/>
-                    <span className="hidden md:inline md:text-3xl whitespace-nowrap">
-                        {t1.productname}
+  return (
+    <nav className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur-md">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between">
+          
+          {/* Logo */}
+          <div className="flex-shrink-0">
+            <Link href="/" className="flex items-center gap-2 group" aria-label="Zur Startseite">
+                <Image
+                    src="/assets/icon_32_32.png"
+                    alt="Bag-Tag Logo"
+                    width={32}
+                    height={32}
+                    className="flex-shrink-0 transition-transform group-hover:scale-105"
+                />
+               <span className="hidden md:flex flex-col leading-none">
+                    <span className="text-lg font-bold tracking-tight text-slate-900">
+                        {t.productname}
                     </span>
-                    <span className="inline md:hidden text-[1rem] whitespace-nowrap">
-                        {t1.productname}
-                    </span>
-                </Link>
-                <LanguageSwitcher />
-            </div>
-            <div className="flex-1 flex justify-center">
-                <span className="font-bold px-4 py-2  text-md md:text-base text-center">
+               </span>
+               <span className="md:hidden text-lg font-bold text-slate-900">
+                  Bag-Tag
+               </span>
+            </Link>
+          </div>
 
-                </span>
-            </div>
-            <ul className="hidden md:flex gap-4 ml-auto">
-                <li><a href="#features" className="text-blue-700 font-bold hover:underline">{t1.features}</a></li>
-                <li><a href="#faq" className="text-blue-700 font-bold hover:underline">{t1.faq}</a></li>
-            </ul>
+          {/* Desktop Menu */}
+          <div className="hidden md:flex md:items-center md:gap-6">
+            {menuItems.map((item) => {
+                const isActive = pathname === item.href;
+                return (
+                    <Link
+                        key={item.href}
+                        href={item.href}
+                        className={`group flex items-center gap-2 px-3 py-2 text-sm font-medium transition-all rounded-lg ${
+                            isActive 
+                            ? 'bg-blue-50 text-blue-600' 
+                            : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                        }`}
+                    >
+                        {item.icon && <item.icon className={`h-4 w-4 ${isActive ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600'}`} />}
+                        {item.label}
+                    </Link>
+                );
+            })}
 
-            <div className="flex items-center pl-2 gap-2">
-                {/* High-conversion "Buy Now" button */}
-                <a
-                    href="https://kreativschicht.de/cart/50710421668182:1"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-green-500 text-white font-bold px-6 py-2 rounded-lg shadow hover:bg-green-600 transition"
-                    aria-label="Jetzt kaufen"
-                >
-                    {t2.cta}
-                </a>
+            <div className="h-6 w-px bg-slate-200 mx-2" />
+            
+            <a
+                href="https://kreativschicht.de/cart/50710421668182:1"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden lg:flex items-center gap-2 bg-green-600/90 text-white text-sm font-semibold px-4 py-2 rounded-full shadow-sm hover:bg-green-600 hover:shadow transition-all"
+            >
+                <ShoppingBag className="h-4 w-4" />
+                {t2.cta}
+            </a>
 
-                {/* User authentication button */}
+            <LanguageSwitcher />
+
+            {/* Auth Buttons */}
+            <div className="flex items-center gap-2 pl-2">
                 {loading ? (
-                    <div className="w-8 h-8 flex items-center justify-center" role="status" aria-label="Lädt">
-                        <div className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-                    </div>
+                     <Loader2 className="h-5 w-5 animate-spin text-slate-400" />
                 ) : isAuthenticated ? (
-
-
-                    <button
+                    <button 
                         onClick={handleLogout}
-                        className="text-blue-700 flex items-center gap-1 ml-2"
-                        title={t1.logout || "Logout"}
-                        aria-label={`Abmelden als ${user?.email || user?.username}`}
-                        disabled={loading}
+                        className="p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors"
+                        title={t.logout}
                     >
-                        <FaUserCircle className="text-2xl" aria-hidden="true" />
-                        <span className="hidden md:inline font-bold">{user?.email || user?.username || t1.dashboard}</span>
+                        <LogOut className="h-5 w-5" />
                     </button>
-
                 ) : (
-                    <button
+                    <button 
                         onClick={handleLogin}
-                        className="text-blue-700 flex items-center gap-1 ml-2"
-                        title={t1.login || "Login"}
-                        aria-label="Anmelden"
-                        disabled={loading}
+                        className="text-sm font-medium text-slate-700 hover:text-blue-600 transition-colors flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-slate-50"
                     >
-                        <FaUser className="text-2xl" aria-hidden="true" />
-                        <span className="hidden md:inline font-bold">{t1.login}</span>
+                        <LogIn className="h-4 w-4" />
+                        {t.login}
                     </button>
                 )}
             </div>
-        </nav>
-    );
+          </div>
+
+          {/* Mobile Menu Button */}
+          <div className="flex items-center md:hidden gap-3">
+             <LanguageSwitcher />
+             
+             <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="rounded-lg p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition-colors"
+                aria-label="Menu"
+            >
+              {isMobileMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Menu Content */}
+      <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'max-h-96 opacity-100 border-t border-slate-100' : 'max-h-0 opacity-0'}`}>
+        <div className="bg-white px-4 py-4 space-y-1 shadow-inner">
+            {menuItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-3 rounded-lg px-3 py-3 text-base font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600"
+              >
+                 {item.icon ? <item.icon className="h-5 w-5 text-slate-400" /> : <div className="w-5" />}
+                {item.label}
+              </Link>
+            ))}
+            
+            <div className="my-2 h-px bg-slate-100" />
+            
+            <a
+                href="https://kreativschicht.de/cart/50710421668182:1"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex w-full items-center justify-center gap-2 bg-green-500 text-white font-bold px-4 py-3 rounded-xl shadow-sm hover:bg-green-600 transition"
+            >
+                <ShoppingBag className="h-5 w-5" />
+                {t2.cta}
+            </a>
+
+             {!isAuthenticated && (
+                <div className="pt-2">
+                    <button 
+                        onClick={() => { handleLogin(); setIsMobileMenuOpen(false); }}
+                        className="w-full flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-slate-800"
+                    >
+                         <LogIn className="h-4 w-4" />
+                         {t.login}
+                    </button>
+                </div>
+            )}
+            
+            {isAuthenticated && (
+                <div className="pt-2">
+                     <button
+                        onClick={handleLogout}
+                        className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-base font-medium text-red-600 hover:bg-red-50"
+                    >
+                        <LogOut className="h-5 w-5" />
+                        {t.logout}
+                    </button>
+                </div>
+            )}
+        </div>
+      </div>
+    </nav>
+  );
 };
 
 export default NavigationBar;

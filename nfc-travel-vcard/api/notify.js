@@ -55,6 +55,7 @@ module.exports = async function (context, req) {
 
         // Send email using Mailgun
         const mailgun = new Mailgun(formData);
+        console.log('Get the api Key', process.env.MAILGUN_API_KEY);
         const mg = mailgun.client({
             username: 'api',
             key: process.env.MAILGUN_API_KEY,

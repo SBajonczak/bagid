@@ -247,6 +247,10 @@ export const messages = {
             addNewTag: "Neuen Tag hinzufügen",
             registerTag: "Tag registrieren",
             scanTag: "Tag scannen",
+            view: "Ansehen",
+            edit: "Bearbeiten",
+            scanHint: "Scanne einen NFC-Tag, um ihn zu deinem Konto hinzuzufügen.",
+            pleaseLogin: "Bitte melde dich an, um deine Tags zu sehen.",
             tagManagement: "Tag-Verwaltung",
             tagDetails: "Tag-Details",
             lastUpdated: "Zuletzt aktualisiert",
@@ -257,6 +261,7 @@ export const messages = {
             errorLoading: "Es gab einen Fehler beim Laden deiner Tags.",
             retryButton: "Erneut versuchen",
             tagId: "Tag-ID",
+            noOwnerName: "Kein Besitzername",
             owner: "Besitzer",
             status: {
                 active: "Aktiv",
@@ -520,6 +525,10 @@ export const messages = {
             addNewTag: "Add New Tag",
             registerTag: "Register Tag",
             scanTag: "Scan Tag",
+            view: "View",
+            edit: "Edit",
+            scanHint: "Scan an NFC tag to add it to your account.",
+            pleaseLogin: "Please log in to view your tags.",
             tagManagement: "Tag Management",
             tagDetails: "Tag Details",
             lastUpdated: "Last Updated",
@@ -530,6 +539,7 @@ export const messages = {
             errorLoading: "There was an error loading your tags.",
             retryButton: "Try Again",
             tagId: "Tag ID",
+            noOwnerName: "No owner name",
             owner: "Owner",
             status: {
                 active: "Active",
@@ -648,6 +658,31 @@ export const messages = {
         noDataSection: {
             demoLinkText: "Demo bekijken",
             testimonialsTitle: "Wat onze klanten zeggen",
+            heroTitle: "Nooit meer je koffer kwijt",
+            heroSubtitle: "Met de slimme Travel Tag – NFC & QR-code voor veilig reizen",
+            pricePerPiece: "per stuk",
+            freeShipping: "Gratis verzending vanaf 2 stuks",
+            ctaSecure: "– Travel Tag veiligstellen",
+            ctaBundle: "Koop 3-pack en bespaar",
+            or: "of",
+            howItWorksTitle: "Hoe het werkt",
+            howItWorksSubtitle: "In slechts een paar stappen naar meer veiligheid op reis",
+            howItWorksSteps: [
+                { title: "Tag bevestigen", description: "Bevestig de Travel Tag aan je koffer of tas" },
+                { title: "Online registreren", description: "Scan de NFC/QR-code en voer je gegevens in" },
+                { title: "Zorgeloos reizen", description: "Je contactgegevens kunnen op elk moment worden bijgewerkt" },
+                { title: "Gevonden worden", description: "Bij verlies kan de vinder direct contact met je opnemen" }
+            ],
+            benefitsTitle: "Jouw voordelen",
+            benefitsSubtitle: "Waarom duizenden reizigers op {productname} vertrouwen",
+            benefits: [
+                { title: "Geen app nodig", description: "Werkt met elke moderne smartphone – gewoon scannen en klaar" },
+                { title: "Geen batterijen", description: "NFC-technologie zonder stroomvoorziening – onderhoudsvrij en betrouwbaar" },
+                { title: "Wereldwijd bruikbaar", description: "Werkt overal – geen roamingkosten, geen grenzen" },
+                { title: "Privacyconform", description: "AVG-conform – jij beslist welke gegevens worden gedeeld" },
+                { title: "Robuust & waterdicht", description: "Hoogwaardig materiaal is bestand tegen elke reis" },
+                { title: "Altijd bij te werken", description: "Wijzig je gegevens online – geen nieuwe tag nodig" }
+            ],
             headline: 'Bag-Tag – De slimme bagagetag',
             subline: 'Met NFC & QR-code. Update je contact- en reisgegevens altijd online. Vinders kunnen je direct contacteren of je bagage doorsturen.',
             testimonials: [
@@ -655,18 +690,21 @@ export const messages = {
                     name: "Anna S.",
                     source: "Google",
                     text: "Eindelijk geen zorgen meer bij de bagageband. De NFC-tag is briljant – ik hou ervan!",
+                    // image: require('./assets/anna.jpg'),
                     rating: 5,
                 },
                 {
                     name: "Markus T.",
                     source: "Facebook",
                     text: "Tags zien er geweldig uit en werken perfect. Gewoon scannen met je telefoon – top!",
+                    // image: require('./assets/markus.jpg'),
                     rating: 4,
                 },
                 {
                     name: "Lea W.",
                     source: "Google",
                     text: "Heb de set voor mijn familie gekocht. Duurzaam, waterdicht en echt praktisch.",
+                    // image: require('./assets/lea.jpg'),
                     rating: 5,
                 },
             ],
@@ -891,6 +929,31 @@ export const messages = {
         noDataSection: {
             demoLinkText: "데모 보기",
             testimonialsTitle: "고객 후기",
+            heroTitle: "다시는 짐을 잃어버리지 마세요",
+            heroSubtitle: "스마트 트래블 태그와 함께 – 안전한 여행을 위한 NFC 및 QR 코드",
+            pricePerPiece: "개당",
+            freeShipping: "2개 이상 구매 시 무료 배송",
+            ctaSecure: "– 트래블 태그 확보",
+            ctaBundle: "3개 팩 구매하고 절약하세요",
+            or: "또는",
+            howItWorksTitle: "작동 방식",
+            howItWorksSubtitle: "단 몇 단계만으로 여행의 보안 강화",
+            howItWorksSteps: [
+                { title: "태그 부착", description: "여행 가방이나 가방에 트래블 태그를 부착하세요" },
+                { title: "온라인 등록", description: "NFC/QR 코드를 스캔하고 세부 정보를 입력하세요" },
+                { title: "걱정 없이 여행하세요", description: "연락처 정보는 언제든지 업데이트할 수 있습니다" },
+                { title: "찾아질 수 있습니다", description: "분실 시, 발견자가 즉시 연락할 수 있습니다" }
+            ],
+            benefitsTitle: "당신의 혜택",
+            benefitsSubtitle: "수천 명의 여행객이 {productname}을 신뢰하는 이유",
+            benefits: [
+                { title: "앱 필요 없음", description: "모든 최신 스마트폰에서 작동 – 스캔만 하면 끝" },
+                { title: "배터리 없음", description: "전원 공급 없는 NFC 기술 – 유지보수가 필요 없고 신뢰할 수 있음" },
+                { title: "전 세계적으로 작동", description: "어디서나 작동 – 로밍 요금, 국경 없음" },
+                { title: "개인정보 보호 준수", description: "GDPR 준수 – 공유할 데이터를 당신이 결정합니다" },
+                { title: "견고하고 방수", description: "고품질 소재로 어떤 여행에도 견딥니다" },
+                { title: "언제든지 업데이트 가능", description: "온라인으로 데이터 변경 – 새 태그 필요 없음" }
+            ],
             headline: 'Bag-Tag – 스마트 수하물 태그',
             subline: 'NFC & QR 코드로. 연락처와 여행 정보를 언제든 온라인으로 업데이트. 발견자가 즉시 연락하거나 수하물을 전달할 수 있습니다.',
             testimonials: [
@@ -1111,6 +1174,7 @@ export const messages = {
             secureAccessMessage: 'تحكم آمن في الوصول بواسطة Bag-Tag',
             loginHelp: 'قم بتسجيل الدخول باستخدام حسابك لإدارة علاماتك.',
             unauthorizedHelp: 'يمكن فقط لمالك هذه العلامة تحرير البيانات.',
+            // Edit messages
             save: 'حفظ',
             cancel: 'إلغاء',
             saving: 'جارٍ الحفظ...',
@@ -1135,6 +1199,31 @@ export const messages = {
         noDataSection: {
             demoLinkText: "عرض التجربة",
             testimonialsTitle: "ما يقوله عملاؤنا",
+            heroTitle: "لا تفقد أمتعتك مرة أخرى",
+            heroSubtitle: "مع علامة السفر الذكية – NFC ورمز QR للسفر الآمن",
+            pricePerPiece: "للقطعة",
+            freeShipping: "شحن مجاني عند شراء قطعتين أو أكثر",
+            ctaSecure: "– أمّن علامة السفر",
+            ctaBundle: "اشترِ حزمة من 3 ووفر",
+            or: "أو",
+            howItWorksTitle: "كيف يعمل",
+            howItWorksSubtitle: "مزيد من الأمان لسفرك في خطوات قليلة فقط",
+            howItWorksSteps: [
+                { title: "إرفاق العلامة", description: "أرفق علامة السفر بحقيبتك أو حقيبتك" },
+                { title: "التسجيل عبر الإنترنت", description: "امسح رمز NFC/QR وأدخل تفاصيلك" },
+                { title: "سافر بدون قلق", description: "يمكن تحديث تفاصيل الاتصال الخاصة بك في أي وقت" },
+                { title: "يمكن العثور عليك", description: "في حالة الفقدان، يمكن للمكتشف الاتصال بك على الفور" }
+            ],
+            benefitsTitle: "فوائدك",
+            benefitsSubtitle: "لماذا يثق آلاف المسافرين في {productname}",
+            benefits: [
+                { title: "لا حاجة لتطبيق", description: "يعمل مع أي هاتف ذكي حديث – فقط امسح وانتهى الأمر" },
+                { title: "لا بطاريات", description: "تقنية NFC بدون مصدر طاقة – لا تحتاج إلى صيانة وموثوقة" },
+                { title: "يعمل في جميع أنحاء العالم", description: "يعمل في كل مكان – لا رسوم تجوال، لا حدود" },
+                { title: "متوافق مع الخصوصية", description: "متوافق مع GDPR – أنت تقرر البيانات التي تتم مشاركتها" },
+                { title: "قوي ومقاوم للماء", description: "مادة عالية الجودة تتحمل أي رحلة" },
+                { title: "قابل للتحديث دائمًا", description: "غيّر بياناتك عبر الإنترنت – لا حاجة لعلامة جديدة" }
+            ],
             headline: 'Bag-Tag – علامة الأمتعة الذكية',
             subline: 'مع NFC ورمز QR. قم بتحديث بيانات الاتصال والسفر عبر الإنترنت في أي وقت. يمكن للعثور عليها الاتصال بك فوراً أو إرسال أمتعتك.',
             testimonials: [
@@ -1355,6 +1444,7 @@ export const messages = {
             secureAccessMessage: 'การเข้าถึงที่ปลอดภัยโดย Bag-Tag',
             loginHelp: 'เข้าสู่ระบบด้วยบัญชีของคุณเพื่อจัดการแท็กของคุณ',
             unauthorizedHelp: 'เฉพาะเจ้าของแท็กนี้เท่านั้นที่สามารถแก้ไขข้อมูลได้',
+            // Edit messages
             save: 'บันทึก',
             cancel: 'ยกเลิก',
             saving: 'กำลังบันทึก...',
@@ -1379,6 +1469,31 @@ export const messages = {
         noDataSection: {
             demoLinkText: "ดูตัวอย่าง",
             testimonialsTitle: "ลูกค้าของเราพูดอย่างไร",
+            heroTitle: "ไม่ทำกระเป๋าหายอีกต่อไป",
+            heroSubtitle: "ด้วยแท็กเดินทางอัจฉริยะ – NFC และ QR code เพื่อการเดินทางที่ปลอดภัย",
+            pricePerPiece: "ต่อชิ้น",
+            freeShipping: "จัดส่งฟรีเมื่อซื้อ 2 ชิ้นขึ้นไป",
+            ctaSecure: "– รักษาความปลอดภัยแท็กเดินทาง",
+            ctaBundle: "ซื้อแพ็ค 3 ชิ้นและประหยัด",
+            or: "หรือ",
+            howItWorksTitle: "มันทำงานอย่างไร",
+            howItWorksSubtitle: "เพิ่มความปลอดภัยให้กับการเดินทางของคุณในไม่กี่ขั้นตอน",
+            howItWorksSteps: [
+                { title: "ติดแท็ก", description: "ติดแท็กเดินทางเข้ากับกระเป๋าเดินทางหรือกระเป๋าของคุณ" },
+                { title: "ลงทะเบียนออนไลน์", description: "สแกน NFC/QR code และกรอกรายละเอียดของคุณ" },
+                { title: "เดินทางอย่างไร้กังวล", description: "ข้อมูลติดต่อของคุณสามารถอัปเดตได้ตลอดเวลา" },
+                { title: "ให้คนหาเจอ", description: "หากทำหาย ผู้ที่พบสามารถติดต่อคุณได้ทันที" }
+            ],
+            benefitsTitle: "ประโยชน์ของคุณ",
+            benefitsSubtitle: "ทำไมนักเดินทางหลายพันคนถึงไว้วางใจ {productname}",
+            benefits: [
+                { title: "ไม่ต้องใช้แอป", description: "ทำงานได้กับสมาร์ทโฟนสมัยใหม่ทุกรุ่น – แค่สแกนก็พร้อมใช้งาน" },
+                { title: "ไม่ต้องใช้แบตเตอรี่", description: "เทคโนโลยี NFC ไม่ต้องใช้แหล่งจ่ายไฟ – ไม่ต้องบำรุงรักษาและเชื่อถือได้" },
+                { title: "ใช้งานได้ทั่วโลก", description: "ทำงานได้ทุกที่ – ไม่มีค่าบริการโรมมิ่ง ไม่มีพรมแดน" },
+                { title: "สอดคล้องกับความเป็นส่วนตัว", description: "สอดคล้องกับ GDPR – คุณเป็นผู้ตัดสินใจว่าจะแชร์ข้อมูลใด" },
+                { title: "ทนทานและกันน้ำ", description: "วัสดุคุณภาพสูงทนทานต่อทุกการเดินทาง" },
+                { title: "อัปเดตได้เสมอ", description: "เปลี่ยนข้อมูลของคุณออนไลน์ – ไม่ต้องใช้แท็กใหม่" }
+            ],
             headline: 'Bag-Tag – แท็กกระเป๋าอัจฉริยะ',
             subline: 'ด้วย NFC และ QR code อัปเดตข้อมูลติดต่อและการเดินทางออนไลน์ได้ตลอดเวลา ผู้พบสามารถติดต่อคุณทันทีหรือส่งกระเป๋าต่อได้',
             testimonials: [

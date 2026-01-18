@@ -1,19 +1,19 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useRouter, useParams } from 'next/navigation';
 import { useLanguage } from '../LanguageProvider';
 import { messages } from '@/lib/i18n';
-import authService from '../../services/AuthService';
+import authService from '@/services/AuthService';
 import { logger } from '@/utils/logger';
-import App from '@/App';
 
 // Import icons
 import { FaCheckCircle, FaExclamationTriangle, FaLock, FaSuitcase, FaUserCheck } from 'react-icons/fa';
+import App from 'next/app';
 
 const TagRegistration: React.FC = () => {
     const { tagId } = useParams<{ tagId: string }>();
-    const navigate = useNavigate();
+    const router = useRouter();
     const { language: lang } = useLanguage();
     const t = messages[lang].common;
     const tr = messages[lang].tagRegistration;
@@ -25,7 +25,7 @@ const TagRegistration: React.FC = () => {
     const [tagExists, setTagExists] = useState<boolean | null>(null);
 
     // Check if tag exists
-    const checkTagExists = async () => {
+    const checkTagExists = useCallback(async () => {
         try {
             const res = await fetch(`/api/tags/${tagId}/exists`);
             if (!res.ok) {
@@ -41,7 +41,7 @@ const TagRegistration: React.FC = () => {
             logger.error('Error checking if tag exists:', error);
             setTagExists(false);
         }
-    };
+    }, [tagId]);
 
     // Check if user is authenticated and if tag exists
     useEffect(() => {
@@ -60,7 +60,7 @@ const TagRegistration: React.FC = () => {
 
         checkAuth();
         checkTagExists();
-    }, [tagId]);
+    }, [tagId, checkTagExists]);
 
     // Handle login
     const handleLogin = async () => {
@@ -102,13 +102,18 @@ const TagRegistration: React.FC = () => {
             });
 
             if (!response.ok) {
-                throw new Error('Failed to register tag');
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to register tag');
             }
 
             // Redirect to the edit page after successful registration
-            navigate(`/${tagId}/edit`);
-        } catch (err: any) {
-            setError(err.message);
+            router.push(`/${tagId}/edit`);
+        } catch (err) {
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError('An unknown error occurred');
+            }
         } finally {
             setLoading(false);
         }
@@ -226,7 +231,7 @@ const TagRegistration: React.FC = () => {
                                             {tr.howItWorksTitle}
                                         </h3>
                                         <ol className="space-y-3">
-                                            {tr.howItWorksSteps.map((step:any, idx:number) => (
+                                            {tr.howItWorksSteps.map((step: string, idx: number) => (
                                                 <li key={idx} className="flex items-start">
                                                     <span className="flex-shrink-0 h-6 w-6 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 font-medium text-sm mr-3">
                                                         {idx + 1}
@@ -242,7 +247,7 @@ const TagRegistration: React.FC = () => {
                                             {tr.whyRegisterTitle}
                                         </h3>
                                         <ul className="space-y-3">
-                                            {tr.whyRegisterPoints.map((point:any, idx:number) => (
+                                            {tr.whyRegisterPoints.map((point: string, idx: number) => (
                                                 <li key={idx} className="flex items-start">
                                                     <FaCheckCircle className="h-5 w-5 text-green-500 mr-3 flex-shrink-0 mt-0.5" />
                                                     <span className="text-gray-600">{point}</span>

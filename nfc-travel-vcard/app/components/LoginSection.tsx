@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import { useLanguage } from './LanguageProvider';
+import { SupportedLang } from '@/i18n';
 
 
 const LanguageSelection: React.FC = () => {
@@ -82,7 +83,7 @@ const LanguageSelection: React.FC = () => {
                     onClick={() => {
                         console.log(`Setting language to ${label}`);
                         if (typeof setLanguage === 'function') {
-                            setLanguage(code as any);
+                            setLanguage(code as SupportedLang);
                             console.log(`Language set to ${label}`);
                         } else {
                             console.error('setLanguage is not a function');

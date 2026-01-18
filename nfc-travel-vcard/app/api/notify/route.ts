@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import sgMail from '@sendgrid/mail';
-import twilio from 'twilio';
+import FormData from 'form-data';
+
+//@ts-expect-error Missing types
+import Mailgun, { IMailgunClient } from 'mailgun.js';
+import { Twilio } from 'twilio';
 import { TagRepo } from '@/lib/TagRepo';
 import { verifySecurityToken } from '@/lib/notifySecurity';
+import { getConfig } from '@/lib/config';
 
 export const runtime = 'nodejs';
 
@@ -26,23 +30,17 @@ type NotifyRequestBody = {
   channels?: ChannelSelection;
 };
 
-const IP_LIMIT = 5;
-const IP_WINDOW_MS = 60 * 60 * 1000;
-const TAG_LIMIT = 3;
-const TAG_WINDOW_MS = 24 * 60 * 60 * 1000;
-const TIMESTAMP_DRIFT_MS = 15 * 60 * 1000;
-const MAX_MESSAGE_LENGTH = 500;
-
 const ipLimiter = new Map<string, { count: number; timestamp: number }>();
 const tagLimiter = new Map<string, { count: number; timestamp: number }>();
 
-let sendGridConfigured = false;
-let cachedTwilioClient: ReturnType<typeof twilio> | null = null;
+let cachedMailgunClient: IMailgunClient | null = null;
+let cachedTwilioClient: Twilio | null = null;
 
 export async function POST(request: NextRequest) {
+  const config = getConfig();
   const clientIp = extractClientIp(request);
 
-  if (!consumeToken(ipLimiter, clientIp, IP_LIMIT, IP_WINDOW_MS)) {
+  if (!consumeToken(ipLimiter, clientIp, config.rateLimit.ipLimit, config.rateLimit.ipWindowMs)) {
     return NextResponse.json(
       { message: 'Too many requests from this IP. Please try again later.' },
       { status: 429 }
@@ -87,7 +85,7 @@ export async function POST(request: NextRequest) {
 
   if (body.timestamp) {
     const drift = Math.abs(Date.now() - body.timestamp);
-    if (drift > TIMESTAMP_DRIFT_MS) {
+    if (drift > config.notification.timestampDriftMs) {
       return NextResponse.json(
         { message: 'Notification request expired.' },
         { status: 408 }
@@ -95,25 +93,27 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  const captchaOk: boolean = true;
-//   try {
-//     captchaOk = await verifyRecaptcha(body.captchaToken);
-//   } catch (error) {
-//     console.error('reCAPTCHA error:', error);
-//     return NextResponse.json(
-//       { message: 'CAPTCHA verification failed.' },
-//       { status: 500 }
-//     );
-//   }
+  let captchaOk = true;
+  if (config.features.recaptchaValidation) {
+    try {
+      captchaOk = await verifyRecaptcha(body.captchaToken, config.security.recaptchaSecretKey);
+    } catch (error) {
+      console.error('reCAPTCHA error:', error);
+      return NextResponse.json(
+        { message: 'CAPTCHA verification failed.' },
+        { status: 500 }
+      );
+    }
 
-  if (!captchaOk) {
-    return NextResponse.json(
-      { message: 'CAPTCHA verification failed.' },
-      { status: 403 }
-    );
+    if (!captchaOk) {
+      return NextResponse.json(
+        { message: 'CAPTCHA verification failed.' },
+        { status: 403 }
+      );
+    }
   }
 
-  if (!consumeToken(tagLimiter, body.tagId, TAG_LIMIT, TAG_WINDOW_MS)) {
+  if (!consumeToken(tagLimiter, body.tagId, config.rateLimit.tagLimit, config.rateLimit.tagWindowMs)) {
     return NextResponse.json(
       { message: 'This tag has received too many notifications today.' },
       { status: 429 }
@@ -134,8 +134,8 @@ export async function POST(request: NextRequest) {
   const ownerMobile = typeof tagData.ownerMobile === 'string' ? tagData.ownerMobile.trim() : '';
 
   const requestedChannels = normalizeChannelSelection(body.channels, {
-    email: Boolean(ownerEmail),
-    sms: Boolean(ownerMobile)
+    email: Boolean(ownerEmail) && config.email.enabled && config.features.emailNotifications,
+    sms: Boolean(ownerMobile) && config.sms.enabled && config.features.smsNotifications
   });
 
   if (!requestedChannels.email && !requestedChannels.sms) {
@@ -145,7 +145,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const sanitizedMessage = sanitizeMessage(body.message);
+  const sanitizedMessage = sanitizeMessage(body.message, config.notification.maxMessageLength);
   const locationLink = normalizeMapUrl(body.mapUrl, body.location);
   const warnings: string[] = [];
 
@@ -162,17 +162,21 @@ export async function POST(request: NextRequest) {
 
   if (requestedChannels.email && ownerEmail) {
     try {
-      const fromAddress = configureSendGrid();
-      await sgMail.send({
-        to: ownerEmail,
-        from: fromAddress,
+      const mailgunClient = getMailgunClient(config.email);
+      const emailData = {
+        from: config.email.fromName 
+          ? `${config.email.fromName} <${config.email.fromEmail}>`
+          : config.email.fromEmail,
+        to: [ownerEmail],
         subject: 'Your Bag-Tag: Someone found your luggage',
         html: buildEmailHtml(sanitizedMessage, body.tagId, body.location, locationLink),
         text: buildEmailText(sanitizedMessage, body.tagId, body.location, locationLink)
-      });
+      };
+      
+      await mailgunClient.messages.create(config.email.domain, emailData);
       channelReports.email.delivered = true;
     } catch (error) {
-      console.error('SendGrid error:', error);
+      console.error('Mailgun error:', error);
       warnings.push(parseChannelError('Email', error));
       channelReports.email.error = 'Email delivery failed.';
     }
@@ -180,16 +184,11 @@ export async function POST(request: NextRequest) {
 
   if (requestedChannels.sms && ownerMobile) {
     try {
-      const smsClient = getTwilioClient();
-      const smsFrom = process.env.TWILIO_SMS_FROM;
-      if (!smsFrom) {
-        throw new Error('TWILIO_SMS_FROM is not configured.');
-      }
-
+      const smsClient = getTwilioClient(config.sms);
       await smsClient.messages.create({
         body: buildSmsBody(sanitizedMessage, body.tagId, locationLink),
         to: ownerMobile,
-        from: smsFrom
+        from: config.sms.fromNumber
       });
       channelReports.sms.delivered = true;
     } catch (error) {
@@ -251,10 +250,10 @@ function validateRequestBody(body: Partial<NotifyRequestBody>): string | null {
   return null;
 }
 
-function sanitizeMessage(message: string): string {
+function sanitizeMessage(message: string, maxLength: number): string {
   return message
     .trim()
-    .slice(0, MAX_MESSAGE_LENGTH)
+    .slice(0, maxLength)
     .replace(/<[^>]*>?/gm, '');
 }
 
@@ -311,8 +310,7 @@ function consumeToken(
   return true;
 }
 
-async function verifyRecaptcha(token: string): Promise<boolean> {
-  const secret = process.env.RECAPTCHA_SECRET_KEY;
+async function verifyRecaptcha(token: string, secret: string): Promise<boolean> {
   if (!secret) {
     throw new Error('RECAPTCHA_SECRET_KEY is not configured.');
   }
@@ -337,35 +335,34 @@ async function verifyRecaptcha(token: string): Promise<boolean> {
   return Boolean(data.success);
 }
 
-function configureSendGrid(): string {
-  const apiKey = process.env.SENDGRID_API_KEY;
-  const fromAddress = process.env.SENDGRID_FROM_EMAIL;
-
-  if (!apiKey || !fromAddress) {
-    throw new Error('SendGrid is not configured.');
+function getMailgunClient(emailConfig: { apiKey: string; domain: string }): IMailgunClient {
+  if (cachedMailgunClient) {
+    return cachedMailgunClient;
   }
 
-  if (!sendGridConfigured) {
-    sgMail.setApiKey(apiKey);
-    sendGridConfigured = true;
+  if (!emailConfig.apiKey || !emailConfig.domain) {
+    throw new Error('Mailgun is not configured.');
   }
 
-  return fromAddress;
+  const mailgun = new Mailgun(FormData);
+  cachedMailgunClient = mailgun.client({
+    username: 'api',
+    key: emailConfig.apiKey
+  });
+  
+  return cachedMailgunClient;
 }
 
-function getTwilioClient() {
+function getTwilioClient(smsConfig: { accountSid: string; authToken: string }): Twilio {
   if (cachedTwilioClient) {
     return cachedTwilioClient;
   }
 
-  const accountSid = process.env.TWILIO_ACCOUNT_SID;
-  const authToken = process.env.TWILIO_AUTH_TOKEN;
-
-  if (!accountSid || !authToken) {
+  if (!smsConfig.accountSid || !smsConfig.authToken) {
     throw new Error('Twilio is not configured.');
   }
 
-  cachedTwilioClient = twilio(accountSid, authToken);
+  cachedTwilioClient = new Twilio(smsConfig.accountSid, smsConfig.authToken);
   return cachedTwilioClient;
 }
 

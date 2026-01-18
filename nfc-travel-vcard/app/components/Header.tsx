@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { messages } from '@/lib/i18n';
 import { useLanguage } from './LanguageProvider';
@@ -66,9 +67,10 @@ const Header: React.FC = () => {
     const copy = heroCopy[locale];
     const localeMessages = messages[language as keyof typeof messages];
     const t = localeMessages.noDataSection;
+    
     const featureList = Array.isArray(t.features) ? t.features : [];
-    const priceLabel = t.pricePerPiece ?? (locale === 'de' ? 'pro Stück' : 'per piece');
-    const shippingLabel = t.freeShipping ?? (locale === 'de' ? 'Kostenloser Versand ab 2 Stück' : 'Free shipping from 2 pieces');
+    const priceLabel = (locale === 'de' ? 'pro Stück' : 'per piece');
+    const shippingLabel = (locale === 'de' ? 'Kostenloser Versand ab 2 Stück' : 'Free shipping from 2 pieces');
     const featuredFeatures = featureList.slice(0, 3);
     const detailIcons = [Database, ShieldCheck, RefreshCw];
 
@@ -90,12 +92,14 @@ const Header: React.FC = () => {
                 >
                     <source src="/assets/bagid-loop.mp4" type="video/mp4; codecs=avc1.4D401E,mp4a.40.2" />
                 </video>
-                <img
+                <Image
                     src="/assets/productimage.webp"
                     alt=""
                     className="h-full w-full object-cover motion-safe:hidden"
-                    loading="lazy"
                     aria-hidden="true"
+                    layout="fill"
+                    objectFit="cover"
+                    priority
                 />
                 <div className="absolute inset-0 bg-slate-950/70" />
                 <div className="absolute inset-y-0 right-0 w-1/2 bg-gradient-to-l from-slate-950/70 via-slate-950/20 to-transparent" />
@@ -147,12 +151,12 @@ const Header: React.FC = () => {
                 </div>
 
                 <div className="flex-1 max-w-xl self-stretch rounded-3xl border border-white/10 bg-white/95 p-6 text-slate-900 shadow-2xl backdrop-blur lg:max-w-md">
-                    <div className="overflow-hidden rounded-2xl border border-slate-200">
-                        <img
+                    <div className="relative h-64 w-full overflow-hidden rounded-2xl border border-slate-200">
+                        <Image
                             src="/assets/productimage.webp"
                             alt={copy.imageAlt}
-                            className="h-64 w-full object-cover"
-                            loading="lazy"
+                            className="object-cover"
+                            layout="fill"
                         />
                     </div>
                     <div className="mt-6 space-y-4">

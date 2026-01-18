@@ -66,8 +66,8 @@ const TagRegistrationClient: React.FC<TagRegistrationClientProps> = ({ tagId }) 
                 },
                 body: JSON.stringify({
                     tagId,
-                    userId: user.sub,
-                    userEmail: user.email || user.username
+                    userId: user.idTokenClaims?.oid || user.nativeAccountId,
+                    userEmail:  user.username
                 })
             });
 
@@ -132,7 +132,7 @@ const TagRegistrationClient: React.FC<TagRegistrationClientProps> = ({ tagId }) 
                     ) : (
                         <div>
                             <p className="mb-4">
-                                {t.loggedInAs}: <strong>{user?.email || user?.username}</strong>
+                                {t.loggedInAs}: <strong>{user?.username}</strong>
                             </p>
                             <button
                                 onClick={handleRegister}

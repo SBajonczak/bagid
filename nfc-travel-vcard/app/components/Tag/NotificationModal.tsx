@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useLanguage } from '../LanguageProvider';
 import { messages } from '@/lib/i18n';
-import ReCAPTCHA from 'react-google-recaptcha';
+// import ReCAPTCHA from 'react-google-recaptcha';
 
 type ChannelKey = 'email' | 'sms';
 
@@ -26,16 +27,16 @@ const NotificationModal: React.FC<NotificationModalProps> = ({ isOpen, onClose, 
     const t = messages[lang].notification;
 
     const channelCopy = {
-        heading: t.channelHeading || (lang === 'de' ? 'Zustellwege' : 'Delivery channels'),
-        helper: t.channelHelper || (lang === 'de' ? 'Wähle, wie deine Nachricht zugestellt werden soll.' : 'Choose how the owner should be notified.'),
-        email: t.channelEmail || 'Email',
-        sms: t.channelSms || 'SMS',
-        required: t.channelRequired || (lang === 'de' ? 'Bitte mindestens einen Zustellweg auswählen.' : 'Please select at least one delivery channel.'),
-        unavailable: t.channelUnavailable || (lang === 'de' ? 'Für diesen Tag sind keine Kontaktwege hinterlegt.' : 'No delivery channel is available for this tag.'),
-        delivered: t.channelDelivered || (lang === 'de' ? 'Zugestellt' : 'Delivered'),
-        failed: t.channelFailed || (lang === 'de' ? 'Fehlgeschlagen' : 'Failed'),
-        statusTitle: t.channelStatus || (lang === 'de' ? 'Zustellstatus' : 'Delivery status'),
-        warningTitle: t.channelWarningTitle || (lang === 'de' ? 'Hinweise' : 'Notes')
+        heading:  (lang === 'de' ? 'Zustellwege' : 'Delivery channels'),
+        helper:  (lang === 'de' ? 'Wähle, wie deine Nachricht zugestellt werden soll.' : 'Choose how the owner should be notified.'),
+        email:  'Email',
+        sms:  'SMS',
+        required: (lang === 'de' ? 'Bitte mindestens einen Zustellweg auswählen.' : 'Please select at least one delivery channel.'),
+        unavailable:  (lang === 'de' ? 'Für diesen Tag sind keine Kontaktwege hinterlegt.' : 'No delivery channel is available for this tag.'),
+        delivered:  (lang === 'de' ? 'Zugestellt' : 'Delivered'),
+        failed:  (lang === 'de' ? 'Fehlgeschlagen' : 'Failed'),
+        statusTitle: (lang === 'de' ? 'Zustellstatus' : 'Delivery status'),
+        warningTitle: (lang === 'de' ? 'Hinweise' : 'Notes')
     };
 
     const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
@@ -210,9 +211,9 @@ const NotificationModal: React.FC<NotificationModalProps> = ({ isOpen, onClose, 
         }
     };
 
-    const handleCaptchaChange = (token: string | null) => {
-        setCaptchaToken(token);
-    };
+    // const handleCaptchaChange = (token: string | null) => {
+    //     setCaptchaToken(token);
+    // };
 
     if (!isOpen) return null;
 
@@ -280,9 +281,11 @@ const NotificationModal: React.FC<NotificationModalProps> = ({ isOpen, onClose, 
                                     <div className="mb-4">
                                         <p className="mb-2 font-medium">{t.yourLocation}</p>
                                         <div className="border rounded-lg overflow-hidden">
-                                            <img
+                                            <Image
                                                 src={mapUrl}
                                                 alt="Your current location"
+                                                width={640}
+                                                height={220}
                                                 className="w-full h-auto"
                                             />
                                         </div>

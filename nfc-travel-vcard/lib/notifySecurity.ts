@@ -1,4 +1,5 @@
 import { createHmac, randomBytes } from 'crypto';
+import { getConfig } from './config';
 
 export interface SecurityTokenPayload {
   tagId: string;
@@ -8,10 +9,9 @@ export interface SecurityTokenPayload {
   signature: string;
 }
 
-const DEFAULT_TTL_MS = 10 * 60 * 1000;
-
 function getSecret(): string {
-  const secret = process.env.NOTIFY_TOKEN_SECRET || process.env.FUNCTION_APP_SECRET;
+  const config = getConfig();
+  const secret = config.security.notifyTokenSecret;
   if (!secret) {
     throw new Error('NOTIFY_TOKEN_SECRET is not configured.');
   }
@@ -24,15 +24,17 @@ function signPayload(secret: string, tagId: string, timestamp: number, randomVal
   return hmac.digest('hex');
 }
 
-export function generateSecurityToken(tagId: string, ttlMs: number = DEFAULT_TTL_MS): string {
+export function generateSecurityToken(tagId: string, ttlMs?: number): string {
   if (!tagId) {
     throw new Error('tagId is required to create a security token.');
   }
 
+  const config = getConfig();
+  const effectiveTtl = ttlMs ?? config.security.tokenTtlMs;
   const secret = getSecret();
   const timestamp = Date.now();
   const randomValue = randomBytes(32).toString('hex');
-  const expires = timestamp + ttlMs;
+  const expires = timestamp + effectiveTtl;
   const signature = signPayload(secret, tagId, timestamp, randomValue);
 
   const payload: SecurityTokenPayload = {

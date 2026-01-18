@@ -18,7 +18,7 @@ const msalConfig = {
 
         // Add knownAuthorities to fix the "not a trusted authority" error
         knownAuthorities: [`${tenant}.b2clogin.com`],
-        redirectUri: import.meta.env.DEV ? "http://localhost:3000" : redirecturi,
+        redirectUri: process.env.NODE_ENV === 'development' ? "http://localhost:3000" : redirecturi,
         postLogoutRedirectUri: window.location.origin,
         navigateToLoginRequestUrl: true,
     },
@@ -81,7 +81,11 @@ export class AuthService {
     };
 
     private setUserFromAccount(account: msal.AccountInfo): void {
-        const claims = account.idTokenClaims as any;
+        const claims = account.idTokenClaims as {
+            name?: string;
+            emails?: string[];
+            email?: string;
+        };
 
         this.currentUser = {
             displayName: claims.name,

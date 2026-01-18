@@ -14,10 +14,11 @@ import NavigationBar from '../components/NavigationBar';
 import Footer from '../components/Footer';
 import Link from 'next/link';
 import { Building2, Lock, MapPin, Plane, ShieldCheck, User } from 'lucide-react';
+import { getPublicConfig } from '@/lib/config';
 
 dayjs.extend(localizedFormat);
 
-const hasValue = (value: any): boolean => {
+const hasValue = (value: string | null | undefined): boolean => {
     return value !== null && value !== undefined && value !== '';
 };
 
@@ -74,6 +75,7 @@ const TravelCardClient: React.FC<TravelCardClientProps> = ({ tagId }) => {
     const [error, setError] = useState<string | null>(null);
     const [tagRegistered, setTagRegistered] = useState<boolean>(false);
     const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
+    const [showNotifyButton, setShowNotifyButton] = useState(false);
 
     dayjs.locale(lang);
 
@@ -82,6 +84,10 @@ const TravelCardClient: React.FC<TravelCardClientProps> = ({ tagId }) => {
         : dayjs(travelData.transportationDate).format('L');
     
     useEffect(() => {
+        const config = getPublicConfig();
+        setShowNotifyButton(config.features.notifyButton);
+
+
         const checkIfTagExistsAndRegistered = async () => {
             try {
                 if (tagId=="demo")
@@ -110,9 +116,10 @@ const TravelCardClient: React.FC<TravelCardClientProps> = ({ tagId }) => {
         if (tagId) {
             checkIfTagExistsAndRegistered();
         }
+
     }, [tagId, router]);
 
-    useEffect(() => {
+    useEffect(() => {        
         const fetchTravelData = async () => {
             if (!tagRegistered) return;
             
@@ -196,9 +203,9 @@ const TravelCardClient: React.FC<TravelCardClientProps> = ({ tagId }) => {
         { label: t.firstName, value: travelData.ownerFirstName },
         { label: t.lastName, value: travelData.ownerLastName },
         { label: t.address, value: travelData.ownerAddress },
-        { label: t.email, value: hasValue(travelData.ownerEmail) ? privacyCopy.placeholder : null },
-        { label: t.mobile, value: hasValue(travelData.ownerMobile) ? privacyCopy.placeholder : null },
-        { label: t.landline, value: hasValue(travelData.ownerLandline) ? privacyCopy.placeholder : null },
+        { label: t.email, value: showNotifyButton && hasValue(travelData.ownerEmail) ? privacyCopy.placeholder : travelData.ownerEmail },
+        { label: t.mobile, value: showNotifyButton && hasValue(travelData.ownerMobile) ? privacyCopy.placeholder : travelData.ownerMobile },
+        { label: t.landline, value: showNotifyButton && hasValue(travelData.ownerLandline) ? privacyCopy.placeholder : travelData.ownerLandline },
         { label: t.other, value: travelData.ownerOther },
     ];
 
@@ -217,7 +224,7 @@ const TravelCardClient: React.FC<TravelCardClientProps> = ({ tagId }) => {
     const transportRows: InfoRow[] = [
         { label: t.provider, value: transportMode },
         { label: t.details, value: transportNumber },
-        { label: t.date, value: hasValue(travelData.transportationDate) ? formattedDate : null },
+        { label: t.date, value: travelData.transportationDate!= null ? formattedDate : null },
     ];
 
     const tagTitle = travelData.tagName || t.productname;
@@ -225,7 +232,7 @@ const TravelCardClient: React.FC<TravelCardClientProps> = ({ tagId }) => {
     return (
         <div className="min-h-screen flex flex-col bg-slate-50">
             <NavigationBar />
-
+            <div>{JSON.stringify(process.env).toString()}</div>
             <main className="flex-grow">
                 <section className="bg-slate-950 px-4 py-12 text-white sm:py-16">
                     <div className="mx-auto flex max-w-5xl flex-col gap-6">
@@ -256,19 +263,21 @@ const TravelCardClient: React.FC<TravelCardClientProps> = ({ tagId }) => {
                                     {transportNumber}
                                 </span>
                             )}
-                            {hasValue(travelData.transportationDate) && (
+                            {travelData.transportationDate != null && (
                                 <span className="rounded-full border border-white/30 bg-white/10 px-3 py-1">
                                     {formattedDate}
                                 </span>
                             )}
                         </div>
                         <div className="flex flex-col gap-3 sm:flex-row">
-                            <button
-                                onClick={() => setIsNotificationModalOpen(true)}
-                                className="inline-flex items-center justify-center rounded-xl bg-green-500 px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-green-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-300"
-                            >
-                                {t.notify}
-                            </button>
+                            {showNotifyButton && (
+                                <button
+                                    onClick={() => setIsNotificationModalOpen(true)}
+                                    className="inline-flex items-center justify-center rounded-xl bg-green-500 px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-green-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-300"
+                                >
+                                    {t.notify}
+                                </button>
+                            )}
                             <Link
                                 href={`/${tagId}/edit`}
                                 className="inline-flex items-center justify-center rounded-xl border border-white/40 px-6 py-3 text-sm font-semibold text-white transition hover:border-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
@@ -286,12 +295,14 @@ const TravelCardClient: React.FC<TravelCardClientProps> = ({ tagId }) => {
                             <p className="text-sm text-slate-600">
                                 {marketingCopy.subline}
                             </p>
+                            {showNotifyButton && (
                             <div className="mt-4 flex items-start gap-3 rounded-xl border border-lime-200 bg-lime-50 px-4 py-3 text-slate-800">
                                 <Lock className="mt-0.5 h-5 w-5 text-lime-700" aria-hidden="true" />
                                 <p className="text-sm leading-relaxed">
-                                    {privacyCopy.highlight}
+                                    {privacyCopy.highlight} 
                                 </p>
                             </div>
+                            )}
                         </div>
 
                         <div className="grid gap-6 md:grid-cols-2">
