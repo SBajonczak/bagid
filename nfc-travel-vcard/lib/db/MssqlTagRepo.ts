@@ -256,7 +256,7 @@ export class MssqlTagRepo implements ITagRepo {
         .query(`
           SELECT 1
           FROM TravelTag
-          WHERE TagID = @tagId and isRegistered=0
+          WHERE TagID = @tagId
         `);
 
       if (result.recordset.length === 0) {
@@ -291,6 +291,7 @@ export class MssqlTagRepo implements ITagRepo {
         .input('tagId', sql.UniqueIdentifier, tagId)
         .query(`SELECT 1 FROM TravelTag WHERE TagID = @tagId and isRegistered=1`);
       pool.close();
+      
       return result.recordset.length > 0;
     } catch (error) {
       console.error('Fehler bei der Überprüfung, ob ein Tag existiert:', error);
