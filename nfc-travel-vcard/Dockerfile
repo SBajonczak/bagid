@@ -4,8 +4,7 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-
-# Install supervisor
+# Install supervisor and nginx
 RUN apk add --no-cache supervisor nginx
 
 COPY package*.json ./
@@ -15,18 +14,8 @@ COPY . .
 
 ENV NODE_OPTIONS="--openssl-legacy-provider"
 
-# Add environment variables for database configuration
-ENV DB_USER="sbaadmin"
-ENV DB_PASSWORD=""
-ENV DB_SERVER="sbadbprod.database.windows.net"
-ENV DB_DATABASE="nfc"
-
 # Build the application
 RUN npm run build
-
-# Install serve to host the production build
-RUN npm install -g serve
-
 
 # Configure nginx as a reverse proxy
 RUN mkdir -p /etc/nginx/http.d
@@ -40,14 +29,15 @@ COPY <<EOF /etc/supervisor.d/services.ini
 nodaemon=true
 
 [program:api]
-command=node server/api.js -l 3001 --debug
+command=node server/api.js
+environment=API_PORT=3001
 stdout_logfile=/dev/stdout
 stdout_logfile_maxbytes=0
 stderr_logfile=/dev/stderr
 stderr_logfile_maxbytes=0
 
 [program:ui]
-command=serve -s dist -l 3000
+command=npm start -- -p 3000
 stdout_logfile=/dev/stdout
 stdout_logfile_maxbytes=0
 stderr_logfile=/dev/stderr
@@ -63,6 +53,6 @@ EOF
 
 
 
-# Expose the port serve will use
+# Expose the port nginx will use
 EXPOSE 8090
 CMD ["supervisord", "-c", "/etc/supervisor.d/services.ini"]
