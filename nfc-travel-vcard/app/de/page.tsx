@@ -25,7 +25,7 @@ export default function DeHome() {
       <MessageContainer message={''} type={'none'} />
 
       <main className="flex flex-col items-center gap-12">
-        {showDashboard && <Dashboard hidden={false} />}
+      
         <StartPageControl hidden={false} />
       </main>
 
