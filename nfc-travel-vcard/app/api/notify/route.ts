@@ -129,8 +129,9 @@ export async function POST(request: NextRequest) {
       { status: 404 }
     );
   }
-
+  //@ts-expect-error Missing type info
   const ownerEmail = typeof tagData.ownerEmail === 'string' ? tagData.ownerEmail.trim() : '';
+  //@ts-expect-error Missing type info
   const ownerMobile = typeof tagData.ownerMobile === 'string' ? tagData.ownerMobile.trim() : '';
 
   const requestedChannels = normalizeChannelSelection(body.channels, {

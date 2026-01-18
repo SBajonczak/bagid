@@ -24,7 +24,6 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
 
   // Translations for the dashboard
-  // @ts-ignore - Ignoring potential missing keys in partial languages
   const t = messages[lang].dashboard;
 
   useEffect(() => {

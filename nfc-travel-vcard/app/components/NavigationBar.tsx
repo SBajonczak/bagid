@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from "next/image";
 import { usePathname } from 'next/navigation';
-import { Menu, X, Globe, LogOut, LogIn, LayoutDashboard, QrCode, ShoppingBag, Loader2 } from 'lucide-react';
+import { Menu, X,  LogOut, LogIn, LayoutDashboard, ShoppingBag, Loader2 } from 'lucide-react';
 import { useLanguage } from './LanguageProvider';
 import { useAuth } from './AuthProvider';
 import { messages } from '@/lib/i18n';
