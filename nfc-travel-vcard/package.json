@@ -36,6 +36,7 @@
     "twilio": "^4.22.0"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.0",
     "@types/mssql": "^9.1.9",
     "@types/node": "^20.0.0",
     "@types/nodemailer": "^6.4.14",
@@ -48,5 +49,8 @@
     "postcss": "^8.4.31",
     "tailwindcss": "^3.4.0",
     "typescript": "^5.0.2"
+  }, "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
   }
 }
