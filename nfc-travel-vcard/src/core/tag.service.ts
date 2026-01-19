@@ -4,25 +4,26 @@
  */
 
 import { TagRepo } from '../../lib/TagRepo';
+import { TagData, TagNotFoundError, ValidationError } from './types';
 
 /**
  * Validates a tag ID
  * @param tagId - The tag ID to validate
- * @throws Error if tag ID is invalid
+ * @throws ValidationError if tag ID is invalid
  */
 function validateTagId(tagId: string): void {
   if (!tagId || typeof tagId !== 'string') {
-    throw new Error('Tag ID is required and must be a string');
+    throw new ValidationError('Tag ID is required and must be a string');
   }
 
   // Basic sanitization check
   if (tagId.trim().length === 0) {
-    throw new Error('Tag ID cannot be empty');
+    throw new ValidationError('Tag ID cannot be empty');
   }
 
   // Check for invalid characters (basic security check)
   if (tagId.length > 255) {
-    throw new Error('Tag ID is too long');
+    throw new ValidationError('Tag ID is too long');
   }
 }
 
@@ -30,9 +31,10 @@ function validateTagId(tagId: string): void {
  * Gets tag data by tag ID
  * @param tagId - The tag ID to retrieve
  * @returns Tag data object
- * @throws Error if validation fails or tag not found
+ * @throws ValidationError if validation fails
+ * @throws TagNotFoundError if tag not found
  */
-export async function getTagById(tagId: string): Promise<unknown> {
+export async function getTagById(tagId: string): Promise<TagData> {
   // Validate input
   validateTagId(tagId);
 
@@ -41,8 +43,8 @@ export async function getTagById(tagId: string): Promise<unknown> {
   const tagData = await repo.getTravelDataByTagId(tagId);
 
   if (!tagData) {
-    throw new Error('Tag not found');
+    throw new TagNotFoundError(tagId);
   }
 
-  return tagData;
+  return tagData as TagData;
 }

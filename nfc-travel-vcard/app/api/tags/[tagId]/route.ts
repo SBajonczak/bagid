@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth';
 import { TagRepo } from '@/lib/TagRepo';
 import { getTagById } from '@/core/tag.service';
+import { mapErrorToHttpResponse } from '../../../../src/adapters/errorHandler';
 
 export async function GET(
   request: NextRequest,
@@ -12,30 +13,10 @@ export async function GET(
     const tagData = await getTagById(tagId);
     return NextResponse.json(tagData);
   } catch (error) {
-    console.error('Error fetching tag data:', error);
-    
-    if (error instanceof Error) {
-      if (error.message === 'Tag not found') {
-        return NextResponse.json(
-          { error: 'Tag not found' },
-          { status: 404 }
-        );
-      }
-      
-      if (error.message.includes('required') || 
-          error.message.includes('invalid') || 
-          error.message.includes('empty') ||
-          error.message.includes('too long')) {
-        return NextResponse.json(
-          { error: error.message },
-          { status: 400 }
-        );
-      }
-    }
-    
+    const errorResponse = mapErrorToHttpResponse(error);
     return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
+      { error: errorResponse.message },
+      { status: errorResponse.statusCode }
     );
   }
 }

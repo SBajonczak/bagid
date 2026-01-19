@@ -5,6 +5,7 @@
 
 import { Router, Request, Response } from 'express';
 import { getTagById } from '../../core/tag.service';
+import { mapErrorToHttpResponse } from '../errorHandler';
 
 const router = Router();
 
@@ -24,22 +25,10 @@ router.get('/:tagId', async (req: Request, res: Response) => {
     const tagData = await getTagById(tagId);
     return res.json(tagData);
   } catch (error) {
-    console.error('Error fetching tag data:', error);
-    
-    if (error instanceof Error) {
-      if (error.message === 'Tag not found') {
-        return res.status(404).json({ error: 'Tag not found' });
-      }
-      
-      if (error.message.includes('required') || 
-          error.message.includes('invalid') || 
-          error.message.includes('empty') ||
-          error.message.includes('too long')) {
-        return res.status(400).json({ error: error.message });
-      }
-    }
-    
-    return res.status(500).json({ error: 'Internal server error' });
+    const errorResponse = mapErrorToHttpResponse(error);
+    return res.status(errorResponse.statusCode).json({ 
+      error: errorResponse.message 
+    });
   }
 });
 
