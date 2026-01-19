@@ -32,7 +32,7 @@ function validateTagId(tagId: string): void {
  * @returns Tag data object
  * @throws Error if validation fails or tag not found
  */
-export async function getTagById(tagId: string): Promise<any> {
+export async function getTagById(tagId: string): Promise<unknown> {
   // Validate input
   validateTagId(tagId);
 

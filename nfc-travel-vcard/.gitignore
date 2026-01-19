@@ -11,3 +11,12 @@ tsconfig.tsbuildinfo
 
 # Dependencies
 node_modules/
+
+# Environment files
+.env.local
+.env*.local
+
+# Database
+*.db
+*.db-shm
+*.db-wal

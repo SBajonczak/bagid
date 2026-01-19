@@ -4,6 +4,13 @@
  * It is NOT imported by Next.js and will NOT be included in Vercel builds
  */
 
+// Load environment variables
+import dotenv from 'dotenv';
+import path from 'path';
+
+// Load .env.local if it exists
+dotenv.config({ path: path.join(__dirname, '.env.local') });
+
 import express from 'express';
 import cors from 'cors';
 import tagRoutes from './src/adapters/express/tag.routes';
