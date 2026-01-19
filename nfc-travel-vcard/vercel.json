@@ -1,0 +1,10 @@
+{
+  "buildCommand": "next build",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD ./",
+  "excludeFiles": [
+    "server.ts",
+    "src/adapters/express/**"
+  ]
+}

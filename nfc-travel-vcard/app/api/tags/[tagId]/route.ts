@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth';
 import { TagRepo } from '@/lib/TagRepo';
+import { getTagById } from '@/core/tag.service';
 
 export async function GET(
   request: NextRequest,
@@ -8,19 +9,30 @@ export async function GET(
 ) {
   try {
     const { tagId } = params;
-    const repo = new TagRepo();
-    const tagData = await repo.getTravelDataByTagId(tagId);
-    
-    if (!tagData) {
-      return NextResponse.json(
-        { error: 'Tag not found' },
-        { status: 404 }
-      );
-    }
-    
+    const tagData = await getTagById(tagId);
     return NextResponse.json(tagData);
   } catch (error) {
     console.error('Error fetching tag data:', error);
+    
+    if (error instanceof Error) {
+      if (error.message === 'Tag not found') {
+        return NextResponse.json(
+          { error: 'Tag not found' },
+          { status: 404 }
+        );
+      }
+      
+      if (error.message.includes('required') || 
+          error.message.includes('invalid') || 
+          error.message.includes('empty') ||
+          error.message.includes('too long')) {
+        return NextResponse.json(
+          { error: error.message },
+          { status: 400 }
+        );
+      }
+    }
+    
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
