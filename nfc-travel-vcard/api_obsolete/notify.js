@@ -2,7 +2,7 @@ const Mailgun = require('mailgun.js');
 const formData = require('form-data');
 
 module.exports = async function (context, req) {
-    context.log('JavaScript HTTP trigger function processed a request.');
+    // context.log('JavaScript HTTP trigger function processed a request.');
     
     try {
         // Validate request body
@@ -74,7 +74,7 @@ module.exports = async function (context, req) {
             body: { success: true, message: "Notification sent successfully" }
         };
     } catch (error) {
-        context.log.error('Error sending notification:', error);
+        // context.log.error('Error sending notification:', error);
         
         context.res = {
             status: 500,
