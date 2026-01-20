@@ -28,6 +28,8 @@ export default function ColorSelector({ language }: ColorSelectorProps) {
               className="w-12 h-12 rounded-full border-2 border-gray-300"
               style={{ backgroundColor: color.hex }}
               title={language === 'de' ? color.name : color.nameEn}
+              role="img"
+              aria-label={`${language === 'de' ? 'Farbe' : 'Color'}: ${language === 'de' ? color.name : color.nameEn}`}
             />
             <span className="text-sm">
               {language === 'de' ? color.name : color.nameEn}

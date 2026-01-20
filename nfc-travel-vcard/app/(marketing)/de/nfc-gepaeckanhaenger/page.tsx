@@ -172,7 +172,7 @@ export default function NfcGepaeckanhängerPage() {
 
           {/* Main Heading */}
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">
-            NFC Gepäckanhänger – Dein smarter Reisebegleiter
+            NFC Gepäckanhänger – Ihr smarter Reisebegleiter
           </h1>
 
           <p className="text-xl text-gray-700 mb-8 leading-relaxed">
