@@ -29,7 +29,7 @@ export async function generateMetadata(): Promise<Metadata> {
       url: pageUrl,
       siteName: 'Bag-Tag',
       images: [{
-        url: 'https://bag-tag.de/og-image-lost-luggage.jpg',
+        url: 'https://bag-tag.de/assets/productimage.webp',
         width: 1200,
         height: 630,
         alt: 'Koffer verloren - Sofort-Hilfe Guide'
@@ -39,7 +39,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: 'summary_large_image',
       title: pageTitle,
       description: pageDescription,
-      images: ['https://bag-tag.de/og-image-lost-luggage.jpg'],
+      images: ['https://bag-tag.de/assets/productimage.webp'],
     },
     alternates: {
       canonical: pageUrl,
