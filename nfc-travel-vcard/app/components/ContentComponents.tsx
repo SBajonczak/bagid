@@ -11,12 +11,31 @@ import { ChevronRight, ShoppingBag, Info } from 'lucide-react';
  * TL;DR Section Component
  * Quick summary at the top of content pages
  */
-export function TldrSection({ children }: { children: React.ReactNode }) {
+export function TldrSection({ 
+  title, 
+  points, 
+  children 
+}: { 
+  title?: string; 
+  points?: string[]; 
+  children?: React.ReactNode 
+}) {
   return (
     <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-lg my-8">
       <div className="flex items-start gap-3">
         <Info className="h-6 w-6 text-blue-600 flex-shrink-0 mt-1" />
         <div className="text-slate-700 leading-relaxed">
+          {title && <h3 className="font-semibold text-blue-900 mb-3">{title}</h3>}
+          {points && points.length > 0 && (
+            <ul className="space-y-2">
+              {points.map((point, index) => (
+                <li key={index} className="flex items-start">
+                  <span className="text-blue-600 mr-2">✓</span>
+                  <span>{point}</span>
+                </li>
+              ))}
+            </ul>
+          )}
           {children}
         </div>
       </div>
@@ -89,12 +108,14 @@ export function ProblemsSection({
  * Related Links Section Component
  */
 export function RelatedLinksSection({
-  title,
+  title = "Weiterführende Artikel",
   links,
 }: {
-  title: string;
+  title?: string;
   links: Array<{ href: string; title: string }>;
 }) {
+  if (!links || links.length === 0) return null;
+  
   return (
     <div className="bg-slate-50 rounded-lg p-8 my-12">
       <h2 className="text-2xl font-bold text-slate-900 mb-6">{title}</h2>
@@ -121,40 +142,57 @@ export function RelatedLinksSection({
  * Call-to-action with primary and secondary buttons
  */
 export function CtaSection({
+  title,
+  description,
+  buttonText,
+  buttonLink,
   primaryText,
   primaryHref,
   secondaryText,
   secondaryHref,
-  description,
 }: {
-  primaryText: string;
-  primaryHref: string;
-  secondaryText: string;
-  secondaryHref: string;
+  title?: string;
   description?: string;
+  buttonText?: string;
+  buttonLink?: string;
+  primaryText?: string;
+  primaryHref?: string;
+  secondaryText?: string;
+  secondaryHref?: string;
 }) {
+  // Support both old and new interface
+  const mainText = title || description || 'Bereit loszulegen?';
+  const mainButtonText = buttonText || primaryText || 'Jetzt kaufen';
+  const mainButtonHref = buttonLink || primaryHref || 'https://bag-tag.de/de#shop';
+  const hasSecondary = secondaryText && secondaryHref;
+  
   return (
     <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-8 md:p-12 my-12 text-center">
       <h2 className="text-3xl font-bold text-white mb-4">
-        {description || 'Bereit loszulegen?'}
+        {title || 'Bereit loszulegen?'}
       </h2>
+      {description && (
+        <p className="text-blue-100 text-lg mb-6">{description}</p>
+      )}
       <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8">
         <a
-          href={primaryHref}
+          href={mainButtonHref}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg hover:bg-slate-50 transition-all shadow-lg hover:shadow-xl"
         >
           <ShoppingBag className="h-5 w-5" />
-          {primaryText}
+          {mainButtonText}
         </a>
-        <Link
-          href={secondaryHref}
-          className="inline-flex items-center gap-2 px-8 py-4 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-400 transition-all"
-        >
-          {secondaryText}
-          <ChevronRight className="h-5 w-5" />
-        </Link>
+        {hasSecondary && (
+          <Link
+            href={secondaryHref!}
+            className="inline-flex items-center gap-2 px-8 py-4 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-400 transition-all"
+          >
+            {secondaryText}
+            <ChevronRight className="h-5 w-5" />
+          </Link>
+        )}
       </div>
     </div>
   );
@@ -212,24 +250,27 @@ export function ContentPageLayout({ children }: { children: React.ReactNode }) {
 /**
  * Breadcrumb Component
  */
-export function Breadcrumb({ items }: { items: Array<{ name: string; href?: string }> }) {
+export function Breadcrumb({ items }: { items: Array<{ name: string; href?: string; url?: string }> }) {
   return (
     <nav className="flex items-center gap-2 text-sm text-slate-600 mb-8" aria-label="Breadcrumb">
-      {items.map((item, index) => (
-        <React.Fragment key={index}>
-          {index > 0 && <ChevronRight className="h-4 w-4 text-slate-400" />}
-          {item.href ? (
-            <Link
-              href={item.href}
-              className="hover:text-blue-600 transition-colors"
-            >
-              {item.name}
-            </Link>
-          ) : (
-            <span className="text-slate-900 font-medium">{item.name}</span>
-          )}
-        </React.Fragment>
-      ))}
+      {items.map((item, index) => {
+        const link = item.href || item.url;
+        return (
+          <React.Fragment key={index}>
+            {index > 0 && <ChevronRight className="h-4 w-4 text-slate-400" />}
+            {link ? (
+              <Link
+                href={link}
+                className="hover:text-blue-600 transition-colors"
+              >
+                {item.name}
+              </Link>
+            ) : (
+              <span className="text-slate-900 font-medium">{item.name}</span>
+            )}
+          </React.Fragment>
+        );
+      })}
     </nav>
   );
 }
