@@ -295,7 +295,7 @@ export default function FaqPage() {
                   </p>
                 </Link>
                 <Link
-                  href="/de/nfc-vs-qr"
+                  href="/de/ratgeber/nfc-vs-qr"
                   className="bg-white p-4 rounded-lg border border-slate-200 hover:border-blue-500 hover:shadow-md transition-all"
                 >
                   <h3 className="font-semibold text-slate-900 mb-2">
