@@ -24,6 +24,7 @@ const TravelCardEditClient: React.FC<TravelCardEditClientProps> = ({ tagId }) =>
     const [saving, setSaving] = useState(false);
     const [formData, setFormData] = useState({
         tagName: '',
+        transportation:'',
         ownerFirstName: '',
         ownerLastName: '',
         ownerEmail: '',
@@ -34,9 +35,10 @@ const TravelCardEditClient: React.FC<TravelCardEditClientProps> = ({ tagId }) =>
         transportationDate: '',
         guideFirstName: '',
         guideLastName: '',
-        guidePhone: '',
-        destinationName: '',
-        destinationAddress: ''
+        guideMobile: '',
+        destinationAccommodation: '',
+        destinationAddress: '',
+        transportationNumber:''
     });
 
     const tagTitle = formData.tagName?.trim() || t.productname;
@@ -49,6 +51,10 @@ const TravelCardEditClient: React.FC<TravelCardEditClientProps> = ({ tagId }) =>
 
         if (dataResponse.ok) {
             const data = await dataResponse.json();
+            if (data.transportation==null)
+                data.transportation= data.transportationProvider;
+            if (data.transportationNumber==null)
+                data.transportationNumber=data.transportationDetails;
             setFormData(prev => ({ ...prev, ...data }));
         }
 
@@ -273,8 +279,8 @@ const TravelCardEditClient: React.FC<TravelCardEditClientProps> = ({ tagId }) =>
                                         <label className="block text-sm font-medium text-slate-700">{t.provider}</label>
                                         <input
                                             type="text"
-                                            name="transportationProvider"
-                                            value={formData.transportationProvider}
+                                            name="transportation"
+                                            value={formData.transportation}
                                             onChange={handleChange}
                                             className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-slate-900 focus:outline-none"
                                         />
@@ -283,8 +289,8 @@ const TravelCardEditClient: React.FC<TravelCardEditClientProps> = ({ tagId }) =>
                                         <label className="block text-sm font-medium text-slate-700">{t.details}</label>
                                         <input
                                             type="text"
-                                            name="transportationDetails"
-                                            value={formData.transportationDetails}
+                                            name="transportationNumber"
+                                            value={formData.transportationNumber}
                                             onChange={handleChange}
                                             className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-slate-900 focus:outline-none"
                                         />
@@ -313,8 +319,8 @@ const TravelCardEditClient: React.FC<TravelCardEditClientProps> = ({ tagId }) =>
                                         </label>
                                         <input
                                             type="text"
-                                            name="destinationName"
-                                            value={formData.destinationName}
+                                            name="destinationAccommodation"
+                                            value={formData.destinationAccommodation}
                                             onChange={handleChange}
                                             className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-slate-900 focus:outline-none"
                                         />
@@ -359,8 +365,8 @@ const TravelCardEditClient: React.FC<TravelCardEditClientProps> = ({ tagId }) =>
                                         <label className="block text-sm font-medium text-slate-700">{t.mobile}</label>
                                         <input
                                             type="tel"
-                                            name="guidePhone"
-                                            value={formData.guidePhone}
+                                            name="guideMobile"
+                                            value={formData.guideMobile}
                                             onChange={handleChange}
                                             className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-slate-900 focus:outline-none"
                                         />
