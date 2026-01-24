@@ -276,6 +276,15 @@ export const messages = {
             contact: "Kontakt",
             responsibleContent: "Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV",
             email: "E-Mail: kreativchschicht_de[at]outlook.com"
+        },
+        navigation: {
+            howItWorks: "So funktioniert's",
+            nfcVsQr: "NFC vs. QR",
+            useCases: "Anwendungsfälle",
+            securityPrivacy: "Sicherheit & Datenschutz",
+            help: "Hilfe",
+            guides: "Ratgeber",
+            learnMore: "Mehr erfahren"
         }
     },
     en: {
@@ -554,6 +563,15 @@ export const messages = {
             contact: "Contact",
             responsibleContent: "Responsible for content according to § 55 para. 2 RStV",
             email: "E-Mail: kreativchschicht_de[at]outlook.com"
+        },
+        navigation: {
+            howItWorks: "How it works",
+            nfcVsQr: "NFC vs. QR",
+            useCases: "Use Cases",
+            securityPrivacy: "Security & Privacy",
+            help: "Help",
+            guides: "Guides",
+            learnMore: "Learn More"
         }
     },
     nl: {
@@ -581,8 +599,8 @@ export const messages = {
         },
         seo: {
             title: 'Bag-Tag.de | Slimme NFC Bagagetags voor Veilig Reizen',
-            description: 'Innovatieve NFC bagagetags voor snel terugvinden van verloren bagage. Moderne reisgenoten met contactloze NFC-technologie voor alle koffers en tassen.',
-            keywords: 'NFC bagagetags, kofferanhänger, bagage ID, verloren bagage, reisaccessoires, koffer tag, contactloze technologie, slimme bagagetag',
+            description: 'Bag-Tag combineert NFC met QR-codes voor levenslange bagage-identificatie: eenmalig kopen, geen batterijen nodig en contactgegevens altijd en overal online bijwerken.',
+            keywords: 'NFC bagagetags, kofferhanger, bagage ID, verloren bagage, reisaccessoires, koffer tag, contactloze technologie, slimme bagagetag',
             productName: 'NFC Bag Tag',
             brandName: 'Bag-Tag',
             productPrice: '10.99',
@@ -829,6 +847,15 @@ export const messages = {
             contact: "Contact",
             responsibleContent: "Verantwoordelijk voor inhoud volgens § 55 para. 2 RStV",
             email: "E-mail: kreativchschicht_de[at]outlook.com"
+        },
+        navigation: {
+            howItWorks: "Hoe het werkt",
+            nfcVsQr: "NFC vs. QR",
+            useCases: "Gebruiksscenario's",
+            securityPrivacy: "Beveiliging & Privacy",
+            help: "Hulp",
+            guides: "Gidsen",
+            learnMore: "Meer informatie"
         }
     },
     ko: {
@@ -1103,6 +1130,15 @@ export const messages = {
             contact: "연락처",
             responsibleContent: "§ 55 para. 2 RStV에 따른 콘텐츠 책임자",
             email: "이메일: kreativchschicht_de[at]outlook.com"
+        },
+        navigation: {
+            howItWorks: "작동 방식",
+            nfcVsQr: "NFC vs. QR",
+            useCases: "사용 사례",
+            securityPrivacy: "보안 및 개인정보",
+            help: "도움말",
+            guides: "가이드",
+            learnMore: "더 알아보기"
         }
     },
     ar: {
@@ -1378,6 +1414,15 @@ export const messages = {
             contact: "اتصال",
             responsibleContent: "مسؤول عن المحتوى وفقًا لـ § 55 para. 2 RStV",
             email: "البريد الإلكتروني: kreativchschicht_de[at]outlook.com"
+        },
+        navigation: {
+            howItWorks: "كيف يعمل",
+            nfcVsQr: "NFC مقابل QR",
+            useCases: "حالات الاستخدام",
+            securityPrivacy: "الأمان والخصوصية",
+            help: "مساعدة",
+            guides: "أدلة",
+            learnMore: "اعرف المزيد"
         }
     },
     th: {
@@ -1653,6 +1698,15 @@ export const messages = {
             contact: "ติดต่อ",
             responsibleContent: "รับผิดชอบเนื้อหาตาม § 55 para. 2 RStV",
             email: "อีเมล: kreativchschicht_de[at]outlook.com"
+        },
+        navigation: {
+            howItWorks: "วิธีการทำงาน",
+            nfcVsQr: "NFC กับ QR",
+            useCases: "กรณีการใช้งาน",
+            securityPrivacy: "ความปลอดภัยและความเป็นส่วนตัว",
+            help: "ความช่วยเหลือ",
+            guides: "คู่มือ",
+            learnMore: "เรียนรู้เพิ่มเติม"
         }
     }
 };
