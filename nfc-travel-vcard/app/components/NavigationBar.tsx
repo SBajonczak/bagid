@@ -9,6 +9,7 @@ import { useLanguage } from './LanguageProvider';
 import { useAuth } from './AuthProvider';
 import { messages } from '@/lib/i18n';
 import LanguageSwitcher from './LanguageSwitcher';
+import Dropdown from './Dropdown';
 
 const NavigationBar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -17,6 +18,7 @@ const NavigationBar: React.FC = () => {
   const pathname = usePathname();
   const t = messages[language].common;
   const t2 = messages[language].noDataSection;
+  const t_nav = messages[language].navigation;
 
   const [loading, setLoading] = useState(false);
 
@@ -36,17 +38,43 @@ const NavigationBar: React.FC = () => {
       setIsMobileMenuOpen(false);
   };
 
+  // Hauptnavigation für direkte Links
+  const mainNavItems = [
+    { 
+      href: language === 'de' ? '/de/so-funktionierts' : '/en/how-it-works', 
+      label: t_nav.howItWorks, 
+      icon: null 
+    },
+    { 
+      href: language === 'de' ? '/de/hilfe' : '/en/help', 
+      label: t_nav.help, 
+      icon: null 
+    },
+  ];
+
+  // Dropdown-Items für Ratgeber
+  const dropdownItems = [
+    { 
+      href: language === 'de' ? '/de/nfc-vs-qr' : '/en/nfc-vs-qr', 
+      label: t_nav.nfcVsQr 
+    },
+    { 
+      href: language === 'de' ? '/de/use-cases' : '/en/use-cases', 
+      label: t_nav.useCases 
+    },
+    { 
+      href: language === 'de' ? '/de/sicherheit-datenschutz' : '/en/security-privacy', 
+      label: t_nav.securityPrivacy 
+    },
+  ];
+
   const menuItems = [
     ...(isAuthenticated ? [{ 
         href: '/dashboard', 
         label: t.myTags,
         icon: LayoutDashboard 
     }] : []),
-    {
-        href: '/#features',
-        label: t.features,
-        icon: null
-    },
+    ...mainNavItems,
     {
         href: '/#faq',
         label: t.faq,
@@ -99,6 +127,8 @@ const NavigationBar: React.FC = () => {
                     </Link>
                 );
             })}
+            
+            <Dropdown label={t_nav.guides} items={dropdownItems} />
 
             <div className="h-6 w-px bg-slate-200 mx-2" />
             
@@ -158,7 +188,7 @@ const NavigationBar: React.FC = () => {
       </div>
 
       {/* Mobile Menu Content */}
-      <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'max-h-96 opacity-100 border-t border-slate-100' : 'max-h-0 opacity-0'}`}>
+      <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'max-h-[600px] opacity-100 border-t border-slate-100' : 'max-h-0 opacity-0'}`}>
         <div className="bg-white px-4 py-4 space-y-1 shadow-inner">
             {menuItems.map((item) => (
               <Link
@@ -171,6 +201,8 @@ const NavigationBar: React.FC = () => {
                 {item.label}
               </Link>
             ))}
+            
+            <Dropdown label={t_nav.guides} items={dropdownItems} isMobile={true} />
             
             <div className="my-2 h-px bg-slate-100" />
             

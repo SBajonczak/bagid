@@ -232,7 +232,6 @@ const TravelCardClient: React.FC<TravelCardClientProps> = ({ tagId }) => {
     return (
         <div className="min-h-screen flex flex-col bg-slate-50">
             <NavigationBar />
-            <div>{JSON.stringify(process.env).toString()}</div>
             <main className="flex-grow">
                 <section className="bg-slate-950 px-4 py-12 text-white sm:py-16">
                     <div className="mx-auto flex max-w-5xl flex-col gap-6">
