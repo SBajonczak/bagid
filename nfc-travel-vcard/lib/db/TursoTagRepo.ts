@@ -67,6 +67,7 @@ export class TursoTagRepo implements ITagRepo {
     const client = this.getClient();
     
     const fieldMappings: Record<string, string> = {
+      // UI : 'DB FIELD'
       tagName: 'tagName',
       ownerFirstName: 'OwnerFirstName',
       ownerLastName: 'OwnerLastName',
@@ -83,7 +84,8 @@ export class TursoTagRepo implements ITagRepo {
       destinationAccommodation: 'DestinationAccommodation',
       destinationAddress: 'DestinationAddress',
       transportation: 'Transportation',
-      transportationNumber: 'TransportationNumber',
+      transportationNumber:'TransportationNumber',
+      transportationDetails: 'transportationNumber',
       transportationDate: 'TransportationDate',
     };
 
