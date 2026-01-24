@@ -252,21 +252,21 @@ export function ContentPageLayout({ children }: { children: React.ReactNode }) {
  */
 export function Breadcrumb({ items }: { items: Array<{ name: string; href?: string; url?: string }> }) {
   return (
-    <nav className="flex items-center gap-2 text-sm text-slate-600 mb-8" aria-label="Breadcrumb">
+    <nav className="flex items-center gap-1.5 text-xs text-slate-400 mb-6 opacity-75" aria-label="Breadcrumb">
       {items.map((item, index) => {
         const link = item.href || item.url;
         return (
           <React.Fragment key={index}>
-            {index > 0 && <ChevronRight className="h-4 w-4 text-slate-400" />}
+            {index > 0 && <ChevronRight className="h-3 w-3 text-slate-300" />}
             {link ? (
               <Link
                 href={link}
-                className="hover:text-blue-600 transition-colors"
+                className="hover:text-slate-600 transition-colors"
               >
                 {item.name}
               </Link>
             ) : (
-              <span className="text-slate-900 font-medium">{item.name}</span>
+              <span className="text-slate-500">{item.name}</span>
             )}
           </React.Fragment>
         );
