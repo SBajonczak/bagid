@@ -48,7 +48,15 @@ To get started with the NFC Travel vCard application, follow these steps:
    ```
 
 4. **Open your browser:**
-   Navigate to `http://localhost:3000` to view the application.
+    Navigate to `http://localhost:3000` to view the application.
+
+## Cloudflare Build & Deploy
+
+- `npm run build` erstellt jetzt den Cloudflare-Worker-Output in `.open-next/`.
+- `npm run preview` startet eine lokale Vorschau über Wrangler.
+- `npm run deploy` deployed den erzeugten Build nach Cloudflare Workers.
+- Der GitHub-Workflow `.github/workflows/master_vcardsba.yml` deployed automatisch bei Pushes auf `master`.
+- Lege dafür in GitHub mindestens `CLOUDFLARE_API_TOKEN` und `CLOUDFLARE_ACCOUNT_ID` als Secrets an.
 
 ## Usage
 
