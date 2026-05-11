@@ -1,18 +1,26 @@
-import { ITagRepo } from './db/ITagRepo';
-import { MssqlTagRepo } from './db/MssqlTagRepo';
-import { TursoTagRepo } from './db/TursoTagRepo';
+import type { ITagRepo } from './db/ITagRepo';
 import { getConfig } from './config';
 
 export class TagRepo {
-  private repo: ITagRepo;
+  private repoPromise?: Promise<ITagRepo>;
 
-  constructor() {
-    const config = getConfig();
-    if (config.database.provider === 'turso') {
-      this.repo = new TursoTagRepo();
-    } else {
-      this.repo = new MssqlTagRepo();
+  private getRepo(): Promise<ITagRepo> {
+    if (this.repoPromise) {
+      return this.repoPromise;
     }
+
+    this.repoPromise = (async () => {
+      const config = getConfig();
+      if (config.database.provider === 'turso') {
+        const { TursoTagRepo } = await import('./db/TursoTagRepo');
+        return new TursoTagRepo();
+      }
+
+      const { MssqlTagRepo } = await import('./db/MssqlTagRepo');
+      return new MssqlTagRepo();
+    })();
+
+    return this.repoPromise;
   }
 
   /**
@@ -46,7 +54,7 @@ export class TagRepo {
       };
     }
 
-    return this.repo.getTravelDataByTagId(tagId);
+    return (await this.getRepo()).getTravelDataByTagId(tagId);
   }
 
   /**
@@ -56,7 +64,7 @@ export class TagRepo {
    * @returns Wahr, wenn die Aktualisierung erfolgreich war
    */
   async updateTravelDataByTagId(tagId: string, updateData: Record<string, unknown>): Promise<boolean> {
-    return this.repo.updateTravelDataByTagId(tagId, updateData);
+    return (await this.getRepo()).updateTravelDataByTagId(tagId, updateData);
   }
 
   /**
@@ -67,7 +75,7 @@ export class TagRepo {
    * @returns Wahr, wenn die Registrierung erfolgreich war
    */
   async registerTagOwner(tagId: string, userId: string, userEmail: string): Promise<boolean> {
-    return this.repo.registerTagOwner(tagId, userId, userEmail);
+    return (await this.getRepo()).registerTagOwner(tagId, userId, userEmail);
   }
 
   /**
@@ -81,7 +89,7 @@ export class TagRepo {
     if (tagId === "demotag") {
       return false;
     }
-    return this.repo.verifyTagOwner(tagId, userId);
+    return (await this.getRepo()).verifyTagOwner(tagId, userId);
   }
 
   /**
@@ -93,11 +101,11 @@ export class TagRepo {
     if (tagId === "demotag") {
       return true;
     }
-    return this.repo.tagExists(tagId);
+    return (await this.getRepo()).tagExists(tagId);
   }
 
   async tagRegistered(tagId: string): Promise<boolean> {
-    return this.repo.tagRegistered(tagId);
+    return (await this.getRepo()).tagRegistered(tagId);
   }
 
   /**
@@ -106,6 +114,6 @@ export class TagRepo {
    * @returns Liste der Tags des Benutzers
    */
   async getUserTags(userId: string): Promise<unknown[]> {
-    return this.repo.getUserTags(userId);
+    return (await this.getRepo()).getUserTags(userId);
   }
 }
