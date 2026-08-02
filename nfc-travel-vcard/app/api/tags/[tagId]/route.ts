@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth';
 import { TagRepo } from '@/lib/TagRepo';
+import { internalApiError } from '@/lib/apiError';
 
 export async function GET(
   request: NextRequest,
@@ -20,11 +21,9 @@ export async function GET(
     
     return NextResponse.json(tagData);
   } catch (error) {
-    console.error('Error fetching tag data:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return internalApiError(request, 'GET /api/tags/[tagId]', error, {
+      tagId: params?.tagId,
+    });
   }
 }
 
@@ -68,10 +67,8 @@ export async function PUT(
       );
     }
   } catch (error) {
-    console.error('Error updating tag:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return internalApiError(request, 'PUT /api/tags/[tagId]', error, {
+      tagId: params?.tagId,
+    });
   }
 }

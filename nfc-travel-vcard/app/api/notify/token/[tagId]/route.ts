@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { generateSecurityToken } from '@/lib/notifySecurity';
+import { internalApiError } from '@/lib/apiError';
 
 export const runtime = 'nodejs';
 
@@ -20,10 +21,8 @@ export async function GET(
         const token = generateSecurityToken(tagId);
         return NextResponse.json({ token });
     } catch (error) {
-        console.error('Error generating security token:', error);
-        return NextResponse.json(
-            { error: 'Failed to generate security token' },
-            { status: 500 }
-        );
+        return internalApiError(request, 'GET /api/notify/token/[tagId]', error, {
+            tagId,
+        });
     }
 }

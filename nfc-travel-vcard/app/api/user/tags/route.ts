@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth';
 import { TagRepo } from '@/lib/TagRepo';
+import { internalApiError } from '@/lib/apiError';
 
 export async function GET(request: NextRequest) {
   try {
@@ -18,10 +19,6 @@ export async function GET(request: NextRequest) {
     
     return NextResponse.json(tags);
   } catch (error) {
-    console.error('Error fetching user tags:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return internalApiError(request, 'GET /api/user/tags', error);
   }
 }

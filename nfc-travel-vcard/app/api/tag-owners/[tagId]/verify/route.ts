@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth';
 import { TagRepo } from '@/lib/TagRepo';
+import { internalApiError } from '@/lib/apiError';
 
 export async function GET(
   request: NextRequest,
@@ -30,10 +31,8 @@ export async function GET(
     
     return NextResponse.json({ verified: true });
   } catch (error) {
-    console.error('Error verifying tag ownership:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return internalApiError(request, 'GET /api/tag-owners/[tagId]/verify', error, {
+      tagId: params?.tagId,
+    });
   }
 }

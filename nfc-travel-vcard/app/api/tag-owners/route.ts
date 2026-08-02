@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth';
 import { TagRepo } from '@/lib/TagRepo';
+import { internalApiError } from '@/lib/apiError';
 
 export async function POST(request: NextRequest) {
   try {
@@ -35,10 +36,6 @@ export async function POST(request: NextRequest) {
       );
     }
   } catch (error) {
-    console.error('Error registering tag:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return internalApiError(request, 'POST /api/tag-owners', error);
   }
 }

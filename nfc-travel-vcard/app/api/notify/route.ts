@@ -7,6 +7,7 @@ import { Twilio } from 'twilio';
 import { TagRepo } from '@/lib/TagRepo';
 import { verifySecurityToken } from '@/lib/notifySecurity';
 import { getConfig } from '@/lib/config';
+import { internalApiError, logApiError } from '@/lib/apiError';
 
 export const runtime = 'nodejs';
 
@@ -37,192 +38,195 @@ let cachedMailgunClient: IMailgunClient | null = null;
 let cachedTwilioClient: Twilio | null = null;
 
 export async function POST(request: NextRequest) {
-  const config = getConfig();
-  const clientIp = extractClientIp(request);
-
-  if (!consumeToken(ipLimiter, clientIp, config.rateLimit.ipLimit, config.rateLimit.ipWindowMs)) {
-    return NextResponse.json(
-      { message: 'Too many requests from this IP. Please try again later.' },
-      { status: 429 }
-    );
-  }
-
-  let body: NotifyRequestBody;
-
   try {
-    body = await request.json();
-  } catch (error) {
-    return NextResponse.json(
-      { message: 'Invalid JSON payload.' },
-      { status: 400 }
-    );
-  }
+    const config = getConfig();
+    const clientIp = extractClientIp(request);
 
-  const validationError = validateRequestBody(body);
-  if (validationError) {
-    return NextResponse.json(
-      { message: validationError },
-      { status: 400 }
-    );
-  }
-
-  const securityToken = request.headers.get('x-security-token');
-  if (!securityToken) {
-    return NextResponse.json(
-      { message: 'Missing security token.' },
-      { status: 401 }
-    );
-  }
-
-  try {
-    verifySecurityToken(securityToken, body.tagId);
-  } catch (error) {
-    return NextResponse.json(
-      { message: 'Invalid security token.' },
-      { status: 401 }
-    );
-  }
-
-  if (body.timestamp) {
-    const drift = Math.abs(Date.now() - body.timestamp);
-    if (drift > config.notification.timestampDriftMs) {
+    if (!consumeToken(ipLimiter, clientIp, config.rateLimit.ipLimit, config.rateLimit.ipWindowMs)) {
       return NextResponse.json(
-        { message: 'Notification request expired.' },
-        { status: 408 }
-      );
-    }
-  }
-
-  let captchaOk = true;
-  if (config.features.recaptchaValidation) {
-    try {
-      captchaOk = await verifyRecaptcha(body.captchaToken, config.security.recaptchaSecretKey);
-    } catch (error) {
-      console.error('reCAPTCHA error:', error);
-      return NextResponse.json(
-        { message: 'CAPTCHA verification failed.' },
-        { status: 500 }
+        { message: 'Too many requests from this IP. Please try again later.' },
+        { status: 429 }
       );
     }
 
-    if (!captchaOk) {
+    let body: NotifyRequestBody;
+
+    try {
+      body = await request.json();
+    } catch (error) {
       return NextResponse.json(
-        { message: 'CAPTCHA verification failed.' },
-        { status: 403 }
+        { message: 'Invalid JSON payload.' },
+        { status: 400 }
       );
     }
-  }
 
-  if (!consumeToken(tagLimiter, body.tagId, config.rateLimit.tagLimit, config.rateLimit.tagWindowMs)) {
-    return NextResponse.json(
-      { message: 'This tag has received too many notifications today.' },
-      { status: 429 }
-    );
-  }
-
-  const repo = new TagRepo();
-  const tagData = await repo.getTravelDataByTagId(body.tagId);
-
-  if (!tagData) {
-    return NextResponse.json(
-      { message: 'Could not find owner information.' },
-      { status: 404 }
-    );
-  }
-  //@ts-expect-error Missing type info
-  const ownerEmail = typeof tagData.ownerEmail === 'string' ? tagData.ownerEmail.trim() : '';
-  //@ts-expect-error Missing type info
-  const ownerMobile = typeof tagData.ownerMobile === 'string' ? tagData.ownerMobile.trim() : '';
-
-  const requestedChannels = normalizeChannelSelection(body.channels, {
-    email: Boolean(ownerEmail) && config.email.enabled && config.features.emailNotifications,
-    sms: Boolean(ownerMobile) && config.sms.enabled && config.features.smsNotifications
-  });
-
-  if (!requestedChannels.email && !requestedChannels.sms) {
-    return NextResponse.json(
-      { message: 'No reachable contact channel is available for this owner.' },
-      { status: 422 }
-    );
-  }
-
-  const sanitizedMessage = sanitizeMessage(body.message, config.notification.maxMessageLength);
-  const locationLink = normalizeMapUrl(body.mapUrl, body.location);
-  const warnings: string[] = [];
-
-  const channelReports: Record<ChannelKey, ChannelReport> = {
-    email: {
-      attempted: requestedChannels.email,
-      delivered: false
-    },
-    sms: {
-      attempted: requestedChannels.sms,
-      delivered: false
+    const validationError = validateRequestBody(body);
+    if (validationError) {
+      return NextResponse.json(
+        { message: validationError },
+        { status: 400 }
+      );
     }
-  };
 
-  if (requestedChannels.email && ownerEmail) {
+    const securityToken = request.headers.get('x-security-token');
+    if (!securityToken) {
+      return NextResponse.json(
+        { message: 'Missing security token.' },
+        { status: 401 }
+      );
+    }
+
     try {
-      const mailgunClient = getMailgunClient(config.email);
-      const emailData = {
-        from: config.email.fromName 
-          ? `${config.email.fromName} <${config.email.fromEmail}>`
-          : config.email.fromEmail,
-        to: [ownerEmail],
-        subject: 'Your Bag-Tag: Someone found your luggage',
-        html: buildEmailHtml(sanitizedMessage, body.tagId, body.location, locationLink),
-        text: buildEmailText(sanitizedMessage, body.tagId, body.location, locationLink)
-      };
-      
-      await mailgunClient.messages.create(config.email.domain, emailData);
-      channelReports.email.delivered = true;
+      verifySecurityToken(securityToken, body.tagId);
     } catch (error) {
-      console.error('Mailgun error:', error);
-      warnings.push(parseChannelError('Email', error));
-      channelReports.email.error = 'Email delivery failed.';
+      return NextResponse.json(
+        { message: 'Invalid security token.' },
+        { status: 401 }
+      );
     }
-  }
 
-  if (requestedChannels.sms && ownerMobile) {
-    try {
-      const smsClient = getTwilioClient(config.sms);
-      await smsClient.messages.create({
-        body: buildSmsBody(sanitizedMessage, body.tagId, locationLink),
-        to: ownerMobile,
-        from: config.sms.fromNumber
-      });
-      channelReports.sms.delivered = true;
-    } catch (error) {
-      console.error('Twilio error:', error);
-      warnings.push(parseChannelError('SMS', error));
-      channelReports.sms.error = 'SMS delivery failed.';
+    if (body.timestamp) {
+      const drift = Math.abs(Date.now() - body.timestamp);
+      if (drift > config.notification.timestampDriftMs) {
+        return NextResponse.json(
+          { message: 'Notification request expired.' },
+          { status: 408 }
+        );
+      }
     }
-  }
 
-  const delivered =
-    (channelReports.email.attempted && channelReports.email.delivered) ||
-    (channelReports.sms.attempted && channelReports.sms.delivered);
+    let captchaOk = true;
+    if (config.features.recaptchaValidation) {
+      try {
+        captchaOk = await verifyRecaptcha(body.captchaToken, config.security.recaptchaSecretKey);
+      } catch (error) {
+        logApiError(request, 'POST /api/notify recaptcha', error);
+        return NextResponse.json(
+          { message: 'CAPTCHA verification failed.' },
+          { status: 500 }
+        );
+      }
 
-  if (!delivered) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: 'Notification could not be delivered.',
-        channels: channelReports,
-        warnings
+      if (!captchaOk) {
+        return NextResponse.json(
+          { message: 'CAPTCHA verification failed.' },
+          { status: 403 }
+        );
+      }
+    }
+
+    if (!consumeToken(tagLimiter, body.tagId, config.rateLimit.tagLimit, config.rateLimit.tagWindowMs)) {
+      return NextResponse.json(
+        { message: 'This tag has received too many notifications today.' },
+        { status: 429 }
+      );
+    }
+    const repo = new TagRepo();
+    const tagData = await repo.getTravelDataByTagId(body.tagId);
+
+    if (!tagData) {
+      return NextResponse.json(
+        { message: 'Could not find owner information.' },
+        { status: 404 }
+      );
+    }
+    //@ts-expect-error Missing type info
+    const ownerEmail = typeof tagData.ownerEmail === 'string' ? tagData.ownerEmail.trim() : '';
+    //@ts-expect-error Missing type info
+    const ownerMobile = typeof tagData.ownerMobile === 'string' ? tagData.ownerMobile.trim() : '';
+
+    const requestedChannels = normalizeChannelSelection(body.channels, {
+      email: Boolean(ownerEmail) && config.email.enabled && config.features.emailNotifications,
+      sms: Boolean(ownerMobile) && config.sms.enabled && config.features.smsNotifications
+    });
+
+    if (!requestedChannels.email && !requestedChannels.sms) {
+      return NextResponse.json(
+        { message: 'No reachable contact channel is available for this owner.' },
+        { status: 422 }
+      );
+    }
+
+    const sanitizedMessage = sanitizeMessage(body.message, config.notification.maxMessageLength);
+    const locationLink = normalizeMapUrl(body.mapUrl, body.location);
+    const warnings: string[] = [];
+
+    const channelReports: Record<ChannelKey, ChannelReport> = {
+      email: {
+        attempted: requestedChannels.email,
+        delivered: false
       },
-      { status: 502 }
-    );
+      sms: {
+        attempted: requestedChannels.sms,
+        delivered: false
+      }
+    };
+
+    if (requestedChannels.email && ownerEmail) {
+      try {
+        const mailgunClient = getMailgunClient(config.email);
+        const emailData = {
+          from: config.email.fromName
+            ? `${config.email.fromName} <${config.email.fromEmail}>`
+            : config.email.fromEmail,
+          to: [ownerEmail],
+          subject: 'Your Bag-Tag: Someone found your luggage',
+          html: buildEmailHtml(sanitizedMessage, body.tagId, body.location, locationLink),
+          text: buildEmailText(sanitizedMessage, body.tagId, body.location, locationLink)
+        };
+
+        await mailgunClient.messages.create(config.email.domain, emailData);
+        channelReports.email.delivered = true;
+      } catch (error) {
+        logApiError(request, 'POST /api/notify email delivery', error);
+        warnings.push(parseChannelError('Email', error));
+        channelReports.email.error = 'Email delivery failed.';
+      }
+    }
+
+    if (requestedChannels.sms && ownerMobile) {
+      try {
+        const smsClient = getTwilioClient(config.sms);
+        await smsClient.messages.create({
+          body: buildSmsBody(sanitizedMessage, body.tagId, locationLink),
+          to: ownerMobile,
+          from: config.sms.fromNumber
+        });
+        channelReports.sms.delivered = true;
+      } catch (error) {
+        logApiError(request, 'POST /api/notify sms delivery', error);
+        warnings.push(parseChannelError('SMS', error));
+        channelReports.sms.error = 'SMS delivery failed.';
+      }
+    }
+
+    const delivered =
+      (channelReports.email.attempted && channelReports.email.delivered) ||
+      (channelReports.sms.attempted && channelReports.sms.delivered);
+
+    if (!delivered) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Notification could not be delivered.',
+          channels: channelReports,
+          warnings
+        },
+        { status: 502 }
+      );
+    }
+
+    const successMessage = buildSuccessMessage(channelReports);
+
+    return NextResponse.json({
+      success: true,
+      message: successMessage,
+      channels: channelReports,
+      warnings: warnings.length ? warnings : undefined
+    });
+  } catch (error) {
+    return internalApiError(request, 'POST /api/notify', error);
   }
-
-  const successMessage = buildSuccessMessage(channelReports);
-
-  return NextResponse.json({
-    success: true,
-    message: successMessage,
-    channels: channelReports,
-    warnings: warnings.length ? warnings : undefined
-  });
 }
 
 function validateRequestBody(body: Partial<NotifyRequestBody>): string | null {

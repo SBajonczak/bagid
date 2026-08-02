@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { TagRepo } from '@/lib/TagRepo';
+import { internalApiError } from '@/lib/apiError';
 
 export async function GET(
   request: NextRequest,
@@ -30,10 +31,8 @@ export async function GET(
       registered: isRegistered
     });
   } catch (error) {
-    console.error('Error checking tag:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return internalApiError(request, 'GET /api/tags/[tagId]/exists', error, {
+      tagId: params?.tagId,
+    });
   }
 }
