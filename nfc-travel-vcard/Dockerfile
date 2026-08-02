@@ -29,7 +29,8 @@ COPY <<EOF /etc/supervisor.d/services.ini
 nodaemon=true
 
 [program:ui]
-command=npm start -- -p 3000
+environment=PUBLIC_PORT="8090"
+command=npm start -- -H 0.0.0.0 -p 3000
 stdout_logfile=/dev/stdout
 stdout_logfile_maxbytes=0
 stderr_logfile=/dev/stderr
