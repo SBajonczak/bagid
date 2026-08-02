@@ -21,7 +21,7 @@ export async function GET(
         const token = generateSecurityToken(tagId);
         return NextResponse.json({ token });
     } catch (error) {
-        return internalApiError(request, 'GET /api/notify/token/[tagId]', error, {
+        return internalApiError(_request, 'GET /api/notify/token/[tagId]', error, {
             tagId,
         });
     }
