@@ -12,7 +12,6 @@ on:
 jobs:
 
   docker:
-    description: Create the container image and push it to Docker Hub
     runs-on: ubuntu-latest
     permissions:
       contents: read
