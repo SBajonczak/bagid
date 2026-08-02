@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import JsonLd from '@/app/components/JsonLd';
 import { 
   TldrSection, 
@@ -111,7 +110,7 @@ export default function SecurityPrivacyPage() {
 
           <h1 className="text-4xl font-bold mb-6">Security & Privacy: Your Data is Safe With Us</h1>
           <p className="text-lg mb-8">
-            Your trust is important to us. That's why we do everything to protect your data and give you full control over your privacy. Here you can find out everything about our security standards.
+            Your trust is important to us. That&apos;s why we do everything to protect your data and give you full control over your privacy. Here you can find out everything about our security standards.
           </p>
 
           <TldrSection

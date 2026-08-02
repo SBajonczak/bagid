@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { useCallback } from 'react';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import 'dayjs/locale/de';
@@ -34,16 +35,16 @@ const TravelCardEdit: React.FC = () => {
     const [isTagOwner, setIsTagOwner] = useState<boolean>(false);
 
     // Add a ref to track if we've already checked auth for this tagId
-    const authCheckedRef = React.useRef<{[key: string]: boolean}>({});
-    
+    const authCheckedRef = React.useRef<{ [key: string]: boolean }>({});
+
     // Add a ref to prevent cleanup actions from causing re-rendering loops
     const isComponentMounted = React.useRef<boolean>(true);
 
     // Check authentication and tag ownership
-    const checkAuthentication = async () => {
+    const checkAuthentication = useCallback(async () => {
         // Prevent running if the component is unmounting
         if (!isComponentMounted.current) return;
-        
+
         setCheckingAuth(true);
 
         const isAuth = authService.isAuthenticated();
@@ -60,8 +61,9 @@ const TravelCardEdit: React.FC = () => {
                 setUserEmail(user.email);
             }
 
+            const isDemoRequest = tagId === 'demo';
             // Skip tag ownership check for demo
-            if (isDemoRequest()) {
+            if (isDemoRequest) {
                 setIsTagOwner(true);
                 setCheckingAuth(false);
                 return;
@@ -70,7 +72,7 @@ const TravelCardEdit: React.FC = () => {
             // Check if the user is the owner of the tag
             const token = await authService.getIdToken();
             console.log('Checking tag ownership for tagId:', tagId, 'with token:', token);
-            
+
             try {
                 const response = await fetch(`/api/tag-owners/${tagId}/verify`, {
                     headers: {
@@ -106,7 +108,7 @@ const TravelCardEdit: React.FC = () => {
             setIsTagOwner(false);
             setCheckingAuth(false);
         }
-    };
+    }, [tagId]);
 
     useEffect(() => {
         // Only check authentication if we haven't checked for this tagId yet
@@ -114,12 +116,12 @@ const TravelCardEdit: React.FC = () => {
             authCheckedRef.current[tagId] = true;
             checkAuthentication();
         }
-        
+
         // Set up cleanup to prevent state updates after unmount
         return () => {
             isComponentMounted.current = false;
         };
-    }, [tagId]);
+    }, [checkAuthentication, tagId]);
 
     // Handle auth state changes
     const handleAuthStateChange = () => {
@@ -135,8 +137,9 @@ const TravelCardEdit: React.FC = () => {
 
     // Fetch data from the API
     useEffect(() => {
+        const isDemoRequest = tagId === 'demo';
         // Only fetch data if user is authenticated and owns the tag, or if it's a demo
-        if ((isAuthenticated && isTagOwner) || isDemoRequest()) {
+        if ((isAuthenticated && isTagOwner) || isDemoRequest) {
             const fetchTravelData = async () => {
                 if (tagId) {
                     try {
@@ -248,9 +251,6 @@ const TravelCardEdit: React.FC = () => {
         }
     };
 
-    function isDemoRequest(): boolean {
-        return tagId === "demo";
-    }
 
     // Show loading spinner
     if (checkingAuth) {
@@ -267,7 +267,7 @@ const TravelCardEdit: React.FC = () => {
     // Show login component if not authenticated
     if (!isAuthenticated) {
         return (
-            <AuthRequired 
+            <AuthRequired
                 type="unauthenticated"
                 onLogin={handleLogin}
                 onCancel={handleCancel}
@@ -279,7 +279,7 @@ const TravelCardEdit: React.FC = () => {
     // Show unauthorized component if not tag owner
     if (!isTagOwner && !isDemoRequest()) {
         return (
-            <AuthRequired 
+            <AuthRequired
                 type="unauthorized"
                 onLogin={handleLogin}
                 onCancel={handleCancel}
@@ -328,7 +328,7 @@ const TravelCardEdit: React.FC = () => {
                         {error}
                     </div>
                 )}
-                
+
                 <div className="flex justify-between mt-4 gap-4">
                     <button
                         type="button"
@@ -352,7 +352,7 @@ const TravelCardEdit: React.FC = () => {
                 <h3 className="px-3 py-2 m-0 font-semibold bg-blue-700 text-white">
                     {t.tagDetails || "Tag Details"}
                 </h3>
-                
+
                 {/* Tag details section hint */}
                 <div className="bg-gray-100 p-2 text-gray-700 text-sm mb-2">
                     {t.tagDetailsHint || "Hier können Sie einen Namen für diesen Tag eingeben, der in Ihrem Dashboard angezeigt wird."}
@@ -378,7 +378,7 @@ const TravelCardEdit: React.FC = () => {
                 <h3 className="px-3 py-2 m-0 font-semibold bg-blue-700 text-white">
                     {t.about}
                 </h3>
-                
+
                 {/* Owner information section hint */}
                 <div className="bg-gray-100 p-2 text-gray-700 text-sm mb-2">
                     {t.ownerInfoHint || "Geben Sie hier Ihre Kontaktdaten als Eigentümer des Gepäcks ein."}
@@ -466,7 +466,7 @@ const TravelCardEdit: React.FC = () => {
 
             <section className="mb-8">
                 <h3 className="bg-blue-700 text-white my-4 font-semibold px-3 py-2 m-0">{t.travelData}</h3>
-                
+
                 {/* Travel information section hint */}
                 <div className="bg-gray-100 p-2 text-gray-700 text-sm mb-2">
                     {t.travelDataHint || "Informationen zu Ihrer Reise wie Transportmittel, Flugnummer oder Zugnummer und Datum."}
@@ -510,7 +510,7 @@ const TravelCardEdit: React.FC = () => {
 
             <section className="mb-8">
                 <h3 className="bg-blue-700 text-white px-3 py-2 m-0 font-semibold">{t.guide}</h3>
-                
+
                 {/* Guide information section hint */}
                 <div className="bg-gray-100 p-2 text-gray-700 text-sm mb-2">
                     {t.guideInfoHint || "Kontaktdaten Ihres Reiseleiters oder einer Kontaktperson am Zielort."}
@@ -576,7 +576,7 @@ const TravelCardEdit: React.FC = () => {
 
             <section>
                 <h3 className="bg-blue-700 text-white px-3 py-2 m-0 font-semibold">{t.destinationaddress}</h3>
-                
+
                 {/* Destination address section hint */}
                 <div className="bg-gray-100 p-2 text-gray-700 text-sm mb-2">
                     {t.destinationAddressHint || "Informationen zu Ihrer Unterkunft am Zielort."}
@@ -606,7 +606,7 @@ const TravelCardEdit: React.FC = () => {
                     </div>
                 </div>
             </section>
-            
+
             <div className="mt-6 flex justify-between gap-4">
                 <button
                     type="button"

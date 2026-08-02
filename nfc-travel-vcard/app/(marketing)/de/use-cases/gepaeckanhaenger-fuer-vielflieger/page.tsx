@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import JsonLd from '@/app/components/JsonLd';
 import { TldrSection, RelatedLinksSection, CtaSection, Breadcrumb } from '@/app/components/ContentComponents';
 
@@ -375,7 +374,7 @@ export default function GepäckanhängerFürVielfliegePage() {
 
               <div className="bg-green-50 border-l-4 border-green-600 p-6 rounded-r-lg">
                 <h3 className="font-semibold text-green-900 mb-3">
-                  So läuft's bei Gepäckverlust mit Bag-Tag:
+                  So läuft&apos;s bei Gepäckverlust mit Bag-Tag:
                 </h3>
                 <ol className="space-y-3">
                   <li className="flex items-start">

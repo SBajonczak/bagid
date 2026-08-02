@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import JsonLd from '@/app/components/JsonLd';
 import { TldrSection, RelatedLinksSection, CtaSection, Breadcrumb } from '@/app/components/ContentComponents';
 
@@ -260,7 +259,7 @@ export default function GepäckanhängerFürFamilienPage() {
                   </h3>
                   <p>
                     Jedes Familienmitglied kann seinen eigenen Tag mit individuellen Infos haben: 
-                    „Papa – Kontakt: mobil", „Lena (8 Jahre) – Kontakt: Eltern".
+                    „Papa – Kontakt: mobil", „Lena (8 Jahre) – Kontakt: Eltern.
                   </p>
                 </div>
 

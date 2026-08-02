@@ -58,7 +58,7 @@ export function verifySecurityToken(token: string, expectedTagId: string): Secur
 
   try {
     payload = JSON.parse(Buffer.from(token, 'base64').toString());
-  } catch (error) {
+  } catch {
     throw new Error('Malformed security token.');
   }
 

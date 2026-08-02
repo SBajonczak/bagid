@@ -1,8 +1,3 @@
-/**
- * Content Page Components
- * Reusable components for Info Hub pages
- */
-
 import React from 'react';
 import Link from 'next/link';
 import { ChevronRight, ShoppingBag, Info } from 'lucide-react';
@@ -161,7 +156,6 @@ export function CtaSection({
   secondaryHref?: string;
 }) {
   // Support both old and new interface
-  const mainText = title || description || 'Bereit loszulegen?';
   const mainButtonText = buttonText || primaryText || 'Jetzt kaufen';
   const mainButtonHref = buttonLink || primaryHref || 'https://bag-tag.de/de#shop';
   const hasSecondary = secondaryText && secondaryHref;

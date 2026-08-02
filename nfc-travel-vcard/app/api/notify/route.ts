@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
 
     try {
       body = await request.json();
-    } catch (error) {
+    } catch {
       return NextResponse.json(
         { message: 'Invalid JSON payload.' },
         { status: 400 }
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
 
     try {
       verifySecurityToken(securityToken, body.tagId);
-    } catch (error) {
+    } catch {
       return NextResponse.json(
         { message: 'Invalid security token.' },
         { status: 401 }

@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import JsonLd from '@/app/components/JsonLd';
 import { 
   TldrSection, 
@@ -141,7 +140,7 @@ export default function HowItWorksPage() {
             <section id="protected">
               <h2 className="text-3xl font-semibold mb-4">Step 4: Travel with Peace of Mind</h2>
               <p>
-                That's it! Your luggage is now protected. If it gets lost, the finder can scan the tag and contact you via our secure system. Your personal data remains hidden.
+                That&apos;s it! Your luggage is now protected. If it gets lost, the finder can scan the tag and contact you via our secure system. Your personal data remains hidden.
               </p>
             </section>
           </div>

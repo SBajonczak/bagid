@@ -2,14 +2,13 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import JsonLd from '@/app/components/JsonLd';
 import { 
-  TldrSection, 
   RelatedLinksSection, 
   CtaSection,
   Breadcrumb 
 } from '@/app/components/ContentComponents';
 import { getRelatedLinks } from '@/lib/linkMap';
 import { generateBreadcrumbSchema } from '@/lib/schema-utils';
-import { BookOpen, Smartphone, HelpCircle, Settings, RefreshCw, QrCode, CheckCircle } from 'lucide-react';
+import { Smartphone, HelpCircle, Settings, RefreshCw, QrCode, CheckCircle } from 'lucide-react';
 
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'Help & Activation | Bag-Tag';
