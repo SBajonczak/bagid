@@ -5,8 +5,107 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '../../components/AuthProvider';
 import { useLanguage } from '../../components/LanguageProvider';
 import { messages } from '@/lib/i18n';
+import { FlightLeg } from '@/lib/types';
 import NavigationBar from '../../components/NavigationBar';
 import Footer from '../../components/Footer';
+
+const emptyLeg = (type: 'outbound' | 'return'): FlightLeg => ({
+    journeyType: type,
+    sequence: 1,
+    carrier: '',
+    flightNumber: '',
+    departureAirport: '',
+    departureDatetime: '',
+    arrivalAirport: '',
+    arrivalDatetime: '',
+});
+
+interface FlightLegsSectionProps {
+    legs: FlightLeg[];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    tfl: Record<string, any>;
+    onAddLeg: (type: 'outbound' | 'return') => void;
+    onRemoveLeg: (idx: number) => void;
+    onChangeLeg: (idx: number, field: keyof FlightLeg, value: string) => void;
+}
+
+const inputCls = 'w-full rounded-xl border border-slate-200 px-3 py-2 text-sm shadow-sm focus:border-slate-900 focus:outline-none';
+
+const FlightLegsSection: React.FC<FlightLegsSectionProps> = ({ legs, tfl, onAddLeg, onRemoveLeg, onChangeLeg }) => {
+    const renderLegs = (type: 'outbound' | 'return', typeLabel: string, addLabel: string) => {
+        const typed = legs.map((l, i) => ({ l, i })).filter(({ l }) => l.journeyType === type);
+        return (
+            <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                    <h3 className="text-base font-semibold text-slate-800">{typeLabel}</h3>
+                    <button
+                        type="button"
+                        onClick={() => onAddLeg(type)}
+                        className="rounded-lg bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-700 hover:bg-blue-100 transition-colors"
+                    >
+                        + {addLabel}
+                    </button>
+                </div>
+                {typed.map(({ l, i }, segIdx) => (
+                    <div key={i} className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-3">
+                        <div className="flex items-center justify-between mb-1">
+                            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                                {tfl.segment} {segIdx + 1}
+                            </span>
+                            <button
+                                type="button"
+                                onClick={() => onRemoveLeg(i)}
+                                className="text-xs text-red-500 hover:text-red-700"
+                            >
+                                {tfl.remove}
+                            </button>
+                        </div>
+                        <div className="grid grid-cols-2 gap-3">
+                            <div>
+                                <label className="block text-xs font-medium text-slate-600 mb-1">{tfl.carrier}</label>
+                                <input type="text" value={l.carrier} onChange={e => onChangeLeg(i, 'carrier', e.target.value)} className={inputCls} />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-medium text-slate-600 mb-1">{tfl.flightNumber}</label>
+                                <input type="text" value={l.flightNumber} onChange={e => onChangeLeg(i, 'flightNumber', e.target.value)} className={inputCls} placeholder="LH 400" />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-medium text-slate-600 mb-1">{tfl.depAirport}</label>
+                                <input type="text" value={l.departureAirport} onChange={e => onChangeLeg(i, 'departureAirport', e.target.value)} className={inputCls} placeholder="FRA" maxLength={4} />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-medium text-slate-600 mb-1">{tfl.depTime}</label>
+                                <input type="datetime-local" value={l.departureDatetime ? l.departureDatetime.slice(0, 16) : ''} onChange={e => onChangeLeg(i, 'departureDatetime', e.target.value)} className={inputCls} />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-medium text-slate-600 mb-1">{tfl.arrAirport}</label>
+                                <input type="text" value={l.arrivalAirport} onChange={e => onChangeLeg(i, 'arrivalAirport', e.target.value)} className={inputCls} placeholder="JFK" maxLength={4} />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-medium text-slate-600 mb-1">{tfl.arrTime}</label>
+                                <input type="datetime-local" value={l.arrivalDatetime ? l.arrivalDatetime.slice(0, 16) : ''} onChange={e => onChangeLeg(i, 'arrivalDatetime', e.target.value)} className={inputCls} />
+                            </div>
+                        </div>
+                    </div>
+                ))}
+                {typed.length === 0 && (
+                    <p className="text-sm text-slate-400 italic">{tfl.noLegs}</p>
+                )}
+            </div>
+        );
+    };
+
+    return (
+        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900 mb-6">{tfl.title}</h2>
+            <div className="space-y-8">
+                {renderLegs('outbound', tfl.outbound, tfl.addOutbound)}
+                <hr className="border-slate-200" />
+                {renderLegs('return', tfl.return, tfl.addReturn)}
+            </div>
+        </section>
+    );
+};
 
 
 interface TravelCardEditClientProps {
@@ -22,6 +121,7 @@ const TravelCardEditClient: React.FC<TravelCardEditClientProps> = ({ tagId }) =>
     const [isOwner, setIsOwner] = useState(false);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
+    const [flightLegs, setFlightLegs] = useState<FlightLeg[]>([]);
     const [formData, setFormData] = useState({
         tagName: '',
         transportation:'',
@@ -45,9 +145,11 @@ const TravelCardEditClient: React.FC<TravelCardEditClientProps> = ({ tagId }) =>
     const ownerFullName = [formData.ownerFirstName, formData.ownerLastName].filter(Boolean).join(' ');
 
     const loadTagData = async (tagid: string, token: string) => {
-        // Fetch tag data
-        const headers: RequestInit | undefined = token != null ? { headers: { 'Authorization': `Bearer ${token}` } } : undefined;
-        const dataResponse = await fetch(`/api/tags/${tagid}`, headers);
+        const authHeaders = { headers: { 'Authorization': `Bearer ${token}` } };
+        const [dataResponse, legsResponse] = await Promise.all([
+            fetch(`/api/tags/${tagid}`, authHeaders),
+            fetch(`/api/tags/${tagid}/flights`),
+        ]);
 
         if (dataResponse.ok) {
             const data = await dataResponse.json();
@@ -55,9 +157,15 @@ const TravelCardEditClient: React.FC<TravelCardEditClientProps> = ({ tagId }) =>
                 data.transportation= data.transportationProvider;
             if (data.transportationNumber==null)
                 data.transportationNumber=data.transportationDetails;
+            if (data.transportationDate)
+                data.transportationDate = data.transportationDate.toString().slice(0, 10);
             setFormData(prev => ({ ...prev, ...data }));
         }
 
+        if (legsResponse.ok) {
+            const legs: FlightLeg[] = await legsResponse.json();
+            setFlightLegs(legs);
+        }
     };
 
     useEffect(() => {
@@ -100,10 +208,19 @@ const TravelCardEditClient: React.FC<TravelCardEditClientProps> = ({ tagId }) =>
 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleAddLeg = (type: 'outbound' | 'return') => {
+        setFlightLegs(prev => [...prev, emptyLeg(type)]);
+    };
+
+    const handleRemoveLeg = (idx: number) => {
+        setFlightLegs(prev => prev.filter((_, i) => i !== idx));
+    };
+
+    const handleLegChange = (idx: number, field: keyof FlightLeg, value: string) => {
+        setFlightLegs(prev => prev.map((leg, i) => i === idx ? { ...leg, [field]: value } : leg));
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -112,16 +229,20 @@ const TravelCardEditClient: React.FC<TravelCardEditClientProps> = ({ tagId }) =>
 
         try {
             const token = await getToken();
-            const response = await fetch(`/api/tags/${tagId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify(formData)
-            });
+            const [fieldsRes, flightsRes] = await Promise.all([
+                fetch(`/api/tags/${tagId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify(formData),
+                }),
+                fetch(`/api/tags/${tagId}/flights`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ legs: flightLegs }),
+                }),
+            ]);
 
-            if (response.ok) {
+            if (fieldsRes.ok && flightsRes.ok) {
                 alert(t.saveSuccess);
                 router.push(`/${tagId}`);
             } else {
@@ -373,6 +494,14 @@ const TravelCardEditClient: React.FC<TravelCardEditClientProps> = ({ tagId }) =>
                                     </div>
                                 </div>
                             </section>
+
+                            <FlightLegsSection
+                                legs={flightLegs}
+                                tfl={messages[lang].flightLegs}
+                                onAddLeg={handleAddLeg}
+                                onRemoveLeg={handleRemoveLeg}
+                                onChangeLeg={handleLegChange}
+                            />
 
                             <div className="flex flex-col gap-3 sm:flex-row">
                                 <button

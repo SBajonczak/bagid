@@ -1,3 +1,16 @@
+export interface FlightLeg {
+  id?: number;
+  tagId?: string;
+  journeyType: 'outbound' | 'return';
+  sequence: number;
+  carrier: string;
+  flightNumber: string;
+  departureAirport: string;
+  departureDatetime: string;
+  arrivalAirport: string;
+  arrivalDatetime: string;
+}
+
 // Add tagName to the TravelData interface
 export interface TravelData {
   // ...existing fields...

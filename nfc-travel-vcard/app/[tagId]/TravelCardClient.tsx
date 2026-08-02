@@ -8,7 +8,7 @@ import 'dayjs/locale/de';
 import 'dayjs/locale/en';
 import { useLanguage } from '../components/LanguageProvider';
 import { messages } from '@/lib/i18n';
-import { TravelData } from '@/lib/types';
+import { TravelData, FlightLeg } from '@/lib/types';
 import NotificationModal from '../components/Tag/NotificationModal';
 import NavigationBar from '../components/NavigationBar';
 import Footer from '../components/Footer';
@@ -71,6 +71,7 @@ const TravelCardClient: React.FC<TravelCardClientProps> = ({ tagId }) => {
     const t = messages[lang].travelCard;
 
     const [travelData, setTravelData] = useState<Partial<TravelData> | null>(null);
+    const [flightLegs, setFlightLegs] = useState<FlightLeg[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [tagRegistered, setTagRegistered] = useState<boolean>(false);
@@ -122,17 +123,25 @@ const TravelCardClient: React.FC<TravelCardClientProps> = ({ tagId }) => {
     useEffect(() => {        
         const fetchTravelData = async () => {
             if (!tagRegistered) return;
-            
+
             try {
                 setLoading(true);
-                const response = await fetch(`/api/tags/${tagId}`);
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                const [dataRes, legsRes] = await Promise.all([
+                    fetch(`/api/tags/${tagId}`),
+                    fetch(`/api/tags/${tagId}/flights`),
+                ]);
+
+                if (!dataRes.ok) {
+                    throw new Error(`HTTP error! status: ${dataRes.status}`);
                 }
-                
-                const data = await response.json();
+
+                const data = await dataRes.json();
                 setTravelData(data);
+
+                if (legsRes.ok) {
+                    const legs: FlightLeg[] = await legsRes.json();
+                    setFlightLegs(legs);
+                }
             } catch (err) {
                 console.error('Error fetching travel data:', err);
                 setError(t.noData || 'Could not load travel data');
@@ -180,6 +189,41 @@ const TravelCardClient: React.FC<TravelCardClientProps> = ({ tagId }) => {
             </div>
         );
     }
+
+    const getRelevantJourney = (legs: FlightLeg[]): { type: 'outbound' | 'return'; legs: FlightLeg[] } | null => {
+        if (legs.length === 0) return null;
+        const now = new Date();
+        const outbound = legs.filter(l => l.journeyType === 'outbound').sort((a, b) => a.sequence - b.sequence);
+        const returnLegs = legs.filter(l => l.journeyType === 'return').sort((a, b) => a.sequence - b.sequence);
+
+        const getWindow = (journeyLegs: FlightLeg[]) => {
+            if (!journeyLegs.length) return null;
+            const from = new Date(new Date(journeyLegs[0].departureDatetime).getTime() - 24 * 3600 * 1000);
+            const until = new Date(new Date(journeyLegs[journeyLegs.length - 1].arrivalDatetime).getTime() + 24 * 3600 * 1000);
+            return { from, until };
+        };
+
+        const outWin = getWindow(outbound);
+        const retWin = getWindow(returnLegs);
+
+        if (retWin && now >= retWin.from && now <= retWin.until) return { type: 'return', legs: returnLegs };
+        if (outWin && now >= outWin.from && now <= outWin.until) return { type: 'outbound', legs: outbound };
+
+        // No active journey: pick the most recently started one
+        type Candidate = { from: Date; type: 'outbound' | 'return'; legs: FlightLeg[] };
+        const candidates: Candidate[] = [];
+        if (outWin && outWin.from <= now) candidates.push({ from: outWin.from, type: 'outbound', legs: outbound });
+        if (retWin && retWin.from <= now) candidates.push({ from: retWin.from, type: 'return', legs: returnLegs });
+
+        if (candidates.length === 0) {
+            return outbound.length ? { type: 'outbound', legs: outbound } : (returnLegs.length ? { type: 'return', legs: returnLegs } : null);
+        }
+        candidates.sort((a, b) => b.from.getTime() - a.from.getTime());
+        return { type: candidates[0].type, legs: candidates[0].legs };
+    };
+
+    const relevantJourney = getRelevantJourney(flightLegs);
+    const tfl = messages[lang].flightLegs;
 
     const localeMessages = messages[lang];
     const marketingCopy = localeMessages.noDataSection;
@@ -310,6 +354,39 @@ const TravelCardClient: React.FC<TravelCardClientProps> = ({ tagId }) => {
                             <InfoPanel title={t.destinationaddress} icon={MapPin} rows={destinationRows} />
                             <InfoPanel title={t.guide} icon={ShieldCheck} rows={guideRows} />
                         </div>
+
+                        {relevantJourney && (
+                            <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                                <div className="mb-4 flex items-center gap-3">
+                                    <span className="rounded-full bg-slate-900/90 p-2 text-white">
+                                        <Plane className="h-5 w-5" aria-hidden="true" />
+                                    </span>
+                                    <h3 className="text-lg font-semibold text-slate-900">
+                                        {tfl.title} – {relevantJourney.type === 'outbound' ? tfl.outbound : tfl.return}
+                                    </h3>
+                                </div>
+                                <div className="space-y-3">
+                                    {relevantJourney.legs.map((leg, idx) => (
+                                        <div key={idx} className="rounded-xl border border-slate-100 bg-slate-50 px-4 py-3">
+                                            <div className="text-xs font-semibold uppercase tracking-wide text-slate-400 mb-1">
+                                                {tfl.segment} {idx + 1}
+                                            </div>
+                                            <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
+                                                {leg.carrier && <span>{leg.carrier}</span>}
+                                                {leg.flightNumber && <span className="text-slate-500">· {leg.flightNumber}</span>}
+                                            </div>
+                                            <div className="mt-1 flex items-center gap-2 text-sm text-slate-600">
+                                                <span className="font-medium">{leg.departureAirport}</span>
+                                                <span>{leg.departureDatetime ? dayjs(leg.departureDatetime).format('L LT') : ''}</span>
+                                                <span className="text-slate-400">→</span>
+                                                <span className="font-medium">{leg.arrivalAirport}</span>
+                                                <span>{leg.arrivalDatetime ? dayjs(leg.arrivalDatetime).format('L LT') : ''}</span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </section>
+                        )}
 
                         {hasValue(travelData.destinationAccommodation) && (
                             <section className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">

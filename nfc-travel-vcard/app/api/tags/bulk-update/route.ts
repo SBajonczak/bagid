@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth';
 import { TagRepo } from '@/lib/TagRepo';
 import { internalApiError } from '@/lib/apiError';
+import { FlightLeg } from '@/lib/types';
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,7 +13,11 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { tagIds, data } = body as { tagIds: string[]; data: Record<string, string> };
+    const { tagIds, data, legs } = body as {
+      tagIds: string[];
+      data: Record<string, string>;
+      legs?: FlightLeg[];
+    };
 
     if (!Array.isArray(tagIds) || tagIds.length === 0) {
       return NextResponse.json({ error: 'No tagIds provided' }, { status: 400 });
@@ -33,7 +38,17 @@ export async function POST(request: NextRequest) {
         failed.push(tagId);
         continue;
       }
-      const success = await repo.updateTravelDataByTagId(tagId, filteredData);
+
+      let success = true;
+
+      if (Object.keys(filteredData).length > 0) {
+        success = await repo.updateTravelDataByTagId(tagId, filteredData);
+      }
+
+      if (success && legs !== undefined) {
+        await repo.setFlightLegs(tagId, legs);
+      }
+
       if (success) {
         updated++;
       } else {

@@ -1,6 +1,7 @@
 import { ITagRepo } from './db/ITagRepo';
 import { MssqlTagRepo } from './db/MssqlTagRepo';
 import { TursoTagRepo } from './db/TursoTagRepo';
+import { FlightLeg } from './types';
 import { getConfig } from './config';
 
 export class TagRepo {
@@ -107,5 +108,26 @@ export class TagRepo {
    */
   async getUserTags(userId: string): Promise<unknown[]> {
     return this.repo.getUserTags(userId);
+  }
+
+  async getFlightLegs(tagId: string): Promise<FlightLeg[]> {
+    if (tagId === 'demo') {
+      const now = new Date();
+      const d = (offsetDays: number) => {
+        const d = new Date(now);
+        d.setDate(d.getDate() + offsetDays);
+        return d.toISOString();
+      };
+      return [
+        { journeyType: 'outbound', sequence: 1, carrier: 'Lufthansa', flightNumber: 'LH 400', departureAirport: 'FRA', departureDatetime: d(-1), arrivalAirport: 'JFK', arrivalDatetime: d(0) },
+        { journeyType: 'outbound', sequence: 2, carrier: 'United', flightNumber: 'UA 500', departureAirport: 'JFK', departureDatetime: d(0), arrivalAirport: 'LAX', arrivalDatetime: d(1) },
+        { journeyType: 'return', sequence: 1, carrier: 'Lufthansa', flightNumber: 'LH 401', departureAirport: 'LAX', departureDatetime: d(14), arrivalAirport: 'FRA', arrivalDatetime: d(15) },
+      ];
+    }
+    return this.repo.getFlightLegs(tagId);
+  }
+
+  async setFlightLegs(tagId: string, legs: FlightLeg[]): Promise<boolean> {
+    return this.repo.setFlightLegs(tagId, legs);
   }
 }

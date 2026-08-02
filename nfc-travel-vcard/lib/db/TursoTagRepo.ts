@@ -1,5 +1,6 @@
 import { createClient, Client } from '@libsql/client';
 import { ITagRepo } from './ITagRepo';
+import { FlightLeg } from '../types';
 import { getConfig } from '../config';
 
 export class TursoTagRepo implements ITagRepo {
@@ -211,6 +212,66 @@ export class TursoTagRepo implements ITagRepo {
       args: [tagId]
     });
     return result.rows.length > 0;
+  }
+
+  private async ensureFlightLegsTable(): Promise<void> {
+    const client = this.getClient();
+    await client.execute({
+      sql: `CREATE TABLE IF NOT EXISTS FlightLegs (
+        ID INTEGER PRIMARY KEY AUTOINCREMENT,
+        TagID TEXT NOT NULL,
+        JourneyType TEXT NOT NULL,
+        Sequence INTEGER NOT NULL,
+        Carrier TEXT,
+        FlightNumber TEXT,
+        DepartureAirport TEXT,
+        DepartureDatetime TEXT,
+        ArrivalAirport TEXT,
+        ArrivalDatetime TEXT
+      )`,
+      args: []
+    });
+  }
+
+  async getFlightLegs(tagId: string): Promise<FlightLeg[]> {
+    await this.ensureFlightLegsTable();
+    const client = this.getClient();
+    const rs = await client.execute({
+      sql: `SELECT ID as id, TagID as tagId, JourneyType as journeyType, Sequence as sequence,
+                   Carrier as carrier, FlightNumber as flightNumber,
+                   DepartureAirport as departureAirport, DepartureDatetime as departureDatetime,
+                   ArrivalAirport as arrivalAirport, ArrivalDatetime as arrivalDatetime
+            FROM FlightLegs WHERE TagID = ? ORDER BY JourneyType, Sequence`,
+      args: [tagId]
+    });
+    return rs.rows as unknown as FlightLeg[];
+  }
+
+  async setFlightLegs(tagId: string, legs: FlightLeg[]): Promise<boolean> {
+    await this.ensureFlightLegsTable();
+    const client = this.getClient();
+    const stmts = [
+      { sql: 'DELETE FROM FlightLegs WHERE TagID = ?', args: [tagId] },
+      ...legs.map((leg, i) => ({
+        sql: `INSERT INTO FlightLegs
+              (TagID, JourneyType, Sequence, Carrier, FlightNumber,
+               DepartureAirport, DepartureDatetime, ArrivalAirport, ArrivalDatetime)
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        args: [
+          tagId,
+          leg.journeyType,
+          i + 1,
+          leg.carrier || null,
+          leg.flightNumber || null,
+          leg.departureAirport || null,
+          leg.departureDatetime ? new Date(leg.departureDatetime).toISOString() : null,
+          leg.arrivalAirport || null,
+          leg.arrivalDatetime ? new Date(leg.arrivalDatetime).toISOString() : null,
+        ]
+      }))
+    ];
+    await client.batch(stmts, 'write');
+    return true;
   }
 
   async getUserTags(userId: string): Promise<unknown[]> {

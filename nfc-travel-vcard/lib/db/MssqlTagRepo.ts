@@ -1,5 +1,6 @@
 import sql from 'mssql';
 import { ITagRepo } from './ITagRepo';
+import { FlightLeg } from '../types';
 import { getConfig } from '../config';
 
 export class MssqlTagRepo implements ITagRepo {
@@ -295,6 +296,75 @@ export class MssqlTagRepo implements ITagRepo {
       return result.recordset.length > 0;
     } catch (error) {
       console.error('Fehler bei der Überprüfung, ob ein Tag existiert:', error);
+      throw error;
+    }
+  }
+
+  async getFlightLegs(tagId: string): Promise<FlightLeg[]> {
+    try {
+      const pool = await this.getPool();
+      const result = await pool.request()
+        .input('tagId', sql.UniqueIdentifier, tagId)
+        .query(`
+          SELECT ID as id, TagID as tagId, JourneyType as journeyType, Sequence as sequence,
+                 Carrier as carrier, FlightNumber as flightNumber,
+                 DepartureAirport as departureAirport, DepartureDatetime as departureDatetime,
+                 ArrivalAirport as arrivalAirport, ArrivalDatetime as arrivalDatetime
+          FROM FlightLegs
+          WHERE TagID = @tagId
+          ORDER BY JourneyType, Sequence
+        `);
+      await pool.close();
+      return result.recordset.map((row: Record<string, unknown>) => ({
+        ...row,
+        departureDatetime: row.departureDatetime ? new Date(row.departureDatetime as string).toISOString() : '',
+        arrivalDatetime: row.arrivalDatetime ? new Date(row.arrivalDatetime as string).toISOString() : '',
+      })) as FlightLeg[];
+    } catch (error) {
+      console.error('Fehler beim Abrufen der Flugreisen:', error);
+      throw error;
+    }
+  }
+
+  async setFlightLegs(tagId: string, legs: FlightLeg[]): Promise<boolean> {
+    try {
+      const pool = await this.getPool();
+      const transaction = new sql.Transaction(pool);
+      await transaction.begin();
+      try {
+        await transaction.request()
+          .input('tagId', sql.UniqueIdentifier, tagId)
+          .query('DELETE FROM FlightLegs WHERE TagID = @tagId');
+
+        for (const leg of legs) {
+          await transaction.request()
+            .input('tagId', sql.UniqueIdentifier, tagId)
+            .input('journeyType', sql.NVarChar(10), leg.journeyType)
+            .input('sequence', sql.Int, leg.sequence)
+            .input('carrier', sql.NVarChar(100), leg.carrier || null)
+            .input('flightNumber', sql.NVarChar(20), leg.flightNumber || null)
+            .input('departureAirport', sql.NVarChar(10), leg.departureAirport || null)
+            .input('departureDatetime', sql.DateTime(), leg.departureDatetime ? new Date(leg.departureDatetime) : null)
+            .input('arrivalAirport', sql.NVarChar(10), leg.arrivalAirport || null)
+            .input('arrivalDatetime', sql.DateTime(), leg.arrivalDatetime ? new Date(leg.arrivalDatetime) : null)
+            .query(`
+              INSERT INTO FlightLegs
+                (TagID, JourneyType, Sequence, Carrier, FlightNumber,
+                 DepartureAirport, DepartureDatetime, ArrivalAirport, ArrivalDatetime)
+              VALUES
+                (@tagId, @journeyType, @sequence, @carrier, @flightNumber,
+                 @departureAirport, @departureDatetime, @arrivalAirport, @arrivalDatetime)
+            `);
+        }
+        await transaction.commit();
+      } catch (err) {
+        await transaction.rollback();
+        throw err;
+      }
+      await pool.close();
+      return true;
+    } catch (error) {
+      console.error('Fehler beim Speichern der Flugreisen:', error);
       throw error;
     }
   }
