@@ -275,9 +275,10 @@ const TravelCardEdit: React.FC = () => {
             />
         );
     }
+    const isDemoRequest = tagId === 'demo';
 
     // Show unauthorized component if not tag owner
-    if (!isTagOwner && !isDemoRequest()) {
+    if (!isTagOwner && !isDemoRequest) {
         return (
             <AuthRequired
                 type="unauthorized"

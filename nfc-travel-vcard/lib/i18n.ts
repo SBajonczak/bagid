@@ -267,7 +267,20 @@ export const messages = {
                 active: "Aktiv",
                 inactive: "Inaktiv",
                 pending: "Ausstehend"
-            }
+            },
+            selectMode: "Auswählen",
+            cancelSelect: "Abbrechen",
+            bulkEdit: "Massenbearbeitung ({n})",
+        },
+        bulkEdit: {
+            title: "Massenbearbeitung",
+            notice: "{n} Tags werden aktualisiert",
+            hint: "Nur ausgefüllte Felder werden übernommen.",
+            save: "Alle speichern",
+            saving: "Wird gespeichert…",
+            success: "Alle Tags wurden aktualisiert.",
+            error: "Fehler beim Speichern.",
+            cancel: "Abbrechen",
         },
         impressum: {
             title: "Impressum",
@@ -554,7 +567,20 @@ export const messages = {
                 active: "Active",
                 inactive: "Inactive",
                 pending: "Pending"
-            }
+            },
+            selectMode: "Select",
+            cancelSelect: "Cancel",
+            bulkEdit: "Bulk Edit ({n})",
+        },
+        bulkEdit: {
+            title: "Bulk Edit",
+            notice: "{n} tags will be updated",
+            hint: "Only filled-in fields will be applied.",
+            save: "Save all",
+            saving: "Saving…",
+            success: "All tags have been updated.",
+            error: "Error saving.",
+            cancel: "Cancel",
         },
         impressum: {
             title: "Legal Notice",
@@ -838,7 +864,20 @@ export const messages = {
                 active: "Actief",
                 inactive: "Inactief",
                 pending: "In behandeling"
-            }
+            },
+            selectMode: "Selecteren",
+            cancelSelect: "Annuleren",
+            bulkEdit: "Bulk bewerken ({n})",
+        },
+        bulkEdit: {
+            title: "Bulk bewerken",
+            notice: "{n} tags worden bijgewerkt",
+            hint: "Alleen ingevulde velden worden toegepast.",
+            save: "Alles opslaan",
+            saving: "Opslaan…",
+            success: "Alle tags zijn bijgewerkt.",
+            error: "Fout bij opslaan.",
+            cancel: "Annuleren",
         },
         impressum: {
             title: "Impressum",
@@ -1121,7 +1160,20 @@ export const messages = {
                 active: "활성",
                 inactive: "비활성",
                 pending: "대기 중"
-            }
+            },
+            selectMode: "선택",
+            cancelSelect: "취소",
+            bulkEdit: "일괄 편집 ({n})",
+        },
+        bulkEdit: {
+            title: "일괄 편집",
+            notice: "{n}개 태그가 업데이트됩니다",
+            hint: "입력된 필드만 적용됩니다.",
+            save: "모두 저장",
+            saving: "저장 중…",
+            success: "모든 태그가 업데이트되었습니다.",
+            error: "저장 오류.",
+            cancel: "취소",
         },
         impressum: {
             title: "법적 고지",
@@ -1405,7 +1457,20 @@ export const messages = {
                 active: "نشط",
                 inactive: "غير نشط",
                 pending: "قيد الانتظار"
-            }
+            },
+            selectMode: "تحديد",
+            cancelSelect: "إلغاء",
+            bulkEdit: "تحرير جماعي ({n})",
+        },
+        bulkEdit: {
+            title: "تحرير جماعي",
+            notice: "سيتم تحديث {n} علامات",
+            hint: "سيتم تطبيق الحقول المملوءة فقط.",
+            save: "حفظ الكل",
+            saving: "جارٍ الحفظ…",
+            success: "تم تحديث جميع العلامات.",
+            error: "خطأ في الحفظ.",
+            cancel: "إلغاء",
         },
         impressum: {
             title: "إشعار قانوني",
@@ -1689,7 +1754,20 @@ export const messages = {
                 active: "ใช้งาน",
                 inactive: "ไม่ใช้งาน",
                 pending: "รอดำเนินการ"
-            }
+            },
+            selectMode: "เลือก",
+            cancelSelect: "ยกเลิก",
+            bulkEdit: "แก้ไขจำนวนมาก ({n})",
+        },
+        bulkEdit: {
+            title: "แก้ไขจำนวนมาก",
+            notice: "จะมีการอัปเดต {n} แท็ก",
+            hint: "จะใช้เฉพาะฟิลด์ที่กรอกเท่านั้น",
+            save: "บันทึกทั้งหมด",
+            saving: "กำลังบันทึก…",
+            success: "อัปเดตแท็กทั้งหมดแล้ว",
+            error: "เกิดข้อผิดพลาดในการบันทึก",
+            cancel: "ยกเลิก",
         },
         impressum: {
             title: "ประกาศทางกฎหมาย",
