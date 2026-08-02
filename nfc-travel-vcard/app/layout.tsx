@@ -6,14 +6,29 @@ import { LanguageProvider } from "./components/LanguageProvider";
 
 export const metadata: Metadata = {
   title: "Bag-Tag.de | Smarte NFC Gepäckanhänger für sicheres Reisen",
-  description: "Innovative NFC Gepäckanhänger zum schnellen Auffinden verlorenen Gepäcks. Moderne Reisebegleiter mit kontaktloser NFC-Technologie für alle Koffer und Taschen.",
-  keywords: "NFC Gepäckanhänger, Kofferanhänger, Gepäck ID, verlorenes Gepäck, Reisezubehör, Koffer Tag, kontaktlose Technologie, smarter Gepäckanhänger",
+  description: "Smarter NFC & QR-Code Gepäckanhänger für €10,99. Koffer verloren? Finder kontaktieren dich sofort – ohne App, ohne Batterien. DSGVO-konform. Jetzt kaufen.",
+  keywords: [
+    "NFC Gepäckanhänger",
+    "Kofferanhänger NFC",
+    "Travel Tag NFC",
+    "NFC Kofferanhänger kaufen",
+    "smarter Gepäckanhänger",
+    "Koffer verloren was tun",
+    "Gepäck verloren",
+    "Kofferanhänger mit Kontaktdaten",
+    "QR Code Gepäckanhänger",
+    "NFC luggage tag",
+    "smart luggage tag",
+    "digital bag tag",
+    "kontaktloser Gepäckanhänger",
+    "verlorenes Gepäck finden",
+  ],
   authors: [{ name: 'Bag-Tag', url: 'https://bag-tag.de' }],
   creator: 'Kreativschicht.de',
   publisher: 'Kreativschicht.de',
   openGraph: {
-    title: "Bag-Tag.de | Smarte NFC Gepäckanhänger für sicheres Reisen",
-    description: "Innovative NFC Gepäckanhänger zum schnellen Auffinden verlorenen Gepäcks.",
+    title: "Bag-Tag | Smarter NFC Gepäckanhänger – Koffer nie wieder verlieren",
+    description: "NFC & QR-Code Gepäckanhänger für €10,99. Kein App-Download, keine Batterien. Finder kontaktieren dich sofort. DSGVO-konform.",
     type: "website",
     locale: "de_DE",
     alternateLocale: ["en_US"],
@@ -24,16 +39,17 @@ export const metadata: Metadata = {
         url: "https://bag-tag.de/assets/productimage.webp",
         width: 1200,
         height: 630,
-        alt: "Bag-Tag NFC Gepäckanhänger für sicheres Reisen",
+        alt: "Bag-Tag NFC Gepäckanhänger – smarter Kofferanhänger mit NFC und QR-Code",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Bag-Tag.de | Smarte NFC Gepäckanhänger",
-    description: "Innovative NFC Gepäckanhänger zum schnellen Auffinden verlorenen Gepäcks.",
+    title: "Bag-Tag | Smarter NFC Gepäckanhänger",
+    description: "NFC & QR-Code Gepäckanhänger für €10,99. Kein App-Download, keine Batterien. Koffer verloren? Finder kontaktieren dich sofort.",
     images: ["https://bag-tag.de/assets/productimage.webp"],
     creator: "@bag_tag",
+    site: "@bag_tag",
   },
   robots: {
     index: true,
@@ -54,6 +70,7 @@ export const metadata: Metadata = {
       'x-default': 'https://bag-tag.de/',
     },
   },
+  category: 'travel accessories',
 };
 
 export default function RootLayout({
@@ -61,18 +78,37 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // JSON-LD structured data for Organization
   const organizationJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'Bag-Tag',
     url: 'https://bag-tag.de',
-    logo: 'https://bag-tag.de/assets/icon_32_32.png',
-    description: 'Smarte NFC Gepäckanhänger für sicheres Reisen',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://bag-tag.de/assets/icon_32_32.png',
+    },
+    description: 'Smarte NFC Gepäckanhänger für sicheres Reisen – keine App, keine Batterien, DSGVO-konform',
     sameAs: [
       'https://www.instagram.com/bag_tag/',
       'https://de-de.facebook.com/bagtag/',
     ],
+  };
+
+  const webSiteJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Bag-Tag',
+    url: 'https://bag-tag.de',
+    description: 'Smarte NFC-Gepäckanhänger für sicheres Reisen – keine App, keine Batterien, DSGVO-konform',
+    inLanguage: ['de', 'en'],
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: 'https://bag-tag.de/de/hilfe/faq?q={search_term_string}',
+      },
+      'query-input': 'required name=search_term_string',
+    },
   };
 
   return (
@@ -84,6 +120,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd) }}
         />
       </head>
 

@@ -4,14 +4,23 @@ import JsonLd from '@/app/components/JsonLd';
 import CtaButton from '@/app/components/CtaButton';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const title = 'Prevent Luggage Loss – 10 Expert Tips for Travelers | Bag-Tag';
-  const description = 'Learn how to effectively prevent luggage loss while traveling. Expert tips for airports, airlines, and digital luggage identification to keep your bags safe.';
+  const title = 'How to Prevent Lost Luggage – 10 Tips & NFC Solution | Bag-Tag';
+  const description = 'Lost your luggage? These 10 expert tips reduce the risk. Plus: how an NFC luggage tag helps you recover your bag fast if it goes missing at the airport.';
   const url = 'https://bag-tag.de/en/prevent-luggage-loss';
 
   return {
     title,
     description,
-    keywords: 'prevent luggage loss, lost luggage, airport luggage, find lost baggage, travel tips, luggage identification, Bag-Tag',
+    keywords: [
+      'prevent lost luggage',
+      'lost luggage at airport',
+      'how to find lost baggage',
+      'lost suitcase what to do',
+      'luggage lost contact info',
+      'NFC luggage tag lost luggage',
+      'smart bag tracker',
+      'travel tips luggage safety',
+    ],
     authors: [{ name: 'Bag-Tag', url: 'https://bag-tag.de' }],
     openGraph: {
       title,
@@ -20,17 +29,28 @@ export async function generateMetadata(): Promise<Metadata> {
       locale: 'en_US',
       url,
       siteName: 'Bag-Tag',
+      images: [
+        {
+          url: 'https://bag-tag.de/assets/productimage.webp',
+          width: 1200,
+          height: 630,
+          alt: 'How to prevent lost luggage – tips and NFC luggage tag by Bag-Tag',
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
+      images: ['https://bag-tag.de/assets/productimage.webp'],
+      site: '@bag_tag',
     },
     alternates: {
       canonical: url,
       languages: {
-        de: '/de/gepaeck-verlust-vermeiden',
-        en: '/en/prevent-luggage-loss',
+        de: 'https://bag-tag.de/de/gepaeck-verlust-vermeiden',
+        en: 'https://bag-tag.de/en/prevent-luggage-loss',
+        'x-default': 'https://bag-tag.de/de/gepaeck-verlust-vermeiden',
       },
     },
   };

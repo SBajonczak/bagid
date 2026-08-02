@@ -353,7 +353,7 @@ export default function AndroidNfcAktivierenPage() {
             {/* CTA */}
             <CtaSection
               primaryText="Bag-Tag kaufen"
-              primaryHref="https://kreativschicht.de/products/nfc-gepaeckanhaenger"
+              primaryHref="https://kreativschicht.de/products/bagid-koffer-tag-mit-nfc"
               secondaryText="Tag aktivieren"
               secondaryHref="/de/hilfe/aktivieren"
               description="Bereit für Ihre nächste Reise?"

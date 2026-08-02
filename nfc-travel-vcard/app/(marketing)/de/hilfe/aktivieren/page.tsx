@@ -284,7 +284,7 @@ export default function AktivierenPage() {
             {/* CTA */}
             <CtaSection
               primaryText="Bag-Tag kaufen"
-              primaryHref="https://kreativschicht.de/products/nfc-gepaeckanhaenger"
+              primaryHref="https://kreativschicht.de/products/bagid-koffer-tag-mit-nfc"
               secondaryText="Alle Hilfe-Themen"
               secondaryHref="/de/hilfe"
               description="Noch keinen Bag-Tag?"

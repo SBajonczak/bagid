@@ -6,7 +6,7 @@
     "dev": "node scripts/startup-log.js && next dev",
     "build": "next build",
     "start": "node scripts/startup-log.js && next start",
-    "lint": "next lint",
+    "lint": "next lint . --format stylish --debug",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {

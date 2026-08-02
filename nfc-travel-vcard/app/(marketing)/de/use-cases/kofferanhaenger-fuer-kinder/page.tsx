@@ -68,7 +68,7 @@ export default function KofferanhängerFürKinderPage() {
     image: 'https://bag-tag.de/assets/productimage.webp',
     offers: {
       '@type': 'Offer',
-      url: 'https://kreativschicht.de/products/nfc-gepaeckanhaenger',
+      url: 'https://kreativschicht.de/products/bagid-koffer-tag-mit-nfc',
       priceCurrency: 'EUR',
       price: '10.99',
       availability: 'https://schema.org/InStock',
@@ -436,7 +436,7 @@ export default function KofferanhängerFürKinderPage() {
             title="Sicherheit für Ihr Kind auf Reisen"
             description="Bag-Tag jetzt in verschiedenen Farben bestellen"
             primaryText="Jetzt kaufen"
-            primaryHref="https://kreativschicht.de/products/nfc-gepaeckanhaenger"
+            primaryHref="https://kreativschicht.de/products/bagid-koffer-tag-mit-nfc"
             secondaryText="Mehr über Sicherheit"
             secondaryHref={linkMap.security}
           />

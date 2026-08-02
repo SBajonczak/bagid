@@ -11,14 +11,20 @@ import { getRelatedLinks } from '@/lib/linkMap';
 import { generateBreadcrumbSchema, generateHowToSchema } from '@/lib/schema-utils';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const title = 'So funktioniert Bag-Tag – NFC Gepäckanhänger einfach erklärt | Bag-Tag';
-  const description = 'Entdecken Sie, wie der Bag-Tag NFC Gepäckanhänger funktioniert: In 4 Schritten zu mehr Sicherheit für Ihr Reisegepäck. NFC & QR-Code kombiniert für maximalen Schutz.';
+  const title = 'So funktioniert Bag-Tag – NFC Gepäckanhänger in 4 Schritten | Bag-Tag';
+  const description = 'Wie funktioniert ein NFC Gepäckanhänger? In 4 einfachen Schritten zum smarten Koffer-Schutz. NFC & QR-Code kombiniert – keine App, keine Batterien.';
   const url = 'https://bag-tag.de/de/so-funktionierts';
 
   return {
     title,
     description,
-    keywords: 'Bag-Tag Funktion, NFC Gepäckanhänger wie funktioniert, Smart Luggage Tag, digitaler Kofferanhänger Anleitung',
+    keywords: [
+      'NFC Gepäckanhänger wie funktioniert',
+      'Bag-Tag Funktion erklärt',
+      'smarter Gepäckanhänger Anleitung',
+      'NFC Tag Gepäck einrichten',
+      'digitaler Kofferanhänger Anleitung',
+    ],
     authors: [{ name: 'Bag-Tag', url: 'https://bag-tag.de' }],
     openGraph: {
       title,
@@ -32,7 +38,7 @@ export async function generateMetadata(): Promise<Metadata> {
           url: 'https://bag-tag.de/assets/productimage.webp',
           width: 1200,
           height: 630,
-          alt: 'Bag-Tag Funktion',
+          alt: 'So funktioniert der Bag-Tag NFC Gepäckanhänger – in 4 Schritten erklärt',
         },
       ],
     },
@@ -41,13 +47,14 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       images: ['https://bag-tag.de/assets/productimage.webp'],
+      site: '@bag_tag',
     },
     alternates: {
       canonical: url,
       languages: {
-        de: '/de/so-funktionierts',
-        en: '/en/how-it-works',
-        'x-default': '/de/so-funktionierts',
+        de: 'https://bag-tag.de/de/so-funktionierts',
+        en: 'https://bag-tag.de/en/how-it-works',
+        'x-default': 'https://bag-tag.de/de/so-funktionierts',
       },
     },
   };

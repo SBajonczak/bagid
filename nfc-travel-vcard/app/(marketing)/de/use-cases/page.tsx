@@ -232,7 +232,7 @@ export default function UseCasesPage() {
             title="Bereit für stressfreies Reisen?"
             description="Wählen Sie Ihre Farbe und legen Sie los"
             primaryText="Jetzt Bag-Tag kaufen"
-            primaryHref="https://kreativschicht.de/products/nfc-gepaeckanhaenger"
+            primaryHref="https://kreativschicht.de/products/bagid-koffer-tag-mit-nfc"
             secondaryText="Wie funktioniert's?"
             secondaryHref={linkMap.howItWorks}
           />

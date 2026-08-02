@@ -5,19 +5,29 @@ import CtaButton from '@/app/components/CtaButton';
 import ColorSelector from '@/app/components/ColorSelector';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const title = 'NFC Gepäckanhänger – Smarter Kofferanhänger für Reisen | Bag-Tag';
-  const description = 'Entdecken Sie den smarten NFC Gepäckanhänger von Bag-Tag. Kontaktlos, sicher und einfach – Ihr digitaler Reisebegleiter für stressfreies Reisen. DSGVO-konform, keine App erforderlich.';
+  const title = 'NFC Gepäckanhänger kaufen – Bag-Tag | Ab €10,99 | Keine App nötig';
+  const description = 'Smarter NFC & QR-Code Gepäckanhänger für €10,99. Kein App-Download, keine Batterien. Finder können dich sofort kontaktieren – weltweit. DSGVO-konform. Jetzt bestellen.';
   const url = 'https://bag-tag.de/de/nfc-gepaeckanhaenger';
 
   return {
     title,
     description,
-    keywords: 'NFC Gepäckanhänger, Kofferanhänger NFC, smarter Gepäckanhänger, digitaler Kofferanhänger, Reisezubehör, verlorenes Gepäck, NFC Tag, Bag-Tag',
+    keywords: [
+      'NFC Gepäckanhänger kaufen',
+      'Kofferanhänger NFC',
+      'smarter Gepäckanhänger',
+      'NFC Kofferanhänger',
+      'digitaler Kofferanhänger',
+      'QR Code Gepäckanhänger',
+      'Gepäckanhänger keine App',
+      'Bag-Tag NFC',
+      'verlorenes Gepäck kontaktieren',
+    ],
     authors: [{ name: 'Bag-Tag', url: 'https://bag-tag.de' }],
     openGraph: {
       title,
       description,
-      type: 'article',
+      type: 'website',
       locale: 'de_DE',
       url,
       siteName: 'Bag-Tag',
@@ -26,7 +36,7 @@ export async function generateMetadata(): Promise<Metadata> {
           url: 'https://bag-tag.de/assets/productimage.webp',
           width: 1200,
           height: 630,
-          alt: 'Bag-Tag NFC Gepäckanhänger',
+          alt: 'Bag-Tag NFC Gepäckanhänger – smarter Kofferanhänger mit NFC und QR-Code für €10,99',
         },
       ],
     },
@@ -35,12 +45,14 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       images: ['https://bag-tag.de/assets/productimage.webp'],
+      site: '@bag_tag',
     },
     alternates: {
       canonical: url,
       languages: {
-        de: '/de/nfc-gepaeckanhaenger',
-        en: '/en/nfc-luggage-tag',
+        de: 'https://bag-tag.de/de/nfc-gepaeckanhaenger',
+        en: 'https://bag-tag.de/en/nfc-luggage-tag',
+        'x-default': 'https://bag-tag.de/de/nfc-gepaeckanhaenger',
       },
     },
   };
@@ -60,7 +72,7 @@ export default function NfcGepaeckanhängerPage() {
     image: 'https://bag-tag.de/assets/productimage.webp',
     offers: {
       '@type': 'Offer',
-      url: 'https://kreativschicht.de/products/nfc-gepaeckanhaenger',
+      url: 'https://kreativschicht.de/products/bagid-koffer-tag-mit-nfc',
       priceCurrency: 'EUR',
       price: '10.99',
       availability: 'https://schema.org/InStock',

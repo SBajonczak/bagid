@@ -1,0 +1,76 @@
+# Bag-Tag.de
+
+> Smarte NFC-Gepäckanhänger – damit dein Koffer immer den Weg nach Hause findet.
+
+Bag-Tag ist ein deutscher Anbieter von smarten NFC-Gepäckanhängern, die es ermöglichen, verlorenes Gepäck schnell wiederzufinden. Die Tags nutzen NFC- und QR-Code-Technologie. Kein App-Download nötig, keine Batterien, DSGVO-konform und wasserfest. Preis: €10,99 pro Tag.
+
+## Produkt
+
+- **Name:** Bag-Tag NFC Gepäckanhänger
+- **Preis:** €10,99 (Versand: €3,99, 2–3 Werktage)
+- **Technologie:** NFC (Near Field Communication) + QR-Code als Fallback
+- **Kompatibilität:** Alle modernen Smartphones (iOS 13+, Android 5+), keine App erforderlich
+- **Datenschutz:** DSGVO-konform, gehostet auf deutschen Servern, kein Tracking
+- **Haltbarkeit:** Wasserfest, stoßfest, keine Batterien, lebenslang nutzbar
+- **Bewertung:** 4,8 / 5 Sterne (127 Bewertungen)
+
+## So funktioniert Bag-Tag
+
+1. Tag kaufen und per Post erhalten
+2. NFC-Chip oder QR-Code scannen → automatisch zur Registrierung weitergeleitet
+3. Kontaktdaten online hinterlegen (jederzeit änderbar)
+4. Tag am Koffer befestigen – fertig
+
+## Wichtige Seiten (Deutsch)
+
+- [Startseite](https://bag-tag.de/)
+- [NFC Gepäckanhänger kaufen](https://bag-tag.de/de/nfc-gepaeckanhaenger)
+- [So funktioniert Bag-Tag](https://bag-tag.de/de/so-funktionierts)
+- [NFC vs. QR-Code Vergleich](https://bag-tag.de/de/nfc-vs-qr)
+- [Gepäckverlust vermeiden – Tipps](https://bag-tag.de/de/gepaeck-verlust-vermeiden)
+- [Sicherheit & Datenschutz](https://bag-tag.de/de/sicherheit-datenschutz)
+- [Use Cases: Familien](https://bag-tag.de/de/use-cases/gepaeckanhaenger-fuer-familien)
+- [Use Cases: Vielflieger](https://bag-tag.de/de/use-cases/gepaeckanhaenger-fuer-vielflieger)
+- [Use Cases: Kinder](https://bag-tag.de/de/use-cases/kofferanhaenger-fuer-kinder)
+- [Hilfe & FAQ](https://bag-tag.de/de/hilfe)
+- [FAQ](https://bag-tag.de/de/hilfe/faq)
+- [Aktivierung](https://bag-tag.de/de/hilfe/aktivieren)
+- [Ratgeber](https://bag-tag.de/de/ratgeber)
+- [Impressum](https://bag-tag.de/impressum)
+
+## Important Pages (English)
+
+- [Home](https://bag-tag.de/en)
+- [NFC Luggage Tag](https://bag-tag.de/en/nfc-luggage-tag)
+- [How It Works](https://bag-tag.de/en/how-it-works)
+- [NFC vs. QR Code](https://bag-tag.de/en/nfc-vs-qr)
+- [Prevent Luggage Loss](https://bag-tag.de/en/prevent-luggage-loss)
+- [Security & Privacy](https://bag-tag.de/en/security-privacy)
+- [Help & FAQ](https://bag-tag.de/en/help)
+
+## Häufige Fragen (FAQ)
+
+**Brauche ich eine App?**
+Nein. NFC ist in allen modernen Smartphones (iOS 13+, Android 5+) eingebaut. Als Backup gibt es einen QR-Code.
+
+**Wie ändere ich meine Kontaktdaten?**
+Jederzeit online im Dashboard unter bag-tag.de. Die Änderungen sind sofort aktiv.
+
+**Was passiert, wenn der Finder kein NFC hat?**
+Kein Problem – jeder Bag-Tag hat zusätzlich einen QR-Code, der mit jeder Smartphone-Kamera funktioniert.
+
+**Ist Bag-Tag wasserdicht?**
+Ja. Wasserfest, stoßfest und für den rauen Reisealltag konzipiert.
+
+**Muss ich den Tag aufladen?**
+Nein. NFC ist eine passive Technologie – keine Batterie, keine Ladezyklen, lebenslang nutzbar.
+
+**Ist der Tag DSGVO-konform?**
+Ja. Entwickelt und gehostet in Deutschland. Kein Tracking, keine Datenweitergabe an Dritte.
+
+## Über Bag-Tag
+
+- **Betreiber:** Kreativschicht.de
+- **Domain:** bag-tag.de
+- **Sprachen:** Deutsch, Englisch
+- **Social Media:** Instagram: @bag_tag, Facebook: bagtag

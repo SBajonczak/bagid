@@ -413,7 +413,7 @@ export default function TagUebertragenPage() {
             {/* CTA */}
             <CtaSection
               primaryText="Bag-Tag kaufen"
-              primaryHref="https://kreativschicht.de/products/nfc-gepaeckanhaenger"
+              primaryHref="https://kreativschicht.de/products/bagid-koffer-tag-mit-nfc"
               secondaryText="Zum Dashboard"
               secondaryHref="/dashboard"
               description="Noch keinen Bag-Tag?"

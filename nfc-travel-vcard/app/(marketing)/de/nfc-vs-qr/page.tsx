@@ -6,13 +6,20 @@ import ComparisonTable from '@/app/components/ComparisonTable';
 
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'NFC vs. QR-Code Gepäckanhänger – Was ist besser? | Bag-Tag';
-  const description = 'Detaillierter Vergleich: NFC oder QR-Code für Ihren Gepäckanhänger? Erfahren Sie die Vor- und Nachteile beider Technologien und warum NFC die bessere Wahl ist.';
+  const description = 'NFC oder QR-Code für deinen Gepäckanhänger? Unser Vergleich zeigt Vor- und Nachteile beider Technologien und warum der Bag-Tag beide kombiniert – für maximale Sicherheit.';
   const url = 'https://bag-tag.de/de/nfc-vs-qr';
 
   return {
     title,
     description,
-    keywords: 'NFC vs QR Code, Gepäckanhänger Vergleich, NFC Technologie, QR Code Gepäck, smarter Kofferanhänger, Bag-Tag Vergleich',
+    keywords: [
+      'NFC vs QR Code Gepäckanhänger',
+      'NFC oder QR Code Koffer',
+      'Gepäckanhänger Vergleich',
+      'QR Code Kofferanhänger',
+      'NFC Kofferanhänger Vergleich',
+      'smarter Gepäckanhänger Technologie',
+    ],
     authors: [{ name: 'Bag-Tag', url: 'https://bag-tag.de' }],
     openGraph: {
       title,
@@ -21,12 +28,28 @@ export async function generateMetadata(): Promise<Metadata> {
       locale: 'de_DE',
       url,
       siteName: 'Bag-Tag',
+      images: [
+        {
+          url: 'https://bag-tag.de/assets/productimage.webp',
+          width: 1200,
+          height: 630,
+          alt: 'NFC vs QR-Code Gepäckanhänger Vergleich – Bag-Tag',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ['https://bag-tag.de/assets/productimage.webp'],
+      site: '@bag_tag',
     },
     alternates: {
       canonical: url,
       languages: {
-        de: '/de/nfc-vs-qr',
-        en: '/en/nfc-vs-qr',
+        de: 'https://bag-tag.de/de/nfc-vs-qr',
+        en: 'https://bag-tag.de/en/nfc-vs-qr',
+        'x-default': 'https://bag-tag.de/de/nfc-vs-qr',
       },
     },
   };

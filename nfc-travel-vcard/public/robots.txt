@@ -2,11 +2,32 @@ User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /register/
+Disallow: /dashboard/
 Disallow: /*/*/edit
 
-# Prevent indexing of private tag pages
-# Note: Dynamic routes like /[tagId] cannot be fully blocked here
-# They are protected via meta robots tags and X-Robots-Tag headers
+# Prevent indexing of private tag edit pages
+# Dynamic routes like /[tagId] are protected via meta robots tags
+
+# AI Crawlers – allow public content, block private areas
+User-agent: GPTBot
+Allow: /
+Disallow: /api/
+Disallow: /register/
+Disallow: /dashboard/
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /api/
+Disallow: /register/
+Disallow: /dashboard/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /api/
+Disallow: /register/
+Disallow: /dashboard/
+
+User-agent: Applebot-Extended
+Allow: /
 
 Sitemap: https://bag-tag.de/sitemap.xml
-

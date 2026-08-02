@@ -17,7 +17,7 @@ export default function CtaButton({ language, className = '' }: CtaButtonProps) 
   return (
     <div className={`flex flex-col items-center gap-2 ${className}`}>
       <a
-        href="https://kreativschicht.de/products/nfc-gepaeckanhaenger"
+        href="https://kreativschicht.de/products/bagid-koffer-tag-mit-nfc"
         target="_blank"
         rel="noopener noreferrer"
         className="inline-block px-8 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors duration-200 text-center"

@@ -68,7 +68,7 @@ export default function GepäckanhängerFürFamilienPage() {
     image: 'https://bag-tag.de/assets/productimage.webp',
     offers: {
       '@type': 'Offer',
-      url: 'https://kreativschicht.de/products/nfc-gepaeckanhaenger',
+      url: 'https://kreativschicht.de/products/bagid-koffer-tag-mit-nfc',
       priceCurrency: 'EUR',
       price: '10.99',
       availability: 'https://schema.org/InStock',
@@ -500,7 +500,7 @@ export default function GepäckanhängerFürFamilienPage() {
             title="Stressfreier Familienurlaub beginnt hier"
             description="Bag-Tag für die ganze Familie – in verschiedenen Farben"
             primaryText="Jetzt kaufen"
-            primaryHref="https://kreativschicht.de/products/nfc-gepaeckanhaenger"
+            primaryHref="https://kreativschicht.de/products/bagid-koffer-tag-mit-nfc"
             secondaryText="Wie funktioniert's?"
             secondaryHref={linkMap.howItWorks}
           />

@@ -407,7 +407,7 @@ export default function DatenAendernPage() {
             {/* CTA */}
             <CtaSection
               primaryText="Bag-Tag kaufen"
-              primaryHref="https://kreativschicht.de/products/nfc-gepaeckanhaenger"
+              primaryHref="https://kreativschicht.de/products/bagid-koffer-tag-mit-nfc"
               secondaryText="Zum Dashboard"
               secondaryHref="/dashboard"
               description="Bereit für Ihre nächste Reise?"

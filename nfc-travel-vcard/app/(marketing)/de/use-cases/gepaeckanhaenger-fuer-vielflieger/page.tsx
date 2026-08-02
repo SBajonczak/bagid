@@ -69,7 +69,7 @@ export default function GepäckanhängerFürVielfliegePage() {
     image: 'https://bag-tag.de/assets/productimage.webp',
     offers: {
       '@type': 'Offer',
-      url: 'https://kreativschicht.de/products/nfc-gepaeckanhaenger',
+      url: 'https://kreativschicht.de/products/bagid-koffer-tag-mit-nfc',
       priceCurrency: 'EUR',
       price: '10.99',
       availability: 'https://schema.org/InStock',
@@ -538,7 +538,7 @@ export default function GepäckanhängerFürVielfliegePage() {
             title="Effizienz für Ihre Geschäftsreisen"
             description="Bag-Tag – der smarte Begleiter für Vielflieger"
             primaryText="Jetzt kaufen"
-            primaryHref="https://kreativschicht.de/products/nfc-gepaeckanhaenger"
+            primaryHref="https://kreativschicht.de/products/bagid-koffer-tag-mit-nfc"
             secondaryText="Mehr über Sicherheit"
             secondaryHref={linkMap.security}
           />
