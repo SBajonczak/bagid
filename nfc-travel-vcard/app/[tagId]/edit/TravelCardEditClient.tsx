@@ -10,6 +10,16 @@ import NavigationBar from '../../components/NavigationBar';
 import Footer from '../../components/Footer';
 import AirportAutocomplete, { AirportOption } from '../../components/AirportAutocomplete';
 
+// Converts any datetime string (UTC ISO or local) to the YYYY-MM-DDTHH:mm format
+// that datetime-local inputs expect (local time). Prevents timezone drift on save.
+function toLocalInput(dt: string): string {
+    if (!dt) return '';
+    const d = new Date(dt);
+    if (isNaN(d.getTime())) return dt.slice(0, 16);
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
 interface LegError {
     arrivalBeforeDeparture?: boolean;
     departureBeforePrevArrival?: boolean;
@@ -122,7 +132,7 @@ const FlightLegsSection: React.FC<FlightLegsSectionProps> = ({ legs, legErrors, 
                                 <label className="block text-xs font-medium text-slate-600 mb-1">{tfl.depTime}</label>
                                 <input
                                     type="datetime-local"
-                                    value={l.departureDatetime ? l.departureDatetime.slice(0, 16) : ''}
+                                    value={l.departureDatetime || ''}
                                     onChange={e => onChangeLeg(i, 'departureDatetime', e.target.value)}
                                     className={`${inputCls} ${legErrors[i]?.departureBeforePrevArrival ? 'border-red-400 focus:border-red-500' : ''}`}
                                 />
@@ -141,7 +151,7 @@ const FlightLegsSection: React.FC<FlightLegsSectionProps> = ({ legs, legErrors, 
                                 <label className="block text-xs font-medium text-slate-600 mb-1">{tfl.arrTime}</label>
                                 <input
                                     type="datetime-local"
-                                    value={l.arrivalDatetime ? l.arrivalDatetime.slice(0, 16) : ''}
+                                    value={l.arrivalDatetime || ''}
                                     onChange={e => onChangeLeg(i, 'arrivalDatetime', e.target.value)}
                                     className={`${inputCls} ${legErrors[i]?.arrivalBeforeDeparture ? 'border-red-400 focus:border-red-500' : ''}`}
                                 />
@@ -245,7 +255,11 @@ const TravelCardEditClient: React.FC<TravelCardEditClientProps> = ({ tagId }) =>
 
         if (legsResponse.ok) {
             const legs: FlightLeg[] = await legsResponse.json();
-            setFlightLegs(legs);
+            setFlightLegs(legs.map(l => ({
+                ...l,
+                departureDatetime: toLocalInput(l.departureDatetime),
+                arrivalDatetime: toLocalInput(l.arrivalDatetime),
+            })));
         }
     };
 
