@@ -9,12 +9,16 @@ export interface FlightLeg {
   departureDatetime: string;
   arrivalAirport: string;
   arrivalDatetime: string;
+  departureLat?: number | null;
+  departureLon?: number | null;
+  arrivalLat?: number | null;
+  arrivalLon?: number | null;
+  departureAirportName?: string | null;
+  arrivalAirportName?: string | null;
 }
 
-// Add tagName to the TravelData interface
 export interface TravelData {
-  // ...existing fields...
-  tagName: string; // Required tag name field
+  tagName: string;
   ownerFirstName: string;
   ownerLastName: string;
   ownerAddress: string;
@@ -33,6 +37,8 @@ export interface TravelData {
   transportationNumber: string;
   transportationDate?: Date;
   transportationProvider?: string;
-  transportationDetails?:string;
-  // ...any other fields...
+  transportationDetails?: string;
+  showFlightMap?: boolean;
+  destinationLat?: number | null;
+  destinationLon?: number | null;
 }

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import 'dayjs/locale/de';
@@ -15,6 +16,12 @@ import Footer from '../components/Footer';
 import Link from 'next/link';
 import { Building2, Lock, MapPin, Plane, ShieldCheck, User } from 'lucide-react';
 import { getPublicConfig } from '@/lib/config';
+import type { MapLeg, MapPoint } from '../components/FlightRouteMap';
+
+const FlightRouteMap = dynamic(() => import('../components/FlightRouteMap'), {
+    ssr: false,
+    loading: () => <div className="h-96 animate-pulse bg-slate-100 rounded-xl" />,
+});
 
 dayjs.extend(localizedFormat);
 
@@ -225,6 +232,22 @@ const TravelCardClient: React.FC<TravelCardClientProps> = ({ tagId }) => {
     const relevantJourney = getRelevantJourney(flightLegs);
     const tfl = messages[lang].flightLegs;
 
+    const buildMapLegs = (legs: FlightLeg[]): MapLeg[] =>
+        legs
+            .filter(l => l.departureLat && l.departureLon && l.arrivalLat && l.arrivalLon)
+            .map(l => {
+                const lines: string[] = [];
+                if (l.carrier || l.flightNumber) lines.push([l.carrier, l.flightNumber].filter(Boolean).join(' '));
+                lines.push(`${l.departureAirport} → ${l.arrivalAirport}`);
+                if (l.departureDatetime) lines.push(dayjs(l.departureDatetime).format('L LT'));
+                return {
+                    from: { lat: l.departureLat!, lon: l.departureLon!, label: `${l.departureAirport}${l.departureAirportName ? ' – ' + l.departureAirportName : ''}` },
+                    to: { lat: l.arrivalLat!, lon: l.arrivalLon!, label: `${l.arrivalAirport}${l.arrivalAirportName ? ' – ' + l.arrivalAirportName : ''}` },
+                    color: l.journeyType === 'outbound' ? '#3b82f6' : '#f59e0b',
+                    tooltip: lines.join('\n'),
+                };
+            });
+
     const localeMessages = messages[lang];
     const marketingCopy = localeMessages.noDataSection;
     const dashboardCopy = localeMessages.dashboard;
@@ -387,6 +410,25 @@ const TravelCardClient: React.FC<TravelCardClientProps> = ({ tagId }) => {
                                 </div>
                             </section>
                         )}
+
+                        {!!travelData.showFlightMap && (() => {
+                            const mapLegs = buildMapLegs(relevantJourney?.legs ?? []);
+                            const destPoint: MapPoint | null = travelData.destinationLat && travelData.destinationLon
+                                ? { lat: travelData.destinationLat as number, lon: travelData.destinationLon as number, label: travelData.destinationAccommodation || travelData.destinationAddress || 'Destination' }
+                                : null;
+                            if (mapLegs.length === 0 && !destPoint) return null;
+                            return (
+                                <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm overflow-hidden">
+                                    <div className="mb-4 flex items-center gap-3">
+                                        <span className="rounded-full bg-slate-900/90 p-2 text-white">
+                                            <MapPin className="h-5 w-5" aria-hidden="true" />
+                                        </span>
+                                        <h3 className="text-lg font-semibold text-slate-900">{tfl.flightRouteTitle}</h3>
+                                    </div>
+                                    <FlightRouteMap legs={mapLegs} destinationPoint={destPoint} />
+                                </section>
+                            );
+                        })()}
 
                         {hasValue(travelData.destinationAccommodation) && (
                             <section className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">

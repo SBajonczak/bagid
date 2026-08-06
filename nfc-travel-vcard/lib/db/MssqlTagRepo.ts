@@ -37,7 +37,7 @@ export class MssqlTagRepo implements ITagRepo {
       const result = await pool.request()
         .input('tagId', sql.UniqueIdentifier, tagId)
         .query(`
-          SELECT 
+          SELECT
             TagID as tagId,
             CASE WHEN 1=1 THEN 1 ELSE 0 END as hasData,
             tagName as tagName,
@@ -57,7 +57,10 @@ export class MssqlTagRepo implements ITagRepo {
             DestinationAddress as destinationAddress,
             Transportation as transportation,
             TransportationNumber as transportationNumber,
-            TransportationDate as transportationDate
+            TransportationDate as transportationDate,
+            ISNULL(ShowFlightMap, 0) as showFlightMap,
+            DestinationLat as destinationLat,
+            DestinationLon as destinationLon
           FROM TravelTag
           WHERE TagID = @tagId and isRegistered=1
         `);
@@ -109,6 +112,9 @@ export class MssqlTagRepo implements ITagRepo {
         transportation: { sqlField: 'Transportation', sqlType: sql.NVarChar(100) },
         transportationNumber: { sqlField: 'TransportationNumber', sqlType: sql.NVarChar(50) },
         transportationDate: { sqlField: 'TransportationDate', sqlType: sql.DateTime() },
+        showFlightMap: { sqlField: 'ShowFlightMap', sqlType: sql.Bit() },
+        destinationLat: { sqlField: 'DestinationLat', sqlType: sql.Float() },
+        destinationLon: { sqlField: 'DestinationLon', sqlType: sql.Float() },
       };
 
       if (checkResult.recordset.length === 0) {
@@ -309,7 +315,10 @@ export class MssqlTagRepo implements ITagRepo {
           SELECT ID as id, TagID as tagId, JourneyType as journeyType, Sequence as sequence,
                  Carrier as carrier, FlightNumber as flightNumber,
                  DepartureAirport as departureAirport, DepartureDatetime as departureDatetime,
-                 ArrivalAirport as arrivalAirport, ArrivalDatetime as arrivalDatetime
+                 ArrivalAirport as arrivalAirport, ArrivalDatetime as arrivalDatetime,
+                 DepartureLat as departureLat, DepartureLon as departureLon,
+                 ArrivalLat as arrivalLat, ArrivalLon as arrivalLon,
+                 DepartureAirportName as departureAirportName, ArrivalAirportName as arrivalAirportName
           FROM FlightLegs
           WHERE TagID = @tagId
           ORDER BY JourneyType, Sequence
@@ -347,13 +356,23 @@ export class MssqlTagRepo implements ITagRepo {
             .input('departureDatetime', sql.DateTime(), leg.departureDatetime ? new Date(leg.departureDatetime) : null)
             .input('arrivalAirport', sql.NVarChar(10), leg.arrivalAirport || null)
             .input('arrivalDatetime', sql.DateTime(), leg.arrivalDatetime ? new Date(leg.arrivalDatetime) : null)
+            .input('departureLat', sql.Float, leg.departureLat ?? null)
+            .input('departureLon', sql.Float, leg.departureLon ?? null)
+            .input('arrivalLat', sql.Float, leg.arrivalLat ?? null)
+            .input('arrivalLon', sql.Float, leg.arrivalLon ?? null)
+            .input('departureAirportName', sql.NVarChar(255), leg.departureAirportName ?? null)
+            .input('arrivalAirportName', sql.NVarChar(255), leg.arrivalAirportName ?? null)
             .query(`
               INSERT INTO FlightLegs
                 (TagID, JourneyType, Sequence, Carrier, FlightNumber,
-                 DepartureAirport, DepartureDatetime, ArrivalAirport, ArrivalDatetime)
+                 DepartureAirport, DepartureDatetime, ArrivalAirport, ArrivalDatetime,
+                 DepartureLat, DepartureLon, ArrivalLat, ArrivalLon,
+                 DepartureAirportName, ArrivalAirportName)
               VALUES
                 (@tagId, @journeyType, @sequence, @carrier, @flightNumber,
-                 @departureAirport, @departureDatetime, @arrivalAirport, @arrivalDatetime)
+                 @departureAirport, @departureDatetime, @arrivalAirport, @arrivalDatetime,
+                 @departureLat, @departureLon, @arrivalLat, @arrivalLon,
+                 @departureAirportName, @arrivalAirportName)
             `);
         }
         await transaction.commit();

@@ -57,15 +57,34 @@ export async function PUT(
     
     // Update tag data
     const success = await repo.updateTravelDataByTagId(tagId, body);
-    
-    if (success) {
-      return NextResponse.json({ message: 'Tag updated successfully' });
-    } else {
-      return NextResponse.json(
-        { error: 'Failed to update tag' },
-        { status: 400 }
-      );
+
+    if (!success) {
+      return NextResponse.json({ error: 'Failed to update tag' }, { status: 400 });
     }
+
+    // Geocode destination address (non-fatal)
+    if (body.destinationAddress && typeof body.destinationAddress === 'string') {
+      try {
+        const geoUrl = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(body.destinationAddress)}`;
+        const geoRes = await fetch(geoUrl, {
+          headers: { 'User-Agent': 'bag-tag.de/1.0 (contact@bag-tag.de)' },
+          signal: AbortSignal.timeout(5000),
+        });
+        if (geoRes.ok) {
+          const geoData = await geoRes.json();
+          if (geoData[0]) {
+            await repo.updateTravelDataByTagId(tagId, {
+              destinationLat: parseFloat(geoData[0].lat),
+              destinationLon: parseFloat(geoData[0].lon),
+            });
+          }
+        }
+      } catch {
+        // geocoding failure must not block the response
+      }
+    }
+
+    return NextResponse.json({ message: 'Tag updated successfully' });
   } catch (error) {
     return internalApiError(request, 'PUT /api/tags/[tagId]', error, {
       tagId: params?.tagId,

@@ -41,7 +41,8 @@ export async function verifyToken(request: NextRequest): Promise<TokenPayload | 
   return new Promise((resolve) => {
     jwt.verify(token, getKey, {
       audience: "2e08ce02-4722-4efe-b6de-c98b201907ab",
-      issuer: `https://bagtagauth.b2clogin.com/430cd0a4-c177-46a9-8eff-cc6ecd09c9a2/v2.0/`
+      issuer: `https://bagtagauth.b2clogin.com/430cd0a4-c177-46a9-8eff-cc6ecd09c9a2/v2.0/`,
+      clockTolerance: 300, // 5 min tolerance for nbf/exp clock skew
     }, (err, decoded) => {
       if (err) {
         console.error('Token verification error:', err);

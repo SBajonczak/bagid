@@ -26,6 +26,7 @@ export class TursoTagRepo implements ITagRepo {
   }
 
   async getTravelDataByTagId(tagId: string): Promise<unknown> {
+    await this.ensureFlightLegsTable();
     const client = this.getClient();
     const rs = await client.execute({
       sql: `SELECT 
@@ -48,7 +49,10 @@ export class TursoTagRepo implements ITagRepo {
             DestinationAddress as destinationAddress,
             Transportation as transportation,
             TransportationNumber as transportationNumber,
-            TransportationDate as transportationDate
+            TransportationDate as transportationDate,
+            COALESCE(ShowFlightMap, 0) as showFlightMap,
+            DestinationLat as destinationLat,
+            DestinationLon as destinationLon
           FROM TravelTag
           WHERE TagID = ? AND isRegistered=1`,
       args: [tagId]
@@ -88,6 +92,9 @@ export class TursoTagRepo implements ITagRepo {
       transportationNumber:'TransportationNumber',
       transportationDetails: 'transportationNumber',
       transportationDate: 'TransportationDate',
+      showFlightMap: 'ShowFlightMap',
+      destinationLat: 'DestinationLat',
+      destinationLon: 'DestinationLon',
     };
 
     const checkRs = await client.execute({
@@ -227,10 +234,25 @@ export class TursoTagRepo implements ITagRepo {
         DepartureAirport TEXT,
         DepartureDatetime TEXT,
         ArrivalAirport TEXT,
-        ArrivalDatetime TEXT
+        ArrivalDatetime TEXT,
+        DepartureLat REAL,
+        DepartureLon REAL,
+        ArrivalLat REAL,
+        ArrivalLon REAL,
+        DepartureAirportName TEXT,
+        ArrivalAirportName TEXT
       )`,
       args: []
     });
+    // Add new columns to existing tables (idempotent via try/catch)
+    const flightCols = ['DepartureLat REAL', 'DepartureLon REAL', 'ArrivalLat REAL', 'ArrivalLon REAL', 'DepartureAirportName TEXT', 'ArrivalAirportName TEXT'];
+    for (const col of flightCols) {
+      try { await client.execute({ sql: `ALTER TABLE FlightLegs ADD COLUMN ${col}`, args: [] }); } catch { /* already exists */ }
+    }
+    const tagCols = ['ShowFlightMap INTEGER NOT NULL DEFAULT 0', 'DestinationLat REAL', 'DestinationLon REAL'];
+    for (const col of tagCols) {
+      try { await client.execute({ sql: `ALTER TABLE TravelTag ADD COLUMN ${col}`, args: [] }); } catch { /* already exists */ }
+    }
   }
 
   async getFlightLegs(tagId: string): Promise<FlightLeg[]> {
@@ -240,7 +262,10 @@ export class TursoTagRepo implements ITagRepo {
       sql: `SELECT ID as id, TagID as tagId, JourneyType as journeyType, Sequence as sequence,
                    Carrier as carrier, FlightNumber as flightNumber,
                    DepartureAirport as departureAirport, DepartureDatetime as departureDatetime,
-                   ArrivalAirport as arrivalAirport, ArrivalDatetime as arrivalDatetime
+                   ArrivalAirport as arrivalAirport, ArrivalDatetime as arrivalDatetime,
+                   DepartureLat as departureLat, DepartureLon as departureLon,
+                   ArrivalLat as arrivalLat, ArrivalLon as arrivalLon,
+                   DepartureAirportName as departureAirportName, ArrivalAirportName as arrivalAirportName
             FROM FlightLegs WHERE TagID = ? ORDER BY JourneyType, Sequence`,
       args: [tagId]
     });
@@ -255,8 +280,10 @@ export class TursoTagRepo implements ITagRepo {
       ...legs.map((leg, i) => ({
         sql: `INSERT INTO FlightLegs
               (TagID, JourneyType, Sequence, Carrier, FlightNumber,
-               DepartureAirport, DepartureDatetime, ArrivalAirport, ArrivalDatetime)
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+               DepartureAirport, DepartureDatetime, ArrivalAirport, ArrivalDatetime,
+               DepartureLat, DepartureLon, ArrivalLat, ArrivalLon,
+               DepartureAirportName, ArrivalAirportName)
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         args: [
           tagId,
           leg.journeyType,
@@ -267,6 +294,12 @@ export class TursoTagRepo implements ITagRepo {
           leg.departureDatetime ? new Date(leg.departureDatetime).toISOString() : null,
           leg.arrivalAirport || null,
           leg.arrivalDatetime ? new Date(leg.arrivalDatetime).toISOString() : null,
+          leg.departureLat ?? null,
+          leg.departureLon ?? null,
+          leg.arrivalLat ?? null,
+          leg.arrivalLon ?? null,
+          leg.departureAirportName ?? null,
+          leg.arrivalAirportName ?? null,
         ]
       }))
     ];

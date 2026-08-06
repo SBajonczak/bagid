@@ -8,6 +8,36 @@ import { messages } from '@/lib/i18n';
 import { FlightLeg } from '@/lib/types';
 import NavigationBar from '../../components/NavigationBar';
 import Footer from '../../components/Footer';
+import AirportAutocomplete, { AirportOption } from '../../components/AirportAutocomplete';
+
+interface LegError {
+    arrivalBeforeDeparture?: boolean;
+    departureBeforePrevArrival?: boolean;
+}
+
+function getLegErrors(legs: FlightLeg[]): LegError[] {
+    const errors: LegError[] = legs.map(() => ({}));
+    for (const type of ['outbound', 'return'] as const) {
+        const typeLegs = legs.map((l, i) => ({ l, i })).filter(({ l }) => l.journeyType === type);
+        for (let pos = 0; pos < typeLegs.length; pos++) {
+            const { l, i } = typeLegs[pos];
+            if (l.departureDatetime && l.arrivalDatetime) {
+                if (new Date(l.arrivalDatetime) <= new Date(l.departureDatetime)) {
+                    errors[i].arrivalBeforeDeparture = true;
+                }
+            }
+            if (pos > 0) {
+                const prev = typeLegs[pos - 1].l;
+                if (prev.arrivalDatetime && l.departureDatetime) {
+                    if (new Date(l.departureDatetime) < new Date(prev.arrivalDatetime)) {
+                        errors[i].departureBeforePrevArrival = true;
+                    }
+                }
+            }
+        }
+    }
+    return errors;
+}
 
 const emptyLeg = (type: 'outbound' | 'return'): FlightLeg => ({
     journeyType: type,
@@ -22,16 +52,20 @@ const emptyLeg = (type: 'outbound' | 'return'): FlightLeg => ({
 
 interface FlightLegsSectionProps {
     legs: FlightLeg[];
+    legErrors: LegError[];
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     tfl: Record<string, any>;
     onAddLeg: (type: 'outbound' | 'return') => void;
     onRemoveLeg: (idx: number) => void;
     onChangeLeg: (idx: number, field: keyof FlightLeg, value: string) => void;
+    onSelectAirport: (idx: number, direction: 'departure' | 'arrival', airport: AirportOption) => void;
+    showFlightMap: boolean;
+    onToggleFlightMap: (val: boolean) => void;
 }
 
 const inputCls = 'w-full rounded-xl border border-slate-200 px-3 py-2 text-sm shadow-sm focus:border-slate-900 focus:outline-none';
 
-const FlightLegsSection: React.FC<FlightLegsSectionProps> = ({ legs, tfl, onAddLeg, onRemoveLeg, onChangeLeg }) => {
+const FlightLegsSection: React.FC<FlightLegsSectionProps> = ({ legs, legErrors, tfl, onAddLeg, onRemoveLeg, onChangeLeg, onSelectAirport, showFlightMap, onToggleFlightMap }) => {
     const renderLegs = (type: 'outbound' | 'return', typeLabel: string, addLabel: string) => {
         const typed = legs.map((l, i) => ({ l, i })).filter(({ l }) => l.journeyType === type);
         return (
@@ -60,6 +94,11 @@ const FlightLegsSection: React.FC<FlightLegsSectionProps> = ({ legs, tfl, onAddL
                                 {tfl.remove}
                             </button>
                         </div>
+                        {legErrors[i]?.departureBeforePrevArrival && (
+                            <p className="text-xs text-red-600 bg-red-50 rounded-lg px-3 py-2">
+                                {tfl.errorDepartureBeforePrevArrival}
+                            </p>
+                        )}
                         <div className="grid grid-cols-2 gap-3">
                             <div>
                                 <label className="block text-xs font-medium text-slate-600 mb-1">{tfl.carrier}</label>
@@ -71,19 +110,44 @@ const FlightLegsSection: React.FC<FlightLegsSectionProps> = ({ legs, tfl, onAddL
                             </div>
                             <div>
                                 <label className="block text-xs font-medium text-slate-600 mb-1">{tfl.depAirport}</label>
-                                <input type="text" value={l.departureAirport} onChange={e => onChangeLeg(i, 'departureAirport', e.target.value)} className={inputCls} placeholder="FRA" maxLength={4} />
+                                <AirportAutocomplete
+                                    value={l.departureAirport}
+                                    onChange={val => onChangeLeg(i, 'departureAirport', val)}
+                                    onSelect={airport => onSelectAirport(i, 'departure', airport)}
+                                    placeholder="FRA"
+                                    className={inputCls}
+                                />
                             </div>
                             <div>
                                 <label className="block text-xs font-medium text-slate-600 mb-1">{tfl.depTime}</label>
-                                <input type="datetime-local" value={l.departureDatetime ? l.departureDatetime.slice(0, 16) : ''} onChange={e => onChangeLeg(i, 'departureDatetime', e.target.value)} className={inputCls} />
+                                <input
+                                    type="datetime-local"
+                                    value={l.departureDatetime ? l.departureDatetime.slice(0, 16) : ''}
+                                    onChange={e => onChangeLeg(i, 'departureDatetime', e.target.value)}
+                                    className={`${inputCls} ${legErrors[i]?.departureBeforePrevArrival ? 'border-red-400 focus:border-red-500' : ''}`}
+                                />
                             </div>
                             <div>
                                 <label className="block text-xs font-medium text-slate-600 mb-1">{tfl.arrAirport}</label>
-                                <input type="text" value={l.arrivalAirport} onChange={e => onChangeLeg(i, 'arrivalAirport', e.target.value)} className={inputCls} placeholder="JFK" maxLength={4} />
+                                <AirportAutocomplete
+                                    value={l.arrivalAirport}
+                                    onChange={val => onChangeLeg(i, 'arrivalAirport', val)}
+                                    onSelect={airport => onSelectAirport(i, 'arrival', airport)}
+                                    placeholder="JFK"
+                                    className={inputCls}
+                                />
                             </div>
                             <div>
                                 <label className="block text-xs font-medium text-slate-600 mb-1">{tfl.arrTime}</label>
-                                <input type="datetime-local" value={l.arrivalDatetime ? l.arrivalDatetime.slice(0, 16) : ''} onChange={e => onChangeLeg(i, 'arrivalDatetime', e.target.value)} className={inputCls} />
+                                <input
+                                    type="datetime-local"
+                                    value={l.arrivalDatetime ? l.arrivalDatetime.slice(0, 16) : ''}
+                                    onChange={e => onChangeLeg(i, 'arrivalDatetime', e.target.value)}
+                                    className={`${inputCls} ${legErrors[i]?.arrivalBeforeDeparture ? 'border-red-400 focus:border-red-500' : ''}`}
+                                />
+                                {legErrors[i]?.arrivalBeforeDeparture && (
+                                    <p className="text-xs text-red-600 mt-1">{tfl.errorArrivalBeforeDeparture}</p>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -102,6 +166,22 @@ const FlightLegsSection: React.FC<FlightLegsSectionProps> = ({ legs, tfl, onAddL
                 {renderLegs('outbound', tfl.outbound, tfl.addOutbound)}
                 <hr className="border-slate-200" />
                 {renderLegs('return', tfl.return, tfl.addReturn)}
+                <hr className="border-slate-200" />
+                <div className="flex items-center justify-between">
+                    <div>
+                        <p className="text-sm font-medium text-slate-700">{tfl.showFlightMap}</p>
+                        <p className="text-xs text-slate-400 mt-0.5">{tfl.showFlightMapHint}</p>
+                    </div>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                            type="checkbox"
+                            checked={showFlightMap}
+                            onChange={e => onToggleFlightMap(e.target.checked)}
+                            className="sr-only peer"
+                        />
+                        <div className="w-11 h-6 bg-slate-200 rounded-full peer peer-checked:bg-blue-600 peer-focus:ring-2 peer-focus:ring-blue-300 transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-5"></div>
+                    </label>
+                </div>
             </div>
         </section>
     );
@@ -138,7 +218,8 @@ const TravelCardEditClient: React.FC<TravelCardEditClientProps> = ({ tagId }) =>
         guideMobile: '',
         destinationAccommodation: '',
         destinationAddress: '',
-        transportationNumber:''
+        transportationNumber:'',
+        showFlightMap: false,
     });
 
     const tagTitle = formData.tagName?.trim() || t.productname;
@@ -220,11 +301,59 @@ const TravelCardEditClient: React.FC<TravelCardEditClientProps> = ({ tagId }) =>
     };
 
     const handleLegChange = (idx: number, field: keyof FlightLeg, value: string) => {
-        setFlightLegs(prev => prev.map((leg, i) => i === idx ? { ...leg, [field]: value } : leg));
+        setFlightLegs(prev => {
+            const updated = prev.map((leg, i) => i === idx ? { ...leg, [field]: value } : leg);
+
+            if (field === 'arrivalDatetime' && value && prev[idx]?.arrivalDatetime) {
+                const oldMs = new Date(prev[idx].arrivalDatetime).getTime();
+                const newMs = new Date(value).getTime();
+                const deltaMs = newMs - oldMs;
+                if (!isNaN(deltaMs) && deltaMs !== 0) {
+                    const journeyType = prev[idx].journeyType;
+                    const typeIndices = prev
+                        .map((l, i) => ({ l, i }))
+                        .filter(({ l }) => l.journeyType === journeyType)
+                        .map(({ i }) => i);
+                    const pos = typeIndices.indexOf(idx);
+                    const toShift = new Set(typeIndices.slice(pos + 1));
+
+                    const shiftTime = (dt: string): string => {
+                        if (!dt) return dt;
+                        const shifted = new Date(new Date(dt).getTime() + deltaMs);
+                        const pad = (n: number) => String(n).padStart(2, '0');
+                        return `${shifted.getFullYear()}-${pad(shifted.getMonth() + 1)}-${pad(shifted.getDate())}T${pad(shifted.getHours())}:${pad(shifted.getMinutes())}`;
+                    };
+
+                    return updated.map((leg, i) => {
+                        if (!toShift.has(i)) return leg;
+                        return {
+                            ...leg,
+                            departureDatetime: shiftTime(leg.departureDatetime),
+                            arrivalDatetime: shiftTime(leg.arrivalDatetime),
+                        };
+                    });
+                }
+            }
+
+            return updated;
+        });
     };
+
+    const handleLegAirportSelect = (idx: number, direction: 'departure' | 'arrival', airport: AirportOption) => {
+        setFlightLegs(prev => prev.map((leg, i) => {
+            if (i !== idx) return leg;
+            return direction === 'departure'
+                ? { ...leg, departureAirport: airport.iata, departureLat: airport.lat, departureLon: airport.lon, departureAirportName: airport.name }
+                : { ...leg, arrivalAirport: airport.iata, arrivalLat: airport.lat, arrivalLon: airport.lon, arrivalAirportName: airport.name };
+        }));
+    };
+
+    const legErrors = getLegErrors(flightLegs);
+    const hasLegErrors = legErrors.some(e => e.arrivalBeforeDeparture || e.departureBeforePrevArrival);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (hasLegErrors) return;
         setSaving(true);
 
         try {
@@ -497,16 +626,20 @@ const TravelCardEditClient: React.FC<TravelCardEditClientProps> = ({ tagId }) =>
 
                             <FlightLegsSection
                                 legs={flightLegs}
+                                legErrors={legErrors}
                                 tfl={messages[lang].flightLegs}
                                 onAddLeg={handleAddLeg}
                                 onRemoveLeg={handleRemoveLeg}
                                 onChangeLeg={handleLegChange}
+                                onSelectAirport={handleLegAirportSelect}
+                                showFlightMap={formData.showFlightMap}
+                                onToggleFlightMap={val => setFormData(prev => ({ ...prev, showFlightMap: val }))}
                             />
 
                             <div className="flex flex-col gap-3 sm:flex-row">
                                 <button
                                     type="submit"
-                                    disabled={saving}
+                                    disabled={saving || hasLegErrors}
                                     className="flex-1 rounded-xl bg-slate-900 px-6 py-4 text-sm font-semibold text-white shadow-lg transition hover:bg-slate-800 disabled:opacity-60"
                                 >
                                     {saving ? t.saving : t.save}

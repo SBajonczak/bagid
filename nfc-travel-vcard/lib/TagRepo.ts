@@ -43,7 +43,10 @@ export class TagRepo {
         "destinationAddress": "Via Roma 42, 00100 Rom, Italien",
         "transportation": "Flight",
         "transportationNumber": "LH1234",
-        "transportationDate": "2026-05-18T09:45:00Z"
+        "transportationDate": "2026-05-18T09:45:00Z",
+        "showFlightMap": true,
+        "destinationLat": 41.9028,
+        "destinationLon": 12.4964
       };
     }
 
@@ -119,9 +122,9 @@ export class TagRepo {
         return d.toISOString();
       };
       return [
-        { journeyType: 'outbound', sequence: 1, carrier: 'Lufthansa', flightNumber: 'LH 400', departureAirport: 'FRA', departureDatetime: d(-1), arrivalAirport: 'JFK', arrivalDatetime: d(0) },
-        { journeyType: 'outbound', sequence: 2, carrier: 'United', flightNumber: 'UA 500', departureAirport: 'JFK', departureDatetime: d(0), arrivalAirport: 'LAX', arrivalDatetime: d(1) },
-        { journeyType: 'return', sequence: 1, carrier: 'Lufthansa', flightNumber: 'LH 401', departureAirport: 'LAX', departureDatetime: d(14), arrivalAirport: 'FRA', arrivalDatetime: d(15) },
+        { journeyType: 'outbound', sequence: 1, carrier: 'Lufthansa', flightNumber: 'LH 400', departureAirport: 'FRA', departureDatetime: d(-1), arrivalAirport: 'JFK', arrivalDatetime: d(0), departureLat: 50.0333, departureLon: 8.5706, departureAirportName: 'Frankfurt Airport', arrivalLat: 40.6413, arrivalLon: -73.7781, arrivalAirportName: 'John F. Kennedy International Airport' },
+        { journeyType: 'outbound', sequence: 2, carrier: 'United', flightNumber: 'UA 500', departureAirport: 'JFK', departureDatetime: d(0), arrivalAirport: 'LAX', arrivalDatetime: d(1), departureLat: 40.6413, departureLon: -73.7781, departureAirportName: 'John F. Kennedy International Airport', arrivalLat: 33.9425, arrivalLon: -118.4081, arrivalAirportName: 'Los Angeles International Airport' },
+        { journeyType: 'return', sequence: 1, carrier: 'Lufthansa', flightNumber: 'LH 401', departureAirport: 'LAX', departureDatetime: d(14), arrivalAirport: 'FRA', arrivalDatetime: d(15), departureLat: 33.9425, departureLon: -118.4081, departureAirportName: 'Los Angeles International Airport', arrivalLat: 50.0333, arrivalLon: 8.5706, arrivalAirportName: 'Frankfurt Airport' },
       ];
     }
     return this.repo.getFlightLegs(tagId);
