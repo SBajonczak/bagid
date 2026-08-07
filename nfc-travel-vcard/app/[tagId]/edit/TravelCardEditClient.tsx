@@ -9,6 +9,7 @@ import { FlightLeg } from '@/lib/types';
 import NavigationBar from '../../components/NavigationBar';
 import Footer from '../../components/Footer';
 import AirportAutocomplete, { AirportOption } from '../../components/AirportAutocomplete';
+import AirlineAutocomplete, { AirlineOption, loadAirlines } from '../../components/AirlineAutocomplete';
 
 // Converts any datetime string (UTC ISO or local) to the YYYY-MM-DDTHH:mm format
 // that datetime-local inputs expect (local time). Prevents timezone drift on save.
@@ -69,13 +70,14 @@ interface FlightLegsSectionProps {
     onRemoveLeg: (idx: number) => void;
     onChangeLeg: (idx: number, field: keyof FlightLeg, value: string) => void;
     onSelectAirport: (idx: number, direction: 'departure' | 'arrival', airport: AirportOption) => void;
+    onSelectAirline: (idx: number, airline: AirlineOption) => void;
     showFlightMap: boolean;
     onToggleFlightMap: (val: boolean) => void;
 }
 
 const inputCls = 'w-full rounded-xl border border-slate-200 px-3 py-2 text-sm shadow-sm focus:border-slate-900 focus:outline-none';
 
-const FlightLegsSection: React.FC<FlightLegsSectionProps> = ({ legs, legErrors, tfl, onAddLeg, onRemoveLeg, onChangeLeg, onSelectAirport, showFlightMap, onToggleFlightMap }) => {
+const FlightLegsSection: React.FC<FlightLegsSectionProps> = ({ legs, legErrors, tfl, onAddLeg, onRemoveLeg, onChangeLeg, onSelectAirport, onSelectAirline, showFlightMap, onToggleFlightMap }) => {
     const renderLegs = (type: 'outbound' | 'return', typeLabel: string, addLabel: string) => {
         const typed = legs.map((l, i) => ({ l, i })).filter(({ l }) => l.journeyType === type);
         return (
@@ -112,7 +114,13 @@ const FlightLegsSection: React.FC<FlightLegsSectionProps> = ({ legs, legErrors, 
                         <div className="grid grid-cols-2 gap-3">
                             <div>
                                 <label className="block text-xs font-medium text-slate-600 mb-1">{tfl.carrier}</label>
-                                <input type="text" value={l.carrier} onChange={e => onChangeLeg(i, 'carrier', e.target.value)} className={inputCls} />
+                                <AirlineAutocomplete
+                                    value={l.carrier}
+                                    onChange={val => onChangeLeg(i, 'carrier', val)}
+                                    onSelect={airline => onSelectAirline(i, airline)}
+                                    placeholder="Lufthansa"
+                                    className={inputCls}
+                                />
                             </div>
                             <div>
                                 <label className="block text-xs font-medium text-slate-600 mb-1">{tfl.flightNumber}</label>
@@ -361,6 +369,32 @@ const TravelCardEditClient: React.FC<TravelCardEditClientProps> = ({ tagId }) =>
                 : { ...leg, arrivalAirport: airport.iata, arrivalLat: airport.lat, arrivalLon: airport.lon, arrivalAirportName: airport.name };
         }));
     };
+
+    const handleLegAirlineSelect = (idx: number, airline: AirlineOption) => {
+        setFlightLegs(prev => prev.map((leg, i) =>
+            i === idx ? { ...leg, carrier: airline.name } : leg
+        ));
+    };
+
+    // Auto-fill carrier from flightNumber prefix (e.g. "LH 400" → "Lufthansa")
+    const flightNumbers = flightLegs.map(l => l.flightNumber).join('|');
+    useEffect(() => {
+        let cancelled = false;
+        loadAirlines().then(airlines => {
+            if (cancelled) return;
+            setFlightLegs(prev => prev.map(leg => {
+                if (!leg.flightNumber) return leg;
+                const m = leg.flightNumber.trim().match(/^([A-Z0-9]{2})\s*\d/i);
+                if (!m) return leg;
+                const code = m[1].toUpperCase();
+                const match = airlines.find(a => a.iata === code);
+                if (!match || leg.carrier) return leg;
+                return { ...leg, carrier: match.name };
+            }));
+        });
+        return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [flightNumbers]);
 
     const legErrors = getLegErrors(flightLegs);
     const hasLegErrors = legErrors.some(e => e.arrivalBeforeDeparture || e.departureBeforePrevArrival);
@@ -646,6 +680,7 @@ const TravelCardEditClient: React.FC<TravelCardEditClientProps> = ({ tagId }) =>
                                 onRemoveLeg={handleRemoveLeg}
                                 onChangeLeg={handleLegChange}
                                 onSelectAirport={handleLegAirportSelect}
+                                onSelectAirline={handleLegAirlineSelect}
                                 showFlightMap={formData.showFlightMap}
                                 onToggleFlightMap={val => setFormData(prev => ({ ...prev, showFlightMap: val }))}
                             />

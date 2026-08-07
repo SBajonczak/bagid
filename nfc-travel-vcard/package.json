@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "node scripts/startup-log.js && next start",
     "lint": "next lint . --format stylish",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "build:airlines": "node scripts/build-airlines-json.js"
   },
   "dependencies": {
     "@azure/msal-browser": "^3.26.1",

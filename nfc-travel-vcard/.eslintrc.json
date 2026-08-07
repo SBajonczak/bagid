@@ -9,7 +9,7 @@
     "react-hooks/exhaustive-deps": "warn",
     "@next/next/no-img-element": "warn",
     "@typescript-eslint/no-unused-vars": [
-      "warn",
+      "error",
       {
         "argsIgnorePattern": "^_",
         "varsIgnorePattern": "^_",

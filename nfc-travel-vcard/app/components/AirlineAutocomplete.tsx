@@ -2,52 +2,49 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 
-interface AirportOption {
+interface AirlineOption {
   iata: string;
   name: string;
-  city: string;
   country: string;
-  lat: number;
-  lon: number;
 }
 
-interface AirportAutocompleteProps {
+interface AirlineAutocompleteProps {
   value: string;
-  onChange: (code: string) => void;
-  onSelect: (airport: AirportOption) => void;
+  onChange: (name: string) => void;
+  onSelect: (airline: AirlineOption) => void;
   placeholder?: string;
   className?: string;
 }
 
-let cachedAirports: AirportOption[] | null = null;
-let loadingPromise: Promise<AirportOption[]> | null = null;
+let cachedAirlines: AirlineOption[] | null = null;
+let loadingPromise: Promise<AirlineOption[]> | null = null;
 
-async function loadAirports(): Promise<AirportOption[]> {
-  if (cachedAirports) return cachedAirports;
+export async function loadAirlines(): Promise<AirlineOption[]> {
+  if (cachedAirlines) return cachedAirlines;
   if (!loadingPromise) {
-    loadingPromise = fetch('/airports.json').then(r => r.json()).then(data => {
-      cachedAirports = data;
+    loadingPromise = fetch('/airlines.json').then(r => r.json()).then(data => {
+      cachedAirlines = data;
       return data;
     });
   }
   return loadingPromise;
 }
 
-function filterAirports(query: string, airports: AirportOption[]): AirportOption[] {
+function filterAirlines(query: string, airlines: AirlineOption[]): AirlineOption[] {
   const q = query.toLowerCase();
-  const byCode = airports.filter(a => a.iata.toLowerCase().startsWith(q));
-  const byName = airports.filter(a => !a.iata.toLowerCase().startsWith(q) && a.name.toLowerCase().includes(q));
-  const byCity = airports.filter(a => !a.iata.toLowerCase().startsWith(q) && !a.name.toLowerCase().includes(q) && a.city.toLowerCase().includes(q));
-  const byCountry = airports.filter(a => !a.iata.toLowerCase().startsWith(q) && !a.name.toLowerCase().includes(q) && !a.city.toLowerCase().includes(q) && a.country.toLowerCase().includes(q));
-  return [...byCode, ...byName, ...byCity, ...byCountry].slice(0, 8);
+  const byCode = airlines.filter(a => a.iata.toLowerCase().startsWith(q));
+  const byName = airlines.filter(
+    a => !a.iata.toLowerCase().startsWith(q) && a.name.toLowerCase().includes(q)
+  );
+  return [...byCode, ...byName].slice(0, 8);
 }
 
-const AirportAutocomplete: React.FC<AirportAutocompleteProps> = ({ value, onChange, onSelect, placeholder = 'FRA', className }) => {
+const AirlineAutocomplete: React.FC<AirlineAutocompleteProps> = ({ value, onChange, onSelect, placeholder = 'Lufthansa', className }) => {
   const [query, setQuery] = useState(value);
-  const [options, setOptions] = useState<AirportOption[]>([]);
+  const [options, setOptions] = useState<AirlineOption[]>([]);
   const [open, setOpen] = useState(false);
   const [activeIdx, setActiveIdx] = useState(-1);
-  const [airports, setAirports] = useState<AirportOption[] | null>(null);
+  const [airlines, setAirlines] = useState<AirlineOption[] | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => { setQuery(value); }, [value]);
@@ -63,9 +60,9 @@ const AirportAutocomplete: React.FC<AirportAutocompleteProps> = ({ value, onChan
   }, []);
 
   const handleFocus = async () => {
-    if (!airports) {
-      const data = await loadAirports();
-      setAirports(data);
+    if (!airlines) {
+      const data = await loadAirlines();
+      setAirlines(data);
     }
   };
 
@@ -73,8 +70,8 @@ const AirportAutocomplete: React.FC<AirportAutocompleteProps> = ({ value, onChan
     const val = e.target.value;
     setQuery(val);
     onChange(val);
-    if (airports && val.length >= 1) {
-      setOptions(filterAirports(val, airports));
+    if (airlines && val.length >= 1) {
+      setOptions(filterAirlines(val, airlines));
       setOpen(true);
       setActiveIdx(-1);
     } else {
@@ -82,11 +79,11 @@ const AirportAutocomplete: React.FC<AirportAutocompleteProps> = ({ value, onChan
     }
   };
 
-  const handleSelect = (airport: AirportOption) => {
-    setQuery(airport.iata);
+  const handleSelect = (airline: AirlineOption) => {
+    setQuery(airline.name);
     setOpen(false);
-    onChange(airport.iata);
-    onSelect(airport);
+    onChange(airline.name);
+    onSelect(airline);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -108,7 +105,6 @@ const AirportAutocomplete: React.FC<AirportAutocompleteProps> = ({ value, onChan
         onFocus={handleFocus}
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
-        maxLength={4}
         autoComplete="off"
         className={inputCls}
       />
@@ -122,7 +118,7 @@ const AirportAutocomplete: React.FC<AirportAutocompleteProps> = ({ value, onChan
             >
               <span className="font-semibold text-slate-900">{a.iata}</span>
               <span className="text-slate-500"> — {a.name}</span>
-              {a.city && <span className="text-slate-400"> ({a.city}, {a.country})</span>}
+              {a.country && <span className="text-slate-400"> ({a.country})</span>}
             </li>
           ))}
         </ul>
@@ -131,5 +127,5 @@ const AirportAutocomplete: React.FC<AirportAutocompleteProps> = ({ value, onChan
   );
 };
 
-export default AirportAutocomplete;
-export type { AirportOption };
+export default AirlineAutocomplete;
+export type { AirlineOption };

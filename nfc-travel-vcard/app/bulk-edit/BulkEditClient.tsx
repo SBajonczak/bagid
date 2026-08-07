@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../components/AuthProvider';
 import { useLanguage } from '../components/LanguageProvider';
@@ -8,6 +8,8 @@ import { messages } from '@/lib/i18n';
 import { FlightLeg } from '@/lib/types';
 import NavigationBar from '../components/NavigationBar';
 import Footer from '../components/Footer';
+import AirportAutocomplete, { AirportOption } from '../components/AirportAutocomplete';
+import AirlineAutocomplete, { AirlineOption, loadAirlines } from '../components/AirlineAutocomplete';
 
 const inputCls = 'w-full rounded-xl border border-slate-200 px-3 py-2 text-sm shadow-sm focus:border-slate-900 focus:outline-none';
 
@@ -23,9 +25,11 @@ interface FlightLegsSectionProps {
   onAddLeg: (type: 'outbound' | 'return') => void;
   onRemoveLeg: (idx: number) => void;
   onChangeLeg: (idx: number, field: keyof FlightLeg, value: string) => void;
+  onSelectAirport: (idx: number, direction: 'departure' | 'arrival', airport: AirportOption) => void;
+  onSelectAirline: (idx: number, airline: AirlineOption) => void;
 }
 
-const BulkFlightLegsSection: React.FC<FlightLegsSectionProps> = ({ legs, tfl, onAddLeg, onRemoveLeg, onChangeLeg }) => {
+const BulkFlightLegsSection: React.FC<FlightLegsSectionProps> = ({ legs, tfl, onAddLeg, onRemoveLeg, onChangeLeg, onSelectAirport, onSelectAirline }) => {
   const renderLegs = (type: 'outbound' | 'return', typeLabel: string, addLabel: string) => {
     const typed = legs.map((l, i) => ({ l, i })).filter(({ l }) => l.journeyType === type);
     return (
@@ -45,15 +49,33 @@ const BulkFlightLegsSection: React.FC<FlightLegsSectionProps> = ({ legs, tfl, on
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div><label className="block text-xs font-medium text-slate-600 mb-1">{tfl.carrier}</label>
-                <input type="text" value={l.carrier} onChange={e => onChangeLeg(i, 'carrier', e.target.value)} className={inputCls} /></div>
+                <AirlineAutocomplete
+                  value={l.carrier}
+                  onChange={val => onChangeLeg(i, 'carrier', val)}
+                  onSelect={airline => onSelectAirline(i, airline)}
+                  placeholder="Lufthansa"
+                  className={inputCls}
+                /></div>
               <div><label className="block text-xs font-medium text-slate-600 mb-1">{tfl.flightNumber}</label>
                 <input type="text" value={l.flightNumber} onChange={e => onChangeLeg(i, 'flightNumber', e.target.value)} className={inputCls} placeholder="LH 400" /></div>
               <div><label className="block text-xs font-medium text-slate-600 mb-1">{tfl.depAirport}</label>
-                <input type="text" value={l.departureAirport} onChange={e => onChangeLeg(i, 'departureAirport', e.target.value)} className={inputCls} placeholder="FRA" maxLength={4} /></div>
+                <AirportAutocomplete
+                  value={l.departureAirport}
+                  onChange={val => onChangeLeg(i, 'departureAirport', val)}
+                  onSelect={airport => onSelectAirport(i, 'departure', airport)}
+                  placeholder="FRA"
+                  className={inputCls}
+                /></div>
               <div><label className="block text-xs font-medium text-slate-600 mb-1">{tfl.depTime}</label>
                 <input type="datetime-local" value={l.departureDatetime ? l.departureDatetime.slice(0, 16) : ''} onChange={e => onChangeLeg(i, 'departureDatetime', e.target.value)} className={inputCls} /></div>
               <div><label className="block text-xs font-medium text-slate-600 mb-1">{tfl.arrAirport}</label>
-                <input type="text" value={l.arrivalAirport} onChange={e => onChangeLeg(i, 'arrivalAirport', e.target.value)} className={inputCls} placeholder="JFK" maxLength={4} /></div>
+                <AirportAutocomplete
+                  value={l.arrivalAirport}
+                  onChange={val => onChangeLeg(i, 'arrivalAirport', val)}
+                  onSelect={airport => onSelectAirport(i, 'arrival', airport)}
+                  placeholder="JFK"
+                  className={inputCls}
+                /></div>
               <div><label className="block text-xs font-medium text-slate-600 mb-1">{tfl.arrTime}</label>
                 <input type="datetime-local" value={l.arrivalDatetime ? l.arrivalDatetime.slice(0, 16) : ''} onChange={e => onChangeLeg(i, 'arrivalDatetime', e.target.value)} className={inputCls} /></div>
             </div>
@@ -119,6 +141,40 @@ const BulkEditClient: React.FC<BulkEditClientProps> = ({ tagIds }) => {
   const handleLegChange = (idx: number, field: keyof FlightLeg, value: string) => {
     setFlightLegs(prev => prev.map((leg, i) => i === idx ? { ...leg, [field]: value } : leg));
   };
+
+  const handleLegAirportSelect = (idx: number, direction: 'departure' | 'arrival', airport: AirportOption) => {
+    setFlightLegs(prev => prev.map((leg, i) => {
+      if (i !== idx) return leg;
+      return direction === 'departure'
+        ? { ...leg, departureAirport: airport.iata, departureLat: airport.lat, departureLon: airport.lon, departureAirportName: airport.name }
+        : { ...leg, arrivalAirport: airport.iata, arrivalLat: airport.lat, arrivalLon: airport.lon, arrivalAirportName: airport.name };
+    }));
+  };
+
+  const handleLegAirlineSelect = (idx: number, airline: AirlineOption) => {
+    setFlightLegs(prev => prev.map((leg, i) =>
+      i === idx ? { ...leg, carrier: airline.name } : leg
+    ));
+  };
+
+  const flightNumbers = flightLegs.map(l => l.flightNumber).join('|');
+  useEffect(() => {
+    let cancelled = false;
+    loadAirlines().then(airlines => {
+      if (cancelled) return;
+      setFlightLegs(prev => prev.map(leg => {
+        if (!leg.flightNumber) return leg;
+        const m = leg.flightNumber.trim().match(/^([A-Z0-9]{2})\s*\d/i);
+        if (!m) return leg;
+        const code = m[1].toUpperCase();
+        const match = airlines.find(a => a.iata === code);
+        if (!match || leg.carrier) return leg;
+        return { ...leg, carrier: match.name };
+      }));
+    });
+    return () => { cancelled = true; };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [flightNumbers]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -348,6 +404,8 @@ const BulkEditClient: React.FC<BulkEditClientProps> = ({ tagIds }) => {
                 onAddLeg={handleAddLeg}
                 onRemoveLeg={handleRemoveLeg}
                 onChangeLeg={handleLegChange}
+                onSelectAirport={handleLegAirportSelect}
+                onSelectAirline={handleLegAirlineSelect}
               />
 
               <div className="flex flex-col gap-3 sm:flex-row">
