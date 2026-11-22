@@ -12,6 +12,8 @@ import type { SiteLocale } from '@/lib/seo/site';
 
 export interface StoryChapter {
   id: string;
+  /** Uhrzeit im Ablauf (echte Reihenfolge, daher als Zeitstempel statt Nummer) */
+  time: string;
   label: string;
   title: string;
   text: string;
@@ -43,12 +45,36 @@ export interface StoryContent {
 
 const SITA_SOURCE_URL = 'https://www.sita.aero/';
 
+const notifyVariant: Record<SiteLocale, Pick<StoryChapter, 'title' | 'text'>> = {
+  de: {
+    title: 'Du bekommst eine Nachricht',
+    text: 'Mit einem Tipp schickt sie dir eine Nachricht, auf Wunsch mit Standort. Ihr sprecht kurz ab, wohin der Koffer soll.',
+  },
+  en: {
+    title: 'You get a message',
+    text: 'With one tap she sends you a message, optionally with her location. You quickly agree where the bag should go.',
+  },
+};
+
+/**
+ * Story mit passendem Kontakt-Kapitel: Ist "Besitzer benachrichtigen" aktiv,
+ * sind Telefon/E-Mail verborgen und der Finder schreibt eine Nachricht.
+ */
+export function getStoryContent(locale: SiteLocale, notifyEnabled: boolean): StoryContent {
+  const base = storyContent[locale];
+  if (!notifyEnabled) return base;
+  return {
+    ...base,
+    chapters: base.chapters.map((c, i) => (i === 3 ? { ...c, ...notifyVariant[locale] } : c)),
+  };
+}
+
 export const storyContent: Record<SiteLocale, StoryContent> = {
   de: {
-    eyebrow: 'Eine Reise, zwei mögliche Enden',
+    eyebrow: 'So kann es laufen',
     title: 'Was passiert, wenn dein Koffer nicht ankommt?',
     intro:
-      'Jedes Jahr landen Millionen Gepäckstücke am falschen Ort. Ob deine Geschichte gut ausgeht, entscheidet oft ein kleines Detail: Kann der Finder dich erreichen – schnell und ohne dass deine Privatadresse für alle sichtbar am Koffer hängt?',
+      'Ob ein verlorener Koffer nach Stunden oder nach Tagen zurückkommt, hängt oft an einer Frage: Kann der Finder dich erreichen?',
     stat: {
       value: '24 Mio.',
       label: 'Gepäckstücke wurden 2025 weltweit fehlgeleitet',
@@ -58,33 +84,38 @@ export const storyContent: Record<SiteLocale, StoryContent> = {
     chapters: [
       {
         id: 'ankunft',
-        label: 'Kapitel 1',
-        title: 'Ankunft, 23:40 Uhr – das Band steht still',
-        text: 'Der letzte Koffer dreht seine Runde, deiner ist nicht dabei. Am Schalter bekommst du eine Vorgangsnummer – und jede Menge Ungewissheit.',
+        time: '23:40',
+        label: 'Ankunft',
+        title: 'Das Band steht still',
+        text: 'Der letzte Koffer dreht seine Runde, deiner ist nicht dabei. Am Schalter bekommst du eine Vorgangsnummer und die Auskunft, man melde sich.',
       },
       {
         id: 'papieranhaenger',
-        label: 'Kapitel 2',
-        title: 'Der Papieranhänger hilft nicht weiter',
-        text: 'Die Handynummer ist verwischt, die Adresse veraltet. Und deine Wohnanschrift hing die ganze Reise für jeden lesbar am Gepäck.',
+        time: '09:10',
+        label: 'Am nächsten Morgen',
+        title: 'Dein Koffer steht in Mailand',
+        text: 'Am Papieranhänger ist die Handynummer verwischt, die Adresse veraltet. Niemand weiß, wem der Koffer gehört.',
       },
       {
         id: 'scan',
-        label: 'Kapitel 3',
-        title: 'Der Wendepunkt: ein Scan',
-        text: 'Mit Bag-Tag hält der Finder – Flughafenpersonal, Hotel oder ein ehrlicher Mitreisender – sein Smartphone an den NFC-Anhänger oder scannt den QR-Code. Ohne App sieht er genau die Kontaktdaten, die du freigegeben hast.',
+        time: '09:12',
+        label: 'Der Scan',
+        title: 'Eine Mitarbeiterin hält ihr Handy an den Bag-Tag',
+        text: 'Ohne App sieht sie deinen Namen, deinen Flug und dein Hotel in Rom – und wie sie dich erreicht.',
       },
       {
         id: 'nachricht',
-        label: 'Kapitel 4',
-        title: 'Du bekommst eine Nachricht',
-        text: 'Mit wenigen Klicks schickt dir der Finder eine Nachricht – auf Wunsch mit seinem aktuellen Standort. Du weißt, wo dein Koffer ist, und kannst die Rückgabe direkt absprechen.',
+        time: '09:15',
+        label: 'Kontakt',
+        title: 'Dein Handy klingelt',
+        text: 'Ihr sprecht kurz ab, wohin der Koffer soll. Du musst nichts ausfüllen und niemandem hinterhertelefonieren.',
       },
       {
         id: 'happy-end',
-        label: 'Kapitel 5',
-        title: 'Wieder vereint',
-        text: 'Statt tagelangem Warten: ein kurzer Kontakt, eine Absprache – und dein Gepäck ist auf dem Weg zurück zu dir.',
+        time: '18:30',
+        label: 'Am Abend',
+        title: 'Der Koffer steht im Hotel',
+        text: 'Statt Tage zu warten, hast du deine Sachen am selben Abend wieder.',
       },
     ],
     comparisonTitle: 'Papieranhänger oder Bag-Tag?',
@@ -92,12 +123,12 @@ export const storyContent: Record<SiteLocale, StoryContent> = {
     comparison: [
       { aspect: 'Kontaktdaten aktuell', paper: 'Nur durch neues Ausfüllen', bagTag: 'Jederzeit online änderbar' },
       { aspect: 'Privatsphäre', paper: 'Adresse für alle lesbar', bagTag: 'Nur freigegebene Daten nach Scan' },
-      { aspect: 'Finder meldet sich', paper: 'Anrufen, falls Nummer lesbar', bagTag: 'Nachricht inkl. Standort per Klick' },
+      { aspect: 'Finder meldet sich', paper: 'Nur, wenn die Nummer lesbar ist', bagTag: 'Ein Tipp nach dem Scan' },
       { aspect: 'Technik', paper: '–', bagTag: 'NFC + QR-Code, keine App, keine Batterie' },
     ],
-    ctaTitle: 'Schreib deine Reisegeschichte mit Happy End',
+    ctaTitle: 'Damit deine Geschichte so ausgeht',
     ctaText: '10,99 € pro Anhänger – einmal kaufen, ohne Abo, ohne Batterie.',
-    ctaPrimary: 'Jetzt Bag-Tag sichern',
+    ctaPrimary: 'Bag-Tag bestellen',
     ctaSecondary: 'So erlebt der Finder den Scan',
     ctaSecondaryRouteKey: 'finderFlow',
     readMoreTitle: 'Weiterlesen im Ratgeber',
@@ -110,10 +141,10 @@ export const storyContent: Record<SiteLocale, StoryContent> = {
     ],
   },
   en: {
-    eyebrow: 'One trip, two possible endings',
+    eyebrow: 'How it can play out',
     title: 'What happens when your suitcase doesn’t arrive?',
     intro:
-      'Millions of bags end up in the wrong place every year. Whether your story ends well often comes down to one small detail: can the finder reach you – quickly, and without your home address dangling from your luggage for everyone to read?',
+      'Whether a lost suitcase comes back in hours or in days often depends on one question: can the finder reach you?',
     stat: {
       value: '24 million',
       label: 'bags were mishandled worldwide in 2025',
@@ -123,33 +154,38 @@ export const storyContent: Record<SiteLocale, StoryContent> = {
     chapters: [
       {
         id: 'arrival',
-        label: 'Chapter 1',
-        title: 'Arrival, 11:40 pm – the belt stops',
-        text: 'The last suitcase goes round, yours isn’t there. At the desk you get a reference number – and plenty of uncertainty.',
+        time: '11:40 pm',
+        label: 'Arrival',
+        title: 'The belt stops',
+        text: 'The last suitcase goes round, yours isn’t there. At the desk you get a reference number and a promise that someone will be in touch.',
       },
       {
         id: 'paper-tag',
-        label: 'Chapter 2',
-        title: 'The paper tag doesn’t help',
-        text: 'The phone number is smudged, the address outdated. And your home address was readable by anyone for the entire trip.',
+        time: '9:10 am',
+        label: 'Next morning',
+        title: 'Your suitcase is in Milan',
+        text: 'On the paper tag the phone number is smudged and the address outdated. Nobody knows whose bag it is.',
       },
       {
         id: 'scan',
-        label: 'Chapter 3',
-        title: 'The turning point: one scan',
-        text: 'With Bag-Tag, the finder – airport staff, a hotel or an honest fellow traveller – taps the NFC tag with their phone or scans the QR code. No app needed, and they only see the contact details you chose to share.',
+        time: '9:12 am',
+        label: 'The scan',
+        title: 'A staff member taps the Bag-Tag with her phone',
+        text: 'No app needed: she sees your name, your flight and your hotel in Rome – and how to reach you.',
       },
       {
         id: 'message',
-        label: 'Chapter 4',
-        title: 'You get a message',
-        text: 'In a few clicks the finder sends you a message – optionally with their current location. You know where your bag is and can arrange the return directly.',
+        time: '9:15 am',
+        label: 'Contact',
+        title: 'Your phone rings',
+        text: 'You quickly agree where the bag should go. No forms, no chasing anyone on the phone.',
       },
       {
         id: 'happy-end',
-        label: 'Chapter 5',
-        title: 'Reunited',
-        text: 'Instead of days of waiting: a quick contact, a short arrangement – and your luggage is on its way back to you.',
+        time: '6:30 pm',
+        label: 'Evening',
+        title: 'Your suitcase is at the hotel',
+        text: 'Instead of waiting for days, you have your things back the same evening.',
       },
     ],
     comparisonTitle: 'Paper tag or Bag-Tag?',
@@ -157,12 +193,12 @@ export const storyContent: Record<SiteLocale, StoryContent> = {
     comparison: [
       { aspect: 'Up-to-date contact', paper: 'Only by rewriting it', bagTag: 'Edit online anytime' },
       { aspect: 'Privacy', paper: 'Address visible to all', bagTag: 'Only shared data, after a scan' },
-      { aspect: 'Finder gets in touch', paper: 'Calls – if the number is readable', bagTag: 'Message incl. location in one click' },
+      { aspect: 'Finder gets in touch', paper: 'Only if the number is readable', bagTag: 'One tap after the scan' },
       { aspect: 'Technology', paper: '–', bagTag: 'NFC + QR code, no app, no battery' },
     ],
-    ctaTitle: 'Give your travel story a happy ending',
+    ctaTitle: 'So your story ends like this',
     ctaText: '€10.99 per tag – buy once, no subscription, no battery.',
-    ctaPrimary: 'Get your Bag-Tag',
+    ctaPrimary: 'Order a Bag-Tag',
     ctaSecondary: 'See what the finder experiences',
     ctaSecondaryRouteKey: 'finderFlow',
     readMoreTitle: 'Keep reading',

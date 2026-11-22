@@ -11,6 +11,7 @@ import { messages } from '@/lib/i18n';
 import { PRODUCT, SITE_NAME, SITE_URL, absoluteUrl, type SiteLocale } from './site';
 import { homeRoute, localizedPath } from './routes';
 import { storyContent } from '@/lib/content/story';
+import { getLandingContent, photos } from '@/lib/content/landing';
 
 type JsonLdObject = Record<string, unknown>;
 
@@ -50,7 +51,13 @@ export function buildProductSchema(locale: SiteLocale): JsonLdObject {
     description: copy.description,
     sku: PRODUCT.sku,
     brand: { '@type': 'Brand', name: SITE_NAME },
-    image: PRODUCT.image,
+    // Echte Produktfotos (aus dem Produktvideo) + bisheriges Produktbild
+    image: [
+      absoluteUrl(photos.tagBackpack.src),
+      absoluteUrl(photos.nfcScan.src),
+      absoluteUrl(photos.finderReads.src),
+      PRODUCT.image,
+    ],
     offers: {
       '@type': 'Offer',
       url: absoluteUrl(productPath),
@@ -141,7 +148,7 @@ export function buildHomeWebPageSchema(locale: SiteLocale): JsonLdObject {
     inLanguage: locale,
     isPartOf: { '@type': 'WebSite', name: SITE_NAME, url: SITE_URL },
     about: { '@id': `${url}#product` },
-    primaryImageOfPage: PRODUCT.image,
+    primaryImageOfPage: absoluteUrl(photos.tagBackpack.src),
     hasPart: {
       '@type': 'WebPageElement',
       '@id': `${url}#story`,
@@ -151,10 +158,31 @@ export function buildHomeWebPageSchema(locale: SiteLocale): JsonLdObject {
   };
 }
 
+/** Erstes Hochladen des Produktvideos ins Repo (Git-Historie). */
+export const VIDEO_UPLOAD_DATE = '2025-06-01T14:52:33Z';
+
+export function buildVideoSchema(locale: SiteLocale): JsonLdObject {
+  const { video } = getLandingContent(locale);
+  const url = absoluteUrl(homeRoute[locale]!);
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    '@id': `${url}#video`,
+    name: video.name,
+    description: video.description,
+    thumbnailUrl: [absoluteUrl(photos.videoPoster.src)],
+    contentUrl: absoluteUrl(photos.video),
+    uploadDate: VIDEO_UPLOAD_DATE,
+    duration: 'PT21S',
+    inLanguage: locale,
+  };
+}
+
 export function buildHomeJsonLd(locale: SiteLocale): JsonLdObject[] {
   return [
     buildHomeWebPageSchema(locale),
     buildProductSchema(locale),
+    buildVideoSchema(locale),
     buildBreadcrumbSchema(locale),
     buildFaqSchema(locale),
   ];

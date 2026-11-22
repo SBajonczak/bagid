@@ -114,10 +114,10 @@ export const messages = {
             howItWorksTitle: "Wie es funktioniert",
             howItWorksSubtitle: "In nur wenigen Schritten zu mehr Sicherheit auf Reisen",
             howItWorksSteps: [
-                { title: "Anhänger anbringen", description: "Befestigen Sie den Travel Tag am Koffer oder der Tasche" },
-                { title: "Online registrieren", description: "Scannen Sie den NFC/QR-Code und hinterlegen Sie Ihre Daten" },
-                { title: "Sorgenfrei reisen", description: "Ihre Kontaktdaten sind jederzeit aktualisierbar" },
-                { title: "Gefunden werden", description: "Im Verlustfall kann der Finder Sie sofort kontaktieren" }
+                { title: "Anhänger anbringen", description: "Befestige den Bag-Tag mit dem Metallring am Koffer, Rucksack oder an der Tasche." },
+                { title: "Einmal scannen und Daten eintragen", description: "Beim ersten Scan landest du auf der Registrierung. Dort trägst du ein, was ein Finder sehen soll." },
+                { title: "Vor jeder Reise kurz anpassen", description: "Flug und Hotel aktualisierst du online – der Anhänger bleibt am Koffer." },
+                { title: "Gefunden werden", description: "Scannt jemand deinen Anhänger, sieht er sofort, wie er dich erreicht." }
             ],
             benefitsTitle: "Ihre Vorteile",
             benefitsSubtitle: "Warum tausende Reisende dem {productname} vertrauen",
@@ -455,10 +455,10 @@ export const messages = {
             howItWorksTitle: "How it works",
             howItWorksSubtitle: "More security for your travels in just a few steps",
             howItWorksSteps: [
-                { title: "Attach tag", description: "Attach the Travel Tag to your suitcase or bag" },
-                { title: "Register online", description: "Scan the NFC/QR code and enter your details" },
-                { title: "Travel worry-free", description: "Your contact details can be updated anytime" },
-                { title: "Be found", description: "If lost, the finder can contact you immediately" }
+                { title: "Attach the tag", description: "Fix the Bag-Tag to your suitcase, backpack or bag with the metal ring." },
+                { title: "Scan once and add your details", description: "The first scan takes you to registration, where you enter what a finder should see." },
+                { title: "Update before each trip", description: "Change flight and hotel online – the tag stays on your bag." },
+                { title: "Get found", description: "Whoever scans your tag instantly sees how to reach you." }
             ],
             benefitsTitle: "Your benefits",
             benefitsSubtitle: "Why thousands of travelers trust {productname}",

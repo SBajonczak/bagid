@@ -25,7 +25,7 @@ describe.each(cases)('Startseiten-Layout ($locale)', ({ locale, Layout, meta }) 
 
   it('gibt JSON-LD als echte <script>-Tags im Server-HTML aus', () => {
     const types = jsonLdBlocks(html).map((b) => b['@type']);
-    expect(types).toEqual(['WebPage', 'Product', 'BreadcrumbList', 'FAQPage']);
+    expect(types).toEqual(['WebPage', 'Product', 'VideoObject', 'BreadcrumbList', 'FAQPage']);
   });
 
   it('rendert die Kinder weiterhin', () => {

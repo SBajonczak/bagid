@@ -9,7 +9,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const dict = await getDictionary('de');
   const seo = dict.seo;
   const url = 'https://bag-tag.de/de';
-  const imageUrl = 'https://bag-tag.de/assets/productimage.webp';
+  const imageUrl = 'https://bag-tag.de/assets/landing/og-bag-tag.jpg';
   
   return {
     title: seo.title,
@@ -31,7 +31,7 @@ export async function generateMetadata(): Promise<Metadata> {
           url: imageUrl,
           width: 1200,
           height: 630,
-          alt: 'Bag-Tag NFC Gepäckanhänger für sicheres Reisen',
+          alt: 'Bag-Tag NFC-Gepäckanhänger an einem Rucksack',
         },
       ],
     },

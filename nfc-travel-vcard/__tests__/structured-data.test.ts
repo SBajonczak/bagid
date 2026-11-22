@@ -3,12 +3,15 @@ import {
   buildFaqSchema,
   buildHomeJsonLd,
   buildProductSchema,
+  buildVideoSchema,
   getVisibleFaq,
   getVisibleTestimonials,
 } from '@/lib/seo/structured-data';
 import { serializeJsonLd } from '@/app/components/JsonLd';
 import { PRODUCT } from '@/lib/seo/site';
-import { pageFileFor } from './helpers/fs-routes';
+import fs from 'node:fs';
+import path from 'node:path';
+import { ROOT, pageFileFor } from './helpers/fs-routes';
 
 const locales = ['de', 'en'] as const;
 
@@ -18,7 +21,7 @@ describe.each(locales)('Structured Data (%s)', (locale) => {
   it('Product hat Pflichtfelder für Rich Results', () => {
     expect(product['@type']).toBe('Product');
     expect(product.name).toBeTruthy();
-    expect(product.image).toMatch(/^https:\/\//);
+    expect(product.image.length).toBeGreaterThan(0);
     expect(product.offers.price).toBe(PRODUCT.price);
     expect(product.offers.priceCurrency).toBe('EUR');
     expect(product.offers.availability).toBe('https://schema.org/InStock');
@@ -58,9 +61,28 @@ describe.each(locales)('Structured Data (%s)', (locale) => {
     expect(getVisibleFaq(locale).length).toBe(10);
   });
 
-  it('Startseite liefert WebPage, Product, Breadcrumb, FAQ – ohne Duplikate', () => {
+  it('Startseite liefert WebPage, Product, Video, Breadcrumb, FAQ – ohne Duplikate', () => {
     const types = buildHomeJsonLd(locale).map((s) => s['@type']);
-    expect(types).toEqual(['WebPage', 'Product', 'BreadcrumbList', 'FAQPage']);
+    expect(types).toEqual(['WebPage', 'Product', 'VideoObject', 'BreadcrumbList', 'FAQPage']);
+  });
+
+  it('Produktbilder sind echte Fotos und existieren', () => {
+    expect(Array.isArray(product.image)).toBe(true);
+    for (const url of product.image as string[]) {
+      const p = new URL(url).pathname;
+      expect(fs.existsSync(path.join(ROOT, 'public', p)), p).toBe(true);
+    }
+  });
+
+  it('VideoObject hat Pflichtfelder und zeigt auf existierende Dateien', () => {
+    const video = buildVideoSchema(locale) as any;
+    for (const key of ['name', 'description', 'thumbnailUrl', 'uploadDate', 'contentUrl']) {
+      expect(video[key], key).toBeTruthy();
+    }
+    expect(new Date(video.uploadDate).toString()).not.toBe('Invalid Date');
+    for (const url of [video.contentUrl, ...video.thumbnailUrl]) {
+      expect(fs.existsSync(path.join(ROOT, 'public', new URL(url).pathname)), url).toBe(true);
+    }
   });
 
   it('WebPage verweist per @id auf das Produkt', () => {

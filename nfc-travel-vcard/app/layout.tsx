@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     siteName: "Bag-Tag",
     images: [
       {
-        url: "https://bag-tag.de/assets/productimage.webp",
+        url: "https://bag-tag.de/assets/landing/og-bag-tag.jpg",
         width: 1200,
         height: 630,
         alt: "Bag-Tag NFC Gepäckanhänger – smarter Kofferanhänger mit NFC und QR-Code",
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Bag-Tag | Smarter NFC Gepäckanhänger",
     description: "NFC & QR-Code Gepäckanhänger für €10,99. Kein App-Download, keine Batterien. Koffer verloren? Finder kontaktieren dich sofort.",
-    images: ["https://bag-tag.de/assets/productimage.webp"],
+    images: ["https://bag-tag.de/assets/landing/og-bag-tag.jpg"],
     creator: "@bag_tag",
     site: "@bag_tag",
   },

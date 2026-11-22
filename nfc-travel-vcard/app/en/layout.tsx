@@ -9,7 +9,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const dict = await getDictionary('en');
   const seo = dict.seo;
   const url = 'https://bag-tag.de/en';
-  const imageUrl = 'https://bag-tag.de/assets/productimage.webp';
+  const imageUrl = 'https://bag-tag.de/assets/landing/og-bag-tag.jpg';
   
   return {
     title: seo.title,
@@ -31,7 +31,7 @@ export async function generateMetadata(): Promise<Metadata> {
           url: imageUrl,
           width: 1200,
           height: 630,
-          alt: 'Bag-Tag NFC luggage tags for safe travel',
+          alt: 'Bag-Tag NFC luggage tag on a backpack',
         },
       ],
     },
