@@ -191,6 +191,26 @@ export const messages = {
                     question: 'Was ist in dem Paket enthalten?',
                     answer: 'Du erhältst dein persönliches Tag und einen Metallring zum Befestigen des Tags.',
                 },
+                {
+                    question: 'Funktioniert der Bag-Tag auch ohne Internet?',
+                    answer: 'Der NFC-Chip selbst braucht kein Internet. Wenn ein Finder dein Gepäck scannt, öffnet sich eine Online-Seite – dafür braucht der Finder eine Internetverbindung, die bei modernen Smartphones Standard ist.',
+                },
+                {
+                    question: 'Was passiert, wenn der Finder kein NFC-fähiges Smartphone hat?',
+                    answer: 'Kein Problem: Jeder Bag-Tag hat zusätzlich einen QR-Code, der mit jeder Smartphone-Kamera ohne App gescannt werden kann.',
+                },
+                {
+                    question: 'Ist der Bag-Tag DSGVO-konform?',
+                    answer: 'Ja. Du bestimmst selbst, welche Daten ein Finder sieht. Es gibt kein Tracking und keine Weitergabe an Dritte.',
+                },
+                {
+                    question: 'Muss ich den Bag-Tag aufladen oder Batterien wechseln?',
+                    answer: 'Nein. NFC ist eine passive Technologie – der Tag wird vom Smartphone des Finders mit Energie versorgt. Keine Batterie, kein Aufladen, wartungsfrei.',
+                },
+                {
+                    question: 'Für wen ist der Bag-Tag geeignet?',
+                    answer: 'Für alle, die mit Koffer, Rucksack oder Sporttasche unterwegs sind: Geschäftsreisende, Familien, Vielflieger und Kinder auf Klassenfahrt.',
+                },
             ],
         },
         tagRegistration: {
@@ -511,7 +531,27 @@ export const messages = {
                 {
                     question: 'What is included in the package?',
                     answer: 'You will receive your personalized tag and a metal ring to attach the tag.',
-                }
+                },
+                {
+                    question: 'Does the Bag-Tag work without internet?',
+                    answer: 'The NFC chip itself needs no internet. When a finder scans your luggage, an online page opens – so the finder needs a data connection, which is standard on modern smartphones.',
+                },
+                {
+                    question: 'What if the finder does not have an NFC-enabled phone?',
+                    answer: 'No problem: every Bag-Tag also has a QR code that any smartphone camera can scan without an app.',
+                },
+                {
+                    question: 'Is the Bag-Tag GDPR compliant?',
+                    answer: 'Yes. You decide which data a finder can see. There is no tracking and no sharing with third parties.',
+                },
+                {
+                    question: 'Does the Bag-Tag need charging or batteries?',
+                    answer: 'No. NFC is a passive technology – the tag is powered by the finder\'s smartphone. No battery, no charging, maintenance-free.',
+                },
+                {
+                    question: 'Who is the Bag-Tag for?',
+                    answer: 'Anyone travelling with a suitcase, backpack or sports bag: business travellers, families, frequent flyers and kids on school trips.',
+                },
             ],
         },
         tagRegistration: {

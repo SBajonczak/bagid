@@ -7,6 +7,7 @@
  *   npm install --save-dev vitest @testing-library/react
  */
 
+import { describe, it, expect } from 'vitest';
 import { parseAcceptLanguage, detectLocale } from '../middleware';
 import { NextRequest } from 'next/server';
 

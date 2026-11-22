@@ -3,6 +3,7 @@ import Script from "next/script";
 import "./globals.css";
 import { AuthProvider } from "./components/AuthProvider";
 import { LanguageProvider } from "./components/LanguageProvider";
+import JsonLd from "./components/JsonLd";
 
 export const metadata: Metadata = {
   title: "Bag-Tag.de | Smarte NFC Gepäckanhänger für sicheres Reisen",
@@ -101,30 +102,14 @@ export default function RootLayout({
     url: 'https://bag-tag.de',
     description: 'Smarte NFC-Gepäckanhänger für sicheres Reisen – keine App, keine Batterien, DSGVO-konform',
     inLanguage: ['de', 'en'],
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: {
-        '@type': 'EntryPoint',
-        urlTemplate: 'https://bag-tag.de/de/hilfe/faq?q={search_term_string}',
-      },
-      'query-input': 'required name=search_term_string',
-    },
   };
 
   return (
     <html lang="de" suppressHydrationWarning>
       <head>
-        <link rel="alternate" hrefLang="de" href="https://bag-tag.de/de" />
-        <link rel="alternate" hrefLang="en" href="https://bag-tag.de/en" />
-        <link rel="alternate" hrefLang="x-default" href="https://bag-tag.de/" />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd) }}
-        />
+        {/* hreflang-Links kommen aus metadata.alternates (keine doppelten <link>-Tags) */}
+        <JsonLd data={organizationJsonLd} />
+        <JsonLd data={webSiteJsonLd} />
       </head>
 
       <Script id="microsoft-clarity" strategy="afterInteractive">
