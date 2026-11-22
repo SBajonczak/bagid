@@ -26,17 +26,20 @@ export interface Link {
  */
 export const routes: Record<string, Route> = {
   // Main pages
+  // Hinweis: Für Seiten ohne englische Fassung zeigt "en" auf die nächstpassende
+  // existierende englische Seite (verhindert 404-Links). Abgesichert durch
+  // __tests__/linkmap.test.ts.
   home: { de: '/de', en: '/en' },
   
   // Help section
   help: { de: '/de/hilfe', en: '/en/help' },
-  helpActivate: { de: '/de/hilfe/aktivieren', en: '/en/help/activate' },
-  helpIphoneNfc: { de: '/de/hilfe/iphone-nfc-aktivieren', en: '/en/help/iphone-nfc-activate' },
-  helpAndroidNfc: { de: '/de/hilfe/android-nfc-aktivieren', en: '/en/help/android-nfc-activate' },
-  helpQrFallback: { de: '/de/hilfe/qr-code-als-fallback', en: '/en/help/qr-code-fallback' },
-  helpChangeData: { de: '/de/hilfe/daten-aendern', en: '/en/help/change-data' },
-  helpTransferTag: { de: '/de/hilfe/tag-uebertragen', en: '/en/help/transfer-tag' },
-  helpFaq: { de: '/de/hilfe/faq', en: '/en/help/faq' },
+  helpActivate: { de: '/de/hilfe/aktivieren', en: '/en/help' },
+  helpIphoneNfc: { de: '/de/hilfe/iphone-nfc-aktivieren', en: '/en/help' },
+  helpAndroidNfc: { de: '/de/hilfe/android-nfc-aktivieren', en: '/en/help' },
+  helpQrFallback: { de: '/de/hilfe/qr-code-als-fallback', en: '/en/nfc-vs-qr' },
+  helpChangeData: { de: '/de/hilfe/daten-aendern', en: '/en/help' },
+  helpTransferTag: { de: '/de/hilfe/tag-uebertragen', en: '/en/help' },
+  helpFaq: { de: '/de/hilfe/faq', en: '/en#faq' },
   
   // How it works
   howItWorks: { de: '/de/so-funktionierts', en: '/en/how-it-works' },
@@ -45,15 +48,15 @@ export const routes: Record<string, Route> = {
   
   // Guides section
   guides: { de: '/de/ratgeber', en: '/en/guides' },
-  guideLostLuggage: { de: '/de/ratgeber/koffer-verloren-was-tun', en: '/en/guides/lost-luggage-what-to-do' },
-  guidePreventLoss: { de: '/de/ratgeber/gepaeck-verlust-vermeiden', en: '/en/guides/prevent-luggage-loss' },
-  guideNfcVsQr: { de: '/de/ratgeber/nfc-vs-qr', en: '/en/guides/nfc-vs-qr' },
+  guideLostLuggage: { de: '/de/ratgeber/koffer-verloren-was-tun', en: '/en/guides' },
+  guidePreventLoss: { de: '/de/ratgeber/gepaeck-verlust-vermeiden', en: '/en/prevent-luggage-loss' },
+  guideNfcVsQr: { de: '/de/ratgeber/nfc-vs-qr', en: '/en/nfc-vs-qr' },
   
   // Use cases
-  useCases: { de: '/de/use-cases', en: '/en/use-cases' },
-  useCaseKids: { de: '/de/use-cases/kofferanhaenger-fuer-kinder', en: '/en/use-cases/luggage-tags-for-kids' },
-  useCaseFamilies: { de: '/de/use-cases/gepaeckanhaenger-fuer-familien', en: '/en/use-cases/luggage-tags-for-families' },
-  useCaseFrequentFlyers: { de: '/de/use-cases/gepaeckanhaenger-fuer-vielflieger', en: '/en/use-cases/luggage-tags-for-frequent-flyers' },
+  useCases: { de: '/de/use-cases', en: '/en/guides' },
+  useCaseKids: { de: '/de/use-cases/kofferanhaenger-fuer-kinder', en: '/en/prevent-luggage-loss' },
+  useCaseFamilies: { de: '/de/use-cases/gepaeckanhaenger-fuer-familien', en: '/en/prevent-luggage-loss' },
+  useCaseFrequentFlyers: { de: '/de/use-cases/gepaeckanhaenger-fuer-vielflieger', en: '/en/nfc-luggage-tag' },
   
   // Legal
   imprint: { de: '/impressum', en: '/impressum' },
@@ -308,12 +311,44 @@ export const relatedLinksEn: Record<string, Link[]> = {
 };
 
 /**
+ * Seiten rufen getRelatedLinks teils mit Slug (z. B. 'so-funktionierts'),
+ * teils mit camelCase-Key auf. Ohne diese Zuordnung kamen für ~10 Seiten
+ * leere Linklisten zurück (verlorene interne Verlinkung).
+ */
+const pageKeyAliases: Record<string, string> = {
+  'so-funktionierts': 'howItWorks',
+  'how-it-works': 'howItWorks',
+  'finder-flow': 'finderFlow',
+  'sicherheit-datenschutz': 'securityPrivacy',
+  'security-privacy': 'securityPrivacy',
+  'ratgeber': 'guides',
+  'guides': 'guides',
+  'help': 'help',
+  'hilfe': 'help',
+  'nfc-vs-qr': 'guideNfcVsQr',
+  'gepaeck-verlust-vermeiden': 'guidePreventLoss',
+  'prevent-luggage-loss': 'guidePreventLoss',
+  'koffer-verloren-was-tun': 'guideLostLuggage',
+  'use-cases': 'useCases',
+};
+
+export function resolvePageKey(pageKey: string): string {
+  return pageKeyAliases[pageKey] ?? pageKey;
+}
+
+/**
  * Get related links for a specific page and locale
- * @param pageKey - Key identifying the page
+ * @param pageKey - Key identifying the page (camelCase key or URL slug)
  * @param locale - Target locale
- * @returns Array of related links
+ * @returns Array of related links (deduplicated by href)
  */
 export function getRelatedLinks(pageKey: string, locale: Locale): Link[] {
-  const links = locale === 'de' ? relatedLinksDe[pageKey] : relatedLinksEn[pageKey];
-  return links || [];
+  const key = resolvePageKey(pageKey);
+  const links = (locale === 'de' ? relatedLinksDe[key] : relatedLinksEn[key]) || [];
+  const seen = new Set<string>();
+  return links.filter((link) => {
+    if (seen.has(link.href)) return false;
+    seen.add(link.href);
+    return true;
+  });
 }

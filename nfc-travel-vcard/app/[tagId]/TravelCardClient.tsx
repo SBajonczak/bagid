@@ -17,6 +17,7 @@ import Link from 'next/link';
 import { Building2, Lock, MapPin, Plane, ShieldCheck, User } from 'lucide-react';
 import { getPublicConfig } from '@/lib/config';
 import type { MapLeg, MapPoint } from '../components/FlightRouteMap';
+import { mailHref, telHref } from '@/lib/contact-links';
 
 const FlightRouteMap = dynamic(() => import('../components/FlightRouteMap'), {
     ssr: false,
@@ -32,7 +33,10 @@ const hasValue = (value: string | null | undefined): boolean => {
 type InfoRow = {
     label: string;
     value?: string | null;
+    /** Optionaler Link (tel:/mailto:), damit Finder direkt anrufen/schreiben können */
+    href?: string;
 };
+
 
 interface InfoPanelProps {
     title: string;
@@ -60,7 +64,15 @@ const InfoPanel: React.FC<InfoPanelProps> = ({ title, icon: Icon, rows }) => {
                         <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                             {row.label}
                         </dt>
-                        <dd className="text-sm text-slate-900 break-words">{row.value}</dd>
+                        <dd className="text-sm text-slate-900 break-words">
+                            {row.href ? (
+                                <a href={row.href} className="font-medium text-blue-700 underline underline-offset-2">
+                                    {row.value}
+                                </a>
+                            ) : (
+                                row.value
+                            )}
+                        </dd>
                     </div>
                 ))}
             </dl>
@@ -270,17 +282,17 @@ const TravelCardClient: React.FC<TravelCardClientProps> = ({ tagId }) => {
         { label: t.firstName, value: travelData.ownerFirstName },
         { label: t.lastName, value: travelData.ownerLastName },
         { label: t.address, value: travelData.ownerAddress },
-        { label: t.email, value: showNotifyButton && hasValue(travelData.ownerEmail) ? privacyCopy.placeholder : travelData.ownerEmail },
-        { label: t.mobile, value: showNotifyButton && hasValue(travelData.ownerMobile) ? privacyCopy.placeholder : travelData.ownerMobile },
-        { label: t.landline, value: showNotifyButton && hasValue(travelData.ownerLandline) ? privacyCopy.placeholder : travelData.ownerLandline },
+        { label: t.email, value: showNotifyButton && hasValue(travelData.ownerEmail) ? privacyCopy.placeholder : travelData.ownerEmail, href: showNotifyButton ? undefined : mailHref(travelData.ownerEmail) },
+        { label: t.mobile, value: showNotifyButton && hasValue(travelData.ownerMobile) ? privacyCopy.placeholder : travelData.ownerMobile, href: showNotifyButton ? undefined : telHref(travelData.ownerMobile) },
+        { label: t.landline, value: showNotifyButton && hasValue(travelData.ownerLandline) ? privacyCopy.placeholder : travelData.ownerLandline, href: showNotifyButton ? undefined : telHref(travelData.ownerLandline) },
         { label: t.other, value: travelData.ownerOther },
     ];
 
     const guideRows: InfoRow[] = [
         { label: t.guide, value: guideFullName },
-        { label: t.email, value: travelData.guideEmail },
-        { label: t.mobile, value: travelData.guideMobile },
-        { label: t.landline, value: travelData.guideLandline },
+        { label: t.email, value: travelData.guideEmail, href: mailHref(travelData.guideEmail) },
+        { label: t.mobile, value: travelData.guideMobile, href: telHref(travelData.guideMobile) },
+        { label: t.landline, value: travelData.guideLandline, href: telHref(travelData.guideLandline) },
     ];
 
     const destinationRows: InfoRow[] = [

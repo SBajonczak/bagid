@@ -52,15 +52,22 @@ const NavigationBar: React.FC = () => {
     },
   ];
 
+  const homePath = language === 'en' ? '/en' : '/de';
+
   // Dropdown-Items für Ratgeber
   const dropdownItems = [
+    {
+      href: language === 'de' ? '/de/ratgeber' : '/en/guides',
+      label: language === 'de' ? 'Alle Ratgeber' : 'All guides'
+    },
     { 
       href: language === 'de' ? '/de/nfc-vs-qr' : '/en/nfc-vs-qr', 
       label: t_nav.nfcVsQr 
     },
     { 
-      href: language === 'de' ? '/de/use-cases' : '/en/use-cases', 
-      label: t_nav.useCases 
+      // /en/use-cases existiert nicht → EN verlinkt auf vorhandenen Ratgeber statt 404
+      href: language === 'de' ? '/de/use-cases' : '/en/prevent-luggage-loss',
+      label: language === 'de' ? t_nav.useCases : 'Prevent luggage loss'
     },
     { 
       href: language === 'de' ? '/de/sicherheit-datenschutz' : '/en/security-privacy', 
@@ -76,7 +83,8 @@ const NavigationBar: React.FC = () => {
     }] : []),
     ...mainNavItems,
     {
-        href: '/#faq',
+        // Direkt auf die Sprach-Startseite (vorher '/#faq' → zusätzliche Weiterleitung)
+        href: `${homePath}#faq`,
         label: t.faq,
         icon: null
     }
@@ -89,7 +97,7 @@ const NavigationBar: React.FC = () => {
           
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link href="/" className="flex items-center gap-2 group" aria-label="Zur Startseite">
+            <Link href={homePath} className="flex items-center gap-2 group" aria-label={language === 'de' ? 'Zur Startseite' : 'Go to homepage'}>
                 <Image
                     src="/assets/icon_32_32.png"
                     alt="Bag-Tag Logo"

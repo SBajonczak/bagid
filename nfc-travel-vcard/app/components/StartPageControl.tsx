@@ -7,7 +7,8 @@ import { Package, Smartphone, Plane, Bell, BatteryCharging, Globe, Lock, Droplet
 
 import FaqSection from './FaqSection';
 import Testimonial from './Testimonial';
-import Script from 'next/script'; // Für SEO Structured Data
+import StorySection from './StorySection';
+import type { SiteLocale } from '@/lib/seo/site';
 
 export interface StartPageControlProps {
     hidden: boolean;
@@ -23,39 +24,17 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
     const howItWorksIcons = [Package, Smartphone, Plane, Bell];
     const benefitIcons = [Smartphone, BatteryCharging, Globe, Lock, Droplets, RefreshCw];
 
-    // SEO: Structured Data für das Produkt und FAQs
-    const jsonLd = {
-        '@context': 'https://schema.org',
-        '@type': 'Product',
-        name: t1.productname,
-        description: t.howItWorksSubtitle,
-        offers: {
-            '@type': 'Offer',
-            priceCurrency: 'EUR',
-            price: '10.99',
-            availability: 'https://schema.org/InStock',
-        },
-        // FAQ Schema hilft extrem bei Google Snippets
-        mainEntity: [
-            {
-                '@type': 'Question',
-                name: 'Batterie notwendig?',
-                acceptedAnswer: {
-                    '@type': 'Answer',
-                    text: 'Nein, das Produkt nutzt NFC und benötigt nie eine Batterie.'
-                }
-            }
-        ]
-    };
+    // Strukturierte Daten werden serverseitig in app/de|en/layout.tsx ausgegeben
+    // (lib/seo/structured-data.ts) – hier bewusst kein zweites Product-Markup.
+    const storyLocale: SiteLocale = lang === 'en' ? 'en' : 'de';
+    const offerCopy = storyLocale === 'de'
+        ? { title: 'Einmal zahlen, für immer nutzen', text: 'Kein Abo. Keine versteckten Kosten. Keine leeren Batterien.' }
+        : { title: 'Pay once, use forever', text: 'No subscription. No hidden costs. No dead batteries.' };
 
     return (
         <section hidden={hidden} className="w-full landing-background py-12 px-4 flex flex-col items-center">
-            {/* SEO Script injection */}
-            <Script
-                id="startpage-product-schema"
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-            />
+            {/* Storyline: Problem → Wendepunkt → Lösung → CTA */}
+            <StorySection locale={storyLocale} />
 
             {/* How It Works Section */}
             <section className="w-full max-w-7xl mt-16 bg-white rounded-2xl shadow-lg p-8 md:p-12 how-it-works-section relative overflow-hidden">
@@ -96,8 +75,8 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
                         <CreditCard className="w-8 h-8 text-green-700" />
                     </div>
                     <div>
-                        <h3 className="font-bold text-lg text-green-900">Einmal zahlen, für immer nutzen</h3>
-                        <p className="text-green-800 text-sm">Kein Abo. Keine versteckten Kosten. Keine leeren Batterien.</p>
+                        <h3 className="font-bold text-lg text-green-900">{offerCopy.title}</h3>
+                        <p className="text-green-800 text-sm">{offerCopy.text}</p>
                     </div>
                 </div>
             </section>
@@ -138,7 +117,7 @@ const StartPageControl: React.FC<StartPageControlProps> = ({ hidden }) => {
             </section>
             
             {/* FAQ Section */}
-            <section id="faq" className="w-full max-w-7xl mt-12 mb-20"> {/* mb-20 für etwas Luft unten */}
+            <section id="faq" className="w-full max-w-7xl mt-12 mb-20 scroll-mt-32"> {/* mb-20 für etwas Luft unten */}
                 <FaqSection />
             </section>
         </section>

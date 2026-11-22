@@ -1,0 +1,681 @@
+/*
+ * Bag-Tag Startseite – Design-Tokens & Layout
+ *
+ * Idee: Alles, was gezeigt wird, ist echt (Fotos aus dem Produktvideo,
+ * Screenshots der App). Farben kommen vom Produkt selbst: das Mint des
+ * Anhängers, das Tintenblau des Rucksacks, Gelb der Flughafen-Beschilderung
+ * nur für Zeitangaben im Ablauf.
+ * Schrift: Barlow (Body) + Barlow Semi Condensed (Überschriften) – lokal
+ * gehostet via @fontsource (keine Google-Fonts-Requests, DSGVO-freundlich).
+ */
+
+.bt-home {
+  --bt-ink: #13202e;
+  --bt-ink-soft: #46525e;
+  --bt-paper: #f2f5f5;
+  --bt-white: #ffffff;
+  --bt-mint: #43cbb3;
+  --bt-mint-deep: #0b6e62;
+  --bt-mint-wash: #dcf3ee;
+  --bt-signal: #ffc629;
+  --bt-line: #d3dcdd;
+
+  --bt-font-body: 'Barlow', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --bt-font-display: 'Barlow Semi Condensed', 'Barlow', system-ui, sans-serif;
+
+  --bt-measure: 38rem;
+  --bt-gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --bt-section: clamp(4rem, 9vw, 7rem);
+
+  font-family: var(--bt-font-body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--bt-ink);
+  background: var(--bt-paper);
+  width: 100%;
+}
+
+.bt-home *:focus-visible {
+  outline: 3px solid var(--bt-mint-deep);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.bt-wrap {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 var(--bt-gutter);
+}
+
+.bt-section {
+  padding: var(--bt-section) 0;
+}
+
+.bt-section--white {
+  background: var(--bt-white);
+}
+
+/* ---------- Typografie ---------- */
+
+.bt-h1,
+.bt-h2,
+.bt-h3 {
+  font-family: var(--bt-font-display);
+  color: var(--bt-ink);
+  margin: 0;
+}
+
+.bt-h1 {
+  font-weight: 700;
+  font-size: clamp(2.3rem, 4.6vw, 3.6rem);
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+  max-width: 19ch;
+  hyphens: manual;
+  overflow-wrap: break-word;
+}
+
+.bt-h2 {
+  font-weight: 700;
+  font-size: clamp(1.9rem, 3.6vw, 2.75rem);
+  line-height: 1.08;
+  max-width: 22ch;
+}
+
+.bt-h3 {
+  font-weight: 600;
+  font-size: 1.375rem;
+  line-height: 1.2;
+}
+
+.bt-lead {
+  font-size: 1.1875rem;
+  line-height: 1.55;
+  color: var(--bt-ink-soft);
+  max-width: var(--bt-measure);
+  margin: 1.25rem 0 0;
+}
+
+.bt-text {
+  color: var(--bt-ink-soft);
+  max-width: var(--bt-measure);
+  margin: 0.6rem 0 0;
+}
+
+/* ---------- Buttons & Links ---------- */
+
+.bt-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 3.25rem;
+  padding: 0 1.6rem;
+  border-radius: 6px;
+  font-family: var(--bt-font-display);
+  font-weight: 600;
+  font-size: 1.15rem;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.bt-btn--primary {
+  background: var(--bt-mint-deep);
+  color: var(--bt-white);
+}
+
+.bt-btn--primary:hover {
+  background: #095c52;
+}
+
+.bt-link {
+  color: var(--bt-mint-deep);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 2px;
+}
+
+.bt-link:hover {
+  color: var(--bt-ink);
+}
+
+/* ---------- Hero ---------- */
+
+.bt-hero {
+  padding: clamp(2.5rem, 6vw, 5rem) 0 clamp(3.5rem, 7vw, 6rem);
+  background: var(--bt-paper);
+}
+
+.bt-hero__grid {
+  display: grid;
+  gap: 3rem;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .bt-hero__grid {
+    grid-template-columns: 1.15fr 1fr;
+    gap: 4rem;
+  }
+}
+
+.bt-buy {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.5rem;
+  margin-top: 2rem;
+}
+
+.bt-price {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.bt-price__amount {
+  font-family: var(--bt-font-display);
+  font-weight: 700;
+  font-size: 2.25rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.bt-price__note {
+  font-size: 0.95rem;
+  color: var(--bt-ink-soft);
+}
+
+.bt-hero__demo {
+  display: inline-block;
+  margin-top: 1.25rem;
+}
+
+.bt-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.5rem;
+  margin: 2rem 0 0;
+  padding: 1.25rem 0 0;
+  border-top: 1px solid var(--bt-line);
+  list-style: none;
+  font-size: 0.95rem;
+  color: var(--bt-ink-soft);
+}
+
+.bt-facts li {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.bt-facts li::before {
+  content: '';
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--bt-mint);
+  flex: none;
+}
+
+/* Bühne: echtes Foto + echter Screenshot */
+.bt-stage {
+  position: relative;
+  margin: 0;
+  padding-left: 18%;
+  padding-bottom: 8%;
+}
+
+.bt-stage__photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+.bt-stage__phone {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 44%;
+}
+
+/* ---------- Handy-Rahmen ---------- */
+
+.bt-phone {
+  position: relative;
+  border-radius: 2.1rem;
+  padding: 0.55rem;
+  background: var(--bt-ink);
+  box-shadow: 0 1.5rem 3rem -1rem rgba(19, 32, 46, 0.45);
+}
+
+.bt-phone__screen {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 1.6rem;
+  background: var(--bt-white);
+}
+
+/* ---------- Nutzen ---------- */
+
+.bt-screens {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(15rem, 78%);
+  gap: 1.5rem;
+  margin: 3rem calc(var(--bt-gutter) * -1) 0;
+  padding: 0 var(--bt-gutter) 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  list-style: none;
+}
+
+.bt-screens > li {
+  scroll-snap-align: start;
+}
+
+@media (min-width: 860px) {
+  .bt-screens {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+    margin: 3.5rem 0 0;
+    padding: 0;
+    overflow: visible;
+  }
+}
+
+.bt-screens .bt-phone {
+  max-width: 17rem;
+}
+
+.bt-screens .bt-h3 {
+  margin-top: 1.75rem;
+}
+
+.bt-rows {
+  display: grid;
+  gap: 4rem;
+  margin-top: var(--bt-section);
+}
+
+.bt-row {
+  display: grid;
+  gap: 1.75rem;
+  align-items: center;
+}
+
+@media (min-width: 860px) {
+  .bt-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+  }
+
+  .bt-row:nth-child(even) .bt-row__media {
+    order: 2;
+  }
+}
+
+.bt-row__media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+/* ---------- Preis-Band ---------- */
+
+.bt-band {
+  background: var(--bt-mint-wash);
+  padding: clamp(2.5rem, 5vw, 3.5rem) 0;
+}
+
+.bt-band__inner {
+  display: grid;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+@media (min-width: 860px) {
+  .bt-band__inner {
+    grid-template-columns: 1fr auto;
+    gap: 3rem;
+  }
+}
+
+/* ---------- Story / Ablauf ---------- */
+
+.bt-timeline {
+  list-style: none;
+  margin: 3rem 0 0;
+  padding: 0;
+  max-width: 46rem;
+}
+
+.bt-timeline > li {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr;
+  gap: 1.25rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--bt-line);
+}
+
+.bt-timeline > li:last-child {
+  border-bottom: 1px solid var(--bt-line);
+}
+
+.bt-time {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.bt-time__clock {
+  align-self: flex-start;
+  font-family: var(--bt-font-display);
+  font-weight: 700;
+  font-size: 1.35rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  padding: 0.3rem 0.45rem;
+  background: var(--bt-signal);
+  color: var(--bt-ink);
+  border-radius: 3px;
+}
+
+.bt-time__label {
+  font-size: 0.85rem;
+  color: var(--bt-ink-soft);
+}
+
+.bt-source {
+  font-size: 0.9rem;
+  color: var(--bt-ink-soft);
+  margin-top: 1rem;
+  max-width: var(--bt-measure);
+}
+
+.bt-source a {
+  color: inherit;
+}
+
+.bt-table-wrap {
+  margin-top: 4rem;
+  overflow-x: auto;
+}
+
+.bt-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+}
+
+.bt-table caption {
+  text-align: left;
+  font-family: var(--bt-font-display);
+  font-weight: 700;
+  font-size: 1.6rem;
+  padding-bottom: 1rem;
+}
+
+.bt-table th,
+.bt-table td {
+  text-align: left;
+  padding: 0.85rem 1rem 0.85rem 0;
+  border-bottom: 1px solid var(--bt-line);
+  vertical-align: top;
+}
+
+.bt-table thead th {
+  font-weight: 600;
+  color: var(--bt-ink-soft);
+  font-size: 0.95rem;
+}
+
+.bt-table tbody th {
+  font-weight: 600;
+}
+
+.bt-table .bt-col-paper {
+  color: var(--bt-ink-soft);
+}
+
+.bt-table .bt-col-tag {
+  font-weight: 600;
+  color: var(--bt-mint-deep);
+}
+
+/* Mobil: jede Zeile als kleiner Block statt seitlich scrollender Tabelle */
+@media (max-width: 640px) {
+  .bt-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .bt-table tr {
+    display: block;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--bt-line);
+  }
+
+  .bt-table th,
+  .bt-table td {
+    display: block;
+    border: 0;
+    padding: 0.15rem 0;
+  }
+
+  .bt-table tbody th {
+    font-family: var(--bt-font-display);
+    font-size: 1.15rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .bt-table td::before {
+    content: attr(data-label) ': ';
+    font-weight: 500;
+    color: var(--bt-ink-soft);
+  }
+}
+
+.bt-story-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 2rem;
+  margin-top: 3rem;
+}
+
+.bt-readmore {
+  margin-top: 4rem;
+}
+
+.bt-readmore ul {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 2rem;
+}
+
+/* ---------- Video ---------- */
+
+.bt-video {
+  display: grid;
+  gap: 2rem;
+  align-items: center;
+}
+
+@media (min-width: 860px) {
+  .bt-video {
+    grid-template-columns: 1fr 1.6fr;
+    gap: 4rem;
+  }
+}
+
+.bt-video video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  background: var(--bt-ink);
+}
+
+/* ---------- Schritte ---------- */
+
+.bt-steps {
+  list-style: none;
+  counter-reset: step;
+  margin: 3rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 2rem;
+}
+
+@media (min-width: 760px) {
+  .bt-steps {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2.5rem;
+  }
+}
+
+.bt-steps > li {
+  counter-increment: step;
+  border-top: 3px solid var(--bt-ink);
+  padding-top: 1rem;
+}
+
+.bt-steps > li::before {
+  content: counter(step);
+  display: block;
+  font-family: var(--bt-font-display);
+  font-weight: 700;
+  font-size: 2.5rem;
+  line-height: 1;
+  color: var(--bt-mint-deep);
+  margin-bottom: 0.75rem;
+}
+
+/* ---------- Bewertungen ---------- */
+
+.bt-reviews {
+  list-style: none;
+  margin: 3rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 2.5rem;
+}
+
+@media (min-width: 860px) {
+  .bt-reviews {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.bt-review blockquote {
+  margin: 0;
+  font-family: var(--bt-font-display);
+  font-weight: 500;
+  font-size: 1.35rem;
+  line-height: 1.3;
+}
+
+.bt-review figcaption {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: var(--bt-ink-soft);
+}
+
+.bt-stars {
+  color: #c98a00;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.75rem;
+}
+
+/* ---------- FAQ ---------- */
+
+.bt-faq {
+  margin-top: 2.5rem;
+  max-width: 48rem;
+  border-top: 1px solid var(--bt-line);
+}
+
+.bt-faq details {
+  border-bottom: 1px solid var(--bt-line);
+}
+
+.bt-faq summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.15rem 0;
+  font-family: var(--bt-font-display);
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 1.25;
+}
+
+.bt-faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.bt-faq summary::after {
+  content: '+';
+  font-weight: 400;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--bt-mint-deep);
+  transition: transform 0.2s ease;
+}
+
+.bt-faq details[open] summary::after {
+  transform: rotate(45deg);
+}
+
+.bt-faq details p {
+  margin: 0 0 1.25rem;
+  color: var(--bt-ink-soft);
+  max-width: var(--bt-measure);
+}
+
+/* ---------- Abschluss ---------- */
+
+.bt-final {
+  display: grid;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+@media (min-width: 860px) {
+  .bt-final {
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+  }
+}
+
+.bt-final img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bt-home * {
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.bt-faq__q {
+  font: inherit;
+  margin: 0;
+}

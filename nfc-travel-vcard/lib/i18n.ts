@@ -114,10 +114,10 @@ export const messages = {
             howItWorksTitle: "Wie es funktioniert",
             howItWorksSubtitle: "In nur wenigen Schritten zu mehr Sicherheit auf Reisen",
             howItWorksSteps: [
-                { title: "Anhänger anbringen", description: "Befestigen Sie den Travel Tag am Koffer oder der Tasche" },
-                { title: "Online registrieren", description: "Scannen Sie den NFC/QR-Code und hinterlegen Sie Ihre Daten" },
-                { title: "Sorgenfrei reisen", description: "Ihre Kontaktdaten sind jederzeit aktualisierbar" },
-                { title: "Gefunden werden", description: "Im Verlustfall kann der Finder Sie sofort kontaktieren" }
+                { title: "Anhänger anbringen", description: "Befestige den Bag-Tag mit dem Metallring am Koffer, Rucksack oder an der Tasche." },
+                { title: "Einmal scannen und Daten eintragen", description: "Beim ersten Scan landest du auf der Registrierung. Dort trägst du ein, was ein Finder sehen soll." },
+                { title: "Vor jeder Reise kurz anpassen", description: "Flug und Hotel aktualisierst du online – der Anhänger bleibt am Koffer." },
+                { title: "Gefunden werden", description: "Scannt jemand deinen Anhänger, sieht er sofort, wie er dich erreicht." }
             ],
             benefitsTitle: "Ihre Vorteile",
             benefitsSubtitle: "Warum tausende Reisende dem {productname} vertrauen",
@@ -190,6 +190,26 @@ export const messages = {
                 {
                     question: 'Was ist in dem Paket enthalten?',
                     answer: 'Du erhältst dein persönliches Tag und einen Metallring zum Befestigen des Tags.',
+                },
+                {
+                    question: 'Funktioniert der Bag-Tag auch ohne Internet?',
+                    answer: 'Der NFC-Chip selbst braucht kein Internet. Wenn ein Finder dein Gepäck scannt, öffnet sich eine Online-Seite – dafür braucht der Finder eine Internetverbindung, die bei modernen Smartphones Standard ist.',
+                },
+                {
+                    question: 'Was passiert, wenn der Finder kein NFC-fähiges Smartphone hat?',
+                    answer: 'Kein Problem: Jeder Bag-Tag hat zusätzlich einen QR-Code, der mit jeder Smartphone-Kamera ohne App gescannt werden kann.',
+                },
+                {
+                    question: 'Ist der Bag-Tag DSGVO-konform?',
+                    answer: 'Ja. Du bestimmst selbst, welche Daten ein Finder sieht. Es gibt kein Tracking und keine Weitergabe an Dritte.',
+                },
+                {
+                    question: 'Muss ich den Bag-Tag aufladen oder Batterien wechseln?',
+                    answer: 'Nein. NFC ist eine passive Technologie – der Tag wird vom Smartphone des Finders mit Energie versorgt. Keine Batterie, kein Aufladen, wartungsfrei.',
+                },
+                {
+                    question: 'Für wen ist der Bag-Tag geeignet?',
+                    answer: 'Für alle, die mit Koffer, Rucksack oder Sporttasche unterwegs sind: Geschäftsreisende, Familien, Vielflieger und Kinder auf Klassenfahrt.',
                 },
             ],
         },
@@ -435,10 +455,10 @@ export const messages = {
             howItWorksTitle: "How it works",
             howItWorksSubtitle: "More security for your travels in just a few steps",
             howItWorksSteps: [
-                { title: "Attach tag", description: "Attach the Travel Tag to your suitcase or bag" },
-                { title: "Register online", description: "Scan the NFC/QR code and enter your details" },
-                { title: "Travel worry-free", description: "Your contact details can be updated anytime" },
-                { title: "Be found", description: "If lost, the finder can contact you immediately" }
+                { title: "Attach the tag", description: "Fix the Bag-Tag to your suitcase, backpack or bag with the metal ring." },
+                { title: "Scan once and add your details", description: "The first scan takes you to registration, where you enter what a finder should see." },
+                { title: "Update before each trip", description: "Change flight and hotel online – the tag stays on your bag." },
+                { title: "Get found", description: "Whoever scans your tag instantly sees how to reach you." }
             ],
             benefitsTitle: "Your benefits",
             benefitsSubtitle: "Why thousands of travelers trust {productname}",
@@ -511,7 +531,27 @@ export const messages = {
                 {
                     question: 'What is included in the package?',
                     answer: 'You will receive your personalized tag and a metal ring to attach the tag.',
-                }
+                },
+                {
+                    question: 'Does the Bag-Tag work without internet?',
+                    answer: 'The NFC chip itself needs no internet. When a finder scans your luggage, an online page opens – so the finder needs a data connection, which is standard on modern smartphones.',
+                },
+                {
+                    question: 'What if the finder does not have an NFC-enabled phone?',
+                    answer: 'No problem: every Bag-Tag also has a QR code that any smartphone camera can scan without an app.',
+                },
+                {
+                    question: 'Is the Bag-Tag GDPR compliant?',
+                    answer: 'Yes. You decide which data a finder can see. There is no tracking and no sharing with third parties.',
+                },
+                {
+                    question: 'Does the Bag-Tag need charging or batteries?',
+                    answer: 'No. NFC is a passive technology – the tag is powered by the finder\'s smartphone. No battery, no charging, maintenance-free.',
+                },
+                {
+                    question: 'Who is the Bag-Tag for?',
+                    answer: 'Anyone travelling with a suitcase, backpack or sports bag: business travellers, families, frequent flyers and kids on school trips.',
+                },
             ],
         },
         tagRegistration: {

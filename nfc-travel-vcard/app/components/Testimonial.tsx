@@ -29,8 +29,6 @@ const Testimonial: React.FC<TestimonialProps> = ({ testimonials }) => {
         }}
         // navigation
         // scrollbar={{ draggable: true }}
-        onSwiper={(swiper) => console.log(swiper)}
-        onSlideChange={() => console.log('slide change')}
     
       >
         {testimonials.map((t: ITestimonial, idx: number) => (

@@ -36,3 +36,6 @@ docker-compose*
 *.tgz
 coverage
 .nyc_output
+# Tests (nicht im Produktions-Image nötig)
+__tests__
+vitest.config.mts
