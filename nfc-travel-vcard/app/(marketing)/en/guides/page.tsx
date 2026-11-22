@@ -9,6 +9,9 @@ import {
 import { getRelatedLinks } from '@/lib/linkMap';
 import { generateBreadcrumbSchema } from '@/lib/schema-utils';
 
+import StoryBridge from '@/app/components/content/StoryBridge';
+import ContentFigure from '@/app/components/content/ContentFigure';
+
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'Guides for Safe Travel – Bag-Tag Info Hub | Bag-Tag';
   const description = 'Discover our travel guides: prevent luggage loss, what to do if your suitcase is lost, NFC vs QR code, and more. Expert tips for stress-free travel.';
@@ -66,21 +69,21 @@ export default function GuidesPage() {
     {
       title: 'Lost Suitcase – What to Do?',
       description: 'Step-by-step guide on what to do immediately if your luggage is lost. From reporting to recovery.',
-      icon: '🆘',
+      icon: '',
       link: '/en/guides/lost-suitcase-what-to-do',
       tags: ['Emergency', 'Airport', 'Rights'],
     },
     {
       title: 'Prevent Luggage Loss',
       description: 'The best tips and strategies to prevent luggage loss from the start. Packing tips, smart tagging, and more.',
-      icon: '🛡️',
+      icon: '',
       link: '/en/guides/prevent-luggage-loss',
       tags: ['Prevention', 'Tips', 'Security'],
     },
     {
       title: 'NFC vs. QR Code',
       description: 'Detailed comparison of the two technologies. Which is better for luggage tags? Pros and cons at a glance.',
-      icon: '⚡',
+      icon: '',
       link: '/en/guides/nfc-vs-qr',
       tags: ['Technology', 'Comparison', 'NFC'],
     },
@@ -90,7 +93,7 @@ export default function GuidesPage() {
     <>
       <JsonLd data={breadcrumbSchema} />
 
-      <main className="bg-white">
+      <div className="bg-white">
         <div className="max-w-4xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
           <Breadcrumb items={breadcrumbItems} />
 
@@ -102,6 +105,8 @@ export default function GuidesPage() {
               <p className="text-xl text-gray-600">
                 Our collected knowledge for your peace of mind on the go. Here you will find expert tips, detailed guides, and practical solutions to common travel problems.
               </p>
+
+          <ContentFigure path="/en/guides" />
             </header>
 
             <div className="space-y-8">
@@ -133,12 +138,14 @@ export default function GuidesPage() {
             buttonLink="/en/nfc-luggage-tag"
           />
 
+          <StoryBridge path="/en/guides" />
+
           <RelatedLinksSection
             title="More Topics"
             links={relatedLinks}
           />
         </div>
-      </main>
+      </div>
     </>
   );
 }

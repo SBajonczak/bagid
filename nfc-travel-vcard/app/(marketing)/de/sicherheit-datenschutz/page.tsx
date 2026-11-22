@@ -11,6 +11,9 @@ import {
 import { getRelatedLinks } from '@/lib/linkMap';
 import { generateBreadcrumbSchema, generateFAQPageSchema } from '@/lib/schema-utils';
 
+import StoryBridge from '@/app/components/content/StoryBridge';
+import ContentFigure from '@/app/components/content/ContentFigure';
+
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'Sicherheit & Datenschutz – Bag-Tag GDPR-konform | Bag-Tag';
   const description = 'Erfahren Sie, wie Bag-Tag Ihre Daten schützt: GDPR-konform, Server in Deutschland, volle Kontrolle über Ihre Privatsphäre. Maximale Sicherheit für Ihr Gepäck.';
@@ -105,7 +108,7 @@ export default function SicherheitDatenschutzPage() {
       <JsonLd data={breadcrumbSchema} />
       <JsonLd data={faqSchema} />
 
-      <main className="bg-white">
+      <div className="bg-white">
         <div className="max-w-4xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
           <Breadcrumb items={breadcrumbItems} />
 
@@ -129,13 +132,14 @@ export default function SicherheitDatenschutzPage() {
               ]}
             />
 
+          <ContentFigure path="/de/sicherheit-datenschutz" />
+
             <section className="prose prose-lg max-w-none mt-12">
               <h2 className="text-3xl font-bold text-gray-900 mb-6">
                 Unsere Datenschutz-Prinzipien
               </h2>
               <div className="grid md:grid-cols-2 gap-6 my-8">
                 <div className="bg-green-50 border-2 border-green-200 rounded-lg p-6">
-                  <div className="text-3xl mb-3">🔒</div>
                   <h3 className="font-semibold text-green-900 mb-2">Datensparsamkeit</h3>
                   <p className="text-gray-700">
                     Wir sammeln nur die Daten, die absolut notwendig sind, damit der Service funktioniert. 
@@ -143,7 +147,6 @@ export default function SicherheitDatenschutzPage() {
                   </p>
                 </div>
                 <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-6">
-                  <div className="text-3xl mb-3">👤</div>
                   <h3 className="font-semibold text-blue-900 mb-2">Volle Kontrolle</h3>
                   <p className="text-gray-700">
                     Sie entscheiden, welche Daten gespeichert werden und wer sie sehen kann. 
@@ -151,7 +154,6 @@ export default function SicherheitDatenschutzPage() {
                   </p>
                 </div>
                 <div className="bg-purple-50 border-2 border-purple-200 rounded-lg p-6">
-                  <div className="text-3xl mb-3">🇪🇺</div>
                   <h3 className="font-semibold text-purple-900 mb-2">EU-Standard</h3>
                   <p className="text-gray-700">
                     Server in Deutschland, GDPR/DSGVO-konform. Die strengsten Datenschutzgesetze der Welt 
@@ -159,7 +161,6 @@ export default function SicherheitDatenschutzPage() {
                   </p>
                 </div>
                 <div className="bg-orange-50 border-2 border-orange-200 rounded-lg p-6">
-                  <div className="text-3xl mb-3">🔐</div>
                   <h3 className="font-semibold text-orange-900 mb-2">Verschlüsselung</h3>
                   <p className="text-gray-700">
                     Alle Datenübertragungen sind verschlüsselt (HTTPS/TLS). Ihre Kommunikation mit Findern 
@@ -262,25 +263,25 @@ export default function SicherheitDatenschutzPage() {
               </p>
               <div className="grid md:grid-cols-2 gap-4 my-8">
                 <div className="bg-gray-50 rounded-lg p-4">
-                  <h4 className="font-semibold text-gray-900 mb-2">✏️ Bearbeiten</h4>
+                  <h4 className="font-semibold text-gray-900 mb-2">Bearbeiten</h4>
                   <p className="text-sm text-gray-700">
                     Ändern Sie jederzeit Ihre Kontaktdaten, Reiseinformationen oder Privatsphäre-Einstellungen.
                   </p>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-4">
-                  <h4 className="font-semibold text-gray-900 mb-2">👁️ Sichtbarkeit steuern</h4>
+                  <h4 className="font-semibold text-gray-900 mb-2">Sichtbarkeit steuern</h4>
                   <p className="text-sm text-gray-700">
                     Entscheiden Sie, welche Infos ein Finder sehen kann: Name, Telefon, E-Mail, Reiseziel, etc.
                   </p>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-4">
-                  <h4 className="font-semibold text-gray-900 mb-2">🗑️ Löschen</h4>
+                  <h4 className="font-semibold text-gray-900 mb-2">Löschen</h4>
                   <p className="text-sm text-gray-700">
                     Löschen Sie einzelne Daten oder Ihren gesamten Account inklusive aller Informationen.
                   </p>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-4">
-                  <h4 className="font-semibold text-gray-900 mb-2">📥 Exportieren</h4>
+                  <h4 className="font-semibold text-gray-900 mb-2">Exportieren</h4>
                   <p className="text-sm text-gray-700">
                     Laden Sie alle Ihre Daten in einem maschinenlesbaren Format herunter (GDPR-Recht).
                   </p>
@@ -292,7 +293,6 @@ export default function SicherheitDatenschutzPage() {
               </h2>
               <div className="space-y-4 my-8">
                 <div className="flex items-start bg-blue-50 rounded-lg p-4">
-                  <span className="text-2xl mr-4">🔐</span>
                   <div>
                     <h4 className="font-semibold text-gray-900 mb-1">Ende-zu-Ende Verschlüsselung</h4>
                     <p className="text-gray-700">
@@ -302,7 +302,6 @@ export default function SicherheitDatenschutzPage() {
                   </div>
                 </div>
                 <div className="flex items-start bg-green-50 rounded-lg p-4">
-                  <span className="text-2xl mr-4">🛡️</span>
                   <div>
                     <h4 className="font-semibold text-gray-900 mb-1">DDoS- & Angriffs-Schutz</h4>
                     <p className="text-gray-700">
@@ -312,7 +311,6 @@ export default function SicherheitDatenschutzPage() {
                   </div>
                 </div>
                 <div className="flex items-start bg-purple-50 rounded-lg p-4">
-                  <span className="text-2xl mr-4">🔍</span>
                   <div>
                     <h4 className="font-semibold text-gray-900 mb-1">Regelmäßige Security-Audits</h4>
                     <p className="text-gray-700">
@@ -322,7 +320,6 @@ export default function SicherheitDatenschutzPage() {
                   </div>
                 </div>
                 <div className="flex items-start bg-yellow-50 rounded-lg p-4">
-                  <span className="text-2xl mr-4">⚠️</span>
                   <div>
                     <h4 className="font-semibold text-gray-900 mb-1">Missbrauchs-Erkennung</h4>
                     <p className="text-gray-700">
@@ -373,7 +370,7 @@ export default function SicherheitDatenschutzPage() {
               </h2>
               <div className="bg-yellow-50 border-l-4 border-yellow-500 p-6 mb-8">
                 <h3 className="font-semibold text-gray-900 mb-2">
-                  👶 Besonderer Schutz für unter 16-Jährige
+                  Besonderer Schutz für unter 16-Jährige
                 </h3>
                 <p className="text-gray-800 mb-3">
                   Für Tags, die für Kinder registriert werden, gelten zusätzliche Schutzmaßnahmen:
@@ -456,17 +453,19 @@ export default function SicherheitDatenschutzPage() {
               faqs={faqItems}
             />
 
+            <StoryBridge path="/de/sicherheit-datenschutz" />
+
             <RelatedLinksSection links={relatedLinks} />
             
             <CtaSection
               title="Sicher und geschützt reisen"
               description="Vertrauen Sie auf Bag-Tag – Ihr Gepäck und Ihre Daten sind bei uns sicher."
               buttonText="Jetzt starten"
-              buttonLink="https://bag-tag.de/de#shop"
+              buttonLink="https://kreativschicht.de/products/bagid-koffer-tag-mit-nfc"
             />
           </article>
         </div>
-      </main>
+      </div>
     </>
   );
 }

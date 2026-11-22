@@ -11,6 +11,9 @@ import {
 import { getRelatedLinks } from '@/lib/linkMap';
 import { generateBreadcrumbSchema, generateHowToSchema } from '@/lib/schema-utils';
 
+import StoryBridge from '@/app/components/content/StoryBridge';
+import ContentFigure from '@/app/components/content/ContentFigure';
+
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'Bag-Tag aktivieren – Schritt-für-Schritt-Anleitung | Bag-Tag';
   const description = 'So aktivieren Sie Ihren Bag-Tag NFC Gepäckanhänger in 4 einfachen Schritten: Tag scannen, registrieren, Daten eingeben – fertig. Mit Problemlösungen.';
@@ -165,6 +168,8 @@ export default function AktivierenPage() {
               </p>
             </TldrSection>
 
+          <ContentFigure path="/de/hilfe/aktivieren" />
+
             {/* Introduction */}
             <section className="mb-12">
               <p className="text-lg text-slate-700 leading-relaxed mb-4">
@@ -278,6 +283,8 @@ export default function AktivierenPage() {
             </section>
 
             {/* Related Links */}
+            <StoryBridge path="/de/hilfe/aktivieren" />
+
             <RelatedLinksSection title="Nächste Schritte" links={relatedLinks} />
 
             {/* CTA */}

@@ -10,6 +10,9 @@ import {
 import { getRelatedLinks } from '@/lib/linkMap';
 import { generateBreadcrumbSchema, generateArticleSchema, generateFAQPageSchema } from '@/lib/schema-utils';
 
+import StoryBridge from '@/app/components/content/StoryBridge';
+import ContentFigure from '@/app/components/content/ContentFigure';
+
 const pageUrl = 'https://bag-tag.de/de/ratgeber/nfc-vs-qr';
 const pageTitle = 'NFC vs. QR-Code: Was ist besser für Gepäck-Tags?';
 const pageDescription = 'Detaillierter Vergleich: NFC-Technologie vs. QR-Codes für Kofferanhänger. Vor- und Nachteile, technische Unterschiede und warum Bag-Tag beides kombiniert.';
@@ -114,7 +117,7 @@ export default function NfcVsQrPage() {
       <JsonLd data={faqSchema} />
       <JsonLd data={articleSchema} />
 
-      <main className="bg-white">
+      <div className="bg-white">
         <div className="max-w-4xl mx-auto px-4 py-12">
           <Breadcrumb items={breadcrumbItems} />
           
@@ -129,6 +132,8 @@ export default function NfcVsQrPage() {
             </header>
 
             <TldrSection title="Das Wichtigste in Kürze" points={tldrPoints} />
+
+          <ContentFigure path="/de/ratgeber/nfc-vs-qr" />
 
             <section className="prose prose-lg max-w-none mt-12">
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Die beiden Technologien im Überblick</h2>
@@ -160,7 +165,7 @@ export default function NfcVsQrPage() {
               </ul>
 
               <div className="bg-blue-50 border-l-4 border-blue-500 p-6 my-8">
-                <p className="font-semibold text-gray-900 mb-2">💡 Kurz gesagt:</p>
+                <p className="font-semibold text-gray-900 mb-2">Kurz gesagt:</p>
                 <p className="text-gray-700">
                   NFC ist wie "Berührung" (kurze Reichweite, drahtlos), QR-Code ist wie "Anschauen" (optisch, größere Reichweite). 
                   Beide führen zum gleichen Ergebnis: Eine Webseite wird geöffnet.
@@ -297,7 +302,7 @@ export default function NfcVsQrPage() {
               
               <div className="grid md:grid-cols-2 gap-8 my-8">
                 <div className="border-2 border-blue-200 rounded-lg p-6 bg-blue-50">
-                  <h3 className="text-xl font-semibold text-blue-900 mb-4">✅ NFC ist ideal für:</h3>
+                  <h3 className="text-xl font-semibold text-blue-900 mb-4">NFC ist ideal für:</h3>
                   <ul className="space-y-2 text-gray-700">
                     <li>• <strong>Schnellen, häufigen Zugriff</strong> (z.B. Visitenkarten, Loyalty-Karten)</li>
                     <li>• <strong>Schlechte Sichtverhältnisse</strong> (Dunkelheit, Verschmutzung)</li>
@@ -308,7 +313,7 @@ export default function NfcVsQrPage() {
                 </div>
 
                 <div className="border-2 border-green-200 rounded-lg p-6 bg-green-50">
-                  <h3 className="text-xl font-semibold text-green-900 mb-4">✅ QR-Codes sind ideal für:</h3>
+                  <h3 className="text-xl font-semibold text-green-900 mb-4">QR-Codes sind ideal für:</h3>
                   <ul className="space-y-2 text-gray-700">
                     <li>• <strong>Maximale Reichweite</strong> (alle Smartphones)</li>
                     <li>• <strong>Große Distanzen</strong> (Plakate, Werbung)</li>
@@ -320,7 +325,7 @@ export default function NfcVsQrPage() {
               </div>
 
               <div className="border-2 border-purple-200 rounded-lg p-6 bg-purple-50 my-8">
-                <h3 className="text-xl font-semibold text-purple-900 mb-4">🏆 Kombination (NFC + QR) ist ideal für:</h3>
+                <h3 className="text-xl font-semibold text-purple-900 mb-4">Kombination (NFC + QR) ist ideal für:</h3>
                 <ul className="space-y-2 text-gray-700">
                   <li>• <strong>Gepäck-Tags:</strong> NFC für Komfort, QR für Kompatibilität</li>
                   <li>• <strong>Haustier-Tags:</strong> Beide Technologien erhöhen Fundwahrscheinlichkeit</li>
@@ -359,7 +364,7 @@ export default function NfcVsQrPage() {
               </p>
 
               <div className="bg-gray-100 border-l-4 border-gray-500 p-6 my-8">
-                <p className="font-semibold text-gray-900 mb-2">🔬 Technische Details:</p>
+                <p className="font-semibold text-gray-900 mb-2">Technische Details:</p>
                 <ul className="space-y-2 text-gray-700">
                   <li><strong>NFC-Frequenz:</strong> 13,56 MHz (weltweit lizenzfrei)</li>
                   <li><strong>NFC-Reichweite:</strong> Bis 10 cm theoretisch, praktisch 1-4 cm</li>
@@ -404,7 +409,7 @@ export default function NfcVsQrPage() {
               </ul>
 
               <div className="bg-green-50 border-l-4 border-green-500 p-6 my-8">
-                <p className="font-semibold text-gray-900 mb-2">💡 Das Beste aus beiden Welten:</p>
+                <p className="font-semibold text-gray-900 mb-2">Das Beste aus beiden Welten:</p>
                 <p className="text-gray-700">
                   Statt sich für eine Technologie zu entscheiden, kombiniert Bag-Tag die Vorteile beider: 
                   NFC für Komfort und Robustheit, QR für universelle Kompatibilität. So erreichen Sie jeden Finder – 
@@ -416,7 +421,7 @@ export default function NfcVsQrPage() {
               
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">❌ Mythos: "NFC braucht eine App"</h3>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-2">Mythos: "NFC braucht eine App"</h3>
                   <p className="text-gray-700">
                     <strong>Falsch.</strong> Moderne Smartphones (iOS 14+, Android 9+) erkennen NFC-Tags automatisch. 
                     Die URL öffnet sich direkt im Browser – keine App-Installation nötig.
@@ -424,7 +429,7 @@ export default function NfcVsQrPage() {
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">❌ Mythos: "QR-Codes sind unsicher"</h3>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-2">Mythos: "QR-Codes sind unsicher"</h3>
                   <p className="text-gray-700">
                     <strong>Teilweise richtig.</strong> QR-Codes können theoretisch auf schädliche Webseiten verweisen. 
                     Aber: Moderne Smartphones zeigen die URL vor dem Öffnen an. Bei Bag-Tag sehen Sie immer "bag-tag.de" – 
@@ -433,7 +438,7 @@ export default function NfcVsQrPage() {
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">❌ Mythos: "NFC funktioniert nur mit Android"</h3>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-2">Mythos: "NFC funktioniert nur mit Android"</h3>
                   <p className="text-gray-700">
                     <strong>Falsch.</strong> iPhones ab XS/XR (2018) unterstützen NFC-Tag-Lesen vollständig. 
                     Ältere iPhones (7/8/X) können NFC teilweise nutzen, für volle Kompatibilität gibt's den QR-Code.
@@ -441,7 +446,7 @@ export default function NfcVsQrPage() {
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">❌ Mythos: "QR-Codes können nicht aktualisiert werden"</h3>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-2">Mythos: "QR-Codes können nicht aktualisiert werden"</h3>
                   <p className="text-gray-700">
                     <strong>Teilweise richtig.</strong> Der QR-Code selbst ist statisch. ABER: Bei Bag-Tag verweist der Code auf eine 
                     dynamische Webseite. Ihre Kontaktdaten können Sie jederzeit online ändern – ohne neuen QR-Code zu drucken.
@@ -449,7 +454,7 @@ export default function NfcVsQrPage() {
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">❌ Mythos: "NFC-Tags können Viren übertragen"</h3>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-2">Mythos: "NFC-Tags können Viren übertragen"</h3>
                   <p className="text-gray-700">
                     <strong>Falsch.</strong> NFC-Tags können nur Daten übertragen (URL, Text). Sie können keinen Code ausführen 
                     oder Software installieren. Das Smartphone entscheidet, was mit den Daten passiert – genau wie bei einem Link.
@@ -488,7 +493,7 @@ export default function NfcVsQrPage() {
               </div>
 
               <div className="bg-purple-100 border-2 border-purple-400 rounded-lg p-8 my-8 text-center">
-                <h3 className="text-2xl font-bold text-purple-900 mb-4">🏆 Die beste Lösung: Beide kombinieren!</h3>
+                <h3 className="text-2xl font-bold text-purple-900 mb-4">Die beste Lösung: Beide kombinieren!</h3>
                 <p className="text-gray-800 text-lg mb-4">
                   Warum sich entscheiden, wenn man beides haben kann? Bag-Tag nutzt NFC UND QR-Code für:
                 </p>
@@ -509,17 +514,19 @@ export default function NfcVsQrPage() {
 
             <ContentFaqSection title="Häufig gestellte Fragen" faqs={faqItems} />
 
+            <StoryBridge path="/de/ratgeber/nfc-vs-qr" />
+
             {relatedLinks.length > 0 && <RelatedLinksSection links={relatedLinks} />}
 
             <CtaSection
               title="Bag-Tag: NFC + QR-Code in einem"
               description="Profitieren Sie von beiden Technologien. Maximale Kompatibilität, maximale Sicherheit."
               buttonText="Bag-Tag entdecken"
-              buttonLink="https://bag-tag.de/de#shop"
+              buttonLink="https://kreativschicht.de/products/bagid-koffer-tag-mit-nfc"
             />
           </article>
         </div>
-      </main>
+      </div>
     </>
   );
 }

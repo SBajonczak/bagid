@@ -11,6 +11,9 @@ import { getRelatedLinks } from '@/lib/linkMap';
 import { generateBreadcrumbSchema, generateHowToSchema } from '@/lib/schema-utils';
 import { QrCode, Smartphone, CheckCircle } from 'lucide-react';
 
+import StoryBridge from '@/app/components/content/StoryBridge';
+import ContentFigure from '@/app/components/content/ContentFigure';
+
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'QR-Code als Fallback nutzen – Alternative zu NFC | Bag-Tag';
   const description = 'So nutzen Sie den QR-Code auf Ihrem Bag-Tag als Fallback, wenn NFC nicht verfügbar ist. Funktioniert auf allen Smartphones ohne App.';
@@ -157,6 +160,8 @@ export default function QrCodeAlsFallbackPage() {
               </p>
             </TldrSection>
 
+          <ContentFigure path="/de/hilfe/qr-code-als-fallback" />
+
             {/* Introduction */}
             <section className="mb-12">
               <p className="text-lg text-slate-700 leading-relaxed mb-4">
@@ -215,7 +220,7 @@ export default function QrCodeAlsFallbackPage() {
               <div className="space-y-6">
                 <div className="bg-white border border-slate-200 rounded-lg p-6">
                   <h3 className="text-xl font-semibold text-slate-900 mb-3">
-                    📱 iPhone (iOS 11 und neuer)
+                    iPhone (iOS 11 und neuer)
                   </h3>
                   <p className="text-slate-700 leading-relaxed mb-3">
                     QR-Code-Scanner ist in die Kamera-App integriert:
@@ -234,7 +239,7 @@ export default function QrCodeAlsFallbackPage() {
 
                 <div className="bg-white border border-slate-200 rounded-lg p-6">
                   <h3 className="text-xl font-semibold text-slate-900 mb-3">
-                    🤖 Android (ab Android 9)
+                    Android (ab Android 9)
                   </h3>
                   <p className="text-slate-700 leading-relaxed mb-3">
                     Die meisten Android-Geräte haben QR-Code-Scanning integriert:
@@ -253,7 +258,7 @@ export default function QrCodeAlsFallbackPage() {
 
                 <div className="bg-white border border-slate-200 rounded-lg p-6">
                   <h3 className="text-xl font-semibold text-slate-900 mb-3">
-                    📵 Ältere Smartphones (Android 8 oder älter)
+                    Ältere Smartphones (Android 8 oder älter)
                   </h3>
                   <p className="text-slate-700 leading-relaxed mb-3">
                     Falls Ihre Kamera-App QR-Codes nicht automatisch erkennt:
@@ -285,28 +290,28 @@ export default function QrCodeAlsFallbackPage() {
                   <tbody className="text-slate-700">
                     <tr className="border-b border-slate-200">
                       <td className="py-3 px-4 font-medium">Geschwindigkeit</td>
-                      <td className="py-3 px-4">⚡ Sehr schnell (1 Sek.)</td>
-                      <td className="py-3 px-4">🐢 Etwas langsamer (2–3 Sek.)</td>
+                      <td className="py-3 px-4">Sehr schnell (1 Sek.)</td>
+                      <td className="py-3 px-4">Etwas langsamer (2–3 Sek.)</td>
                     </tr>
                     <tr className="border-b border-slate-200">
                       <td className="py-3 px-4 font-medium">Kompatibilität</td>
-                      <td className="py-3 px-4">📱 Nur moderne Smartphones</td>
-                      <td className="py-3 px-4">✅ Alle Smartphones</td>
+                      <td className="py-3 px-4">Nur moderne Smartphones</td>
+                      <td className="py-3 px-4">Alle Smartphones</td>
                     </tr>
                     <tr className="border-b border-slate-200">
                       <td className="py-3 px-4 font-medium">Zuverlässigkeit</td>
-                      <td className="py-3 px-4">⚠️ Kann durch Hüllen blockiert werden</td>
-                      <td className="py-3 px-4">✅ Funktioniert immer</td>
+                      <td className="py-3 px-4">Kann durch Hüllen blockiert werden</td>
+                      <td className="py-3 px-4">Funktioniert immer</td>
                     </tr>
                     <tr className="border-b border-slate-200">
                       <td className="py-3 px-4 font-medium">Benutzerfreundlichkeit</td>
-                      <td className="py-3 px-4">👍 Sehr einfach (nur dranhalten)</td>
-                      <td className="py-3 px-4">👍 Einfach (Kamera öffnen)</td>
+                      <td className="py-3 px-4">Sehr einfach (nur dranhalten)</td>
+                      <td className="py-3 px-4">Einfach (Kamera öffnen)</td>
                     </tr>
                     <tr className="border-b border-slate-200">
                       <td className="py-3 px-4 font-medium">Lichtverhältnisse</td>
-                      <td className="py-3 px-4">✅ Keine Rolle</td>
-                      <td className="py-3 px-4">💡 Benötigt ausreichend Licht</td>
+                      <td className="py-3 px-4">Keine Rolle</td>
+                      <td className="py-3 px-4">Benötigt ausreichend Licht</td>
                     </tr>
                   </tbody>
                 </table>
@@ -363,6 +368,8 @@ export default function QrCodeAlsFallbackPage() {
             </section>
 
             {/* Related Links */}
+            <StoryBridge path="/de/hilfe/qr-code-als-fallback" />
+
             <RelatedLinksSection title="Weitere Hilfe-Themen" links={relatedLinks} />
 
             {/* CTA */}

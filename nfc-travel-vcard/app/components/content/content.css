@@ -1,0 +1,523 @@
+/*
+ * Ratgeber-, Hilfe- und Produktunterseiten im Design der Startseite.
+ *
+ * Aufbau:
+ *  1. Rahmen & Typografie (h1–h4, Fließtext, Listen, Tabellen, Links)
+ *  2. Gemeinsame Bausteine (Kurzfassung, Schritte, FAQ, CTA, Links, Story-Zeitleiste)
+ *  3. Angleichung des seitenspezifischen Tailwind-Markups: Die Seiten nutzen
+ *     bunte Hinweisboxen (bg-*-50), Verläufe, Schatten und Blau-Töne. Diese
+ *     Regeln übersetzen sie zentral in die Design-Tokens, statt 30 Seiten
+ *     einzeln umzuschreiben. Neue Seiten sollten direkt die bt-Klassen nutzen.
+ *
+ * Tokens (--bt-*) und Buttons kommen aus app/components/home/home.css.
+ */
+
+/* ---------- 1. Rahmen & Typografie ---------- */
+
+.bt-content {
+  padding-bottom: var(--bt-section);
+}
+
+.bt-content :is(article, .bt-article) {
+  max-width: 46rem;
+}
+
+.bt-content .max-w-4xl,
+.bt-content .container,
+.bt-content .max-w-5xl,
+.bt-content .max-w-6xl,
+.bt-content .max-w-7xl {
+  max-width: 50rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--bt-gutter);
+  padding-right: var(--bt-gutter);
+}
+
+.bt-content h1 {
+  font-family: var(--bt-font-display);
+  font-weight: 700;
+  font-size: clamp(2.2rem, 4.6vw, 3.25rem);
+  line-height: 1.05;
+  color: var(--bt-ink);
+  margin: 0 0 1rem;
+  max-width: 22ch;
+}
+
+.bt-content header p,
+.bt-content h1 + p {
+  font-size: 1.1875rem;
+  line-height: 1.55;
+  color: var(--bt-ink-soft);
+  max-width: 38rem;
+}
+
+.bt-content h2 {
+  font-family: var(--bt-font-display);
+  font-weight: 700;
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  line-height: 1.12;
+  color: var(--bt-ink);
+  margin: 3.25rem 0 1rem;
+}
+
+.bt-content h3 {
+  font-family: var(--bt-font-display);
+  font-weight: 600;
+  font-size: 1.3rem;
+  line-height: 1.25;
+  color: var(--bt-ink);
+  margin: 2rem 0 0.5rem;
+}
+
+.bt-content h4 {
+  font-family: var(--bt-font-display);
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--bt-ink);
+  margin: 1.25rem 0 0.35rem;
+}
+
+.bt-content p {
+  color: var(--bt-ink-soft);
+  margin: 0 0 1rem;
+}
+
+.bt-content :is(strong, b) {
+  color: var(--bt-ink);
+  font-weight: 600;
+}
+
+.bt-content :is(article, section) ul:not([class]),
+.bt-content :is(article, section) ol:not([class]) {
+  margin: 0 0 1.25rem;
+  padding-left: 1.25rem;
+  color: var(--bt-ink-soft);
+}
+
+.bt-content :is(article, section) ul:not([class]) {
+  list-style: disc;
+}
+
+.bt-content :is(article, section) ol:not([class]) {
+  list-style: decimal;
+}
+
+.bt-content li::marker {
+  color: var(--bt-mint-deep);
+}
+
+.bt-content li {
+  margin-bottom: 0.35rem;
+}
+
+.bt-content a:not([class]) {
+  color: var(--bt-mint-deep);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.bt-content table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.98rem;
+  margin: 1rem 0 2rem;
+}
+
+.bt-content :is(th, td) {
+  text-align: left;
+  padding: 0.7rem 1rem 0.7rem 0;
+  border-bottom: 1px solid var(--bt-line);
+  vertical-align: top;
+}
+
+.bt-content thead th {
+  color: var(--bt-ink-soft);
+  font-weight: 600;
+}
+
+.bt-content :is(pre, code) {
+  font-size: 0.85rem;
+}
+
+/* ---------- 2. Bausteine ---------- */
+
+.bt-crumbs .bt-crumbs__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.5rem;
+  list-style: none;
+  margin: 0 0 2rem;
+  padding: 0;
+  font-size: 0.9rem;
+  color: var(--bt-ink-soft);
+}
+
+.bt-crumbs li + li::before {
+  content: '/';
+  margin-right: 0.5rem;
+  color: var(--bt-line);
+}
+
+.bt-crumbs a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.bt-content .bt-tldr {
+  background: var(--bt-white);
+  border-left: 4px solid var(--bt-mint);
+  padding: 1.25rem 1.5rem;
+  margin: 2rem 0 2.5rem;
+}
+
+.bt-content .bt-tldr__title {
+  font-size: 1.15rem;
+  margin: 0 0 0.6rem;
+}
+
+.bt-content .bt-tldr ul {
+  list-style: disc;
+  padding-left: 1.2rem;
+  margin: 0;
+  color: var(--bt-ink);
+}
+
+.bt-content .bt-stepsx {
+  list-style: none;
+  counter-reset: stepx;
+  margin: 2rem 0;
+  padding: 0;
+}
+
+.bt-content .bt-stepsx > li {
+  counter-increment: stepx;
+  display: grid;
+  grid-template-columns: 2.75rem 1fr;
+  column-gap: 1rem;
+  padding: 1.1rem 0;
+  border-top: 1px solid var(--bt-line);
+}
+
+.bt-content .bt-stepsx > li:last-child {
+  border-bottom: 1px solid var(--bt-line);
+}
+
+.bt-content .bt-stepsx > li::before {
+  content: counter(stepx);
+  grid-row: span 2;
+  font-family: var(--bt-font-display);
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--bt-mint-deep);
+}
+
+.bt-content .bt-stepsx h3 {
+  margin: 0 0 0.3rem;
+}
+
+.bt-content .bt-stepsx p {
+  margin: 0;
+}
+
+.bt-content .bt-faq--content {
+  margin: 1.5rem 0 2.5rem;
+}
+
+.bt-content .bt-faq--content summary span {
+  padding-right: 1rem;
+}
+
+.bt-content .bt-content-faq h2 {
+  margin-top: 3.5rem;
+}
+
+.bt-content .bt-related {
+  margin: 3.5rem 0 0;
+}
+
+.bt-content .bt-related h2 {
+  font-size: 1.4rem;
+  margin: 0 0 0.75rem;
+}
+
+.bt-content .bt-related ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 2rem;
+}
+
+.bt-content .bt-cta {
+  display: grid;
+  gap: 1.5rem;
+  align-items: center;
+  margin: 3.5rem 0 0;
+  padding: 2rem;
+  background: var(--bt-mint-wash);
+  border-radius: 6px;
+}
+
+@media (min-width: 760px) {
+  .bt-content .bt-cta {
+    grid-template-columns: 1fr auto;
+  }
+}
+
+.bt-content .bt-cta h2 {
+  margin: 0 0 0.4rem;
+  font-size: 1.6rem;
+}
+
+.bt-content .bt-cta p {
+  margin: 0;
+}
+
+.bt-content .bt-cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.5rem;
+}
+
+.bt-content .bt-cta .bt-btn {
+  color: var(--bt-white);
+}
+
+/* Echtes Bild / Screenshot */
+.bt-figure {
+  margin: 2rem 0 2.5rem;
+}
+
+.bt-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+.bt-figure--screen .bt-phone {
+  max-width: 16rem;
+}
+
+.bt-figure figcaption {
+  margin-top: 0.75rem;
+  font-size: 0.92rem;
+  color: var(--bt-ink-soft);
+}
+
+/* Story-Zeitleiste: Brücke zur Startseiten-Geschichte */
+.bt-bridge {
+  margin: 3.5rem 0 0;
+  padding: 1.5rem 0 0;
+  border-top: 3px solid var(--bt-ink);
+}
+
+.bt-content .bt-bridge__lead {
+  color: var(--bt-ink);
+  font-size: 1.05rem;
+  max-width: 40rem;
+}
+
+.bt-bridge__line {
+  list-style: none;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.bt-content .bt-bridge__line > li {
+  margin: 0;
+}
+
+.bt-bridge__line a {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  height: 100%;
+  padding: 0.65rem 0.6rem 0.75rem;
+  border-top: 2px solid var(--bt-line);
+  color: var(--bt-ink-soft);
+  text-decoration: none;
+  font-size: 0.88rem;
+  line-height: 1.3;
+}
+
+.bt-bridge__line time {
+  font-family: var(--bt-font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--bt-ink);
+}
+
+.bt-bridge__line a:hover {
+  border-top-color: var(--bt-mint-deep);
+  color: var(--bt-ink);
+}
+
+.bt-bridge__line .is-active a {
+  border-top-color: var(--bt-signal);
+  color: var(--bt-ink);
+}
+
+.bt-bridge__line .is-active time {
+  align-self: flex-start;
+  background: var(--bt-signal);
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+}
+
+@media (max-width: 640px) {
+  .bt-bridge__line {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .bt-bridge__line a {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding: 0.55rem 0;
+    border-top-width: 1px;
+  }
+}
+
+/* ---------- 3. Angleichung des seitenspezifischen Markups ---------- */
+
+/* Seitenhintergründe */
+.bt-content > :is(div, main).bg-white,
+.bt-content > :is(div, main).bg-slate-50,
+.bt-content > :is(div, main).bg-gray-50,
+.bt-content > :is(div, main).min-h-screen {
+  background: transparent;
+  border: 0;
+}
+
+/* Bunte Hinweisboxen → weiße Fläche mit Farbkante je Bedeutung */
+.bt-content [class*='bg-blue-50'],
+.bt-content [class*='bg-indigo-50'],
+.bt-content [class*='bg-purple-50'],
+.bt-content [class*='bg-teal-50'],
+.bt-content [class*='bg-green-50'],
+.bt-content [class*='bg-slate-50'],
+.bt-content [class*='bg-gray-50'],
+.bt-content [class*='bg-slate-100'],
+.bt-content [class*='bg-gray-100'],
+.bt-content [class*='bg-blue-100'],
+.bt-content [class*='bg-purple-100'],
+.bt-content [class*='bg-gradient-to'] {
+  background: var(--bt-white);
+  background-image: none;
+  border: 0;
+  border-left: 4px solid var(--bt-mint);
+  border-radius: 4px;
+  box-shadow: none;
+}
+
+.bt-content [class*='bg-yellow-50'],
+.bt-content [class*='bg-amber-50'],
+.bt-content [class*='bg-orange-50'] {
+  background: var(--bt-white);
+  border: 0;
+  border-left: 4px solid var(--bt-signal);
+  border-radius: 4px;
+  box-shadow: none;
+}
+
+.bt-content [class*='bg-red-50'],
+.bt-content [class*='bg-rose-50'] {
+  background: var(--bt-white);
+  border: 0;
+  border-left: 4px solid #b4452f;
+  border-radius: 4px;
+  box-shadow: none;
+}
+
+/* Verschachtelte Boxen nicht doppelt umrahmen */
+.bt-content [class*='-50'] [class*='-50'],
+.bt-content [class*='-50'] .bg-white {
+  border-left: 0;
+  padding-left: 0;
+  background: transparent;
+}
+
+/* Weiße Karten mit Rahmen/Schatten → ruhige Fläche */
+.bt-content .bg-white[class*='border'],
+.bt-content .bg-white[class*='shadow'] {
+  border: 0;
+  border-top: 1px solid var(--bt-line);
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
+.bt-content [class*='shadow'] {
+  box-shadow: none !important;
+}
+
+.bt-content [class*='rounded-xl'],
+.bt-content [class*='rounded-2xl'],
+.bt-content [class*='rounded-lg'] {
+  border-radius: 4px;
+}
+
+/* Farbige Rahmen → neutrale Linie */
+.bt-content [class*='border-blue'],
+.bt-content [class*='border-green'],
+.bt-content [class*='border-purple'],
+.bt-content [class*='border-indigo'],
+.bt-content [class*='border-slate'],
+.bt-content [class*='border-gray'] {
+  border-color: var(--bt-line);
+}
+
+.bt-content [class*='border-l-4'] {
+  border-left-color: var(--bt-mint);
+}
+
+/* Blau-/Lila-Akzente → Mint (Text) */
+.bt-content :is([class*='text-blue-'], [class*='text-indigo-'], [class*='text-purple-'], [class*='text-green-'], [class*='text-emerald-'], [class*='text-teal-']) {
+  color: var(--bt-mint-deep);
+}
+
+.bt-content :is(h1, h2, h3, h4)[class*='text-'] {
+  color: var(--bt-ink);
+}
+
+.bt-content :is([class*='text-red-'], [class*='text-rose-']) {
+  color: #9a3a26;
+}
+
+.bt-content :is([class*='text-yellow-'], [class*='text-amber-'], [class*='text-orange-']) {
+  color: var(--bt-ink);
+}
+
+.bt-content :is([class*='text-gray-'], [class*='text-slate-']):not(h1, h2, h3, h4) {
+  color: var(--bt-ink-soft);
+}
+
+/* Volle Blau-Flächen (Nummern-Kreise, Buttons) → Tinte/Mint */
+.bt-content :is(.bg-blue-600, .bg-blue-700, .bg-blue-500) {
+  background: var(--bt-mint-deep);
+  color: var(--bt-white);
+}
+
+.bt-content a:is(.bg-blue-600, .bg-blue-700, .bg-blue-500) {
+  border-radius: 6px;
+  font-family: var(--bt-font-display);
+  font-weight: 600;
+}
+
+/* Hover-Spielereien auf Karten entfernen */
+.bt-content [class*='hover:shadow'],
+.bt-content [class*='hover:border'] {
+  transition: none;
+}

@@ -2,6 +2,9 @@ import type { Metadata } from 'next';
 import JsonLd from '@/app/components/JsonLd';
 import { TldrSection, RelatedLinksSection, CtaSection, Breadcrumb } from '@/app/components/ContentComponents';
 
+import StoryBridge from '@/app/components/content/StoryBridge';
+import ContentFigure from '@/app/components/content/ContentFigure';
+
 const linkMap = {
   useCases: '/de/use-cases',
   kids: '/de/use-cases/kofferanhaenger-fuer-kinder',
@@ -173,6 +176,8 @@ export default function GepäckanhängerFürVielfliegePage() {
             </ul>
           </TldrSection>
 
+          <ContentFigure path="/de/use-cases/gepaeckanhaenger-fuer-vielflieger" />
+
           <section className="mb-12">
             <h2 className="text-3xl font-bold mb-6 text-gray-900">
               Effizienz ist alles: Zeit sparen auf Geschäftsreisen
@@ -191,28 +196,24 @@ export default function GepäckanhängerFürVielfliegePage() {
                 </h3>
                 <ul className="space-y-3">
                   <li className="flex items-start">
-                    <span className="text-slate-700 font-bold mr-3">⏱️</span>
                     <div>
                       <strong>Am Gepäckband:</strong> Ihr Koffer ist durch das markante Design 
                       sofort erkennbar. Kein langes Suchen zwischen hunderten schwarzen Koffern.
                     </div>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-slate-700 font-bold mr-3">📱</span>
                     <div>
                       <strong>Bei Gepäckverlust:</strong> Flughafenpersonal kann Sie direkt 
                       kontaktieren statt dass Sie stundenlang am Lost & Found Schalter warten.
                     </div>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-slate-700 font-bold mr-3">✈️</span>
                     <div>
                       <strong>Beim Check-in:</strong> Professionelles Auftreten mit hochwertigen, 
                       modernen Gepäckanhängern. Erste Klasse beginnt beim ersten Eindruck.
                     </div>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-slate-700 font-bold mr-3">🏨</span>
                     <div>
                       <strong>Im Hotel:</strong> Aktualisieren Sie Ihre Kontaktdaten einfach online 
                       auf die Hotel-Adresse. Falls Ihr Gepäck später ankommt, geht es direkt dorthin.
@@ -245,7 +246,7 @@ export default function GepäckanhängerFürVielfliegePage() {
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="bg-gradient-to-br from-slate-100 to-slate-50 p-6 rounded-lg border border-slate-300">
                   <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                    💼 Business-Class-Erscheinung
+                    Business-Class-Erscheinung
                   </h3>
                   <p>
                     Modernes Design, hochwertige Materialien, cleane Optik. Ihr Gepäck macht 
@@ -255,7 +256,7 @@ export default function GepäckanhängerFürVielfliegePage() {
 
                 <div className="bg-gradient-to-br from-blue-100 to-blue-50 p-6 rounded-lg border border-blue-300">
                   <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                    🔒 Diskretion und Datenschutz
+                    Diskretion und Datenschutz
                   </h3>
                   <p>
                     Keine offen sichtbaren Privatadressen oder Telefonnummern. Geschäftliche 
@@ -265,7 +266,7 @@ export default function GepäckanhängerFürVielfliegePage() {
 
                 <div className="bg-gradient-to-br from-green-100 to-green-50 p-6 rounded-lg border border-green-300">
                   <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                    🌍 Internationale Kompatibilität
+                    Internationale Kompatibilität
                   </h3>
                   <p>
                     NFC funktioniert weltweit ohne Sprachbarrieren. Von New York über Shanghai 
@@ -275,7 +276,7 @@ export default function GepäckanhängerFürVielfliegePage() {
 
                 <div className="bg-gradient-to-br from-purple-100 to-purple-50 p-6 rounded-lg border border-purple-300">
                   <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                    ⚡ Tech-savvy Image
+                    Tech-savvy Image
                   </h3>
                   <p>
                     Zeigen Sie, dass Sie auf dem neuesten Stand der Technologie sind. NFC statt 
@@ -300,7 +301,6 @@ export default function GepäckanhängerFürVielfliegePage() {
               <div className="space-y-4">
                 <div className="bg-white p-6 rounded-lg shadow-sm">
                   <h3 className="font-semibold text-gray-900 mb-2 flex items-start">
-                    <span className="text-red-600 mr-3">❌</span>
                     <span>Problem: Gepäck kommt bei Anschlussflügen nicht mit</span>
                   </h3>
                   <p className="ml-8">
@@ -312,7 +312,6 @@ export default function GepäckanhängerFürVielfliegePage() {
 
                 <div className="bg-white p-6 rounded-lg shadow-sm">
                   <h3 className="font-semibold text-gray-900 mb-2 flex items-start">
-                    <span className="text-red-600 mr-3">❌</span>
                     <span>Problem: Verwechslung mit ähnlichen Business-Koffern</span>
                   </h3>
                   <p className="ml-8">
@@ -324,7 +323,6 @@ export default function GepäckanhängerFürVielfliegePage() {
 
                 <div className="bg-white p-6 rounded-lg shadow-sm">
                   <h3 className="font-semibold text-gray-900 mb-2 flex items-start">
-                    <span className="text-red-600 mr-3">❌</span>
                     <span>Problem: Kontaktdaten ändern sich je nach Reiseziel</span>
                   </h3>
                   <p className="ml-8">
@@ -336,7 +334,6 @@ export default function GepäckanhängerFürVielfliegePage() {
 
                 <div className="bg-white p-6 rounded-lg shadow-sm">
                   <h3 className="font-semibold text-gray-900 mb-2 flex items-start">
-                    <span className="text-red-600 mr-3">❌</span>
                     <span>Problem: Papier-Tags reißen bei häufigem Handling ab</span>
                   </h3>
                   <p className="ml-8">
@@ -348,7 +345,6 @@ export default function GepäckanhängerFürVielfliegePage() {
 
                 <div className="bg-white p-6 rounded-lg shadow-sm">
                   <h3 className="font-semibold text-gray-900 mb-2 flex items-start">
-                    <span className="text-red-600 mr-3">❌</span>
                     <span>Problem: Sicherheitsbedenken bei offener Adressangabe</span>
                   </h3>
                   <p className="ml-8">
@@ -408,7 +404,7 @@ export default function GepäckanhängerFürVielfliegePage() {
               </div>
 
               <p className="bg-white p-4 rounded border border-blue-300">
-                <strong>⏱️ Zeitersparnis konkret:</strong> Statt 2-4 Stunden am Lost & Found 
+                <strong>Zeitersparnis konkret:</strong> Statt 2-4 Stunden am Lost & Found 
                 Schalter zu warten und Formulare auszufüllen, bekommen Sie innerhalb von 30 Minuten 
                 eine Nachricht und können direkt zum nächsten Meeting.
               </p>
@@ -423,7 +419,7 @@ export default function GepäckanhängerFürVielfliegePage() {
             <div className="space-y-6 text-lg text-gray-700">
               <div className="bg-slate-50 p-6 rounded-lg border border-slate-300">
                 <h3 className="font-semibold text-gray-900 mb-3">
-                  💼 Geschäftliche vs. private Kontaktdaten
+                  Geschäftliche vs. private Kontaktdaten
                 </h3>
                 <p className="mb-2">
                   Nutzen Sie für Business-Reisen Ihre geschäftliche E-Mail und Büroadresse. 
@@ -436,7 +432,7 @@ export default function GepäckanhängerFürVielfliegePage() {
 
               <div className="bg-blue-50 p-6 rounded-lg border border-blue-300">
                 <h3 className="font-semibold text-gray-900 mb-3">
-                  🏨 Hotel-Adresse vor jeder Reise aktualisieren
+                  Hotel-Adresse vor jeder Reise aktualisieren
                 </h3>
                 <p className="mb-2">
                   Hinterlegen Sie Name und Adresse Ihres Hotels. Falls Ihr Gepäck später ankommt, 
@@ -450,7 +446,7 @@ export default function GepäckanhängerFürVielfliegePage() {
 
               <div className="bg-green-50 p-6 rounded-lg border border-green-300">
                 <h3 className="font-semibold text-gray-900 mb-3">
-                  ✈️ Mehrere Tags für Hand- und Aufgabegepäck
+                  Mehrere Tags für Hand- und Aufgabegepäck
                 </h3>
                 <p className="mb-2">
                   Verwenden Sie je einen Tag für Ihren Koffer und Ihr Handgepäck. So sind beide 
@@ -464,7 +460,7 @@ export default function GepäckanhängerFürVielfliegePage() {
 
               <div className="bg-purple-50 p-6 rounded-lg border border-purple-300">
                 <h3 className="font-semibold text-gray-900 mb-3">
-                  🔔 Benachrichtigungen aktivieren
+                  Benachrichtigungen aktivieren
                 </h3>
                 <p className="mb-2">
                   Aktivieren Sie Push-Benachrichtigungen, um sofort informiert zu werden, wenn 
@@ -478,7 +474,7 @@ export default function GepäckanhängerFürVielfliegePage() {
 
               <div className="bg-yellow-50 p-6 rounded-lg border border-yellow-300">
                 <h3 className="font-semibold text-gray-900 mb-3">
-                  🌍 Internationale Nummer hinterlegen
+                  Internationale Nummer hinterlegen
                 </h3>
                 <p className="mb-2">
                   Verwenden Sie eine internationale Mobilnummer (mit +49 statt 0). So können Sie 
@@ -527,6 +523,8 @@ export default function GepäckanhängerFürVielfliegePage() {
               </li>
             </ul>
           </section>
+
+          <StoryBridge path="/de/use-cases/gepaeckanhaenger-fuer-vielflieger" />
 
           <RelatedLinksSection 
             title="Weitere Informationen für Vielflieger"

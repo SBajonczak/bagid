@@ -9,6 +9,9 @@ import {
 import { getRelatedLinks } from '@/lib/linkMap';
 import { generateBreadcrumbSchema, generateHowToSchema } from '@/lib/schema-utils';
 
+import StoryBridge from '@/app/components/content/StoryBridge';
+import ContentFigure from '@/app/components/content/ContentFigure';
+
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'So funktioniert Bag-Tag – NFC Gepäckanhänger in 4 Schritten | Bag-Tag';
   const description = 'Wie funktioniert ein NFC Gepäckanhänger? In 4 einfachen Schritten zum smarten Koffer-Schutz. NFC & QR-Code kombiniert – keine App, keine Batterien.';
@@ -103,7 +106,7 @@ export default function SoFunktioniertPage() {
       <JsonLd data={breadcrumbSchema} />
       <JsonLd data={howToSchema} />
 
-      <main className="bg-white">
+      <div className="bg-white">
         <div className="max-w-4xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
           <Breadcrumb items={breadcrumbItems} />
 
@@ -127,6 +130,8 @@ export default function SoFunktioniertPage() {
               ]}
             />
 
+          <ContentFigure path="/de/so-funktionierts" />
+
             <section className="prose prose-lg max-w-none mt-12">
               <h2 id="kaufen" className="text-3xl font-bold text-gray-900 mb-6">
                 Schritt 1: Bag-Tag kaufen
@@ -147,7 +152,7 @@ export default function SoFunktioniertPage() {
               </h2>
               <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6 mb-8">
                 <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                  🔍 Zwei Wege zur Aktivierung:
+                  Zwei Wege zur Aktivierung:
                 </h3>
                 <ul className="space-y-3">
                   <li className="flex items-start">
@@ -187,7 +192,7 @@ export default function SoFunktioniertPage() {
                 <li><strong>Universell:</strong> Passt an Koffer, Rucksäcke, Taschen</li>
               </ul>
               <div className="bg-yellow-50 border-l-4 border-yellow-500 p-6 my-8">
-                <p className="font-semibold text-gray-900 mb-2">💡 Profi-Tipp:</p>
+                <p className="font-semibold text-gray-900 mb-2">Profi-Tipp:</p>
                 <p className="text-gray-800">
                   Befestigen Sie den Tag an einer gut sichtbaren Stelle – am besten außen am Griff. So kann ein Finder 
                   ihn schnell entdecken und scannen.
@@ -220,7 +225,7 @@ export default function SoFunktioniertPage() {
                 </h3>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <h4 className="font-semibold text-blue-600 mb-2">✨ NFC-Chip</h4>
+                    <h4 className="font-semibold text-blue-600 mb-2">NFC-Chip</h4>
                     <ul className="text-sm space-y-1">
                       <li>✓ Ultraschnell (1 Sekunde)</li>
                       <li>✓ Funktioniert ohne Entsperren</li>
@@ -229,7 +234,7 @@ export default function SoFunktioniertPage() {
                     </ul>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-blue-600 mb-2">📱 QR-Code</h4>
+                    <h4 className="font-semibold text-blue-600 mb-2">QR-Code</h4>
                     <ul className="text-sm space-y-1">
                       <li>✓ Funktioniert mit jedem Smartphone</li>
                       <li>✓ Keine NFC-Unterstützung nötig</li>
@@ -249,25 +254,25 @@ export default function SoFunktioniertPage() {
               </h2>
               <div className="grid md:grid-cols-2 gap-6 my-8">
                 <div className="bg-green-50 rounded-lg p-6">
-                  <h3 className="font-semibold text-green-900 mb-3">🔒 Datenschutz</h3>
+                  <h3 className="font-semibold text-green-900 mb-3">Datenschutz</h3>
                   <p className="text-gray-700">
                     Ihre persönlichen Daten sind nie sichtbar auf dem Tag. Sie entscheiden, was ein Finder sehen kann.
                   </p>
                 </div>
                 <div className="bg-blue-50 rounded-lg p-6">
-                  <h3 className="font-semibold text-blue-900 mb-3">⚡ Schnell & Einfach</h3>
+                  <h3 className="font-semibold text-blue-900 mb-3">Schnell & Einfach</h3>
                   <p className="text-gray-700">
                     Keine App-Installation erforderlich. Der Finder scannt und kontaktiert Sie sofort.
                   </p>
                 </div>
                 <div className="bg-purple-50 rounded-lg p-6">
-                  <h3 className="font-semibold text-purple-900 mb-3">🌍 Weltweit</h3>
+                  <h3 className="font-semibold text-purple-900 mb-3">Weltweit</h3>
                   <p className="text-gray-700">
                     Funktioniert in jedem Land, mit jedem modernen Smartphone. Keine Roaming-Gebühren.
                   </p>
                 </div>
                 <div className="bg-orange-50 rounded-lg p-6">
-                  <h3 className="font-semibold text-orange-900 mb-3">💰 Keine Folgekosten</h3>
+                  <h3 className="font-semibold text-orange-900 mb-3">Keine Folgekosten</h3>
                   <p className="text-gray-700">
                     Einmaliger Kauf, keine Abo-Gebühren, keine versteckten Kosten. Lebenslang nutzbar.
                   </p>
@@ -305,17 +310,19 @@ export default function SoFunktioniertPage() {
               </div>
             </section>
 
+            <StoryBridge path="/de/so-funktionierts" />
+
             <RelatedLinksSection links={relatedLinks} />
             
             <CtaSection
               title="Bereit für sicheres Reisen?"
               description="Bestellen Sie jetzt Ihren Bag-Tag und schützen Sie Ihr Gepäck."
               buttonText="Jetzt kaufen"
-              buttonLink="https://bag-tag.de/de#shop"
+              buttonLink="https://kreativschicht.de/products/bagid-koffer-tag-mit-nfc"
             />
           </article>
         </div>
-      </main>
+      </div>
     </>
   );
 }

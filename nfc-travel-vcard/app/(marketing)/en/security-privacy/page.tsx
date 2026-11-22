@@ -10,6 +10,9 @@ import {
 import { getRelatedLinks } from '@/lib/linkMap';
 import { generateBreadcrumbSchema, generateFAQPageSchema } from '@/lib/schema-utils';
 
+import StoryBridge from '@/app/components/content/StoryBridge';
+import ContentFigure from '@/app/components/content/ContentFigure';
+
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'Security & Privacy – Bag-Tag GDPR Compliant | Bag-Tag';
   const description = 'Learn how Bag-Tag protects your data: GDPR compliant, servers in Germany, full control over your privacy. Maximum security for your luggage.';
@@ -104,7 +107,7 @@ export default function SecurityPrivacyPage() {
       <JsonLd data={breadcrumbSchema} />
       <JsonLd data={faqSchema} />
 
-      <main className="bg-white">
+      <div className="bg-white">
         <div className="container mx-auto px-4 py-12">
           <Breadcrumb items={breadcrumbItems} />
 
@@ -123,6 +126,8 @@ export default function SecurityPrivacyPage() {
               'Encrypted communication: Secure exchange with the finder.',
             ]}
           />
+
+          <ContentFigure path="/en/security-privacy" />
 
           <div className="space-y-12 my-12">
             <section>
@@ -149,12 +154,14 @@ export default function SecurityPrivacyPage() {
             buttonLink="/en/nfc-luggage-tag"
           />
 
+          <StoryBridge path="/en/security-privacy" />
+
           <RelatedLinksSection
             title="Further Information"
             links={relatedLinks}
           />
         </div>
-      </main>
+      </div>
     </>
   );
 }

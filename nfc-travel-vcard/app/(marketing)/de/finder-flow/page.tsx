@@ -9,6 +9,9 @@ import {
 import { getRelatedLinks } from '@/lib/linkMap';
 import { generateBreadcrumbSchema, generateHowToSchema } from '@/lib/schema-utils';
 
+import StoryBridge from '@/app/components/content/StoryBridge';
+import ContentFigure from '@/app/components/content/ContentFigure';
+
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'So hilft der Finder Ihnen – Bag-Tag Finder-Prozess | Bag-Tag';
   const description = 'Erfahren Sie, wie der Finder Ihres verlorenen Gepäcks Sie kontaktiert. Datenschutz garantiert: Ihre Daten bleiben privat, während Sie schnell gefunden werden.';
@@ -96,7 +99,7 @@ export default function FinderFlowPage() {
       <JsonLd data={breadcrumbSchema} />
       <JsonLd data={howToSchema} />
 
-      <main className="bg-white">
+      <div className="bg-white">
         <div className="max-w-4xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
           <Breadcrumb items={breadcrumbItems} />
 
@@ -120,6 +123,8 @@ export default function FinderFlowPage() {
               ]}
             />
 
+          <ContentFigure path="/de/finder-flow" />
+
             <section className="prose prose-lg max-w-none mt-12">
               <h2 id="finden" className="text-3xl font-bold text-gray-900 mb-6">
                 Schritt 1: Gepäck wird gefunden
@@ -136,7 +141,7 @@ export default function FinderFlowPage() {
                 einfach zurückgeben kann.
               </p>
               <div className="bg-blue-50 border-l-4 border-blue-500 p-6 my-8">
-                <p className="font-semibold text-gray-900 mb-2">💡 Warum Menschen helfen:</p>
+                <p className="font-semibold text-gray-900 mb-2">Warum Menschen helfen:</p>
                 <p className="text-gray-800">
                   Studien zeigen, dass über 85% der Menschen bereit sind zu helfen, wenn der Prozess einfach ist. 
                   Bag-Tag macht es so einfach wie möglich – ein kurzer Scan genügt.
@@ -153,7 +158,7 @@ export default function FinderFlowPage() {
               <div className="grid md:grid-cols-2 gap-6 my-8">
                 <div className="bg-white border-2 border-blue-200 rounded-lg p-6">
                   <h3 className="text-xl font-semibold text-blue-900 mb-4">
-                    📱 NFC-Scan (schnellste Methode)
+                    NFC-Scan (schnellste Methode)
                   </h3>
                   <ol className="space-y-2 text-gray-700">
                     <li><strong>1.</strong> Smartphone an den Tag halten</li>
@@ -161,12 +166,12 @@ export default function FinderFlowPage() {
                     <li><strong>3.</strong> Browser öffnet sich</li>
                   </ol>
                   <p className="text-sm text-gray-600 mt-4">
-                    ⚡ Dauer: ~1 Sekunde
+                    Dauer: ~1 Sekunde
                   </p>
                 </div>
                 <div className="bg-white border-2 border-purple-200 rounded-lg p-6">
                   <h3 className="text-xl font-semibold text-purple-900 mb-4">
-                    📷 QR-Code-Scan (Fallback)
+                    QR-Code-Scan (Fallback)
                   </h3>
                   <ol className="space-y-2 text-gray-700">
                     <li><strong>1.</strong> Kamera-App öffnen</li>
@@ -174,13 +179,13 @@ export default function FinderFlowPage() {
                     <li><strong>3.</strong> Link antippen</li>
                   </ol>
                   <p className="text-sm text-gray-600 mt-4">
-                    ⚡ Dauer: ~3-5 Sekunden
+                    Dauer: ~3-5 Sekunden
                   </p>
                 </div>
               </div>
 
               <div className="bg-yellow-50 border-l-4 border-yellow-500 p-6 my-8">
-                <p className="font-semibold text-gray-900 mb-2">✅ Keine App-Installation erforderlich</p>
+                <p className="font-semibold text-gray-900 mb-2">Keine App-Installation erforderlich</p>
                 <p className="text-gray-800">
                   Der größte Vorteil: Der Finder muss keine App herunterladen oder installieren. Das erhöht die 
                   Wahrscheinlichkeit drastisch, dass Ihr Gepäck zurückgegeben wird.
@@ -262,7 +267,6 @@ export default function FinderFlowPage() {
               
               <div className="space-y-4 my-8">
                 <div className="flex items-start bg-white border-2 border-blue-200 rounded-lg p-4">
-                  <span className="text-2xl mr-4">📧</span>
                   <div>
                     <h4 className="font-semibold text-gray-900 mb-1">E-Mail-Benachrichtigung</h4>
                     <p className="text-gray-700">
@@ -271,7 +275,6 @@ export default function FinderFlowPage() {
                   </div>
                 </div>
                 <div className="flex items-start bg-white border-2 border-green-200 rounded-lg p-4">
-                  <span className="text-2xl mr-4">📱</span>
                   <div>
                     <h4 className="font-semibold text-gray-900 mb-1">Push-Benachrichtigung (optional)</h4>
                     <p className="text-gray-700">
@@ -280,7 +283,6 @@ export default function FinderFlowPage() {
                   </div>
                 </div>
                 <div className="flex items-start bg-white border-2 border-purple-200 rounded-lg p-4">
-                  <span className="text-2xl mr-4">📍</span>
                   <div>
                     <h4 className="font-semibold text-gray-900 mb-1">Standort-Info (wenn verfügbar)</h4>
                     <p className="text-gray-700">
@@ -310,7 +312,7 @@ export default function FinderFlowPage() {
               <div className="space-y-6 my-8">
                 <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6">
                   <h3 className="font-semibold text-gray-900 mb-3">
-                    🛫 Szenario 1: Flughafen
+                    Szenario 1: Flughafen
                   </h3>
                   <p className="text-gray-700 mb-3">
                     Ihr Koffer bleibt am Gepäckband in München zurück. Ein anderer Reisender findet ihn 30 Minuten später.
@@ -328,7 +330,7 @@ export default function FinderFlowPage() {
 
                 <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg p-6">
                   <h3 className="font-semibold text-gray-900 mb-3">
-                    🏨 Szenario 2: Hotel
+                    Szenario 2: Hotel
                   </h3>
                   <p className="text-gray-700 mb-3">
                     Sie vergessen Ihren Rucksack im Hotelzimmer in Barcelona. Das Reinigungspersonal findet ihn.
@@ -346,7 +348,7 @@ export default function FinderFlowPage() {
 
                 <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-6">
                   <h3 className="font-semibold text-gray-900 mb-3">
-                    🚆 Szenario 3: Zug
+                    Szenario 3: Zug
                   </h3>
                   <p className="text-gray-700 mb-3">
                     Ihre Reisetasche bleibt im ICE von Hamburg nach Berlin liegen. Ein Mitreisender bemerkt es.
@@ -368,7 +370,7 @@ export default function FinderFlowPage() {
               </h2>
               <div className="bg-blue-50 border-l-4 border-blue-500 p-6 mb-8">
                 <h3 className="font-semibold text-gray-900 mb-3">
-                  🔒 Ihre Daten sind sicher
+                  Ihre Daten sind sicher
                 </h3>
                 <ul className="space-y-2 text-gray-700">
                   <li>✓ Keine persönlichen Daten auf dem physischen Tag</li>
@@ -413,17 +415,19 @@ export default function FinderFlowPage() {
               </div>
             </section>
 
+            <StoryBridge path="/de/finder-flow" />
+
             <RelatedLinksSection links={relatedLinks} />
             
             <CtaSection
               title="Machen Sie Ihr Gepäck findbar"
               description="Bestellen Sie jetzt Ihren Bag-Tag und reisen Sie sorgenfrei."
               buttonText="Jetzt schützen"
-              buttonLink="https://bag-tag.de/de#shop"
+              buttonLink="https://kreativschicht.de/products/bagid-koffer-tag-mit-nfc"
             />
           </article>
         </div>
-      </main>
+      </div>
     </>
   );
 }

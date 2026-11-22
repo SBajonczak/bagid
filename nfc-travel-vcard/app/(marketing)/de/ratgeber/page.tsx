@@ -10,6 +10,9 @@ import {
 import { getRelatedLinks } from '@/lib/linkMap';
 import { generateBreadcrumbSchema } from '@/lib/schema-utils';
 
+import StoryBridge from '@/app/components/content/StoryBridge';
+import ContentFigure from '@/app/components/content/ContentFigure';
+
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'Ratgeber für sicheres Reisen – Bag-Tag Info Hub | Bag-Tag';
   const description = 'Entdecken Sie unsere Reise-Ratgeber: Gepäckverlust vermeiden, was tun bei verlorenem Koffer, NFC vs QR-Code und mehr. Expertentipps für stressfreies Reisen.';
@@ -67,21 +70,21 @@ export default function RatgeberPage() {
     {
       title: 'Koffer verloren – was tun?',
       description: 'Schritt-für-Schritt Anleitung, was Sie sofort tun sollten, wenn Ihr Gepäck verloren geht. Von der Meldung bis zur Wiederbeschaffung.',
-      icon: '🆘',
+      icon: '',
       link: '/de/ratgeber/koffer-verloren-was-tun',
       tags: ['Notfall', 'Flughafen', 'Rechte'],
     },
     {
       title: 'Gepäckverlust vermeiden',
       description: 'Die besten Tipps und Strategien, um Gepäckverlust von vornherein zu verhindern. Packtipps, smarte Kennzeichnung und mehr.',
-      icon: '🛡️',
+      icon: '',
       link: '/de/ratgeber/gepaeck-verlust-vermeiden',
       tags: ['Prävention', 'Tipps', 'Sicherheit'],
     },
     {
       title: 'NFC vs. QR-Code',
       description: 'Detaillierter Vergleich der beiden Technologien. Welche ist besser für Gepäckanhänger? Vor- und Nachteile im Überblick.',
-      icon: '⚡',
+      icon: '',
       link: '/de/ratgeber/nfc-vs-qr',
       tags: ['Technologie', 'Vergleich', 'NFC'],
     },
@@ -91,7 +94,7 @@ export default function RatgeberPage() {
     <>
       <JsonLd data={breadcrumbSchema} />
 
-      <main className="bg-white">
+      <div className="bg-white">
         <div className="max-w-4xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
           <Breadcrumb items={breadcrumbItems} />
 
@@ -114,6 +117,8 @@ export default function RatgeberPage() {
                 'Technologie-Vergleiche: NFC vs. QR-Code und mehr',
               ]}
             />
+
+          <ContentFigure path="/de/ratgeber" />
 
             <section className="prose prose-lg max-w-none mt-12">
               <h2 className="text-3xl font-bold text-gray-900 mb-6">
@@ -165,7 +170,6 @@ export default function RatgeberPage() {
               <div className="grid md:grid-cols-2 gap-6 my-8">
                 <div className="bg-green-50 rounded-lg p-6">
                   <h3 className="font-semibold text-green-900 mb-3 flex items-center">
-                    <span className="text-2xl mr-2">📚</span>
                     Fundiertes Wissen
                   </h3>
                   <p className="text-gray-700">
@@ -175,7 +179,6 @@ export default function RatgeberPage() {
                 </div>
                 <div className="bg-blue-50 rounded-lg p-6">
                   <h3 className="font-semibold text-blue-900 mb-3 flex items-center">
-                    <span className="text-2xl mr-2">💡</span>
                     Praktische Tipps
                   </h3>
                   <p className="text-gray-700">
@@ -185,7 +188,6 @@ export default function RatgeberPage() {
                 </div>
                 <div className="bg-purple-50 rounded-lg p-6">
                   <h3 className="font-semibold text-purple-900 mb-3 flex items-center">
-                    <span className="text-2xl mr-2">⚡</span>
                     Schnelle Lösungen
                   </h3>
                   <p className="text-gray-700">
@@ -195,7 +197,6 @@ export default function RatgeberPage() {
                 </div>
                 <div className="bg-orange-50 rounded-lg p-6">
                   <h3 className="font-semibold text-orange-900 mb-3 flex items-center">
-                    <span className="text-2xl mr-2">🔄</span>
                     Aktuell & Relevant
                   </h3>
                   <p className="text-gray-700">
@@ -210,28 +211,28 @@ export default function RatgeberPage() {
               </h2>
               <div className="space-y-4 my-8">
                 <div className="border-l-4 border-blue-500 pl-4">
-                  <h3 className="font-semibold text-gray-900 mb-2">🧳 Gelegenheitsreisende</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">Gelegenheitsreisende</h3>
                   <p className="text-gray-700">
                     Sie reisen ein- bis zweimal im Jahr? Diese Ratgeber helfen Ihnen, häufige Fehler zu vermeiden 
                     und gut vorbereitet zu sein.
                   </p>
                 </div>
                 <div className="border-l-4 border-green-500 pl-4">
-                  <h3 className="font-semibold text-gray-900 mb-2">✈️ Vielflieger</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">Vielflieger</h3>
                   <p className="text-gray-700">
                     Auch wenn Sie regelmäßig unterwegs sind: Es gibt immer neue Tipps und Strategien, um Ihre 
                     Reisen noch sicherer zu machen.
                   </p>
                 </div>
                 <div className="border-l-4 border-purple-500 pl-4">
-                  <h3 className="font-semibold text-gray-900 mb-2">👨‍👩‍👧‍👦 Familien</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">Familien</h3>
                   <p className="text-gray-700">
                     Mit mehreren Gepäckstücken und Kindern wird Reisen komplexer. Unsere Ratgeber helfen Ihnen, 
                     organisiert zu bleiben.
                   </p>
                 </div>
                 <div className="border-l-4 border-orange-500 pl-4">
-                  <h3 className="font-semibold text-gray-900 mb-2">💼 Geschäftsreisende</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">Geschäftsreisende</h3>
                   <p className="text-gray-700">
                     Zeit ist Geld. Erfahren Sie, wie Sie Gepäckprobleme minimieren und bei Verlust schnell reagieren.
                   </p>
@@ -265,17 +266,19 @@ export default function RatgeberPage() {
               </div>
             </section>
 
+            <StoryBridge path="/de/ratgeber" />
+
             <RelatedLinksSection links={relatedLinks} />
             
             <CtaSection
               title="Schützen Sie Ihr Gepäck jetzt"
               description="Mit Bag-Tag sind Sie optimal vorbereitet – für alle Reisesituationen."
               buttonText="Jetzt kaufen"
-              buttonLink="https://bag-tag.de/de#shop"
+              buttonLink="https://kreativschicht.de/products/bagid-koffer-tag-mit-nfc"
             />
           </article>
         </div>
-      </main>
+      </div>
     </>
   );
 }

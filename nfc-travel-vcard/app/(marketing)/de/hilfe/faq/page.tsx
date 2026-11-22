@@ -11,6 +11,9 @@ import {
 import { getRelatedLinks } from '@/lib/linkMap';
 import { generateBreadcrumbSchema, generateFAQPageSchema } from '@/lib/schema-utils';
 
+import StoryBridge from '@/app/components/content/StoryBridge';
+import ContentFigure from '@/app/components/content/ContentFigure';
+
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'Häufig gestellte Fragen (FAQ) – Bag-Tag Hilfe | Bag-Tag';
   const description = 'Antworten auf die am häufigsten gestellten Fragen zu Bag-Tag NFC Gepäckanhängern: Aktivierung, NFC, Datenschutz, Kosten, Kompatibilität und mehr.';
@@ -135,7 +138,7 @@ export default function FaqPage() {
 
   const faqCategories = [
     {
-      title: '🚀 Erste Schritte',
+      title: 'Erste Schritte',
       description: 'Aktivierung, Einrichtung und erste Nutzung',
       links: [
         { href: '/de/hilfe/aktivieren', text: 'Tag aktivieren' },
@@ -144,7 +147,7 @@ export default function FaqPage() {
       ],
     },
     {
-      title: '⚙️ Verwaltung',
+      title: 'Verwaltung',
       description: 'Daten ändern, Tag übertragen, Dashboard nutzen',
       links: [
         { href: '/de/hilfe/daten-aendern', text: 'Daten ändern' },
@@ -152,7 +155,7 @@ export default function FaqPage() {
       ],
     },
     {
-      title: '❓ Probleme lösen',
+      title: 'Probleme lösen',
       description: 'NFC funktioniert nicht, QR-Code-Probleme',
       links: [
         { href: '/de/hilfe/iphone-nfc-aktivieren', text: 'iPhone NFC-Probleme' },
@@ -189,6 +192,8 @@ export default function FaqPage() {
                 unseren Support.
               </p>
             </TldrSection>
+
+          <ContentFigure path="/de/hilfe/faq" />
 
             {/* Quick Links to specific help pages */}
             <section className="mb-12">
@@ -266,7 +271,7 @@ export default function FaqPage() {
                   className="bg-white p-4 rounded-lg border border-slate-200 hover:border-blue-500 hover:shadow-md transition-all"
                 >
                   <h3 className="font-semibold text-slate-900 mb-2">
-                    📖 So funktioniert Bag-Tag
+                    So funktioniert Bag-Tag
                   </h3>
                   <p className="text-sm text-slate-600">
                     Detaillierte Übersicht über Funktionen und Ablauf
@@ -277,7 +282,7 @@ export default function FaqPage() {
                   className="bg-white p-4 rounded-lg border border-slate-200 hover:border-blue-500 hover:shadow-md transition-all"
                 >
                   <h3 className="font-semibold text-slate-900 mb-2">
-                    🔒 Sicherheit & Datenschutz
+                    Sicherheit & Datenschutz
                   </h3>
                   <p className="text-sm text-slate-600">
                     DSGVO-Konformität und Datensicherheit
@@ -288,7 +293,7 @@ export default function FaqPage() {
                   className="bg-white p-4 rounded-lg border border-slate-200 hover:border-blue-500 hover:shadow-md transition-all"
                 >
                   <h3 className="font-semibold text-slate-900 mb-2">
-                    ✈️ Gepäckverlust vermeiden
+                    Gepäckverlust vermeiden
                   </h3>
                   <p className="text-sm text-slate-600">
                     Praktische Tipps für sicheres Reisen
@@ -299,7 +304,7 @@ export default function FaqPage() {
                   className="bg-white p-4 rounded-lg border border-slate-200 hover:border-blue-500 hover:shadow-md transition-all"
                 >
                   <h3 className="font-semibold text-slate-900 mb-2">
-                    ⚡ NFC vs. QR-Code
+                    NFC vs. QR-Code
                   </h3>
                   <p className="text-sm text-slate-600">
                     Ausführlicher Vergleich der beiden Technologien
@@ -309,6 +314,8 @@ export default function FaqPage() {
             </section>
 
             {/* Related Links */}
+            <StoryBridge path="/de/hilfe/faq" />
+
             <RelatedLinksSection title="Hilfe-Themen" links={relatedLinks} />
 
             {/* CTA */}

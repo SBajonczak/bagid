@@ -11,6 +11,9 @@ import {
 import { getRelatedLinks } from '@/lib/linkMap';
 import { generateBreadcrumbSchema, generateHowToSchema, generateFAQPageSchema } from '@/lib/schema-utils';
 
+import StoryBridge from '@/app/components/content/StoryBridge';
+import ContentFigure from '@/app/components/content/ContentFigure';
+
 const pageUrl = 'https://bag-tag.de/de/ratgeber/koffer-verloren-was-tun';
 const pageTitle = 'Koffer verloren - was tun? Sofort-Hilfe & Entschädigung';
 const pageDescription = 'Ihr Koffer ist weg? Hier finden Sie die wichtigsten Schritte bei verlorenem Gepäck: Meldung, Rechte, Entschädigung und wie Bag-Tag hilft.';
@@ -138,7 +141,7 @@ export default function KofferVerlorenPage() {
       <JsonLd data={faqSchema} />
       <JsonLd data={howToSchema} />
 
-      <main className="bg-white">
+      <div className="bg-white">
         <div className="max-w-4xl mx-auto px-4 py-12">
           <Breadcrumb items={breadcrumbItems} />
           
@@ -153,6 +156,8 @@ export default function KofferVerlorenPage() {
             </header>
 
             <TldrSection title="Das Wichtigste in Kürze" points={tldrPoints} />
+
+          <ContentFigure path="/de/ratgeber/koffer-verloren-was-tun" />
 
             <section className="prose prose-lg max-w-none mt-12">
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Schritt-für-Schritt: So gehen Sie vor</h2>
@@ -183,7 +188,7 @@ export default function KofferVerlorenPage() {
               </ul>
 
               <div className="bg-blue-50 border-l-4 border-blue-500 p-6 my-8">
-                <p className="font-semibold text-gray-900 mb-2">💡 Profi-Tipp:</p>
+                <p className="font-semibold text-gray-900 mb-2">Profi-Tipp:</p>
                 <p className="text-gray-700">
                   Notieren Sie bei jedem Kontakt Datum, Uhrzeit, Name des Mitarbeiters und Gesprächsinhalt. 
                   Das hilft enorm, wenn Sie später Entschädigung fordern.
@@ -218,7 +223,7 @@ export default function KofferVerlorenPage() {
               </ul>
 
               <div className="bg-amber-50 border-l-4 border-amber-500 p-6 my-8">
-                <p className="font-semibold text-gray-900 mb-2">⚠️ Wichtig:</p>
+                <p className="font-semibold text-gray-900 mb-2">Wichtig:</p>
                 <p className="text-gray-700">
                   Wertsachen (Schmuck, Elektronik, Dokumente) gehören ins Handgepäck! Airlines haften dafür meist nicht. 
                   Bei besonders wertvollem Gepäck können Sie eine Zusatzversicherung abschließen.
@@ -262,17 +267,19 @@ export default function KofferVerlorenPage() {
 
             <ContentFaqSection title="Häufig gestellte Fragen" faqs={faqItems} />
 
+            <StoryBridge path="/de/ratgeber/koffer-verloren-was-tun" />
+
             {relatedLinks.length > 0 && <RelatedLinksSection links={relatedLinks} />}
 
             <CtaSection
               title="Schützen Sie Ihr Gepäck mit Bag-Tag"
               description="Erhöhen Sie die Chancen, verlorenes Gepäck schnell wiederzufinden – mit NFC und QR-Code Technologie."
               buttonText="Jetzt Bag-Tag kaufen"
-              buttonLink="https://bag-tag.de/de#shop"
+              buttonLink="https://kreativschicht.de/products/bagid-koffer-tag-mit-nfc"
             />
           </article>
         </div>
-      </main>
+      </div>
     </>
   );
 }

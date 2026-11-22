@@ -11,6 +11,9 @@ import {
 import { getRelatedLinks } from '@/lib/linkMap';
 import { generateBreadcrumbSchema, generateHowToSchema } from '@/lib/schema-utils';
 
+import StoryBridge from '@/app/components/content/StoryBridge';
+import ContentFigure from '@/app/components/content/ContentFigure';
+
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'NFC auf iPhone aktivieren – Anleitung für alle iOS-Versionen | Bag-Tag';
   const description = 'So aktivieren Sie NFC auf Ihrem iPhone für Bag-Tag. Funktioniert mit iPhone 7 und neuer. Schritt-für-Schritt-Anleitung für iOS 13 bis iOS 17+.';
@@ -165,6 +168,8 @@ export default function IPhoneNfcAktivierenPage() {
               </p>
             </TldrSection>
 
+          <ContentFigure path="/de/hilfe/iphone-nfc-aktivieren" />
+
             {/* Introduction */}
             <section className="mb-12">
               <p className="text-lg text-slate-700 leading-relaxed mb-4">
@@ -190,7 +195,7 @@ export default function IPhoneNfcAktivierenPage() {
               </p>
               <div className="grid md:grid-cols-2 gap-4 text-slate-700">
                 <div>
-                  <h3 className="font-semibold mb-2">✅ Automatisches NFC (iOS 13+):</h3>
+                  <h3 className="font-semibold mb-2">Automatisches NFC (iOS 13+):</h3>
                   <ul className="space-y-1 text-sm">
                     <li>• iPhone 15 / 15 Plus / 15 Pro / 15 Pro Max</li>
                     <li>• iPhone 14 / 14 Plus / 14 Pro / 14 Pro Max</li>
@@ -204,7 +209,7 @@ export default function IPhoneNfcAktivierenPage() {
                   </ul>
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-2">❌ Kein NFC:</h3>
+                  <h3 className="font-semibold mb-2">Kein NFC:</h3>
                   <ul className="space-y-1 text-sm">
                     <li>• iPhone 6s und älter</li>
                     <li>• iPhone SE (1. Generation 2016)</li>
@@ -239,7 +244,7 @@ export default function IPhoneNfcAktivierenPage() {
               <div className="bg-white rounded-lg p-6 border-2 border-slate-300">
                 <p className="text-center text-slate-600 font-mono text-sm mb-2">
                   ┌─────────────────┐<br />
-                  │  📷 ← NFC hier  │  ← Oberseite (Kamera-Seite)<br />
+                  │  ← NFC hier  │  ← Oberseite (Kamera-Seite)<br />
                   │                 │<br />
                   │   iPhone        │<br />
                   │                 │<br />
@@ -307,6 +312,8 @@ export default function IPhoneNfcAktivierenPage() {
             </section>
 
             {/* Related Links */}
+            <StoryBridge path="/de/hilfe/iphone-nfc-aktivieren" />
+
             <RelatedLinksSection title="Weitere Hilfe-Themen" links={relatedLinks} />
 
             {/* CTA */}

@@ -10,6 +10,9 @@ import { getRelatedLinks } from '@/lib/linkMap';
 import { generateBreadcrumbSchema } from '@/lib/schema-utils';
 import { Smartphone, HelpCircle, Settings, RefreshCw, QrCode, CheckCircle } from 'lucide-react';
 
+import StoryBridge from '@/app/components/content/StoryBridge';
+import ContentFigure from '@/app/components/content/ContentFigure';
+
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'Help & Activation | Bag-Tag';
   const description = 'Help center for your Bag-Tag NFC luggage tag. Activation guide, NFC setup for iPhone & Android, data modification, and frequently asked questions.';
@@ -120,7 +123,7 @@ export default function HelpPage() {
   return (
     <>
       <JsonLd data={breadcrumbSchema} />
-      <main className="bg-white">
+      <div className="bg-white">
         <div className="container mx-auto px-4 py-12">
           <Breadcrumb items={breadcrumbItems.map(item => ({ name: item.name, url: item.href }))} />
 
@@ -129,6 +132,8 @@ export default function HelpPage() {
             <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
               Everything you need to know to activate and use your Bag-Tag.
             </p>
+
+          <ContentFigure path="/en/help" />
           </header>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -147,15 +152,17 @@ export default function HelpPage() {
             title="Still have questions?"
             description="Our support team is happy to help you. Contact us via our contact form."
             buttonText="To Contact Form"
-            buttonLink="/en/contact"
+            buttonLink="/en/help"
           />
+
+          <StoryBridge path="/en/help" />
 
           <RelatedLinksSection
             title="Further Information"
             links={relatedLinks}
           />
         </div>
-      </main>
+      </div>
     </>
   );
 }

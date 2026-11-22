@@ -10,6 +10,9 @@ import {
 import { getRelatedLinks } from '@/lib/linkMap';
 import { generateBreadcrumbSchema, generateArticleSchema, generateFAQPageSchema } from '@/lib/schema-utils';
 
+import StoryBridge from '@/app/components/content/StoryBridge';
+import ContentFigure from '@/app/components/content/ContentFigure';
+
 const pageUrl = 'https://bag-tag.de/de/ratgeber/gepaeck-verlust-vermeiden';
 const pageTitle = 'Gepäckverlust vermeiden: 12 Profi-Tipps für sicheres Reisen';
 const pageDescription = 'So schützen Sie Ihr Gepäck vor Verlust: Praktische Tipps zur Vorbereitung, smarte Technologie und bewährte Strategien von Vielfliegern.';
@@ -110,7 +113,7 @@ export default function GepaeckVerlustVermeidenPage() {
       <JsonLd data={faqSchema} />
       <JsonLd data={articleSchema} />
 
-      <main className="bg-white">
+      <div className="bg-white">
         <div className="max-w-4xl mx-auto px-4 py-12">
           <Breadcrumb items={breadcrumbItems} />
           
@@ -125,6 +128,8 @@ export default function GepaeckVerlustVermeidenPage() {
             </header>
 
             <TldrSection title="Das Wichtigste in Kürze" points={tldrPoints} />
+
+          <ContentFigure path="/de/ratgeber/gepaeck-verlust-vermeiden" />
 
             <section className="prose prose-lg max-w-none mt-12">
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Warum geht Gepäck überhaupt verloren?</h2>
@@ -144,7 +149,7 @@ export default function GepaeckVerlustVermeidenPage() {
               </p>
 
               <div className="bg-blue-50 border-l-4 border-blue-500 p-6 my-8">
-                <p className="font-semibold text-gray-900 mb-2">📊 Statistik:</p>
+                <p className="font-semibold text-gray-900 mb-2">Statistik:</p>
                 <p className="text-gray-700">
                   Laut SITA Baggage IT Insights 2023 sank die Rate falsch gehandhabter Gepäckstücke auf 7 pro 1.000 Passagiere. 
                   Das Risiko ist bei Direktflügen nur 0,3%, steigt aber bei Umsteigeverbindungen auf bis zu 2%.
@@ -231,7 +236,7 @@ export default function GepaeckVerlustVermeidenPage() {
               </ul>
 
               <div className="bg-amber-50 border-l-4 border-amber-500 p-6 my-8">
-                <p className="font-semibold text-gray-900 mb-2">⚠️ Wichtig:</p>
+                <p className="font-semibold text-gray-900 mb-2">Wichtig:</p>
                 <p className="text-gray-700">
                   Alte Gepäckanhänger mit falschen Zielcodes sind eine häufige Ursache für Fehlleitung! 
                   Entfernen Sie diese immer vor dem Check-in.
@@ -376,7 +381,7 @@ export default function GepaeckVerlustVermeidenPage() {
               </div>
 
               <div className="bg-green-50 border-l-4 border-green-500 p-6 my-8">
-                <p className="font-semibold text-gray-900 mb-2">💡 Empfehlung:</p>
+                <p className="font-semibold text-gray-900 mb-2">Empfehlung:</p>
                 <p className="text-gray-700">
                   Für die meisten Reisenden ist ein NFC-Tag mit QR-Code (wie Bag-Tag) die beste Lösung: 
                   Einfach, zuverlässig, günstig – und funktioniert ohne Akku oder Abo weltweit.
@@ -411,17 +416,19 @@ export default function GepaeckVerlustVermeidenPage() {
 
             <ContentFaqSection title="Häufig gestellte Fragen" faqs={faqItems} />
 
+            <StoryBridge path="/de/ratgeber/gepaeck-verlust-vermeiden" />
+
             {relatedLinks.length > 0 && <RelatedLinksSection links={relatedLinks} />}
 
             <CtaSection
               title="Maximale Sicherheit mit Bag-Tag"
               description="NFC + QR-Code: Doppelter Schutz für Ihr Gepäck. Batterielos, weltweit, anonym."
               buttonText="Bag-Tag entdecken"
-              buttonLink="https://bag-tag.de/de#shop"
+              buttonLink="https://kreativschicht.de/products/bagid-koffer-tag-mit-nfc"
             />
           </article>
         </div>
-      </main>
+      </div>
     </>
   );
 }

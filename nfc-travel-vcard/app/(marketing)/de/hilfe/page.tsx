@@ -11,6 +11,9 @@ import { getRelatedLinks } from '@/lib/linkMap';
 import { generateBreadcrumbSchema } from '@/lib/schema-utils';
 import { BookOpen, Smartphone, HelpCircle, Settings, RefreshCw, QrCode, CheckCircle } from 'lucide-react';
 
+import StoryBridge from '@/app/components/content/StoryBridge';
+import ContentFigure from '@/app/components/content/ContentFigure';
+
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'Hilfe & Aktivierung | Bag-Tag';
   const description = 'Hilfe-Center für Ihren Bag-Tag NFC Gepäckanhänger. Aktivierungsanleitung, NFC-Einrichtung für iPhone & Android, Datenänderung und häufige Fragen.';
@@ -145,6 +148,8 @@ export default function HilfePage() {
               </p>
             </TldrSection>
 
+          <ContentFigure path="/de/hilfe" />
+
             {/* Introduction */}
             <section className="mb-12">
               <p className="text-lg text-slate-700 leading-relaxed mb-4">
@@ -243,6 +248,8 @@ export default function HilfePage() {
             </section>
 
             {/* Related Links */}
+            <StoryBridge path="/de/hilfe" />
+
             <RelatedLinksSection title="Weitere Informationen" links={relatedLinks} />
 
             {/* CTA */}

@@ -11,6 +11,9 @@ import {
 import { getRelatedLinks } from '@/lib/linkMap';
 import { generateBreadcrumbSchema, generateHowToSchema } from '@/lib/schema-utils';
 
+import StoryBridge from '@/app/components/content/StoryBridge';
+import ContentFigure from '@/app/components/content/ContentFigure';
+
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'Tag auf neues Konto übertragen – Besitzer wechseln | Bag-Tag';
   const description = 'So übertragen Sie Ihren Bag-Tag auf ein anderes Konto. Anleitung für Besitzerwechsel, Weitergabe an Familienmitglieder oder Verkauf.';
@@ -111,23 +114,23 @@ export default function TagUebertragenPage() {
 
   const whenToTransfer = [
     {
-      scenario: '👨‍👩‍👧‍👦 Weitergabe an Familienmitglied',
+      scenario: 'Weitergabe an Familienmitglied',
       description: 'Sie möchten, dass Ihr Partner, Kind oder ein anderes Familienmitglied den Tag nutzt? Übertragen Sie den Tag, damit die neue Person ihre eigenen Daten hinterlegen kann.',
     },
     {
-      scenario: '🎁 Geschenk',
+      scenario: 'Geschenk',
       description: 'Sie haben einen Bag-Tag als Geschenk erhalten oder möchten einen verschenken? Nach der Übertragung kann der Beschenkte seine eigenen Informationen eintragen.',
     },
     {
-      scenario: '💼 Verkauf / Weitergabe',
+      scenario: 'Verkauf / Weitergabe',
       description: 'Sie verkaufen oder verschenken den Tag? Durch die Übertragung stellen Sie sicher, dass der neue Besitzer volle Kontrolle hat und Sie keinen Zugriff mehr auf den Tag haben.',
     },
     {
-      scenario: '🔄 Koffer-Wechsel',
+      scenario: 'Koffer-Wechsel',
       description: 'Sie möchten den Tag von einem Koffer auf einen anderen übertragen? Wenn der neue Koffer einer anderen Person gehört, ist eine Übertragung sinnvoll.',
     },
     {
-      scenario: '👥 Mehrere Konten',
+      scenario: 'Mehrere Konten',
       description: 'Sie haben versehentlich mehrere Konten erstellt und möchten alle Tags unter einem Konto vereinen? Übertragen Sie die Tags vom alten auf das neue Konto.',
     },
   ];
@@ -160,6 +163,8 @@ export default function TagUebertragenPage() {
                 Die Übertragung dauert nur wenige Minuten und ist vollständig reversibel.
               </p>
             </TldrSection>
+
+          <ContentFigure path="/de/hilfe/tag-uebertragen" />
 
             {/* Introduction */}
             <section className="mb-12">
@@ -213,7 +218,7 @@ export default function TagUebertragenPage() {
             {/* Alternative: Just change data */}
             <section className="mb-12 bg-blue-50 rounded-xl p-8">
               <h2 className="text-2xl font-bold text-slate-900 mb-4">
-                💡 Alternative: Nur Daten ändern?
+                Alternative: Nur Daten ändern?
               </h2>
               <p className="text-slate-700 mb-4 leading-relaxed">
                 In einigen Fällen ist eine vollständige Übertragung nicht notwendig:
@@ -408,6 +413,8 @@ export default function TagUebertragenPage() {
             </section>
 
             {/* Related Links */}
+            <StoryBridge path="/de/hilfe/tag-uebertragen" />
+
             <RelatedLinksSection title="Weitere Hilfe-Themen" links={relatedLinks} />
 
             {/* CTA */}

@@ -1,7 +1,14 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { usePathname } from 'next/navigation';
 import { SupportedLang, getBrowserLanguage } from '@/lib/i18n';
+
+/** Sprache aus der URL (/de/…, /en/…) – hat Vorrang vor Browser/LocalStorage. */
+export function languageFromPath(pathname?: string | null): SupportedLang | undefined {
+  const m = pathname?.match(/^\/(de|en)(\/|$)/);
+  return m ? (m[1] as SupportedLang) : undefined;
+}
 
 interface LanguageContextType {
   language: SupportedLang;
@@ -21,13 +28,15 @@ interface LanguageProviderProps {
 }
 
 export function LanguageProvider({ children, initialLanguage }: LanguageProviderProps) {
-  const [language, setLanguageState] = useState<SupportedLang>(initialLanguage || 'de');
+  const routeLanguage = languageFromPath(usePathname());
+  const fixedLanguage = initialLanguage || routeLanguage;
+  const [language, setLanguageState] = useState<SupportedLang>(fixedLanguage || 'de');
 
   useEffect(() => {
-    // If initialLanguage is provided (from route), always use it and update localStorage
-    if (initialLanguage) {
-      setLanguageState(initialLanguage);
-      localStorage.setItem('preferred-language', initialLanguage);
+    // Sprache aus Route/Layout hat Vorrang und wird gemerkt
+    if (fixedLanguage) {
+      setLanguageState(fixedLanguage);
+      localStorage.setItem('preferred-language', fixedLanguage);
     } else {
       // Only check localStorage if no initialLanguage is provided
       const saved = localStorage.getItem('preferred-language') as SupportedLang;
@@ -39,7 +48,7 @@ export function LanguageProvider({ children, initialLanguage }: LanguageProvider
         setLanguageState(detected);
       }
     }
-  }, [initialLanguage]);
+  }, [fixedLanguage]);
 
   const setLanguage = (lang: SupportedLang) => {
     setLanguageState(lang);
