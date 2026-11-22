@@ -3,6 +3,9 @@ import Link from 'next/link';
 import JsonLd from '@/app/components/JsonLd';
 import CtaButton from '@/app/components/CtaButton';
 
+import StoryBridge from '@/app/components/content/StoryBridge';
+import ContentFigure from '@/app/components/content/ContentFigure';
+
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'Gepäckverlust vermeiden – 10 Tipps & NFC-Lösung | Bag-Tag';
   const description = 'Koffer verloren? Mit diesen 10 Tipps minimierst du das Risiko. Plus: Wie ein NFC Gepäckanhänger dir hilft, dein Gepäck schnell zurückzubekommen. Jetzt lesen.';
@@ -123,6 +126,8 @@ export default function GepaeckVerlustVermeidenPage() {
             Die gute Nachricht: Mit den richtigen Strategien können Sie das Risiko drastisch 
             reduzieren. Hier sind unsere bewährten Profi-Tipps.
           </p>
+
+          <ContentFigure path="/de/gepaeck-verlust-vermeiden" />
 
           {/* Statistics */}
           <section className="mb-12 bg-red-50 border-l-4 border-red-500 p-6 rounded-r-lg">
@@ -381,7 +386,7 @@ export default function GepaeckVerlustVermeidenPage() {
             <div className="grid md:grid-cols-2 gap-6 mt-6">
               <div className="bg-white p-6 rounded-lg">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                  ⚡ Schnellere Wiederfindung
+                  Schnellere Wiederfindung
                 </h3>
                 <p className="text-gray-700">
                   NFC-Tags können in Sekunden gescannt werden – ohne Kamera, ohne App. 
@@ -391,7 +396,7 @@ export default function GepaeckVerlustVermeidenPage() {
 
               <div className="bg-white p-6 rounded-lg">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                  🔒 Besserer Datenschutz
+                  Besserer Datenschutz
                 </h3>
                 <p className="text-gray-700">
                   Ihre vollständige Adresse ist nicht öffentlich sichtbar. Sie kontrollieren, 
@@ -401,7 +406,7 @@ export default function GepaeckVerlustVermeidenPage() {
 
               <div className="bg-white p-6 rounded-lg">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                  🔄 Immer aktuell
+                  Immer aktuell
                 </h3>
                 <p className="text-gray-700">
                   Ändern Sie Ihre Kontaktdaten online – ohne neuen Anhänger ausfüllen zu müssen. 
@@ -411,7 +416,7 @@ export default function GepaeckVerlustVermeidenPage() {
 
               <div className="bg-white p-6 rounded-lg">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                  💪 Robust und langlebig
+                  Robust und langlebig
                 </h3>
                 <p className="text-gray-700">
                   Wasserfest, stoßfest und ohne Batterie. Funktioniert ein Leben lang – 
@@ -469,6 +474,7 @@ export default function GepaeckVerlustVermeidenPage() {
           </section>
 
           <CtaButton language="de" className="my-12" />
+          <StoryBridge path="/de/gepaeck-verlust-vermeiden" />
         </article>
       </div>
     </>

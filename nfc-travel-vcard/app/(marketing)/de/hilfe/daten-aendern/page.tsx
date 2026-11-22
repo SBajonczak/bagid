@@ -10,6 +10,9 @@ import {
 import { getRelatedLinks } from '@/lib/linkMap';
 import { generateBreadcrumbSchema, generateHowToSchema } from '@/lib/schema-utils';
 
+import StoryBridge from '@/app/components/content/StoryBridge';
+import ContentFigure from '@/app/components/content/ContentFigure';
+
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'Daten ändern und aktualisieren – Bag-Tag Dashboard | Bag-Tag';
   const description = 'So ändern Sie Ihre Kontakt- und Reisedaten auf Ihrem Bag-Tag. Jederzeit und überall aktualisierbar – auch während der Reise.';
@@ -180,6 +183,8 @@ export default function DatenAendernPage() {
               </p>
             </TldrSection>
 
+          <ContentFigure path="/de/hilfe/daten-aendern" />
+
             {/* Introduction */}
             <section className="mb-12">
               <p className="text-lg text-slate-700 leading-relaxed mb-4">
@@ -294,7 +299,6 @@ export default function DatenAendernPage() {
               </p>
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="bg-white rounded-lg border border-slate-200 p-6">
-                  <div className="text-4xl mb-3">💻</div>
                   <h3 className="text-lg font-semibold text-slate-900 mb-2">Desktop / Laptop</h3>
                   <p className="text-slate-700 text-sm">
                     Ideal für die Erst-Einrichtung oder umfangreiche Änderungen. Große 
@@ -302,7 +306,6 @@ export default function DatenAendernPage() {
                   </p>
                 </div>
                 <div className="bg-white rounded-lg border border-slate-200 p-6">
-                  <div className="text-4xl mb-3">📱</div>
                   <h3 className="text-lg font-semibold text-slate-900 mb-2">Smartphone</h3>
                   <p className="text-slate-700 text-sm">
                     Perfekt für schnelle Änderungen unterwegs. Responsive Design für alle 
@@ -310,7 +313,6 @@ export default function DatenAendernPage() {
                   </p>
                 </div>
                 <div className="bg-white rounded-lg border border-slate-200 p-6">
-                  <div className="text-4xl mb-3">📲</div>
                   <h3 className="text-lg font-semibold text-slate-900 mb-2">Tablet</h3>
                   <p className="text-slate-700 text-sm">
                     Beste Kombination aus Übersicht und Mobilität. Ideal für Reisen.
@@ -401,6 +403,8 @@ export default function DatenAendernPage() {
             </section>
 
             {/* Related Links */}
+            <StoryBridge path="/de/hilfe/daten-aendern" />
+
             <RelatedLinksSection title="Weitere Hilfe-Themen" links={relatedLinks} />
 
             {/* CTA */}

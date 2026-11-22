@@ -4,6 +4,9 @@ import JsonLd from '@/app/components/JsonLd';
 import CtaButton from '@/app/components/CtaButton';
 import ComparisonTable from '@/app/components/ComparisonTable';
 
+import StoryBridge from '@/app/components/content/StoryBridge';
+import ContentFigure from '@/app/components/content/ContentFigure';
+
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'NFC vs. QR-Code Gepäckanhänger – Was ist besser? | Bag-Tag';
   const description = 'NFC oder QR-Code für deinen Gepäckanhänger? Unser Vergleich zeigt Vor- und Nachteile beider Technologien und warum der Bag-Tag beide kombiniert – für maximale Sicherheit.';
@@ -132,6 +135,8 @@ export default function NfcVsQrPage() {
             Beide Technologien haben ihre Berechtigung, aber für Reisende bietet NFC entscheidende 
             Vorteile. In diesem ausführlichen Vergleich zeigen wir Ihnen, warum.
           </p>
+
+          <ContentFigure path="/de/nfc-vs-qr" />
 
           {/* Introduction */}
           <section className="mb-12">
@@ -440,6 +445,7 @@ export default function NfcVsQrPage() {
           </section>
 
           <CtaButton language="de" className="my-12" />
+          <StoryBridge path="/de/nfc-vs-qr" />
         </article>
       </div>
     </>

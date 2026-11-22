@@ -2,6 +2,9 @@ import type { Metadata } from 'next';
 import JsonLd from '@/app/components/JsonLd';
 import { TldrSection, RelatedLinksSection, CtaSection, Breadcrumb } from '@/app/components/ContentComponents';
 
+import StoryBridge from '@/app/components/content/StoryBridge';
+import ContentFigure from '@/app/components/content/ContentFigure';
+
 const linkMap = {
   useCases: '/de/use-cases',
   kids: '/de/use-cases/kofferanhaenger-fuer-kinder',
@@ -172,6 +175,8 @@ export default function GepäckanhängerFürFamilienPage() {
             </ul>
           </TldrSection>
 
+          <ContentFigure path="/de/use-cases/gepaeckanhaenger-fuer-familien" />
+
           <section className="mb-12">
             <h2 className="text-3xl font-bold mb-6 text-gray-900">
               Die Herausforderungen von Familienreisen
@@ -235,7 +240,7 @@ export default function GepäckanhängerFürFamilienPage() {
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="bg-blue-50 p-6 rounded-lg border border-blue-200">
                   <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                    📱 Ein Login für alles
+                    Ein Login für alles
                   </h3>
                   <p>
                     Egal ob 2 oder 10 Koffer – alle werden über Ihr Familien-Konto verwaltet. 
@@ -245,7 +250,7 @@ export default function GepäckanhängerFürFamilienPage() {
 
                 <div className="bg-green-50 p-6 rounded-lg border border-green-200">
                   <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                    ✏️ Daten zentral ändern
+                    Daten zentral ändern
                   </h3>
                   <p>
                     Neue Telefonnummer? Hotel gewechselt? Ändern Sie die Kontaktdaten für alle 
@@ -255,7 +260,7 @@ export default function GepäckanhängerFürFamilienPage() {
 
                 <div className="bg-purple-50 p-6 rounded-lg border border-purple-200">
                   <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                    👨‍👩‍👧‍👦 Personalisierung
+                    Personalisierung
                   </h3>
                   <p>
                     Jedes Familienmitglied kann seinen eigenen Tag mit individuellen Infos haben: 
@@ -265,7 +270,7 @@ export default function GepäckanhängerFürFamilienPage() {
 
                 <div className="bg-yellow-50 p-6 rounded-lg border border-yellow-200">
                   <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                    🔔 Benachrichtigungen
+                    Benachrichtigungen
                   </h3>
                   <p>
                     Wenn ein Koffer gescannt wird, bekommen Sie sofort eine Benachrichtigung. 
@@ -290,7 +295,7 @@ export default function GepäckanhängerFürFamilienPage() {
 
               <div className="bg-white p-6 rounded-lg shadow-sm">
                 <h3 className="font-semibold text-gray-900 mb-4">
-                  💡 Bewährte Farbcodierungs-Strategien:
+                  Bewährte Farbcodierungs-Strategien:
                 </h3>
                 <ul className="space-y-3">
                   <li className="flex items-start">
@@ -320,7 +325,7 @@ export default function GepäckanhängerFürFamilienPage() {
               </div>
 
               <p className="bg-white p-4 rounded border border-blue-300">
-                <strong>🎯 Praxis-Tipp:</strong> Fotografieren Sie vor der Reise alle Koffer mit 
+                <strong>Praxis-Tipp:</strong> Fotografieren Sie vor der Reise alle Koffer mit 
                 ihren Tags. Im Chaos am Gepäckband können Sie dann schnell nachschauen, welche 
                 Farbe zu welchem Familienmitglied gehört.
               </p>
@@ -335,7 +340,7 @@ export default function GepäckanhängerFürFamilienPage() {
             <div className="space-y-6">
               <div className="border-l-4 border-blue-600 pl-6 bg-slate-50 p-6 rounded-r-lg">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                  ✈️ Flugreisen mit der Familie
+                  Flugreisen mit der Familie
                 </h3>
                 <p className="text-gray-700 leading-relaxed mb-3">
                   Am Flughafen ist die größte Herausforderung, schnell alle Koffer vom Band zu 
@@ -351,7 +356,7 @@ export default function GepäckanhängerFürFamilienPage() {
 
               <div className="border-l-4 border-green-600 pl-6 bg-slate-50 p-6 rounded-r-lg">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                  🚗 Roadtrips und Autoreisen
+                  Roadtrips und Autoreisen
                 </h3>
                 <p className="text-gray-700 leading-relaxed mb-3">
                   Bei Roadtrips wird Gepäck ständig ein- und ausgeladen. Hotels, Campingplätze, 
@@ -366,7 +371,7 @@ export default function GepäckanhängerFürFamilienPage() {
 
               <div className="border-l-4 border-purple-600 pl-6 bg-slate-50 p-6 rounded-r-lg">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                  🏖️ Strandurlaub und All-Inclusive
+                  Strandurlaub und All-Inclusive
                 </h3>
                 <p className="text-gray-700 leading-relaxed mb-3">
                   Im Hotel oder Resort gibt es oft ähnliche Taschen am Pool oder Strand. 
@@ -381,7 +386,7 @@ export default function GepäckanhängerFürFamilienPage() {
 
               <div className="border-l-4 border-orange-600 pl-6 bg-slate-50 p-6 rounded-r-lg">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                  🎒 Gruppenreisen mit mehreren Familien
+                  Gruppenreisen mit mehreren Familien
                 </h3>
                 <p className="text-gray-700 leading-relaxed mb-3">
                   Wenn Sie mit befreundeten Familien verreisen, wird das Gepäck-Chaos noch größer. 
@@ -397,7 +402,7 @@ export default function GepäckanhängerFürFamilienPage() {
 
               <div className="border-l-4 border-red-600 pl-6 bg-slate-50 p-6 rounded-r-lg">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                  🎄 Weihnachten bei Verwandten
+                  Weihnachten bei Verwandten
                 </h3>
                 <p className="text-gray-700 leading-relaxed mb-3">
                   Über die Feiertage bei Oma und Opa? Geschenke, Klamotten, Kinderspielzeug – 
@@ -416,7 +421,7 @@ export default function GepäckanhängerFürFamilienPage() {
             <div className="space-y-6 text-lg text-gray-700 leading-relaxed">
               <div className="bg-blue-50 p-6 rounded-lg">
                 <h3 className="font-semibold text-gray-900 mb-3">
-                  📋 Gepäck-Checkliste digital hinterlegen
+                  Gepäck-Checkliste digital hinterlegen
                 </h3>
                 <p>
                   Nutzen Sie das Notizfeld im Bag-Tag, um eine kleine Packliste zu hinterlegen: 
@@ -427,7 +432,7 @@ export default function GepäckanhängerFürFamilienPage() {
 
               <div className="bg-green-50 p-6 rounded-lg">
                 <h3 className="font-semibold text-gray-900 mb-3">
-                  🏨 Hotel-Kontaktdaten aktualisieren
+                  Hotel-Kontaktdaten aktualisieren
                 </h3>
                 <p>
                   Vor der Abreise: Fügen Sie die Adresse und Telefonnummer Ihres Hotels hinzu. 
@@ -437,7 +442,7 @@ export default function GepäckanhängerFürFamilienPage() {
 
               <div className="bg-purple-50 p-6 rounded-lg">
                 <h3 className="font-semibold text-gray-900 mb-3">
-                  👶 Extra-Tags für Kinderwagen & Buggys
+                  Extra-Tags für Kinderwagen & Buggys
                 </h3>
                 <p>
                   Kinderwagen gehen am Flughafen besonders oft verloren. Bringen Sie einen 
@@ -447,7 +452,7 @@ export default function GepäckanhängerFürFamilienPage() {
 
               <div className="bg-yellow-50 p-6 rounded-lg">
                 <h3 className="font-semibold text-gray-900 mb-3">
-                  🎁 Tags als Geschenk für Großeltern
+                  Tags als Geschenk für Großeltern
                 </h3>
                 <p>
                   Reisen Oma und Opa mit? Schenken Sie ihnen auch einen Bag-Tag, damit ihr 
@@ -489,6 +494,8 @@ export default function GepäckanhängerFürFamilienPage() {
               </li>
             </ul>
           </section>
+
+          <StoryBridge path="/de/use-cases/gepaeckanhaenger-fuer-familien" />
 
           <RelatedLinksSection 
             title="Weitere Informationen"

@@ -9,6 +9,9 @@ import {
 import { getRelatedLinks } from '@/lib/linkMap';
 import { generateBreadcrumbSchema, generateHowToSchema } from '@/lib/schema-utils';
 
+import StoryBridge from '@/app/components/content/StoryBridge';
+import ContentFigure from '@/app/components/content/ContentFigure';
+
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'How Bag-Tag Works – NFC Luggage Tag Explained | Bag-Tag';
   const description = 'Discover how the Bag-Tag NFC luggage tag works: in 4 steps to more security for your luggage. NFC & QR code combined for maximum protection.';
@@ -96,7 +99,7 @@ export default function HowItWorksPage() {
       <JsonLd data={breadcrumbSchema} />
       <JsonLd data={howToSchema} />
 
-      <main className="bg-white">
+      <div className="bg-white">
         <div className="container mx-auto px-4 py-12">
           <Breadcrumb items={breadcrumbItems} />
 
@@ -114,6 +117,8 @@ export default function HowItWorksPage() {
               'You will be contacted immediately and securely.',
             ]}
           />
+
+          <ContentFigure path="/en/how-it-works" />
 
           <div className="space-y-12 my-12">
             <section id="buy">
@@ -152,12 +157,14 @@ export default function HowItWorksPage() {
             buttonLink="/en/nfc-luggage-tag"
           />
 
+          <StoryBridge path="/en/how-it-works" />
+
           <RelatedLinksSection
             title="Further Information"
             links={relatedLinks}
           />
         </div>
-      </main>
+      </div>
     </>
   );
 }

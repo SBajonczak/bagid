@@ -4,6 +4,9 @@ import JsonLd from '@/app/components/JsonLd';
 import CtaButton from '@/app/components/CtaButton';
 import ComparisonTable from '@/app/components/ComparisonTable';
 
+import StoryBridge from '@/app/components/content/StoryBridge';
+import ContentFigure from '@/app/components/content/ContentFigure';
+
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'NFC vs. QR Code: Which Technology is Better for Luggage Tags? | Bag-Tag';
   const description = 'Detailed comparison: NFC or QR code for your luggage tag? Learn the pros and cons of both technologies and why NFC is the superior choice for travelers.';
@@ -122,6 +125,8 @@ export default function NfcVsQrPage() {
             have their place, but for travelers, NFC offers decisive advantages. In this 
             comprehensive comparison, we&apos;ll show you why.
           </p>
+
+          <ContentFigure path="/en/nfc-vs-qr" />
 
           {/* Introduction */}
           <section className="mb-12">
@@ -422,6 +427,7 @@ export default function NfcVsQrPage() {
           </section>
 
           <CtaButton language="en" className="my-12" />
+          <StoryBridge path="/en/nfc-vs-qr" />
         </article>
       </div>
     </>

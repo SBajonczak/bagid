@@ -4,6 +4,9 @@ import JsonLd from '@/app/components/JsonLd';
 import CtaButton from '@/app/components/CtaButton';
 import ColorSelector from '@/app/components/ColorSelector';
 
+import StoryBridge from '@/app/components/content/StoryBridge';
+import ContentFigure from '@/app/components/content/ContentFigure';
+
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'NFC Gepäckanhänger kaufen – Bag-Tag | Ab €10,99 | Keine App nötig';
   const description = 'Smarter NFC & QR-Code Gepäckanhänger für €10,99. Kein App-Download, keine Batterien. Finder können dich sofort kontaktieren – weltweit. DSGVO-konform. Jetzt bestellen.';
@@ -193,6 +196,8 @@ export default function NfcGepaeckanhängerPage() {
             einfach – für stressfreies Reisen weltweit.
           </p>
 
+          <ContentFigure path="/de/nfc-gepaeckanhaenger" />
+
           <CtaButton language="de" className="my-8" />
 
           {/* Introduction */}
@@ -321,7 +326,7 @@ export default function NfcGepaeckanhängerPage() {
             <div className="grid md:grid-cols-2 gap-6 mb-6">
               <div className="bg-gray-50 p-6 rounded-lg">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                  🧳 Geschäftsreisen
+                  Geschäftsreisen
                 </h3>
                 <p className="text-gray-700">
                   Vielreisende schätzen die schnelle Identifikation am Gepäckband und die 
@@ -332,7 +337,7 @@ export default function NfcGepaeckanhängerPage() {
 
               <div className="bg-gray-50 p-6 rounded-lg">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                  👨‍👩‍👧‍👦 Familienurlaub
+                  Familienurlaub
                 </h3>
                 <p className="text-gray-700">
                   Mehrere Koffer für die ganze Familie? Kein Problem. Jeder Bag-Tag kann 
@@ -343,7 +348,7 @@ export default function NfcGepaeckanhängerPage() {
 
               <div className="bg-gray-50 p-6 rounded-lg">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                  ✈️ Flughäfen & Airlines
+                  Flughäfen & Airlines
                 </h3>
                 <p className="text-gray-700">
                   Am Flughafen geht besonders viel Gepäck verloren. Mit dem NFC-Tag können 
@@ -354,7 +359,7 @@ export default function NfcGepaeckanhängerPage() {
 
               <div className="bg-gray-50 p-6 rounded-lg">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                  🏕️ Outdoor & Abenteuer
+                  Outdoor & Abenteuer
                 </h3>
                 <p className="text-gray-700">
                   Camping, Trekking oder Festivals – überall, wo viel Gepäck unterwegs ist, 
@@ -515,6 +520,7 @@ export default function NfcGepaeckanhängerPage() {
           </section>
 
           <CtaButton language="de" className="my-12" />
+          <StoryBridge path="/de/nfc-gepaeckanhaenger" />
         </article>
       </div>
     </>

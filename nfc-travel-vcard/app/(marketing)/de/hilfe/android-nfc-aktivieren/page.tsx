@@ -11,6 +11,9 @@ import {
 import { getRelatedLinks } from '@/lib/linkMap';
 import { generateBreadcrumbSchema, generateHowToSchema } from '@/lib/schema-utils';
 
+import StoryBridge from '@/app/components/content/StoryBridge';
+import ContentFigure from '@/app/components/content/ContentFigure';
+
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'NFC auf Android aktivieren – Anleitung für alle Hersteller | Bag-Tag';
   const description = 'So aktivieren Sie NFC auf Android-Smartphones (Samsung, Google Pixel, OnePlus, Xiaomi uvm.). Schritt-für-Schritt-Anleitung mit Screenshots.';
@@ -201,6 +204,8 @@ export default function AndroidNfcAktivierenPage() {
               </p>
             </TldrSection>
 
+          <ContentFigure path="/de/hilfe/android-nfc-aktivieren" />
+
             {/* Introduction */}
             <section className="mb-12">
               <p className="text-lg text-slate-700 leading-relaxed mb-4">
@@ -255,7 +260,7 @@ export default function AndroidNfcAktivierenPage() {
             {/* Quick Settings Tip */}
             <section className="mb-12 bg-blue-50 rounded-xl p-8">
               <h2 className="text-2xl font-bold text-slate-900 mb-4">
-                💡 Tipp: NFC über Schnelleinstellungen aktivieren
+                Tipp: NFC über Schnelleinstellungen aktivieren
               </h2>
               <p className="text-slate-700 mb-4 leading-relaxed">
                 Viele Android-Geräte bieten einen schnelleren Weg:
@@ -347,6 +352,8 @@ export default function AndroidNfcAktivierenPage() {
             </section>
 
             {/* Related Links */}
+            <StoryBridge path="/de/hilfe/android-nfc-aktivieren" />
+
             <RelatedLinksSection title="Weitere Hilfe-Themen" links={relatedLinks} />
 
             {/* CTA */}

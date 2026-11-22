@@ -362,6 +362,15 @@
   border-top: 1px solid var(--bt-line);
 }
 
+.bt-timeline > li {
+  scroll-margin-top: 6rem;
+}
+
+.bt-more {
+  margin: 0.6rem 0 0;
+  font-size: 0.98rem;
+}
+
 .bt-timeline > li:last-child {
   border-bottom: 1px solid var(--bt-line);
 }

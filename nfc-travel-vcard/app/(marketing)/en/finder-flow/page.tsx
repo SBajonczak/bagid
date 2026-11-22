@@ -9,6 +9,9 @@ import {
 import { getRelatedLinks } from '@/lib/linkMap';
 import { generateBreadcrumbSchema, generateHowToSchema } from '@/lib/schema-utils';
 
+import StoryBridge from '@/app/components/content/StoryBridge';
+import ContentFigure from '@/app/components/content/ContentFigure';
+
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'How the Finder Helps You – Bag-Tag Finder Process | Bag-Tag';
   const description = 'Learn how the finder of your lost luggage contacts you. Privacy guaranteed: Your data remains private while you are found quickly.';
@@ -96,7 +99,7 @@ export default function FinderFlowPage() {
       <JsonLd data={breadcrumbSchema} />
       <JsonLd data={howToSchema} />
 
-      <main className="bg-white">
+      <div className="bg-white">
         <div className="container mx-auto px-4 py-12">
           <Breadcrumb items={breadcrumbItems} />
 
@@ -114,6 +117,8 @@ export default function FinderFlowPage() {
               'Your personal data remains protected at all times.',
             ]}
           />
+
+          <ContentFigure path="/en/finder-flow" />
 
           <div className="space-y-12">
             <section id="find">
@@ -152,12 +157,14 @@ export default function FinderFlowPage() {
             buttonLink="/en/nfc-luggage-tag"
           />
 
+          <StoryBridge path="/en/finder-flow" />
+
           <RelatedLinksSection
             title="Further Information"
             links={relatedLinks}
           />
         </div>
-      </main>
+      </div>
     </>
   );
 }

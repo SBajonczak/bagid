@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { getStoryContent } from '@/lib/content/story';
 import { isNotifyEnabled } from '@/lib/content/landing';
 import { localizedPath } from '@/lib/seo/routes';
+import { chapterAnchors, chapterMore, type ChapterId } from '@/lib/content/story-links';
 import { shopUrlFor, type SiteLocale } from '@/lib/seo/site';
 
 export interface StorySectionProps {
@@ -18,6 +19,10 @@ export interface StorySectionProps {
 const StorySection: React.FC<StorySectionProps> = ({ locale, notifyEnabled = isNotifyEnabled() }) => {
   const c = getStoryContent(locale, notifyEnabled);
   const secondaryHref = localizedPath(c.ctaSecondaryRouteKey, locale) ?? `/${locale}`;
+  // Kapitel → passende Unterseite ("Mehr dazu")
+  const moreByAnchor = Object.fromEntries(
+    (Object.keys(chapterAnchors[locale]) as ChapterId[]).map((id) => [chapterAnchors[locale][id], chapterMore[locale][id]]),
+  );
   const sourceLine =
     locale === 'de'
       ? `Laut ${c.stat.source} wurden 2025 weltweit rund ${c.stat.value} Gepäckstücke fehlgeleitet.`
@@ -46,6 +51,13 @@ const StorySection: React.FC<StorySectionProps> = ({ locale, notifyEnabled = isN
               <div>
                 <h3 className="bt-h3">{chapter.title}</h3>
                 <p className="bt-text">{chapter.text}</p>
+                {moreByAnchor[chapter.id] && localizedPath(moreByAnchor[chapter.id].routeKey, locale) && (
+                  <p className="bt-more">
+                    <Link href={localizedPath(moreByAnchor[chapter.id].routeKey, locale)!} className="bt-link">
+                      {moreByAnchor[chapter.id].label}
+                    </Link>
+                  </p>
+                )}
               </div>
             </li>
           ))}

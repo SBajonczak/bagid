@@ -3,6 +3,9 @@ import Link from 'next/link';
 import JsonLd from '@/app/components/JsonLd';
 import CtaButton from '@/app/components/CtaButton';
 
+import StoryBridge from '@/app/components/content/StoryBridge';
+import ContentFigure from '@/app/components/content/ContentFigure';
+
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'How to Prevent Lost Luggage – 10 Tips & NFC Solution | Bag-Tag';
   const description = 'Lost your luggage? These 10 expert tips reduce the risk. Plus: how an NFC luggage tag helps you recover your bag fast if it goes missing at the airport.';
@@ -123,6 +126,8 @@ export default function PreventLuggageLossPage() {
             The good news: with the right strategies, you can drastically reduce the risk. 
             Here are our proven expert tips for stress-free travel.
           </p>
+
+          <ContentFigure path="/en/prevent-luggage-loss" />
 
           {/* Statistics */}
           <section className="mb-12 bg-red-50 border-l-4 border-red-500 p-6 rounded-r-lg">
@@ -379,7 +384,7 @@ export default function PreventLuggageLossPage() {
             <div className="grid md:grid-cols-2 gap-6 mt-6">
               <div className="bg-white p-6 rounded-lg">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                  ⚡ Faster Recovery
+                  Faster Recovery
                 </h3>
                 <p className="text-gray-700">
                   NFC tags can be scanned in seconds – no camera, no app required. Airport 
@@ -389,7 +394,7 @@ export default function PreventLuggageLossPage() {
 
               <div className="bg-white p-6 rounded-lg">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                  🔒 Better Privacy
+                  Better Privacy
                 </h3>
                 <p className="text-gray-700">
                   Your full address isn&apos;t publicly visible. You control what information is shared.
@@ -398,7 +403,7 @@ export default function PreventLuggageLossPage() {
 
               <div className="bg-white p-6 rounded-lg">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                  🔄 Always Current
+                  Always Current
                 </h3>
                 <p className="text-gray-700">
                   Update your contact details online – no need to fill out a new tag. Perfect 
@@ -408,7 +413,7 @@ export default function PreventLuggageLossPage() {
 
               <div className="bg-white p-6 rounded-lg">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                  💪 Robust and Durable
+                  Robust and Durable
                 </h3>
                 <p className="text-gray-700">
                   Waterproof, shockproof, and battery-free. Works for life – regardless of 
@@ -465,6 +470,7 @@ export default function PreventLuggageLossPage() {
           </section>
 
           <CtaButton language="en" className="my-12" />
+          <StoryBridge path="/en/prevent-luggage-loss" />
         </article>
       </div>
     </>

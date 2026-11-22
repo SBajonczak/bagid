@@ -4,6 +4,9 @@ import JsonLd from '@/app/components/JsonLd';
 import { TldrSection, RelatedLinksSection, CtaSection, Breadcrumb } from '@/app/components/ContentComponents';
 import { Package, Users, Plane } from 'lucide-react';
 
+import StoryBridge from '@/app/components/content/StoryBridge';
+import ContentFigure from '@/app/components/content/ContentFigure';
+
 const linkMap = {
   kids: '/de/use-cases/kofferanhaenger-fuer-kinder',
   families: '/de/use-cases/gepaeckanhaenger-fuer-familien',
@@ -141,6 +144,8 @@ export default function UseCasesPage() {
             </ul>
           </TldrSection>
 
+          <ContentFigure path="/de/use-cases" />
+
           {/* Use Case Cards */}
           <section className="my-12">
             <div className="grid md:grid-cols-3 gap-6">
@@ -222,6 +227,8 @@ export default function UseCasesPage() {
               </p>
             </div>
           </section>
+
+          <StoryBridge path="/de/use-cases" />
 
           <RelatedLinksSection 
             title="Mehr über Bag-Tag erfahren"

@@ -4,6 +4,9 @@ import JsonLd from '@/app/components/JsonLd';
 import CtaButton from '@/app/components/CtaButton';
 import ColorSelector from '@/app/components/ColorSelector';
 
+import StoryBridge from '@/app/components/content/StoryBridge';
+import ContentFigure from '@/app/components/content/ContentFigure';
+
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'NFC Luggage Tag – Bag-Tag | From €10.99 | No App Required';
   const description = 'Smart NFC & QR-code luggage tag for €10.99. No app needed, no batteries. Finders can contact you instantly – worldwide. GDPR-compliant. Order now.';
@@ -193,6 +196,8 @@ export default function NfcLuggageTagPage() {
             for stress-free travel worldwide.
           </p>
 
+          <ContentFigure path="/en/nfc-luggage-tag" />
+
           <CtaButton language="en" className="my-8" />
 
           {/* Introduction */}
@@ -318,7 +323,7 @@ export default function NfcLuggageTagPage() {
             <div className="grid md:grid-cols-2 gap-6 mb-6">
               <div className="bg-gray-50 p-6 rounded-lg">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                  🧳 Business Travel
+                  Business Travel
                 </h3>
                 <p className="text-gray-700">
                   Frequent travelers appreciate the quick identification at baggage claim and 
@@ -329,7 +334,7 @@ export default function NfcLuggageTagPage() {
 
               <div className="bg-gray-50 p-6 rounded-lg">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                  👨‍👩‍👧‍👦 Family Vacations
+                  Family Vacations
                 </h3>
                 <p className="text-gray-700">
                   Multiple suitcases for the whole family? No problem. Each Bag-Tag can be 
@@ -339,7 +344,7 @@ export default function NfcLuggageTagPage() {
 
               <div className="bg-gray-50 p-6 rounded-lg">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                  ✈️ Airports & Airlines
+                  Airports & Airlines
                 </h3>
                 <p className="text-gray-700">
                   Airports are where most luggage gets lost. With an NFC tag, airport staff 
@@ -350,7 +355,7 @@ export default function NfcLuggageTagPage() {
 
               <div className="bg-gray-50 p-6 rounded-lg">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                  🏕️ Outdoor & Adventure
+                  Outdoor & Adventure
                 </h3>
                 <p className="text-gray-700">
                   Camping, trekking, or festivals – wherever lots of luggage is on the move, 
@@ -507,6 +512,7 @@ export default function NfcLuggageTagPage() {
           </section>
 
           <CtaButton language="en" className="my-12" />
+          <StoryBridge path="/en/nfc-luggage-tag" />
         </article>
       </div>
     </>

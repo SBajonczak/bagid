@@ -2,6 +2,9 @@ import type { Metadata } from 'next';
 import JsonLd from '@/app/components/JsonLd';
 import { TldrSection, RelatedLinksSection, CtaSection, Breadcrumb } from '@/app/components/ContentComponents';
 
+import StoryBridge from '@/app/components/content/StoryBridge';
+import ContentFigure from '@/app/components/content/ContentFigure';
+
 const linkMap = {
   useCases: '/de/use-cases',
   families: '/de/use-cases/gepaeckanhaenger-fuer-familien',
@@ -172,6 +175,8 @@ export default function KofferanhängerFürKinderPage() {
             </ul>
           </TldrSection>
 
+          <ContentFigure path="/de/use-cases/kofferanhaenger-fuer-kinder" />
+
           <section className="mb-12">
             <h2 className="text-3xl font-bold mb-6 text-gray-900">
               Warum Kinder ID-Tags für Gepäck brauchen
@@ -223,7 +228,7 @@ export default function KofferanhängerFürKinderPage() {
             <div className="grid md:grid-cols-2 gap-6 mb-8">
               <div className="bg-purple-50 p-6 rounded-lg border border-purple-200">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                  🎒 Klassenfahrten
+                  Klassenfahrten
                 </h3>
                 <p className="text-gray-700 leading-relaxed">
                   Wenn die ganze Klasse mit ähnlichen Koffern reist, ist Verwechslungsgefahr groß. 
@@ -234,7 +239,7 @@ export default function KofferanhängerFürKinderPage() {
 
               <div className="bg-blue-50 p-6 rounded-lg border border-blue-200">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                  🏕️ Ferienlager
+                  Ferienlager
                 </h3>
                 <p className="text-gray-700 leading-relaxed">
                   Bei mehrtägigen Camps mit vielen Kindern ist Organisation alles. Der NFC-Tag 
@@ -245,7 +250,7 @@ export default function KofferanhängerFürKinderPage() {
 
               <div className="bg-green-50 p-6 rounded-lg border border-green-200">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                  ✈️ Familienurlaub
+                  Familienurlaub
                 </h3>
                 <p className="text-gray-700 leading-relaxed">
                   Am Flughafen oder Bahnhof geht schnell mal ein Kinderrucksack verloren. Mit dem 
@@ -256,7 +261,7 @@ export default function KofferanhängerFürKinderPage() {
 
               <div className="bg-yellow-50 p-6 rounded-lg border border-yellow-200">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                  ⚽ Sportreisen
+                  Sportreisen
                 </h3>
                 <p className="text-gray-700 leading-relaxed">
                   Bei Sportvereins-Fahrten zu Turnieren oder Wettkämpfen ist oft viel los. 
@@ -318,7 +323,7 @@ export default function KofferanhängerFürKinderPage() {
               </ul>
 
               <p className="mt-6 bg-white p-4 rounded border border-blue-300">
-                <strong>💡 Tipp für Eltern:</strong> Richten Sie eine separate E-Mail-Adresse nur 
+                <strong>Tipp für Eltern:</strong> Richten Sie eine separate E-Mail-Adresse nur 
                 für die Bag-Tags Ihrer Kinder ein, z.B. „familie.mueller.gepaeck@gmail.com". So haben 
                 Sie volle Kontrolle und können Benachrichtigungen zentral empfangen.
               </p>
@@ -386,7 +391,7 @@ export default function KofferanhängerFürKinderPage() {
             <div className="space-y-4 text-lg text-gray-700">
               <div className="bg-purple-50 p-6 rounded-lg">
                 <h3 className="font-semibold text-gray-900 mb-2">
-                  🎨 Verschiedene Farben nutzen
+                  Verschiedene Farben nutzen
                 </h3>
                 <p>
                   Wenn mehrere Kinder gleichzeitig verreisen, verwenden Sie unterschiedliche Farben 
@@ -396,7 +401,7 @@ export default function KofferanhängerFürKinderPage() {
 
               <div className="bg-blue-50 p-6 rounded-lg">
                 <h3 className="font-semibold text-gray-900 mb-2">
-                  📝 Minimale Infos sind genug
+                  Minimale Infos sind genug
                 </h3>
                 <p>
                   Für Schulreisen reicht: „Max M., Klasse 7b, Elternkontakt: 0171-1234567". 
@@ -406,7 +411,7 @@ export default function KofferanhängerFürKinderPage() {
 
               <div className="bg-green-50 p-6 rounded-lg">
                 <h3 className="font-semibold text-gray-900 mb-2">
-                  🏫 Mit Lehrern abstimmen
+                  Mit Lehrern abstimmen
                 </h3>
                 <p>
                   Informieren Sie die Klassenlehrer über den Bag-Tag. Im Notfall können auch sie 
@@ -416,7 +421,7 @@ export default function KofferanhängerFürKinderPage() {
 
               <div className="bg-yellow-50 p-6 rounded-lg">
                 <h3 className="font-semibold text-gray-900 mb-2">
-                  🧳 An mehreren Stellen anbringen
+                  An mehreren Stellen anbringen
                 </h3>
                 <p>
                   Bringen Sie Tags sowohl außen am Koffer als auch innen in der Tasche an. 
@@ -425,6 +430,8 @@ export default function KofferanhängerFürKinderPage() {
               </div>
             </div>
           </section>
+
+          <StoryBridge path="/de/use-cases/kofferanhaenger-fuer-kinder" />
 
           <RelatedLinksSection 
             title="Weitere Informationen"
